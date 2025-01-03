@@ -1,0 +1,13 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+#mainCanvas {
+  background-color: darkred;
+  background-image: url(images/InTheWorks.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40vw;
+}

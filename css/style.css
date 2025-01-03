@@ -1,0 +1,238 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  /* background: rgb(255, 196, 136); */
+  background-image: url("http://bblunk.bplaced.net/pictures/earth_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+.content {
+  display: grid;
+  height: 92vh;
+  max-width: 1600px;
+  margin: 40px auto;
+  border: 6px solid rgba(0, 0, 0, 0.33);
+  border-radius: 9px;
+  grid-template-rows: 60px 1fr 50px;
+  grid-template-columns: 20% 60% 20%;
+  grid-auto-flow: column;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+header {
+  background: black;
+  border: 2px solid goldenrod;
+  border-radius: 8px;
+  /* opacity: 99%; */
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+main {
+  display: flex;
+  justify-content: center;
+  background: rgba(109, 196, 255, 0.2);
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  padding: 8vh 0vw;
+  line-height: 160%; /* Wird immer festgelegt ! */
+}
+main h1 {
+  text-align: center;
+  color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 40px;
+  line-height: 140%;
+}
+main h2 {
+  text-align: center;
+  color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 30px;
+  line-height: 120%;
+}
+main p {
+  padding-top: 5px;
+  text-align: center;
+  color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 22px;
+  font: weight 80px;
+}
+#portalCanvas {
+  background-color: transparent;
+}
+.ContactPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: bisque;
+  line-height: 150%;
+}
+.ContactPage h1 {
+  margin-bottom: 100px;
+}
+#phone {
+  width: 35px;
+  height: auto;
+}
+#email {
+  width: auto;
+  height: 35px;
+}
+.rightAside {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 171, 103, 20%);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  font-size: 17px;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  padding-top: 150px;
+}
+.leftAside {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 171, 103, 20%);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  font-size: 17px;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  padding-top: 150px;
+}
+.YouTube-Logo {
+  display: flex;
+  justify-content: center;
+  margin-top: -150px;
+  transform: scale(
+    0.25
+  ); /* Skaliert das Logo auf 50% seiner Originalgröße
+  /* width: 50%;
+  height: auto; */
+}
+.headLineMargin {
+  text-align: center;
+  margin-bottom: 80px;
+}
+.marginDown {
+  margin-bottom: 10px;
+}
+.ContactPage {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 180px;
+  font-size: 25px;
+  color: black;
+}
+.ContactPage h3 {
+  text-align: center;
+}
+footer {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  background-color: rgba(0, 0, 0, 0.33);
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+footer a {
+  color: rgba(0, 0, 0, 1);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  border: 2px;
+  border-color: #0f0;
+  text-decoration: none;
+}
+nav.mainnav {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 5px;
+}
+
+nav.mainnav a {
+  font-size: 27px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-weight: bold;
+  background-color: rgb(250, 145, 8);
+  border: none;
+  height: auto;
+  border-radius: 11px;
+  width: 200px;
+  height: 40px;
+  margin: 3px auto 0 auto;
+  padding-top: 5px;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  transition: all 0.45s ease-in-out;
+}
+
+nav.mainnav a:hover {
+  /* background-color: rgb(255, 171, 103); */
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-weight: bold;
+  font-size: 28.5px;
+  /* text-shadow: 0 0 20px gray; */
+  color: rgb(0, 0, 0);
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0px 0px 10px 4px greenyellow;
+}
+
+@media all and (max-width: 1112px) {
+  header {
+    height: auto;
+    width: auto;
+    grid-column-start: 2;
+    grid-column-end: 2;
+  }
+  nav.mainnav {
+    flex-direction: column;
+    justify-content: center;
+  }
+  main {
+    display: flex;
+    flex-direction: column;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-width: 362px;
+    margin: auto;
+    border: none;
+    height: 100vh;
+    grid-template-rows: 130px 1fr 50px;
+  }
+  .rightAside {
+    display: none;
+    flex-direction: column;
+    padding-top: 25px;
+  }
+  .leftAside {
+    display: flex;
+    flex-direction: column;
+    padding-top: 25px;
+  }
+  footer {
+    grid-row-start: 3;
+    grid-row-end: 3;
+  }
+}

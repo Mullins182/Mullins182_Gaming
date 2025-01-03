@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: black;
+  /* align-items: top;
+        align-content: top; */
+  overflow: hidden; /* Verhindert darstellung von scrollbars */
+}
+#flappyCanvas {
+  background-image: url(../assets/images/shooting_star.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: black;
+  /* padding: 4px 0px; */
+  image-rendering: auto;
+}

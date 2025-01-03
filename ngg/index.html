@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="design.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="mainnav">
+        <a href="../index.html" class="Buttons">Home</a>
+      </nav>
+      <h1>Number Guessing Game</h1>
+    </header>
+    <div id="GameContainer">
+      <h2 id="InfoText">
+        Enter a number between 1 and 1000 in the textfield, and confirm with
+        [ENTER]
+      </h2>
+      <h2 id="Guessed">Guessed Number:</h2>
+      <h2 id="displayTries">Tries: 0</h2>
+      <form onsubmit="GuessTheNumber(); return false">
+        <input
+          aria-label="aria-label"
+          id="GuessingField"
+          type="number"
+          required />
+      </form>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  </body>
+</html>
