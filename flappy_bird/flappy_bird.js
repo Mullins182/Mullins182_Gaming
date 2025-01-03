@@ -518,82 +518,86 @@ function drawOnCanvasOps(timestamp) {
   const elapsed = timestamp - lastTime;
 
   if (gameOver && elapsed > FRAME_INTERVAL) {
-    console.log("Game Over Image procedure started !");
-
-    const bird =
-      useDeathAnim === 1
-        ? grilledChicken
-        : useDeathAnim === 2
-        ? gravestone
-        : birdFrame2;
-
-    game.clearRect(0, 0, canvas.width, canvas.height);
-
-    // DRAW PIPES
-    drawPipes();
-
-    // Speichern des aktuellen Kontexts
-    game.save();
-
-    // Verschieben des Koordinatensystems zum Mittelpunkt des Bildes
-    game.translate(
-      birdPosX + bird.width * 0.325,
-      birdPosY + bird.height * 0.325
-    );
-
-    // Rotieren des Kontexts
-    game.rotate(rotationAngle);
-
-    // Zeichnen des rotierten Bildes
-    game.drawImage(
-      bird,
-      -bird.width * 0.325,
-      -bird.height * 0.325,
-      bird.width * 0.65,
-      bird.height * 0.65
-    );
-
-    // Wiederherstellen des ursprünglichen Kontexts
-    game.restore();
-
-    // game.drawImage(bird, birdPosX, birdPosY, bird.width * 0.65, bird.height * 0.65);
-
-    updatePositions();
-
-    if (birdPosY > canvas.height || birdPosY < 0 - bird.height) {
-      isDeathAnimRunning = false;
-    }
+    deathAnimation();
   } else if (elapsed > FRAME_INTERVAL) {
     // console.log("Canvas breite: ", canvas.width);
     // console.log("Canvas höhe: ", canvas.height);
 
-    game.clearRect(0, 0, canvas.width, canvas.height);
+    birdAnimation(timestamp);
+  }
+}
 
-    // DRAW PIPES
-    drawPipes();
+function birdAnimation(timestamp) {
+  game.clearRect(0, 0, canvas.width, canvas.height);
 
-    // POSITIONS UPDATE
-    updatePositions();
+  // DRAW PIPES
+  drawPipes();
 
-    console.log("birdFrameInterval = ", birdFrameInterval);
+  // POSITIONS UPDATE
+  updatePositions();
 
-    // DRAW BIRD
-    if (birdFrameInterval > 5) {
-      const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
+  console.log("birdFrameInterval = ", birdFrameInterval);
 
-      game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
+  // DRAW BIRD
+  if (birdFrameInterval > 5) {
+    const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
 
-      checkCollision(bird);
-      checkPointCollection();
-    } else {
-      const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
+    game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
 
-      game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
-      checkCollision(bird);
-      checkPointCollection();
-    }
-    console.log("Bild gezeichnet:", activeFrame);
-    lastTime = timestamp;
+    checkCollision(bird);
+    checkPointCollection();
+  } else {
+    const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
+
+    game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
+    checkCollision(bird);
+    checkPointCollection();
+  }
+  console.log("Bild gezeichnet:", activeFrame);
+  lastTime = timestamp;
+}
+
+function deathAnimation() {
+  // console.log("Death animation running !");
+
+  const bird =
+    useDeathAnim === 1
+      ? grilledChicken
+      : useDeathAnim === 2
+      ? gravestone
+      : birdFrame2;
+
+  game.clearRect(0, 0, canvas.width, canvas.height);
+
+  // DRAW PIPES
+  drawPipes();
+
+  // Speichern des aktuellen Kontexts
+  game.save();
+
+  // Verschieben des Koordinatensystems zum Mittelpunkt des Bildes
+  game.translate(birdPosX + bird.width * 0.325, birdPosY + bird.height * 0.325);
+
+  // Rotieren des Kontexts
+  game.rotate(rotationAngle);
+
+  // Zeichnen des rotierten Bildes
+  game.drawImage(
+    bird,
+    -bird.width * 0.325,
+    -bird.height * 0.325,
+    bird.width * 0.65,
+    bird.height * 0.65
+  );
+
+  // Wiederherstellen des ursprünglichen Kontexts
+  game.restore();
+
+  // game.drawImage(bird, birdPosX, birdPosY, bird.width * 0.65, bird.height * 0.65);
+  updatePositions();
+
+  if (birdPosY > canvas.height || birdPosY < 0 - bird.height) {
+    isDeathAnimRunning = false;
   }
 }
 
