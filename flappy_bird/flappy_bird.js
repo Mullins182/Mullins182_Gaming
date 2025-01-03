@@ -271,7 +271,9 @@ function playWingFlapSound(playbackRate) {
       snd_wingFlapNorm.volume = 1.0;
       snd_wingFlapNorm
         .play()
-        .catch((e) => console.error("Fehler beim Abspielen von wingFlap:", e));
+        .catch((e) =>
+          console.error("Fehler beim Abspielen von wingFlap-Sound:", e)
+        );
     }
   }
 }
@@ -464,19 +466,7 @@ function gameLoop(timestamp) {
     playWingFlapSound(1.0);
 
     if (showPoints) {
-      createLabel(
-        canvas.width / 2,
-        canvas.height * 0.25,
-        pointsCollected,
-        "200px Arial Black",
-        "darkgoldenrod",
-        "black",
-        5,
-        8,
-        8,
-        "fillText"
-      );
-      showPointsCounter--;
+      drawPoints();
     }
     if (showPointsCounter == 0) {
       showPointsCounter = 50;
@@ -484,18 +474,7 @@ function gameLoop(timestamp) {
     }
     requestAnimationFrame(gameLoop);
   }
-  createLabel(
-    200,
-    canvas.height * 0.05,
-    "Your Points: " + pointsCollected,
-    "50px Arial",
-    "yellow",
-    "black",
-    5,
-    5,
-    5,
-    "strokeText"
-  );
+  drawPointsInfo();
 }
 
 /*
@@ -538,7 +517,7 @@ function drawOnCanvasOps(timestamp) {
   if (!lastTime) lastTime = timestamp;
   const elapsed = timestamp - lastTime;
 
-  if (gameOver) {
+  if (gameOver && elapsed > FRAME_INTERVAL) {
     console.log("Game Over Image procedure started !");
 
     const bird =
@@ -639,6 +618,38 @@ function drawPipes() {
 CREATE LABEL FUNCTION !
 **************************************************************************************
 */
+
+function drawPointsInfo() {
+  createLabel(
+    200,
+    canvas.height * 0.05,
+    "Your Points: " + pointsCollected,
+    "50px Arial",
+    "yellow",
+    "black",
+    5,
+    5,
+    5,
+    "strokeText"
+  );
+}
+
+function drawPoints() {
+  createLabel(
+    canvas.width / 2,
+    canvas.height * 0.25,
+    pointsCollected,
+    "200px Arial Black",
+    "darkgoldenrod",
+    "black",
+    5,
+    8,
+    8,
+    "fillText"
+  );
+  showPointsCounter--;
+}
+
 function createLabel(
   xPos,
   yPos,
