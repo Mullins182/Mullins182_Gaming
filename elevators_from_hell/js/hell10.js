@@ -1,13 +1,19 @@
-console.log("Script Started !");
+console.log("Hell10 has Started !");
 
 let doc;
 let gameCanvas = document.getElementById("mainCanvas");
 
-doc = gameCanvas.getContext("2d");
-
 gameCanvas.width = window.innerWidth;
 gameCanvas.height = window.innerHeight;
 
+let gameElements = {
+  groundHeight: "25",
+  groundWidth: gameCanvas.width,
+};
+
+doc = gameCanvas.getContext("2d");
+
+// ________ GAME-LABEL _______
 createLabel(
   gameCanvas.width / 2,
   gameCanvas.height * 0.08,
@@ -22,6 +28,19 @@ createLabel(
   "gold",
   3
 );
+
+initGame();
+
+// ________ GAME INI _______
+function initGame() {
+  doc.fillStyle = "darkred";
+  doc.fillRect(
+    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
+    gameCanvas.height * 1.0 - gameElements.groundHeight,
+    gameElements.groundWidth,
+    gameElements.groundHeight
+  );
+}
 
 function createLabel(
   xPos,
