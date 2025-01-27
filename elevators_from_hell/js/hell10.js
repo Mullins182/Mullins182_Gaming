@@ -35,9 +35,22 @@ let gameElements = {
 let gameElementsPos = {
 
   liftRightPos: gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight,
-  liftDoorFloor0Right_isOpen: true,
-  liftDoorFloor1Right_isOpen: false,
-  liftRightIsOnFloor1: false
+  liftRightIsOnFloor0: true,
+  liftRightIsOnFloor1: false,
+  liftRightIsOnFloor2: false,
+  liftRightIsOnFloor3: false,
+  liftRightIsOnFloor4: false,
+  liftRightIsOnFloor5: false,
+  liftRightIsOnFloor6: false
+}
+
+let shaftDoorsStatus = {
+
+  floor0RightDoorClosing: false,
+  floor0RightDoorIsClosed: false,
+  floor1RightDoorClosing: false,
+  floor1RightDoorIsClosed: true,
+  floor2RightDoorIsClosed: true
 }
 
 let liftRightMoveUp = false;
@@ -65,7 +78,7 @@ document.addEventListener("keydown", function (event) {
 
   if (
     event.key === "0") {
-    liftRightMoveDown = true;
+    liftRightMoveDown =  true;
   }
   if (
     event.key === "1") {
@@ -89,6 +102,7 @@ async function gameRoutine() {
   console.log('Drawing Elements !');
 
   liftsPosUpdate();
+  shaftDoorsStatusCheck();
 
   drawFloors();
   drawWalls();
@@ -101,32 +115,48 @@ async function gameRoutine() {
   requestAnimationFrame(gameRoutine);
 }
 
+function shaftDoorsStatusCheck() {
+
+
+  if (liftRightMoveUp && gameElementsPos.liftRightIsOnFloor0) {
+    shaftDoorsStatus.floor0RightDoorIsClosed = gameElements.liftDoorFloor0Right_Width > 36 ? true : false;
+    shaftDoorsStatus.floor0RightDoorClosing = shaftDoorsStatus.floor0RightDoorIsClosed ? false : true;
+    gameElements.liftDoorFloor0Right_Width = shaftDoorsStatus.floor0RightDoorClosing ? gameElements.liftDoorFloor0Right_Width += 0.5 : gameElements.liftDoorFloor0Right_Width;
+  }
+
+  if (gameElementsPos.liftRightIsOnFloor0 && !liftRightMoveUp) {
+
+    if (gameElements.liftDoorFloor0Right_Width > 10) {
+      gameElements.liftDoorFloor0Right_Width -= 0.5;
+    }
+    else {
+      shaftDoorsStatus.floor0RightDoorIsClosed = false;
+    }
+  }
+
+  if (gameElementsPos.liftRightIsOnFloor1) {
+
+    if (gameElements.liftDoorFloor1Right_Width > 10) {
+      gameElements.liftDoorFloor1Right_Width -= 0.5;
+    }
+    else {
+      shaftDoorsStatus.floor1RightDoorIsClosed = false;
+    }
+  }
+}
+
 function liftsPosUpdate() {
 
   if (gameElementsPos.liftRightPos <= gameCanvas.height * 1.0 - (gameElements.liftHeight * 2 + 37) - gameElements.floorHeight) {
     gameElementsPos.liftRightIsOnFloor1 = true;
   }
 
-  if (gameElementsPos.liftRightIsOnFloor1 && !gameElementsPos.liftDoorFloor1Right_isOpen) {
-    liftDoorsOpening(gameElements.liftDoorFloor1Right_Width);
-  }
-
-  if (liftRightMoveUp) {
+  if (liftRightMoveUp && !shaftDoorsStatus.floor0RightDoorClosing) {
     
     liftRightMoveUp = 
     gameElementsPos.liftRightPos <= gameCanvas.height * 1.0 - (gameElements.liftHeight * 2 + 37) - gameElements.floorHeight ? false : true;
 
-    if (liftRightMoveUp) {
-
-      if (gameElementsPos.liftDoorFloor0Right_isOpen) {
-
-        liftDoorsClosing(gameElements.liftDoorFloor0Right_Width);
-      }
-      else {
-
-        gameElementsPos.liftRightPos -= 1.3
-      }
-    }
+    gameElementsPos.liftRightPos = liftRightMoveUp && shaftDoorsStatus.floor0RightDoorIsClosed ? gameElementsPos.liftRightPos -= 1.3 : gameElementsPos.liftRightPos;
   }
 
   if (liftRightMoveDown) {
@@ -136,18 +166,6 @@ function liftsPosUpdate() {
 
     gameElementsPos.liftRightPos = liftRightMoveDown ? gameElementsPos.liftRightPos += 1.3 : gameElementsPos.liftRightPos;
   }
-}
-
-function liftDoorsClosing(doorsWidth) {
-
-  gameElementsPos.liftDoorFloor0Right_isOpen = doorsWidth < 37 ? true : false;
-  gameElements.liftDoorFloor0Right_Width += 0.5;
-}
-
-function liftDoorsOpening(doorsWidth) {
-
-  gameElementsPos.liftDoorFloor1Right_isOpen = doorsWidth < 11 ? true : false;
-  gameElements.liftDoorFloor1Right_Width -= 0.5;
 }
 
 function drawLifts() {
