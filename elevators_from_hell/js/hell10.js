@@ -8,29 +8,40 @@ gameCanvas.height = window.innerHeight;
 
 let gameElements = {
   floorWidth: gameCanvas.width * 0.9,
-  floorHeight: "6",
+  floorHeight: 6,
   WallsHeight: gameCanvas.height * 0.89,
-  wallsWidth: "15",
+  wallsWidth: 15,
   ceilingWidth: gameCanvas.width * 0.95,
-  ceilingHeight: "15",
-  liftDoorsHeight: "90",
-  liftDoorFloor0Left_Width: "30",
-  liftDoorFloor0Right_Width: "26",
-  liftDoorFloor1Left_Width: "37",
-  liftDoorFloor1Right_Width: "37",
-  liftDoorFloor2Left_Width: "37",
-  liftDoorFloor2Right_Width: "37",
-  liftDoorFloor3Left_Width: "37",
-  liftDoorFloor3Right_Width: "37",
-  liftDoorFloor4Left_Width: "37",
-  liftDoorFloor4Right_Width: "37",
-  liftDoorFloor5Left_Width: "37",
-  liftDoorFloor5Right_Width: "37",
-  liftDoorFloor6Left_Width: "37",
-  liftDoorFloor6Right_Width: "37",
-  liftWidth: "75",
-  liftHeight: "88"
+  ceilingHeight: 15,
+  liftDoorsHeight: 90,
+  liftDoorFloor0Left_Width: 30,
+  liftDoorFloor0Right_Width: 10,
+  liftDoorFloor1Left_Width: 37,
+  liftDoorFloor1Right_Width: 37,
+  liftDoorFloor2Left_Width: 37,
+  liftDoorFloor2Right_Width: 37,
+  liftDoorFloor3Left_Width: 37,
+  liftDoorFloor3Right_Width: 37,
+  liftDoorFloor4Left_Width: 37,
+  liftDoorFloor4Right_Width: 37,
+  liftDoorFloor5Left_Width: 37,
+  liftDoorFloor5Right_Width: 37,
+  liftDoorFloor6Left_Width: 37,
+  liftDoorFloor6Right_Width: 37,
+  liftWidth: 75,
+  liftHeight: 88,
 };
+
+let gameElementsPos = {
+
+  liftRightPos: gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight,
+  liftDoorFloor0Right_isOpen: true,
+  liftDoorFloor1Right_isOpen: false,
+  liftRightIsOnFloor1: false
+}
+
+let liftRightMoveUp = false;
+let liftRightMoveDown = false;
 
 // ________ GAME-LABEL _______
 createLabel(
@@ -48,15 +59,95 @@ createLabel(
   3
 );
 
+// Tastatur-Event-Listener
+document.addEventListener("keydown", function (event) {
+  console.log("Taste gedrückt: " + event.key);
+
+  if (
+    event.key === "0") {
+    liftRightMoveDown = true;
+  }
+  if (
+    event.key === "1") {
+    liftRightMoveUp = true;
+  }
+});
+
+
 initGame();
 
 // ________ GAME INI _______
 function initGame() {
+
+  gameRoutine();
+}
+
+async function gameRoutine() {
+
+  doc.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+  console.log('Drawing Elements !');
+
+  liftsPosUpdate();
+
   drawFloors();
   drawWalls();
   drawCeiling();
   drawLifts();
   drawLiftDoors();
+  
+  await new Promise(resolve => setTimeout(resolve, 30));
+
+  requestAnimationFrame(gameRoutine);
+}
+
+function liftsPosUpdate() {
+
+  if (gameElementsPos.liftRightPos <= gameCanvas.height * 1.0 - (gameElements.liftHeight * 2 + 37) - gameElements.floorHeight) {
+    gameElementsPos.liftRightIsOnFloor1 = true;
+  }
+
+  if (gameElementsPos.liftRightIsOnFloor1 && !gameElementsPos.liftDoorFloor1Right_isOpen) {
+    liftDoorsOpening(gameElements.liftDoorFloor1Right_Width);
+  }
+
+  if (liftRightMoveUp) {
+    
+    liftRightMoveUp = 
+    gameElementsPos.liftRightPos <= gameCanvas.height * 1.0 - (gameElements.liftHeight * 2 + 37) - gameElements.floorHeight ? false : true;
+
+    if (liftRightMoveUp) {
+
+      if (gameElementsPos.liftDoorFloor0Right_isOpen) {
+
+        liftDoorsClosing(gameElements.liftDoorFloor0Right_Width);
+      }
+      else {
+
+        gameElementsPos.liftRightPos -= 1.3
+      }
+    }
+  }
+
+  if (liftRightMoveDown) {
+    
+    liftRightMoveDown = 
+    gameElementsPos.liftRightPos >= gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight ? false : true;
+
+    gameElementsPos.liftRightPos = liftRightMoveDown ? gameElementsPos.liftRightPos += 1.3 : gameElementsPos.liftRightPos;
+  }
+}
+
+function liftDoorsClosing(doorsWidth) {
+
+  gameElementsPos.liftDoorFloor0Right_isOpen = doorsWidth < 37 ? true : false;
+  gameElements.liftDoorFloor0Right_Width += 0.5;
+}
+
+function liftDoorsOpening(doorsWidth) {
+
+  gameElementsPos.liftDoorFloor1Right_isOpen = doorsWidth < 11 ? true : false;
+  gameElements.liftDoorFloor1Right_Width -= 0.5;
 }
 
 function drawLifts() {
@@ -70,11 +161,10 @@ function drawLifts() {
 
   doc.fillRect(
     gameCanvas.width * 0.8 - gameElements.liftWidth / 2,
-    gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight,
+    gameElementsPos.liftRightPos,
     gameElements.liftWidth,
     gameElements.liftHeight
   );
-
 }
 
 function drawLiftDoors() {
