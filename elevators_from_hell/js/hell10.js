@@ -37,6 +37,7 @@ let gameElementsPos = {
     gameCanvas.height * 1.0 -
     gameElements.liftHeight -
     gameElements.floorHeight,
+  liftRightIsMoving: false,
   liftRightIsOnFloor0: true,
   liftRightSetFloor0: true,
   liftRightIsOnFloor1: false,
@@ -85,12 +86,20 @@ document.addEventListener("keydown", function (event) {
   console.log("Taste gedrückt: " + event.key);
 
   if (event.key === "0") {
-    gameElementsPos.liftRightSetFloor0 = true;
-    gameElementsPos.liftRightSetFloor1 = false;
+    gameElementsPos.liftRightSetFloor0 = !gameElementsPos.liftRightIsMoving
+      ? true
+      : gameElementsPos.liftRightSetFloor0;
+    gameElementsPos.liftRightSetFloor1 = !gameElementsPos.liftRightIsMoving
+      ? false
+      : gameElementsPos.liftRightSetFloor1;
   }
   if (event.key === "1") {
-    gameElementsPos.liftRightSetFloor0 = false;
-    gameElementsPos.liftRightSetFloor1 = true;
+    gameElementsPos.liftRightSetFloor0 = !gameElementsPos.liftRightIsMoving
+      ? false
+      : gameElementsPos.liftRightSetFloor0;
+    gameElementsPos.liftRightSetFloor1 = !gameElementsPos.liftRightIsMoving
+      ? true
+      : gameElementsPos.liftRightSetFloor1;
   }
 });
 
@@ -175,6 +184,14 @@ function shaftDoorsStatusCheck() {
   }
 
   if (
+    gameElementsPos.liftRightSetFloor0 &&
+    gameElementsPos.liftRightIsOnFloor0 &&
+    !shaftDoorsStatus.floor0_RdoorOpen
+  ) {
+    gameElements.liftDoorFloor0Right_Width -= 0.5;
+  }
+
+  if (
     gameElementsPos.liftRightSetFloor1 &&
     gameElementsPos.liftRightIsOnFloor1 &&
     !shaftDoorsStatus.floor1_RdoorOpen
@@ -195,21 +212,21 @@ function liftsPosUpdate() {
     gameElementsPos.liftRightIsOnFloor1 = true;
   }
 
+  gameElementsPos.liftRightIsMoving =
+    shaftDoorsStatus.floor0_RdoorClosed && shaftDoorsStatus.floor1_RdoorClosed
+      ? true
+      : false;
+
   gameElementsPos.liftR_YPos =
     gameElementsPos.liftRightSetFloor1 &&
     shaftDoorsStatus.floor0_RdoorClosed &&
     !gameElementsPos.liftRightIsOnFloor1
       ? (gameElementsPos.liftR_YPos -= 1.3)
-      : gameElementsPos.liftR_YPos;
-
-  if (gameElementsPos.liftRightSetFloor0) {
-    gameElementsPos.liftRightIsOnFloor0 =
-      gameElementsPos.liftR_YPos > floor0_YPos ? false : true;
-
-    gameElementsPos.liftR_YPos = !gameElementsPos.liftRightIsOnFloor0
+      : gameElementsPos.liftRightSetFloor0 &&
+        shaftDoorsStatus.floor1_RdoorClosed &&
+        !gameElementsPos.liftRightIsOnFloor0
       ? (gameElementsPos.liftR_YPos += 1.3)
       : gameElementsPos.liftR_YPos;
-  }
 }
 
 function drawLifts() {
