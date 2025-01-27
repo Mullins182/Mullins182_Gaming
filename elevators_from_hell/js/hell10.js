@@ -1,7 +1,7 @@
 console.log("Hell10 has Started !");
 
 const gameCanvas = document.getElementById("mainCanvas");
-const doc = gameCanvas.getContext("2d");
+const ctx = gameCanvas.getContext("2d");
 
 gameCanvas.width = window.innerWidth;
 gameCanvas.height = window.innerHeight;
@@ -53,13 +53,13 @@ let shaftDoorsStatus = {
   floor2RightDoorIsClosed: true
 }
 
-let liftRightMoveUp = false;
-let liftRightMoveDown = false;
+let liftRightSetFloor1 = false;
+let liftRightSetFloor0 = false;
 
-// ________ GAME-LABEL _______
+// ___________________________ GAME-LABEL ___________________________
 createLabel(
   gameCanvas.width / 2,
-  gameCanvas.height * 0.08,
+  gameCanvas.height * 0.07,
   "ELEVATORS FROM HELL",
   "63px Arial Black",
   "gold",
@@ -72,32 +72,49 @@ createLabel(
   3
 );
 
-// Tastatur-Event-Listener
+// ___________________________ Tastatur-Event-Listener ___________________________
 document.addEventListener("keydown", function (event) {
   console.log("Taste gedrückt: " + event.key);
 
   if (
     event.key === "0") {
-    liftRightMoveDown =  true;
+    liftRightSetFloor0 =  true;
   }
   if (
     event.key === "1") {
-    liftRightMoveUp = true;
+    liftRightSetFloor1 = true;
   }
 });
 
 
 initGame();
 
-// ________ GAME INI _______
+// ___________________________ GAME INI ___________________________
 function initGame() {
 
   gameRoutine();
 }
 
+// ___________________________ GAME-ROUTINE ___________________________
 async function gameRoutine() {
 
-  doc.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+  ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+  createLabel(
+  gameCanvas.width / 2,
+  gameCanvas.height * 0.07,
+  "ELEVATORS FROM HELL",
+  "63px Arial Black",
+  "gold",
+  "black",
+  3,
+  8,
+  17,
+  "strokeText",
+  "gold",
+  3
+  );
+
 
   console.log('Drawing Elements !');
 
@@ -118,13 +135,13 @@ async function gameRoutine() {
 function shaftDoorsStatusCheck() {
 
 
-  if (liftRightMoveUp && gameElementsPos.liftRightIsOnFloor0) {
+  if (liftRightSetFloor1 && gameElementsPos.liftRightIsOnFloor0) {
     shaftDoorsStatus.floor0RightDoorIsClosed = gameElements.liftDoorFloor0Right_Width > 36 ? true : false;
     shaftDoorsStatus.floor0RightDoorClosing = shaftDoorsStatus.floor0RightDoorIsClosed ? false : true;
     gameElements.liftDoorFloor0Right_Width = shaftDoorsStatus.floor0RightDoorClosing ? gameElements.liftDoorFloor0Right_Width += 0.5 : gameElements.liftDoorFloor0Right_Width;
   }
 
-  if (gameElementsPos.liftRightIsOnFloor0 && !liftRightMoveUp) {
+  if (gameElementsPos.liftRightIsOnFloor0 && !liftRightSetFloor1) {
 
     if (gameElements.liftDoorFloor0Right_Width > 10) {
       gameElements.liftDoorFloor0Right_Width -= 0.5;
@@ -151,33 +168,33 @@ function liftsPosUpdate() {
     gameElementsPos.liftRightIsOnFloor1 = true;
   }
 
-  if (liftRightMoveUp && !shaftDoorsStatus.floor0RightDoorClosing) {
+  if (liftRightSetFloor1 && !shaftDoorsStatus.floor0RightDoorClosing) {
     
-    liftRightMoveUp = 
+    liftRightSetFloor1 = 
     gameElementsPos.liftRightPos <= gameCanvas.height * 1.0 - (gameElements.liftHeight * 2 + 37) - gameElements.floorHeight ? false : true;
 
-    gameElementsPos.liftRightPos = liftRightMoveUp && shaftDoorsStatus.floor0RightDoorIsClosed ? gameElementsPos.liftRightPos -= 1.3 : gameElementsPos.liftRightPos;
+    gameElementsPos.liftRightPos = liftRightSetFloor1 && shaftDoorsStatus.floor0RightDoorIsClosed ? gameElementsPos.liftRightPos -= 1.3 : gameElementsPos.liftRightPos;
   }
 
-  if (liftRightMoveDown) {
+  if (liftRightSetFloor0) {
     
-    liftRightMoveDown = 
+    liftRightSetFloor0 = 
     gameElementsPos.liftRightPos >= gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight ? false : true;
 
-    gameElementsPos.liftRightPos = liftRightMoveDown ? gameElementsPos.liftRightPos += 1.3 : gameElementsPos.liftRightPos;
+    gameElementsPos.liftRightPos = liftRightSetFloor0 ? gameElementsPos.liftRightPos += 1.3 : gameElementsPos.liftRightPos;
   }
 }
 
 function drawLifts() {
-  doc.fillStyle = "#BFBF00";
-  doc.fillRect(
+  ctx.fillStyle = "#BFBF00";
+  ctx.fillRect(
     gameCanvas.width * 0.2 - gameElements.liftWidth / 2,
     gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight,
     gameElements.liftWidth,
     gameElements.liftHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - gameElements.liftWidth / 2,
     gameElementsPos.liftRightPos,
     gameElements.liftWidth,
@@ -186,17 +203,17 @@ function drawLifts() {
 }
 
 function drawLiftDoors() {
-  doc.fillStyle = "#3F0000";
+  ctx.fillStyle = "#3F0000";
 
   // Floor 0 | left
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
     gameCanvas.height * 1.0 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor0Left_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor0Left_Width,
     gameCanvas.height * 1.0 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor0Left_Width,
@@ -204,14 +221,14 @@ function drawLiftDoors() {
   );
 
   // Floor 0 | right
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - (gameElements.liftWidth / 2),
     gameCanvas.height * 1.0 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor0Right_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor0Right_Width,
     gameCanvas.height * 1.0 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor0Right_Width,
@@ -220,14 +237,14 @@ function drawLiftDoors() {
 
 
   // Floor 1 | left
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.875 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor1Left_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor1Left_Width,
     gameCanvas.height * 0.875 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor1Left_Width,
@@ -235,14 +252,14 @@ function drawLiftDoors() {
   );
 
   // Floor 1 | right
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.875 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor1Right_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor1Right_Width,
     gameCanvas.height * 0.875 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor1Right_Width,
@@ -250,14 +267,14 @@ function drawLiftDoors() {
   );
   
   // Floor 2 | left
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.75 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor2Left_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor2Left_Width,
     gameCanvas.height * 0.75 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor2Left_Width,
@@ -265,14 +282,14 @@ function drawLiftDoors() {
   );
 
   // Floor 2 | right
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.75 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor2Right_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor2Right_Width,
     gameCanvas.height * 0.75 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor2Right_Width,
@@ -280,14 +297,14 @@ function drawLiftDoors() {
   );
 
   // Floor 3 | left
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.625 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor3Left_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor3Left_Width,
     gameCanvas.height * 0.625 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor3Left_Width,
@@ -295,14 +312,14 @@ function drawLiftDoors() {
   );
 
   // Floor 3 | right
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.625 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor3Right_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor3Right_Width,
     gameCanvas.height * 0.625 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor3Right_Width,
@@ -310,14 +327,14 @@ function drawLiftDoors() {
   );
   
   // Floor 4 | left
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.5 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor4Left_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor4Left_Width,
     gameCanvas.height * 0.5 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor4Left_Width,
@@ -325,14 +342,14 @@ function drawLiftDoors() {
   );
 
   // Floor 4 | right
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.5 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor4Right_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor4Right_Width,
     gameCanvas.height * 0.5 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor4Right_Width,
@@ -340,14 +357,14 @@ function drawLiftDoors() {
   );
 
   // Floor 5 | left
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.375 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor5Left_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor5Left_Width,
     gameCanvas.height * 0.375 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor5Left_Width,
@@ -355,14 +372,14 @@ function drawLiftDoors() {
   );
 
   // Floor 5 | right
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.375 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor5Right_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor5Right_Width,
     gameCanvas.height * 0.375 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor5Right_Width,
@@ -370,14 +387,14 @@ function drawLiftDoors() {
   );
 
   // Floor 6 | left
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.25 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor6Left_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor6Left_Width,
     gameCanvas.height * 0.25 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor6Left_Width,
@@ -385,14 +402,14 @@ function drawLiftDoors() {
   );
 
   // Floor 6 | right
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 - (gameElements.liftWidth / 2),
     gameCanvas.height * 0.25 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor6Right_Width,
     gameElements.liftDoorsHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.8 + (gameElements.liftWidth / 2) - gameElements.liftDoorFloor6Right_Width,
     gameCanvas.height * 0.25 - gameElements.liftDoorsHeight - gameElements.floorHeight,
     gameElements.liftDoorFloor6Right_Width,
@@ -401,8 +418,8 @@ function drawLiftDoors() {
 }
 
 function drawCeiling() {
-  doc.fillStyle = "#373737";
-  doc.fillRect(
+  ctx.fillStyle = "#373737";
+  ctx.fillRect(
     gameCanvas.width * 0.505 - gameElements.ceilingWidth / 2,
     gameCanvas.height * 0.105,
     gameElements.ceilingWidth,
@@ -411,15 +428,15 @@ function drawCeiling() {
 }
 
 function drawWalls() {
-  doc.fillStyle = "#373737";
-  doc.fillRect(
+  ctx.fillStyle = "#373737";
+  ctx.fillRect(
     gameCanvas.width * 0.05,
     gameCanvas.height * 0.12,
     gameElements.wallsWidth,
     gameElements.WallsHeight - 130
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.95,
     gameCanvas.height * 0.12,
     gameElements.wallsWidth,
@@ -430,54 +447,54 @@ function drawWalls() {
 function drawFloors() {
 
   // Starting with floor 0 =>
-  doc.fillStyle = "#373737";
+  ctx.fillStyle = "#373737";
   gameElements.floorWidth += 500;
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 1.0 - gameElements.floorHeight,
     gameElements.floorWidth,
     gameElements.floorHeight
   );
 
-  doc.fillStyle = "#171717";
+  ctx.fillStyle = "#171717";
   gameElements.floorWidth -= 500;
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 0.875 - gameElements.floorHeight,
     gameElements.floorWidth,
     gameElements.floorHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 0.75 - gameElements.floorHeight,
     gameElements.floorWidth,
     gameElements.floorHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 0.625 - gameElements.floorHeight,
     gameElements.floorWidth,
     gameElements.floorHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 0.5 - gameElements.floorHeight,
     gameElements.floorWidth,
     gameElements.floorHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 0.375 - gameElements.floorHeight,
     gameElements.floorWidth,
     gameElements.floorHeight
   );
 
-  doc.fillRect(
+  ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 0.25 - gameElements.floorHeight,
     gameElements.floorWidth,
@@ -500,37 +517,37 @@ function createLabel(
   strokeLineWidth = 2
 ) {
   // Schriftart und -größe festlegen
-  doc.font = font;
+  ctx.font = font;
 
   // Textausrichtung festlegen
-  doc.textAlign = "center";
-  doc.textBaseline = "middle";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
 
   // Textschatten konfigurieren
-  doc.shadowColor = shadowColor;
-  doc.shadowBlur = shadowBlur;
-  doc.shadowOffsetX = shadowOffsetX;
-  doc.shadowOffsetY = shadowOffsetY;
+  ctx.shadowColor = shadowColor;
+  ctx.shadowBlur = shadowBlur;
+  ctx.shadowOffsetX = shadowOffsetX;
+  ctx.shadowOffsetY = shadowOffsetY;
 
   // Textfarbe festlegen
-  doc.fillStyle = color;
+  ctx.fillStyle = color;
 
   // Text Style
-  doc.strokeStyle = strokeColor; // Randfarbe
-  doc.lineWidth = strokeLineWidth; // Linienbreite
+  ctx.strokeStyle = strokeColor; // Randfarbe
+  ctx.lineWidth = strokeLineWidth; // Linienbreite
 
   // Text zeichnen
   if (textStyle == "fillText") {
-    doc.fillText(text, xPos, yPos);
+    ctx.fillText(text, xPos, yPos);
   } else if (textStyle == "strokeText") {
-    doc.strokeText(text, xPos, yPos);
+    ctx.strokeText(text, xPos, yPos);
   }
 
   // Schatten zurücksetzen (optional, aber empfohlen)
-  doc.shadowColor = "rgba(0,0,0,0)";
-  doc.shadowBlur = 0;
-  doc.shadowOffsetX = 0;
-  doc.shadowOffsetY = 0;
+  ctx.shadowColor = "rgba(0,0,0,0)";
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
 }
 
 function createHomeButton(posX, posY) {
