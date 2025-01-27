@@ -1,7 +1,7 @@
 console.log("Hell10 has Started !");
 
-let doc;
-let gameCanvas = document.getElementById("mainCanvas");
+const gameCanvas = document.getElementById("mainCanvas");
+const doc = gameCanvas.getContext("2d");
 
 gameCanvas.width = window.innerWidth;
 gameCanvas.height = window.innerHeight;
@@ -13,9 +13,11 @@ let gameElements = {
   wallsWidth: "15",
   ceilingWidth: gameCanvas.width * 0.95,
   ceilingHeight: "15",
+  liftDoorWidth: "37",
+  liftDoorHeight: "90",
+  liftWidth: "75",
+  liftHeight: "88"
 };
-
-doc = gameCanvas.getContext("2d");
 
 // ________ GAME-LABEL _______
 createLabel(
@@ -40,6 +42,87 @@ function initGame() {
   drawFloors();
   drawWalls();
   drawCeiling();
+  drawLifts();
+  drawLiftDoors();
+}
+
+function drawLifts() {
+  doc.fillStyle = "#BFBF00";
+  doc.fillRect(
+    gameCanvas.width * 0.2 - gameElements.liftWidth / 2,
+    gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight,
+    gameElements.liftWidth,
+    gameElements.liftHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.8 - gameElements.liftWidth / 2,
+    gameCanvas.height * 1.0 - gameElements.liftHeight - gameElements.floorHeight,
+    gameElements.liftWidth,
+    gameElements.liftHeight
+  );
+
+}
+
+function drawLiftDoors() {
+  doc.fillStyle = "#3F0000";
+  doc.fillRect(
+    gameCanvas.width * 0.2 - (gameElements.liftWidth / 2),
+    gameCanvas.height * 1.0 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.2 + (gameElements.liftWidth / 2) - gameElements.liftDoorWidth,
+    gameCanvas.height * 1.0 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
+
+  doc.fillRect(
+    gameCanvas.width * 0.2 - gameElements.liftDoorWidth / 2,
+    gameCanvas.height * 0.875 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.2 - gameElements.liftDoorWidth / 2,
+    gameCanvas.height * 0.75 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.2 - gameElements.liftDoorWidth / 2,
+    gameCanvas.height * 0.625 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.2 - gameElements.liftDoorWidth / 2,
+    gameCanvas.height * 0.5 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.2 - gameElements.liftDoorWidth / 2,
+    gameCanvas.height * 0.375 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.2 - gameElements.liftDoorWidth / 2,
+    gameCanvas.height * 0.25 - gameElements.liftDoorHeight - gameElements.floorHeight,
+    gameElements.liftDoorWidth,
+    gameElements.liftDoorHeight
+  );
+
 }
 
 function drawCeiling() {
@@ -70,7 +153,10 @@ function drawWalls() {
 }
 
 function drawFloors() {
-  doc.fillStyle = "#575757";
+
+  // Starting with floor 0 =>
+  doc.fillStyle = "#373737";
+  gameElements.floorWidth += 500;
   doc.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
     gameCanvas.height * 1.0 - gameElements.floorHeight,
@@ -79,6 +165,7 @@ function drawFloors() {
   );
 
   doc.fillStyle = "#171717";
+  gameElements.floorWidth -= 500;
 
   doc.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
