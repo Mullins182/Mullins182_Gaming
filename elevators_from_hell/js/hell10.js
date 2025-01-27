@@ -7,8 +7,12 @@ gameCanvas.width = window.innerWidth;
 gameCanvas.height = window.innerHeight;
 
 let gameElements = {
-  groundHeight: "25",
-  groundWidth: gameCanvas.width,
+  groundWidth: gameCanvas.width * 0.9,
+  groundHeight: "15",
+  WallsHeight: gameCanvas.height * 0.85,
+  wallsWidth: "15",
+  ceilingWidth: gameCanvas.width * 0.95,
+  ceilingHeight: "15",
 };
 
 doc = gameCanvas.getContext("2d");
@@ -33,10 +37,78 @@ initGame();
 
 // ________ GAME INI _______
 function initGame() {
-  doc.fillStyle = "darkred";
+  drawFloors();
+  drawWalls();
+  drawCeiling();
+}
+
+function drawCeiling() {
+  doc.fillStyle = "#373737";
+  doc.fillRect(
+    gameCanvas.width * 0.505 - gameElements.ceilingWidth / 2,
+    gameCanvas.height * 0.15 - gameElements.ceilingHeight,
+    gameElements.ceilingWidth,
+    gameElements.ceilingHeight
+  );
+}
+
+function drawWalls() {
+  doc.fillStyle = "#373737";
+  doc.fillRect(
+    gameCanvas.width * 0.05,
+    gameCanvas.height * 0.15,
+    gameElements.wallsWidth,
+    gameElements.WallsHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.95,
+    gameCanvas.height * 0.15,
+    gameElements.wallsWidth,
+    gameElements.WallsHeight
+  );
+}
+
+function drawFloors() {
+  doc.fillStyle = "#171717";
   doc.fillRect(
     gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
     gameCanvas.height * 1.0 - gameElements.groundHeight,
+    gameElements.groundWidth,
+    gameElements.groundHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
+    gameCanvas.height * 0.88 - gameElements.groundHeight,
+    gameElements.groundWidth,
+    gameElements.groundHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
+    gameCanvas.height * 0.73 - gameElements.groundHeight,
+    gameElements.groundWidth,
+    gameElements.groundHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
+    gameCanvas.height * 0.58 - gameElements.groundHeight,
+    gameElements.groundWidth,
+    gameElements.groundHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
+    gameCanvas.height * 0.43 - gameElements.groundHeight,
+    gameElements.groundWidth,
+    gameElements.groundHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
+    gameCanvas.height * 0.28 - gameElements.groundHeight,
     gameElements.groundWidth,
     gameElements.groundHeight
   );
