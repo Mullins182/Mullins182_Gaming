@@ -7,8 +7,8 @@ gameCanvas.width = window.innerWidth;
 gameCanvas.height = window.innerHeight;
 
 let gameElements = {
-  groundWidth: gameCanvas.width * 0.9,
-  groundHeight: "15",
+  floorWidth: gameCanvas.width * 0.9,
+  floorHeight: "4",
   WallsHeight: gameCanvas.height * 0.85,
   wallsWidth: "15",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -72,45 +72,52 @@ function drawWalls() {
 function drawFloors() {
   doc.fillStyle = "#171717";
   doc.fillRect(
-    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
-    gameCanvas.height * 1.0 - gameElements.groundHeight,
-    gameElements.groundWidth,
-    gameElements.groundHeight
+    gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
+    gameCanvas.height * 1.0 - gameElements.floorHeight,
+    gameElements.floorWidth,
+    gameElements.floorHeight
   );
 
   doc.fillRect(
-    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
-    gameCanvas.height * 0.88 - gameElements.groundHeight,
-    gameElements.groundWidth,
-    gameElements.groundHeight
+    gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
+    gameCanvas.height * 0.89 - gameElements.floorHeight,
+    gameElements.floorWidth,
+    gameElements.floorHeight
   );
 
   doc.fillRect(
-    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
-    gameCanvas.height * 0.73 - gameElements.groundHeight,
-    gameElements.groundWidth,
-    gameElements.groundHeight
+    gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
+    gameCanvas.height * 0.78 - gameElements.floorHeight,
+    gameElements.floorWidth,
+    gameElements.floorHeight
   );
 
   doc.fillRect(
-    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
-    gameCanvas.height * 0.58 - gameElements.groundHeight,
-    gameElements.groundWidth,
-    gameElements.groundHeight
+    gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
+    gameCanvas.height * 0.67 - gameElements.floorHeight,
+    gameElements.floorWidth,
+    gameElements.floorHeight
   );
 
   doc.fillRect(
-    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
-    gameCanvas.height * 0.43 - gameElements.groundHeight,
-    gameElements.groundWidth,
-    gameElements.groundHeight
+    gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
+    gameCanvas.height * 0.56 - gameElements.floorHeight,
+    gameElements.floorWidth,
+    gameElements.floorHeight
   );
 
   doc.fillRect(
-    gameCanvas.width * 0.5 - gameElements.groundWidth / 2,
-    gameCanvas.height * 0.28 - gameElements.groundHeight,
-    gameElements.groundWidth,
-    gameElements.groundHeight
+    gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
+    gameCanvas.height * 0.45 - gameElements.floorHeight,
+    gameElements.floorWidth,
+    gameElements.floorHeight
+  );
+
+  doc.fillRect(
+    gameCanvas.width * 0.5 - gameElements.floorWidth / 2,
+    gameCanvas.height * 0.34 - gameElements.floorHeight,
+    gameElements.floorWidth,
+    gameElements.floorHeight
   );
 }
 
