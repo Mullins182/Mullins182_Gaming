@@ -123,27 +123,27 @@ const floorLiftLevels = {
     gameElements.liftsHeight,
   floor2_YPos:
     gameCanvas.height -
-    234 -
+    232 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor3_YPos:
     gameCanvas.height -
-    350 -
+    346 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor4_YPos:
     gameCanvas.height -
-    466 -
+    462 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor5_YPos:
     gameCanvas.height -
-    580 -
+    578 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor6_YPos:
     gameCanvas.height -
-    696 -
+    692 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
 };
@@ -182,7 +182,6 @@ document.addEventListener("keydown", function (event) {
       }
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF1 = true;
-      console.log(movingElementsStatusAndPos.liftR_calledToF0);
       break;
     case "2":
       if (movingElementsStatusAndPos.liftR_isMoving) {
@@ -190,7 +189,34 @@ document.addEventListener("keydown", function (event) {
       }
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF2 = true;
-      console.log(movingElementsStatusAndPos.liftR_calledToF0);
+      break;
+    case "3":
+      if (movingElementsStatusAndPos.liftR_isMoving) {
+        break;
+      }
+      resetRliftFloorSelection();
+      movingElementsStatusAndPos.liftR_calledToF3 = true;
+      break;
+    case "4":
+      if (movingElementsStatusAndPos.liftR_isMoving) {
+        break;
+      }
+      resetRliftFloorSelection();
+      movingElementsStatusAndPos.liftR_calledToF4 = true;
+      break;
+    case "5":
+      if (movingElementsStatusAndPos.liftR_isMoving) {
+        break;
+      }
+      resetRliftFloorSelection();
+      movingElementsStatusAndPos.liftR_calledToF5 = true;
+      break;
+    case "6":
+      if (movingElementsStatusAndPos.liftR_isMoving) {
+        break;
+      }
+      resetRliftFloorSelection();
+      movingElementsStatusAndPos.liftR_calledToF6 = true;
       break;
     default:
       break;
@@ -413,7 +439,6 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_YPos += 2.0;
     }
   }
-
   if (movingElementsStatusAndPos.liftR_calledToF1) {
     if (
       !movingElementsStatusAndPos.liftR_isOnFloor1 &&
@@ -426,7 +451,6 @@ function liftsPosUpdate() {
           : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
     }
   }
-
   if (movingElementsStatusAndPos.liftR_calledToF2) {
     if (
       !movingElementsStatusAndPos.liftR_isOnFloor2 &&
@@ -435,6 +459,54 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
         movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor2_YPos
+          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
+          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+    }
+  }
+  if (movingElementsStatusAndPos.liftR_calledToF3) {
+    if (
+      !movingElementsStatusAndPos.liftR_isOnFloor3 &&
+      shaftRdoorsClosedCheck()
+    ) {
+      movingElementsStatusAndPos.liftR_isMoving = true;
+      movingElementsStatusAndPos.liftR_YPos =
+        movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor3_YPos
+          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
+          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+    }
+  }
+  if (movingElementsStatusAndPos.liftR_calledToF4) {
+    if (
+      !movingElementsStatusAndPos.liftR_isOnFloor4 &&
+      shaftRdoorsClosedCheck()
+    ) {
+      movingElementsStatusAndPos.liftR_isMoving = true;
+      movingElementsStatusAndPos.liftR_YPos =
+        movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor4_YPos
+          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
+          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+    }
+  }
+  if (movingElementsStatusAndPos.liftR_calledToF5) {
+    if (
+      !movingElementsStatusAndPos.liftR_isOnFloor5 &&
+      shaftRdoorsClosedCheck()
+    ) {
+      movingElementsStatusAndPos.liftR_isMoving = true;
+      movingElementsStatusAndPos.liftR_YPos =
+        movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor5_YPos
+          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
+          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+    }
+  }
+  if (movingElementsStatusAndPos.liftR_calledToF6) {
+    if (
+      !movingElementsStatusAndPos.liftR_isOnFloor6 &&
+      shaftRdoorsClosedCheck()
+    ) {
+      movingElementsStatusAndPos.liftR_isMoving = true;
+      movingElementsStatusAndPos.liftR_YPos =
+        movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor6_YPos
           ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
           : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
     }
@@ -779,21 +851,22 @@ function drawLiftDoors() {
     gameElements.shaftDoorsHeight
   );
 
-  ctx.fillStyle = "#00FF00";
-  ctx.fillRect(
-    gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-    floorLiftLevels.floor6_YPos,
-    100,
-    3
-  );
+  // DEBUGGING-CODE
+  // ctx.fillStyle = "#00FF00";
+  // ctx.fillRect(
+  //   gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
+  //   floorLiftLevels.floor6_YPos,
+  //   100,
+  //   3
+  // );
 
-  ctx.fillStyle = "#0000AA";
-  ctx.fillRect(
-    gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-    movingElementsStatusAndPos.liftR_YPos,
-    100,
-    3
-  );
+  // ctx.fillStyle = "#0000AA";
+  // ctx.fillRect(
+  //   gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
+  //   movingElementsStatusAndPos.liftR_YPos,
+  //   100,
+  //   3
+  // );
 }
 
 function drawCeiling() {
