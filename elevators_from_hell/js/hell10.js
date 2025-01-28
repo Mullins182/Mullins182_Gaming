@@ -363,26 +363,47 @@ function shaftDoorsLogic() {
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
+
+// Lift Floor-Check logic
 function liftsPosUpdate() {
   if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor0_YPos) {
     resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor0 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
   }
-
   if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor1_YPos) {
     resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor1 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
     console.log(movingElementsStatusAndPos.liftR_isOnFloor1);
   }
-
   if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor2_YPos) {
     resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor2 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
   }
+  if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor3_YPos) {
+    resetRliftFloorStatus();
+    movingElementsStatusAndPos.liftR_isOnFloor3 = true;
+    movingElementsStatusAndPos.liftR_isMoving = false;
+  }
+  if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor4_YPos) {
+    resetRliftFloorStatus();
+    movingElementsStatusAndPos.liftR_isOnFloor4 = true;
+    movingElementsStatusAndPos.liftR_isMoving = false;
+  }
+  if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor5_YPos) {
+    resetRliftFloorStatus();
+    movingElementsStatusAndPos.liftR_isOnFloor5 = true;
+    movingElementsStatusAndPos.liftR_isMoving = false;
+  }
+  if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor6_YPos) {
+    resetRliftFloorStatus();
+    movingElementsStatusAndPos.liftR_isOnFloor6 = true;
+    movingElementsStatusAndPos.liftR_isMoving = false;
+  }
 
+  // LIFT MOVEMENT LOGIC
   if (movingElementsStatusAndPos.liftR_calledToF0) {
     if (
       !movingElementsStatusAndPos.liftR_isOnFloor0 &&
