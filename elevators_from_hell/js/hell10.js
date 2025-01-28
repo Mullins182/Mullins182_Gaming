@@ -37,18 +37,73 @@ let movingElementsStatusAndPos = {
     gameCanvas.height * 1.0 -
     gameElements.liftsHeight -
     gameElements.floorsHeight,
-  liftR_moving: false,
+  liftR_allDoorsClosed: false,
+  liftR_isMoving: false,
   liftR_isOnFloor0: true,
   liftR_calledToF0: true,
   liftR_isOnFloor1: false,
   liftR_calledToF1: false,
+  liftR_isOnFloor2: true,
+  liftR_calledToF2: true,
+  liftR_isOnFloor3: false,
+  liftR_calledToF3: false,
+  liftR_isOnFloor4: false,
+  liftR_calledToF4: false,
+  liftR_isOnFloor5: false,
+  liftR_calledToF5: false,
+  liftR_isOnFloor6: false,
+  liftR_calledToF6: false,
+  liftL_YPos:
+  gameCanvas.height * 1.0 -
+  gameElements.liftsHeight -
+  gameElements.floorsHeight,
+  liftL_allDoorsClosed: false,
+  liftL_isMoving: false,
+  liftL_isOnFloor0: true,
+  liftL_calledToF0: true,
+  liftL_isOnFloor1: false,
+  liftL_calledToF1: false,
+  liftL_isOnFloor2: true,
+  liftL_calledToF2: true,
+  liftL_isOnFloor3: false,
+  liftL_calledToF3: false,
+  liftL_isOnFloor4: false,
+  liftL_calledToF4: false,
+  liftL_isOnFloor5: false,
+  liftL_calledToF5: false,
+  liftL_isOnFloor6: false,
+  liftL_calledToF6: false,
 };
 
 let shaftDoorsStatus = {
   floor0_RdoorOpen: true,
   floor0_RdoorClosed: false,
   floor1_RdoorOpen: false,
-  floor1_RdoorClosed: false,
+  floor1_RdoorClosed: true,
+  floor2_RdoorOpen: false,
+  floor2_RdoorClosed: true,
+  floor3_RdoorOpen: false,
+  floor3_RdoorClosed: true,
+  floor4_RdoorOpen: false,
+  floor4_RdoorClosed: true,
+  floor5_RdoorOpen: false,
+  floor5_RdoorClosed: true,
+  floor6_RdoorOpen: false,
+  floor6_RdoorClosed: true,
+  floor0_LdoorOpen: true,
+  floor0_LdoorClosed: true,
+  floor1_LdoorOpen: false,
+  floor1_LdoorClosed: true,
+  floor2_LdoorOpen: false,
+  floor2_LdoorClosed: true,
+  floor3_LdoorOpen: false,
+  floor3_LdoorClosed: true,
+  floor4_LdoorOpen: false,
+  floor4_LdoorClosed: true,
+  floor5_LdoorOpen: false,
+  floor5_LdoorClosed: true,
+  floor6_LdoorOpen: false,
+  floor6_LdoorClosed: true,
 };
 
 const floor0_YPos =
@@ -82,20 +137,15 @@ document.addEventListener("keydown", function (event) {
 
   switch (event.key) {
     case "0":
-      movingElementsStatusAndPos.liftR_calledToF0 = !movingElementsStatusAndPos.liftR_moving
-      ? true
-      : movingElementsStatusAndPos.liftR_calledToF0;
-      movingElementsStatusAndPos.liftR_calledToF1 = !movingElementsStatusAndPos.liftR_moving
-      ? false
-      : movingElementsStatusAndPos.liftR_calledToF1;
+      if (movingElementsStatusAndPos.liftR_isMoving) {break;}
+      resetRliftFloorSelection();
+      movingElementsStatusAndPos.liftR_calledToF0 = true;
       break;
     case "1":
-      movingElementsStatusAndPos.liftR_calledToF0 = !movingElementsStatusAndPos.liftR_moving
-      ? false
-      : movingElementsStatusAndPos.liftR_calledToF0;
-      movingElementsStatusAndPos.liftR_calledToF1 = !movingElementsStatusAndPos.liftR_moving
-      ? true
-      : movingElementsStatusAndPos.liftR_calledToF1;
+      if (movingElementsStatusAndPos.liftR_isMoving) {break;}
+      resetRliftFloorSelection();
+      movingElementsStatusAndPos.liftR_calledToF1 = true;
+      console.log(movingElementsStatusAndPos.liftR_calledToF0);
       break;  
     default:
       break;
@@ -170,40 +220,87 @@ function shaftDoorsStatusCheck() {
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
 function liftsPosUpdate() {
+
+
   if (movingElementsStatusAndPos.liftR_YPos >= floor0_YPos) {
     movingElementsStatusAndPos.liftR_isOnFloor0 = true;
     movingElementsStatusAndPos.liftR_isOnFloor1 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor2 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor3 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor4 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor5 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor6 = false;
+    movingElementsStatusAndPos.liftR_isMoving = false;
   }
 
   if (movingElementsStatusAndPos.liftR_YPos <= floor1_YPos) {
     movingElementsStatusAndPos.liftR_isOnFloor0 = false;
     movingElementsStatusAndPos.liftR_isOnFloor1 = true;
+    movingElementsStatusAndPos.liftR_isOnFloor2 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor3 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor4 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor5 = false;
+    movingElementsStatusAndPos.liftR_isOnFloor6 = false;
+    movingElementsStatusAndPos.liftR_isMoving = false;
   }
 
-  movingElementsStatusAndPos.liftR_moving =
-    shaftDoorsStatus.floor0_RdoorClosed && shaftDoorsStatus.floor1_RdoorClosed
+  movingElementsStatusAndPos.liftR_allDoorsClosed =
+    shaftDoorsStatus.floor0_RdoorClosed 
+    && shaftDoorsStatus.floor1_RdoorClosed
+    && shaftDoorsStatus.floor2_RdoorClosed
+    && shaftDoorsStatus.floor3_RdoorClosed
+    && shaftDoorsStatus.floor4_RdoorClosed
+    && shaftDoorsStatus.floor5_RdoorClosed
+    && shaftDoorsStatus.floor6_RdoorClosed
       ? true
       : false;
 
-  movingElementsStatusAndPos.liftR_YPos =
-    movingElementsStatusAndPos.liftR_calledToF1 &&
-    shaftDoorsStatus.floor0_RdoorClosed &&
-    !movingElementsStatusAndPos.liftR_isOnFloor1
-      ? (movingElementsStatusAndPos.liftR_YPos -= 1.3)
-      : movingElementsStatusAndPos.liftR_calledToF0 &&
-        shaftDoorsStatus.floor1_RdoorClosed &&
-        !movingElementsStatusAndPos.liftR_isOnFloor0
-      ? (movingElementsStatusAndPos.liftR_YPos += 1.3)
-      : movingElementsStatusAndPos.liftR_YPos;
+
+if (movingElementsStatusAndPos.liftR_calledToF0) {
+  if (!movingElementsStatusAndPos.liftR_isOnFloor0 && movingElementsStatusAndPos.liftR_allDoorsClosed) {
+
+    movingElementsStatusAndPos.liftR_isMoving = true;
+    movingElementsStatusAndPos.liftR_YPos += 1.3
+  }
+}
+
+if (movingElementsStatusAndPos.liftR_calledToF1) {
+  if (!movingElementsStatusAndPos.liftR_isOnFloor1 && movingElementsStatusAndPos.liftR_allDoorsClosed) {
+
+    movingElementsStatusAndPos.liftR_isMoving = true;
+    movingElementsStatusAndPos.liftR_YPos -= 1.3
+  }
+}
+
+  
+
+  // movingElementsStatusAndPos.liftR_YPos =
+  //   movingElementsStatusAndPos.liftR_calledToF1 &&
+  //   shaftDoorsStatus.floor0_RdoorClosed &&
+  //   !movingElementsStatusAndPos.liftR_isOnFloor1
+  //     ? (movingElementsStatusAndPos.liftR_YPos -= 1.3)
+  //     : movingElementsStatusAndPos.liftR_calledToF0 &&
+  //       shaftDoorsStatus.floor1_RdoorClosed &&
+  //       !movingElementsStatusAndPos.liftR_isOnFloor0
+  //     ? (movingElementsStatusAndPos.liftR_YPos += 1.3)
+  //     : movingElementsStatusAndPos.liftR_YPos;
+}
+
+function resetRliftFloorSelection() {
+  movingElementsStatusAndPos.liftR_calledToF0 = false;
+  movingElementsStatusAndPos.liftR_calledToF1 = false;
+  movingElementsStatusAndPos.liftR_calledToF2 = false;
+  movingElementsStatusAndPos.liftR_calledToF3 = false;
+  movingElementsStatusAndPos.liftR_calledToF4 = false;
+  movingElementsStatusAndPos.liftR_calledToF5 = false;
+  movingElementsStatusAndPos.liftR_calledToF6 = false;
 }
 
 function drawLifts() {
   ctx.fillStyle = "#BFBF00";
   ctx.fillRect(
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
-    gameCanvas.height * 1.0 -
-      gameElements.liftsHeight -
-      gameElements.floorsHeight,
+    movingElementsStatusAndPos.liftL_YPos,
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
