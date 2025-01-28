@@ -118,7 +118,7 @@ const floor0_YPos =
 
 const floor1_YPos =
   gameCanvas.height -
-  120 -
+  116 -
   gameElements.floorsHeight -
   gameElements.liftsHeight;
 
