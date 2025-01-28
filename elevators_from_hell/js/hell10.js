@@ -80,21 +80,25 @@ createLabel(
 document.addEventListener("keydown", function (event) {
   console.log("Taste gedrückt: " + event.key);
 
-  if (event.key === "0") {
-    movingElementsStatusAndPos.liftR_calledToF0 = !movingElementsStatusAndPos.liftR_moving
+  switch (event.key) {
+    case "0":
+      movingElementsStatusAndPos.liftR_calledToF0 = !movingElementsStatusAndPos.liftR_moving
       ? true
       : movingElementsStatusAndPos.liftR_calledToF0;
-    movingElementsStatusAndPos.liftR_calledToF1 = !movingElementsStatusAndPos.liftR_moving
+      movingElementsStatusAndPos.liftR_calledToF1 = !movingElementsStatusAndPos.liftR_moving
       ? false
       : movingElementsStatusAndPos.liftR_calledToF1;
-  }
-  if (event.key === "1") {
-    movingElementsStatusAndPos.liftR_calledToF0 = !movingElementsStatusAndPos.liftR_moving
+      break;
+    case "1":
+      movingElementsStatusAndPos.liftR_calledToF0 = !movingElementsStatusAndPos.liftR_moving
       ? false
       : movingElementsStatusAndPos.liftR_calledToF0;
-    movingElementsStatusAndPos.liftR_calledToF1 = !movingElementsStatusAndPos.liftR_moving
+      movingElementsStatusAndPos.liftR_calledToF1 = !movingElementsStatusAndPos.liftR_moving
       ? true
       : movingElementsStatusAndPos.liftR_calledToF1;
+      break;  
+    default:
+      break;
   }
 });
 
@@ -140,59 +144,28 @@ async function gameRoutine() {
 
 // ___________________________ SHAFT-DOORS-LOGIC ___________________________
 function shaftDoorsStatusCheck() {
-  if (gameElements.shaftDoorsRW_f0 > 38.5) {
-    shaftDoorsStatus.floor0_RdoorClosed = true;
-  } else {
-    shaftDoorsStatus.floor0_RdoorClosed = false;
-  }
 
-  if (gameElements.shaftDoorsRW_f0 < 10.5) {
-    shaftDoorsStatus.floor0_RdoorOpen = true;
-  } else {
-    shaftDoorsStatus.floor0_RdoorOpen = false;
-  }
+  shaftDoorsStatus.floor0_RdoorClosed = (gameElements.shaftDoorsRW_f0 > 38.5) ? true : false;
+  shaftDoorsStatus.floor0_RdoorOpen = (gameElements.shaftDoorsRW_f0 < 10.5) ? true : false;
+  shaftDoorsStatus.floor1_RdoorClosed = (gameElements.shaftDoorsRW_f1 > 38.5) ? true : false;
+  shaftDoorsStatus.floor1_RdoorOpen = (gameElements.shaftDoorsRW_f1 < 10.5) ? true : false;
 
-  if (gameElements.shaftDoorsRW_f1 > 38.5) {
-    shaftDoorsStatus.floor1_RdoorClosed = true;
-  } else {
-    shaftDoorsStatus.floor1_RdoorClosed = false;
-  }
 
-  if (gameElements.shaftDoorsRW_f1 < 10.5) {
-    shaftDoorsStatus.floor1_RdoorOpen = true;
-  } else {
-    shaftDoorsStatus.floor1_RdoorOpen = false;
-  }
+  gameElements.shaftDoorsRW_f0 = (!movingElementsStatusAndPos.liftR_calledToF0 && !shaftDoorsStatus.floor0_RdoorClosed) 
+  ? gameElements.shaftDoorsRW_f0 += 0.5
+  : gameElements.shaftDoorsRW_f0;
 
-  if (
-    !movingElementsStatusAndPos.liftR_calledToF0 &&
-    !shaftDoorsStatus.floor0_RdoorClosed
-  ) {
-    gameElements.shaftDoorsRW_f0 += 0.5;
-  }
+  gameElements.shaftDoorsRW_f1 = (!movingElementsStatusAndPos.liftR_calledToF1 && !shaftDoorsStatus.floor1_RdoorClosed) 
+  ? gameElements.shaftDoorsRW_f1 += 0.5
+  : gameElements.shaftDoorsRW_f1;
 
-  if (
-    !movingElementsStatusAndPos.liftR_calledToF1 &&
-    !shaftDoorsStatus.floor1_RdoorClosed
-  ) {
-    gameElements.shaftDoorsRW_f1 += 0.5;
-  }
+  gameElements.shaftDoorsRW_f0 = (movingElementsStatusAndPos.liftR_calledToF0 && movingElementsStatusAndPos.liftR_isOnFloor0 && !shaftDoorsStatus.floor0_RdoorOpen)
+  ? gameElements.shaftDoorsRW_f0 -= 0.5
+  : gameElements.shaftDoorsRW_f0;
 
-  if (
-    movingElementsStatusAndPos.liftR_calledToF0 &&
-    movingElementsStatusAndPos.liftR_isOnFloor0 &&
-    !shaftDoorsStatus.floor0_RdoorOpen
-  ) {
-    gameElements.shaftDoorsRW_f0 -= 0.5;
-  }
-
-  if (
-    movingElementsStatusAndPos.liftR_calledToF1 &&
-    movingElementsStatusAndPos.liftR_isOnFloor1 &&
-    !shaftDoorsStatus.floor1_RdoorOpen
-  ) {
-    gameElements.shaftDoorsRW_f1 -= 0.5;
-  }
+  gameElements.shaftDoorsRW_f1 = (movingElementsStatusAndPos.liftR_calledToF1 && movingElementsStatusAndPos.liftR_isOnFloor1 && !shaftDoorsStatus.floor1_RdoorOpen)
+  ? gameElements.shaftDoorsRW_f1 -= 0.5
+  : gameElements.shaftDoorsRW_f1;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
