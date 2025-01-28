@@ -421,7 +421,7 @@ function liftsPosUpdate() {
     ) {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
-        movingElementsStatusAndPos.liftR_isOnFloor2
+        movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor1_YPos
           ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
           : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
     }
@@ -433,7 +433,10 @@ function liftsPosUpdate() {
       shaftRdoorsClosedCheck()
     ) {
       movingElementsStatusAndPos.liftR_isMoving = true;
-      movingElementsStatusAndPos.liftR_YPos -= 2.0;
+      movingElementsStatusAndPos.liftR_YPos =
+        movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor2_YPos
+          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
+          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
     }
   }
 }
