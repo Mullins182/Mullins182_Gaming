@@ -115,6 +115,11 @@ const floor1_YPos =
   gameElements.floorsHeight -
   gameElements.liftsHeight;
 
+const floor2_YPos =
+  gameCanvas.height * 0.750 -
+  gameElements.floorsHeight -
+  gameElements.liftsHeight;
+
 // ___________________________ GAME-LABEL ___________________________
 createLabel(
   gameCanvas.width / 2,
@@ -145,6 +150,12 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {break;}
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF1 = true;
+      console.log(movingElementsStatusAndPos.liftR_calledToF0);
+      break;  
+    case "2":
+      if (movingElementsStatusAndPos.liftR_isMoving) {break;}
+      resetRliftFloorSelection();
+      movingElementsStatusAndPos.liftR_calledToF2 = true;
       console.log(movingElementsStatusAndPos.liftR_calledToF0);
       break;  
     default:
@@ -199,8 +210,10 @@ function shaftDoorsStatusCheck() {
   shaftDoorsStatus.floor0_RdoorOpen = (gameElements.shaftDoorsRW_f0 < 10.5) ? true : false;
   shaftDoorsStatus.floor1_RdoorClosed = (gameElements.shaftDoorsRW_f1 > 38.5) ? true : false;
   shaftDoorsStatus.floor1_RdoorOpen = (gameElements.shaftDoorsRW_f1 < 10.5) ? true : false;
+  shaftDoorsStatus.floor2_RdoorClosed = (gameElements.shaftDoorsRW_f2 > 38.5) ? true : false;
+  shaftDoorsStatus.floor2_RdoorOpen = (gameElements.shaftDoorsRW_f2 < 10.5) ? true : false;
 
-
+  // CLOSE-DOORS
   gameElements.shaftDoorsRW_f0 = (!movingElementsStatusAndPos.liftR_calledToF0 && !shaftDoorsStatus.floor0_RdoorClosed) 
   ? gameElements.shaftDoorsRW_f0 += 0.5
   : gameElements.shaftDoorsRW_f0;
@@ -209,6 +222,11 @@ function shaftDoorsStatusCheck() {
   ? gameElements.shaftDoorsRW_f1 += 0.5
   : gameElements.shaftDoorsRW_f1;
 
+  gameElements.shaftDoorsRW_f2 = (!movingElementsStatusAndPos.liftR_calledToF2 && !shaftDoorsStatus.floor2_RdoorClosed) 
+  ? gameElements.shaftDoorsRW_f2 += 0.5
+  : gameElements.shaftDoorsRW_f2;
+
+  // OPEN-DOORS
   gameElements.shaftDoorsRW_f0 = (movingElementsStatusAndPos.liftR_calledToF0 && movingElementsStatusAndPos.liftR_isOnFloor0 && !shaftDoorsStatus.floor0_RdoorOpen)
   ? gameElements.shaftDoorsRW_f0 -= 0.5
   : gameElements.shaftDoorsRW_f0;
@@ -216,6 +234,10 @@ function shaftDoorsStatusCheck() {
   gameElements.shaftDoorsRW_f1 = (movingElementsStatusAndPos.liftR_calledToF1 && movingElementsStatusAndPos.liftR_isOnFloor1 && !shaftDoorsStatus.floor1_RdoorOpen)
   ? gameElements.shaftDoorsRW_f1 -= 0.5
   : gameElements.shaftDoorsRW_f1;
+
+  gameElements.shaftDoorsRW_f2 = (movingElementsStatusAndPos.liftR_calledToF2 && movingElementsStatusAndPos.liftR_isOnFloor2 && !shaftDoorsStatus.floor2_RdoorOpen)
+  ? gameElements.shaftDoorsRW_f2 -= 0.5
+  : gameElements.shaftDoorsRW_f2;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
@@ -223,24 +245,20 @@ function liftsPosUpdate() {
 
 
   if (movingElementsStatusAndPos.liftR_YPos >= floor0_YPos) {
+    resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor0 = true;
-    movingElementsStatusAndPos.liftR_isOnFloor1 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor2 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor3 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor4 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor5 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor6 = false;
     movingElementsStatusAndPos.liftR_isMoving = false;
   }
 
-  if (movingElementsStatusAndPos.liftR_YPos <= floor1_YPos) {
-    movingElementsStatusAndPos.liftR_isOnFloor0 = false;
+  if (movingElementsStatusAndPos.liftR_YPos <= floor1_YPos && movingElementsStatusAndPos.liftR_YPos > floor1_YPos + 35) {
+    resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor1 = true;
-    movingElementsStatusAndPos.liftR_isOnFloor2 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor3 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor4 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor5 = false;
-    movingElementsStatusAndPos.liftR_isOnFloor6 = false;
+    movingElementsStatusAndPos.liftR_isMoving = false;
+  }     // ERROR ERROR HIER IRGENDWO !
+
+  if (movingElementsStatusAndPos.liftR_YPos <= floor2_YPos) {
+    resetRliftFloorStatus();
+    movingElementsStatusAndPos.liftR_isOnFloor2 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
   }
 
@@ -256,34 +274,30 @@ function liftsPosUpdate() {
       : false;
 
 
-if (movingElementsStatusAndPos.liftR_calledToF0) {
-  if (!movingElementsStatusAndPos.liftR_isOnFloor0 && movingElementsStatusAndPos.liftR_allDoorsClosed) {
+  if (movingElementsStatusAndPos.liftR_calledToF0) {
+    if (!movingElementsStatusAndPos.liftR_isOnFloor0 && movingElementsStatusAndPos.liftR_allDoorsClosed) {
 
-    movingElementsStatusAndPos.liftR_isMoving = true;
-    movingElementsStatusAndPos.liftR_YPos += 1.3
+        movingElementsStatusAndPos.liftR_isMoving = true;
+        movingElementsStatusAndPos.liftR_YPos += 1.3;
+    }
   }
-}
 
-if (movingElementsStatusAndPos.liftR_calledToF1) {
-  if (!movingElementsStatusAndPos.liftR_isOnFloor1 && movingElementsStatusAndPos.liftR_allDoorsClosed) {
+  if (movingElementsStatusAndPos.liftR_calledToF1) {
+    if (!movingElementsStatusAndPos.liftR_isOnFloor1 && movingElementsStatusAndPos.liftR_allDoorsClosed) {
 
-    movingElementsStatusAndPos.liftR_isMoving = true;
-    movingElementsStatusAndPos.liftR_YPos -= 1.3
+        movingElementsStatusAndPos.liftR_isMoving = true;
+        movingElementsStatusAndPos.liftR_YPos = movingElementsStatusAndPos.liftR_isOnFloor2 
+        ? movingElementsStatusAndPos.liftR_YPos += 1.3 : movingElementsStatusAndPos.liftR_YPos -= 1.3;
+    }
   }
-}
 
-  
+  if (movingElementsStatusAndPos.liftR_calledToF2) {
+    if (!movingElementsStatusAndPos.liftR_isOnFloor2 && movingElementsStatusAndPos.liftR_allDoorsClosed) {
 
-  // movingElementsStatusAndPos.liftR_YPos =
-  //   movingElementsStatusAndPos.liftR_calledToF1 &&
-  //   shaftDoorsStatus.floor0_RdoorClosed &&
-  //   !movingElementsStatusAndPos.liftR_isOnFloor1
-  //     ? (movingElementsStatusAndPos.liftR_YPos -= 1.3)
-  //     : movingElementsStatusAndPos.liftR_calledToF0 &&
-  //       shaftDoorsStatus.floor1_RdoorClosed &&
-  //       !movingElementsStatusAndPos.liftR_isOnFloor0
-  //     ? (movingElementsStatusAndPos.liftR_YPos += 1.3)
-  //     : movingElementsStatusAndPos.liftR_YPos;
+        movingElementsStatusAndPos.liftR_isMoving = true;
+        movingElementsStatusAndPos.liftR_YPos -= 1.3;
+    }
+  }
 }
 
 function resetRliftFloorSelection() {
@@ -294,6 +308,16 @@ function resetRliftFloorSelection() {
   movingElementsStatusAndPos.liftR_calledToF4 = false;
   movingElementsStatusAndPos.liftR_calledToF5 = false;
   movingElementsStatusAndPos.liftR_calledToF6 = false;
+}
+
+function resetRliftFloorStatus() {
+  movingElementsStatusAndPos.liftR_isOnFloor0 = false;
+  movingElementsStatusAndPos.liftR_isOnFloor1 = false;
+  movingElementsStatusAndPos.liftR_isOnFloor2 = false;
+  movingElementsStatusAndPos.liftR_isOnFloor3 = false;
+  movingElementsStatusAndPos.liftR_isOnFloor4 = false;
+  movingElementsStatusAndPos.liftR_isOnFloor5 = false;
+  movingElementsStatusAndPos.liftR_isOnFloor6 = false;
 }
 
 function drawLifts() {
