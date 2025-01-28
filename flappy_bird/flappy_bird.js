@@ -271,7 +271,9 @@ function playWingFlapSound(playbackRate) {
       snd_wingFlapNorm.volume = 1.0;
       snd_wingFlapNorm
         .play()
-        .catch((e) => console.error("Fehler beim Abspielen von wingFlap:", e));
+        .catch((e) =>
+          console.error("Fehler beim Abspielen von wingFlap-Sound:", e)
+        );
     }
   }
 }
@@ -464,19 +466,7 @@ function gameLoop(timestamp) {
     playWingFlapSound(1.0);
 
     if (showPoints) {
-      createLabel(
-        canvas.width / 2,
-        canvas.height * 0.25,
-        pointsCollected,
-        "200px Arial Black",
-        "darkgoldenrod",
-        "black",
-        5,
-        8,
-        8,
-        "fillText"
-      );
-      showPointsCounter--;
+      drawPoints();
     }
     if (showPointsCounter == 0) {
       showPointsCounter = 50;
@@ -484,18 +474,7 @@ function gameLoop(timestamp) {
     }
     requestAnimationFrame(gameLoop);
   }
-  createLabel(
-    200,
-    canvas.height * 0.05,
-    "Your Points: " + pointsCollected,
-    "50px Arial",
-    "yellow",
-    "black",
-    5,
-    5,
-    5,
-    "strokeText"
-  );
+  drawPointsInfo();
 }
 
 /*
@@ -538,83 +517,87 @@ function drawOnCanvasOps(timestamp) {
   if (!lastTime) lastTime = timestamp;
   const elapsed = timestamp - lastTime;
 
-  if (gameOver) {
-    console.log("Game Over Image procedure started !");
-
-    const bird =
-      useDeathAnim === 1
-        ? grilledChicken
-        : useDeathAnim === 2
-        ? gravestone
-        : birdFrame2;
-
-    game.clearRect(0, 0, canvas.width, canvas.height);
-
-    // DRAW PIPES
-    drawPipes();
-
-    // Speichern des aktuellen Kontexts
-    game.save();
-
-    // Verschieben des Koordinatensystems zum Mittelpunkt des Bildes
-    game.translate(
-      birdPosX + bird.width * 0.325,
-      birdPosY + bird.height * 0.325
-    );
-
-    // Rotieren des Kontexts
-    game.rotate(rotationAngle);
-
-    // Zeichnen des rotierten Bildes
-    game.drawImage(
-      bird,
-      -bird.width * 0.325,
-      -bird.height * 0.325,
-      bird.width * 0.65,
-      bird.height * 0.65
-    );
-
-    // Wiederherstellen des ursprünglichen Kontexts
-    game.restore();
-
-    // game.drawImage(bird, birdPosX, birdPosY, bird.width * 0.65, bird.height * 0.65);
-
-    updatePositions();
-
-    if (birdPosY > canvas.height || birdPosY < 0 - bird.height) {
-      isDeathAnimRunning = false;
-    }
+  if (gameOver && elapsed > FRAME_INTERVAL) {
+    deathAnimation();
   } else if (elapsed > FRAME_INTERVAL) {
     // console.log("Canvas breite: ", canvas.width);
     // console.log("Canvas höhe: ", canvas.height);
 
-    game.clearRect(0, 0, canvas.width, canvas.height);
+    birdAnimation(timestamp);
+  }
+}
 
-    // DRAW PIPES
-    drawPipes();
+function birdAnimation(timestamp) {
+  game.clearRect(0, 0, canvas.width, canvas.height);
 
-    // POSITIONS UPDATE
-    updatePositions();
+  // DRAW PIPES
+  drawPipes();
 
-    console.log("birdFrameInterval = ", birdFrameInterval);
+  // POSITIONS UPDATE
+  updatePositions();
 
-    // DRAW BIRD
-    if (birdFrameInterval > 5) {
-      const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
+  console.log("birdFrameInterval = ", birdFrameInterval);
 
-      game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
+  // DRAW BIRD
+  if (birdFrameInterval > 5) {
+    const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
 
-      checkCollision(bird);
-      checkPointCollection();
-    } else {
-      const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
+    game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
 
-      game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
-      checkCollision(bird);
-      checkPointCollection();
-    }
-    console.log("Bild gezeichnet:", activeFrame);
-    lastTime = timestamp;
+    checkCollision(bird);
+    checkPointCollection();
+  } else {
+    const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
+
+    game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
+    checkCollision(bird);
+    checkPointCollection();
+  }
+  console.log("Bild gezeichnet:", activeFrame);
+  lastTime = timestamp;
+}
+
+function deathAnimation() {
+  // console.log("Death animation running !");
+
+  const bird =
+    useDeathAnim === 1
+      ? grilledChicken
+      : useDeathAnim === 2
+      ? gravestone
+      : birdFrame2;
+
+  game.clearRect(0, 0, canvas.width, canvas.height);
+
+  // DRAW PIPES
+  drawPipes();
+
+  // Speichern des aktuellen Kontexts
+  game.save();
+
+  // Verschieben des Koordinatensystems zum Mittelpunkt des Bildes
+  game.translate(birdPosX + bird.width * 0.325, birdPosY + bird.height * 0.325);
+
+  // Rotieren des Kontexts
+  game.rotate(rotationAngle);
+
+  // Zeichnen des rotierten Bildes
+  game.drawImage(
+    bird,
+    -bird.width * 0.325,
+    -bird.height * 0.325,
+    bird.width * 0.65,
+    bird.height * 0.65
+  );
+
+  // Wiederherstellen des ursprünglichen Kontexts
+  game.restore();
+
+  // game.drawImage(bird, birdPosX, birdPosY, bird.width * 0.65, bird.height * 0.65);
+  updatePositions();
+
+  if (birdPosY > canvas.height || birdPosY < 0 - bird.height) {
+    isDeathAnimRunning = false;
   }
 }
 
@@ -639,6 +622,38 @@ function drawPipes() {
 CREATE LABEL FUNCTION !
 **************************************************************************************
 */
+
+function drawPointsInfo() {
+  createLabel(
+    200,
+    canvas.height * 0.05,
+    "Your Points: " + pointsCollected,
+    "50px Arial",
+    "yellow",
+    "black",
+    5,
+    5,
+    5,
+    "strokeText"
+  );
+}
+
+function drawPoints() {
+  createLabel(
+    canvas.width / 2,
+    canvas.height * 0.25,
+    pointsCollected,
+    "200px Arial Black",
+    "darkgoldenrod",
+    "black",
+    5,
+    8,
+    8,
+    "fillText"
+  );
+  showPointsCounter--;
+}
+
 function createLabel(
   xPos,
   yPos,
