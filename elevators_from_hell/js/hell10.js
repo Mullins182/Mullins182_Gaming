@@ -113,20 +113,40 @@ let shaftLdoorsOpenStatus = {
   floor6_LdoorOpen: false,
 };
 
-const floor0_YPos =
-  gameCanvas.height - (gameElements.liftsHeight + gameElements.floorsHeight);
-
-const floor1_YPos =
-  gameCanvas.height -
-  116 -
-  gameElements.floorsHeight -
-  gameElements.liftsHeight;
-
-const floor2_YPos =
-  gameCanvas.height -
-  234 -
-  gameElements.floorsHeight -
-  gameElements.liftsHeight;
+const floorLiftLevels = {
+  floor0_YPos:
+    gameCanvas.height - (gameElements.liftsHeight + gameElements.floorsHeight),
+  floor1_YPos:
+    gameCanvas.height -
+    116 -
+    gameElements.floorsHeight -
+    gameElements.liftsHeight,
+  floor2_YPos:
+    gameCanvas.height -
+    234 -
+    gameElements.floorsHeight -
+    gameElements.liftsHeight,
+  floor3_YPos:
+    gameCanvas.height -
+    350 -
+    gameElements.floorsHeight -
+    gameElements.liftsHeight,
+  floor4_YPos:
+    gameCanvas.height -
+    466 -
+    gameElements.floorsHeight -
+    gameElements.liftsHeight,
+  floor5_YPos:
+    gameCanvas.height -
+    580 -
+    gameElements.floorsHeight -
+    gameElements.liftsHeight,
+  floor6_YPos:
+    gameCanvas.height -
+    696 -
+    gameElements.floorsHeight -
+    gameElements.liftsHeight,
+};
 
 // ___________________________ GAME-LABEL ___________________________
 createLabel(
@@ -231,6 +251,22 @@ function shaftDoorsLogic() {
     gameElements.shaftDoorsRW_f2 > 38.5 ? true : false;
   shaftRdoorsOpenStatus.floor2_RdoorOpen =
     gameElements.shaftDoorsRW_f2 < 10.5 ? true : false;
+  shaftRdoorsClosedStatus.floor3_RdoorClosed =
+    gameElements.shaftDoorsRW_f3 > 38.5 ? true : false;
+  shaftRdoorsOpenStatus.floor3_RdoorOpen =
+    gameElements.shaftDoorsRW_f3 < 10.5 ? true : false;
+  shaftRdoorsClosedStatus.floor4_RdoorClosed =
+    gameElements.shaftDoorsRW_f4 > 38.5 ? true : false;
+  shaftRdoorsOpenStatus.floor4_RdoorOpen =
+    gameElements.shaftDoorsRW_f4 < 10.5 ? true : false;
+  shaftRdoorsClosedStatus.floor5_RdoorClosed =
+    gameElements.shaftDoorsRW_f5 > 38.5 ? true : false;
+  shaftRdoorsOpenStatus.floor5_RdoorOpen =
+    gameElements.shaftDoorsRW_f5 < 10.5 ? true : false;
+  shaftRdoorsClosedStatus.floor6_RdoorClosed =
+    gameElements.shaftDoorsRW_f6 > 38.5 ? true : false;
+  shaftRdoorsOpenStatus.floor6_RdoorOpen =
+    gameElements.shaftDoorsRW_f6 < 10.5 ? true : false;
 
   // CLOSE-DOORS
   gameElements.shaftDoorsRW_f0 =
@@ -250,6 +286,30 @@ function shaftDoorsLogic() {
     !shaftRdoorsClosedStatus.floor2_RdoorClosed
       ? (gameElements.shaftDoorsRW_f2 += 0.5)
       : gameElements.shaftDoorsRW_f2;
+
+  gameElements.shaftDoorsRW_f3 =
+    !movingElementsStatusAndPos.liftR_calledToF3 &&
+    !shaftRdoorsClosedStatus.floor3_RdoorClosed
+      ? (gameElements.shaftDoorsRW_f3 += 0.5)
+      : gameElements.shaftDoorsRW_f3;
+
+  gameElements.shaftDoorsRW_f4 =
+    !movingElementsStatusAndPos.liftR_calledToF4 &&
+    !shaftRdoorsClosedStatus.floor4_RdoorClosed
+      ? (gameElements.shaftDoorsRW_f4 += 0.5)
+      : gameElements.shaftDoorsRW_f4;
+
+  gameElements.shaftDoorsRW_f5 =
+    !movingElementsStatusAndPos.liftR_calledToF5 &&
+    !shaftRdoorsClosedStatus.floor5_RdoorClosed
+      ? (gameElements.shaftDoorsRW_f5 += 0.5)
+      : gameElements.shaftDoorsRW_f5;
+
+  gameElements.shaftDoorsRW_f6 =
+    !movingElementsStatusAndPos.liftR_calledToF6 &&
+    !shaftRdoorsClosedStatus.floor6_RdoorClosed
+      ? (gameElements.shaftDoorsRW_f6 += 0.5)
+      : gameElements.shaftDoorsRW_f6;
 
   // OPEN-DOORS
   gameElements.shaftDoorsRW_f0 =
@@ -272,24 +332,52 @@ function shaftDoorsLogic() {
     !shaftRdoorsOpenStatus.floor2_RdoorOpen
       ? (gameElements.shaftDoorsRW_f2 -= 0.5)
       : gameElements.shaftDoorsRW_f2;
+
+  gameElements.shaftDoorsRW_f3 =
+    movingElementsStatusAndPos.liftR_calledToF3 &&
+    movingElementsStatusAndPos.liftR_isOnFloor3 &&
+    !shaftRdoorsOpenStatus.floor3_RdoorOpen
+      ? (gameElements.shaftDoorsRW_f3 -= 0.5)
+      : gameElements.shaftDoorsRW_f3;
+
+  gameElements.shaftDoorsRW_f4 =
+    movingElementsStatusAndPos.liftR_calledToF4 &&
+    movingElementsStatusAndPos.liftR_isOnFloor4 &&
+    !shaftRdoorsOpenStatus.floor4_RdoorOpen
+      ? (gameElements.shaftDoorsRW_f4 -= 0.5)
+      : gameElements.shaftDoorsRW_f4;
+
+  gameElements.shaftDoorsRW_f5 =
+    movingElementsStatusAndPos.liftR_calledToF5 &&
+    movingElementsStatusAndPos.liftR_isOnFloor5 &&
+    !shaftRdoorsOpenStatus.floor5_RdoorOpen
+      ? (gameElements.shaftDoorsRW_f5 -= 0.5)
+      : gameElements.shaftDoorsRW_f5;
+
+  gameElements.shaftDoorsRW_f6 =
+    movingElementsStatusAndPos.liftR_calledToF6 &&
+    movingElementsStatusAndPos.liftR_isOnFloor6 &&
+    !shaftRdoorsOpenStatus.floor6_RdoorOpen
+      ? (gameElements.shaftDoorsRW_f6 -= 0.5)
+      : gameElements.shaftDoorsRW_f6;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
 function liftsPosUpdate() {
-  if (movingElementsStatusAndPos.liftR_YPos === floor0_YPos) {
+  if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor0_YPos) {
     resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor0 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
   }
 
-  if (movingElementsStatusAndPos.liftR_YPos === floor1_YPos) {
+  if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor1_YPos) {
     resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor1 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
     console.log(movingElementsStatusAndPos.liftR_isOnFloor1);
   }
 
-  if (movingElementsStatusAndPos.liftR_YPos === floor2_YPos) {
+  if (movingElementsStatusAndPos.liftR_YPos === floorLiftLevels.floor2_YPos) {
     resetRliftFloorStatus();
     movingElementsStatusAndPos.liftR_isOnFloor2 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
@@ -670,7 +758,7 @@ function drawLiftDoors() {
   ctx.fillStyle = "#00FF00";
   ctx.fillRect(
     gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-    floor1_YPos,
+    floorLiftLevels.floor6_YPos,
     100,
     3
   );
