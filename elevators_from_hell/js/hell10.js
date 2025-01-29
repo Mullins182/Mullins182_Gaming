@@ -30,6 +30,7 @@ let gameElements = {
   shaftDoorsRW_f6: 39,
   liftsWidth: 75,
   liftsHeight: 88,
+  liftSpeed: 0.75,
 };
 
 let movingElementsStatusAndPos = {
@@ -117,33 +118,27 @@ const floorLiftLevels = {
   floor0_YPos:
     gameCanvas.height - (gameElements.liftsHeight + gameElements.floorsHeight),
   floor1_YPos:
-    gameCanvas.height -
-    116 -
+    gameCanvas.height * 0.875 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor2_YPos:
-    gameCanvas.height -
-    232 -
+    gameCanvas.height * 0.750 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor3_YPos:
-    gameCanvas.height -
-    346 -
+    gameCanvas.height * 0.625 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor4_YPos:
-    gameCanvas.height -
-    462 -
+    gameCanvas.height * 0.500 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor5_YPos:
-    gameCanvas.height -
-    578 -
+    gameCanvas.height * 0.375 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor6_YPos:
-    gameCanvas.height -
-    692 -
+    gameCanvas.height * 0.250 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
 };
@@ -237,7 +232,7 @@ async function gameRoutine() {
   createLabel(
     gameCanvas.width / 2,
     gameCanvas.height * 0.07,
-    "ELEVATORS FROM HELL",
+    floorLiftLevels.floor6_YPos + " || " + movingElementsStatusAndPos.liftR_YPos.toFixed(2),
     "63px Arial Black",
     "gold",
     "black",
@@ -248,6 +243,20 @@ async function gameRoutine() {
     "gold",
     3
   );
+  // createLabel(
+  //   gameCanvas.width / 2,
+  //   gameCanvas.height * 0.07,
+  //   "ELEVATORS FROM HELL",
+  //   "63px Arial Black",
+  //   "gold",
+  //   "black",
+  //   3,
+  //   8,
+  //   17,
+  //   "strokeText",
+  //   "gold",
+  //   3
+  // );
 
   liftsPosUpdate();
   shaftDoorsLogic();
@@ -258,7 +267,7 @@ async function gameRoutine() {
   drawLifts();
   drawLiftDoors();
 
-  await new Promise((resolve) => setTimeout(resolve, 30));
+  await new Promise((resolve) => setTimeout(resolve, 15));
 
   requestAnimationFrame(gameRoutine);
 }
@@ -436,7 +445,7 @@ function liftsPosUpdate() {
       shaftRdoorsClosedCheck()
     ) {
       movingElementsStatusAndPos.liftR_isMoving = true;
-      movingElementsStatusAndPos.liftR_YPos += 2.0;
+      movingElementsStatusAndPos.liftR_YPos += gameElements.liftSpeed;
     }
   }
   if (movingElementsStatusAndPos.liftR_calledToF1) {
@@ -447,8 +456,8 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
         movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor1_YPos
-          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
-          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+          ? (movingElementsStatusAndPos.liftR_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftR_YPos -= gameElements.liftSpeed);
     }
   }
   if (movingElementsStatusAndPos.liftR_calledToF2) {
@@ -459,8 +468,8 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
         movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor2_YPos
-          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
-          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+          ? (movingElementsStatusAndPos.liftR_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftR_YPos -= gameElements.liftSpeed);
     }
   }
   if (movingElementsStatusAndPos.liftR_calledToF3) {
@@ -471,8 +480,8 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
         movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor3_YPos
-          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
-          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+          ? (movingElementsStatusAndPos.liftR_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftR_YPos -= gameElements.liftSpeed);
     }
   }
   if (movingElementsStatusAndPos.liftR_calledToF4) {
@@ -483,8 +492,8 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
         movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor4_YPos
-          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
-          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+          ? (movingElementsStatusAndPos.liftR_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftR_YPos -= gameElements.liftSpeed);
     }
   }
   if (movingElementsStatusAndPos.liftR_calledToF5) {
@@ -495,8 +504,8 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
         movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor5_YPos
-          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
-          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+          ? (movingElementsStatusAndPos.liftR_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftR_YPos -= gameElements.liftSpeed);
     }
   }
   if (movingElementsStatusAndPos.liftR_calledToF6) {
@@ -507,8 +516,8 @@ function liftsPosUpdate() {
       movingElementsStatusAndPos.liftR_isMoving = true;
       movingElementsStatusAndPos.liftR_YPos =
         movingElementsStatusAndPos.liftR_YPos < floorLiftLevels.floor6_YPos
-          ? (movingElementsStatusAndPos.liftR_YPos += 2.0)
-          : (movingElementsStatusAndPos.liftR_YPos -= 2.0);
+          ? (movingElementsStatusAndPos.liftR_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftR_YPos -= gameElements.liftSpeed);
     }
   }
 }
