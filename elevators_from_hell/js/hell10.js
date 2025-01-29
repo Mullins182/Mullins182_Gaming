@@ -3,8 +3,8 @@ console.log("Hell10 has Started !");
 const gameCanvas = document.getElementById("mainCanvas");
 const ctx = gameCanvas.getContext("2d");
 
-gameCanvas.width = window.innerWidth;
-gameCanvas.height = window.innerHeight;
+gameCanvas.width = 1650;
+gameCanvas.height = 950;
 
 let gameElements = {
   floorsWidth: gameCanvas.width * 0.9,
@@ -30,7 +30,7 @@ let gameElements = {
   shaftDoorsRW_f6: 39,
   liftsWidth: 75,
   liftsHeight: 88,
-  liftSpeed: 0.75,
+  liftSpeed: 1.25,
 };
 
 let movingElementsStatusAndPos = {

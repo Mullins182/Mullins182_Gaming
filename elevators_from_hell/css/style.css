@@ -3,6 +3,7 @@
   margin: 0;
   box-sizing: border-box;
   overflow: hidden;
+  background-color: #000;
 }
 #mainCanvas {
   background-color: black;
