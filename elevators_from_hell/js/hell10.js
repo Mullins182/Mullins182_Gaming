@@ -43,8 +43,8 @@ let movingElementsStatusAndPos = {
   liftR_calledToF0: true,
   liftR_isOnFloor1: false,
   liftR_calledToF1: false,
-  liftR_isOnFloor2: true,
-  liftR_calledToF2: true,
+  liftR_isOnFloor2: false,
+  liftR_calledToF2: false,
   liftR_isOnFloor3: false,
   liftR_calledToF3: false,
   liftR_isOnFloor4: false,
@@ -62,8 +62,8 @@ let movingElementsStatusAndPos = {
   liftL_calledToF0: true,
   liftL_isOnFloor1: false,
   liftL_calledToF1: false,
-  liftL_isOnFloor2: true,
-  liftL_calledToF2: true,
+  liftL_isOnFloor2: false,
+  liftL_calledToF2: false,
   liftL_isOnFloor3: false,
   liftL_calledToF3: false,
   liftL_isOnFloor4: false,
@@ -85,7 +85,7 @@ let shaftRdoorsClosedStatus = {
 };
 
 let shaftLdoorsClosedStatus = {
-  floor0_LdoorClosed: true,
+  floor0_LdoorClosed: false,
   floor1_LdoorClosed: true,
   floor2_LdoorClosed: true,
   floor3_LdoorClosed: true,
@@ -143,6 +143,7 @@ const floorLiftLevels = {
     gameElements.liftsHeight,
 };
 
+// For debugging
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
 
 // ___________________________ GAME-LABEL ___________________________
