@@ -143,6 +143,8 @@ const floorLiftLevels = {
     gameElements.liftsHeight,
 };
 
+let floorLevelSelected = floorLiftLevels.floor0_YPos;
+
 // ___________________________ GAME-LABEL ___________________________
 createLabel(
   gameCanvas.width / 2,
@@ -168,6 +170,7 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {
         break;
       }
+      floorLevelSelected = floorLiftLevels.floor0_YPos;
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF0 = true;
       break;
@@ -175,6 +178,7 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {
         break;
       }
+      floorLevelSelected = floorLiftLevels.floor1_YPos;
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF1 = true;
       break;
@@ -182,6 +186,7 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {
         break;
       }
+      floorLevelSelected = floorLiftLevels.floor2_YPos;
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF2 = true;
       break;
@@ -189,6 +194,7 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {
         break;
       }
+      floorLevelSelected = floorLiftLevels.floor3_YPos;
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF3 = true;
       break;
@@ -196,6 +202,7 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {
         break;
       }
+      floorLevelSelected = floorLiftLevels.floor4_YPos;
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF4 = true;
       break;
@@ -203,6 +210,7 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {
         break;
       }
+      floorLevelSelected = floorLiftLevels.floor5_YPos;
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF5 = true;
       break;
@@ -210,6 +218,7 @@ document.addEventListener("keydown", function (event) {
       if (movingElementsStatusAndPos.liftR_isMoving) {
         break;
       }
+      floorLevelSelected = floorLiftLevels.floor6_YPos;
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF6 = true;
       break;
@@ -232,7 +241,7 @@ async function gameRoutine() {
   createLabel(
     gameCanvas.width / 2,
     gameCanvas.height * 0.07,
-    floorLiftLevels.floor6_YPos + " || " + movingElementsStatusAndPos.liftR_YPos.toFixed(2),
+    "<Floor-Level> " + floorLevelSelected.toFixed(2) + " <Lift-Level> " + movingElementsStatusAndPos.liftR_YPos.toFixed(2),
     "63px Arial Black",
     "gold",
     "black",
