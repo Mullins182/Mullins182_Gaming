@@ -4,7 +4,7 @@ const gameCanvas = document.getElementById("mainCanvas");
 const ctx = gameCanvas.getContext("2d");
 
 gameCanvas.width = 1650;
-gameCanvas.height = 950;
+gameCanvas.height = 900;
 
 let gameElements = {
   floorsWidth: gameCanvas.width * 0.9,
@@ -15,7 +15,7 @@ let gameElements = {
   ceilingHeight: 23,
   shaftDoorsHeight: 90,
   shaftDoorsLW_f0: 39,
-  shaftDoorsRW_f0: 10,
+  shaftDoorsRW_f0: 39,
   shaftDoorsLW_f1: 39,
   shaftDoorsRW_f1: 39,
   shaftDoorsLW_f2: 39,
@@ -36,8 +36,7 @@ let gameElements = {
 let movingElementsStatusAndPos = {
   liftR_YPos:
     gameCanvas.height * 1.0 -
-    gameElements.liftsHeight -
-    gameElements.floorsHeight,
+    (gameElements.liftsHeight + gameElements.floorsHeight),
   liftR_isMoving: false,
   liftR_isOnFloor0: true,
   liftR_calledToF0: true,
@@ -55,8 +54,7 @@ let movingElementsStatusAndPos = {
   liftR_calledToF6: false,
   liftL_YPos:
     gameCanvas.height * 1.0 -
-    gameElements.liftsHeight -
-    gameElements.floorsHeight,
+    (gameElements.liftsHeight + gameElements.floorsHeight),
   liftL_isMoving: false,
   liftL_isOnFloor0: true,
   liftL_calledToF0: true,
@@ -75,7 +73,7 @@ let movingElementsStatusAndPos = {
 };
 
 let shaftRdoorsClosedStatus = {
-  floor0_RdoorClosed: false,
+  floor0_RdoorClosed: true,
   floor1_RdoorClosed: true,
   floor2_RdoorClosed: true,
   floor3_RdoorClosed: true,
@@ -85,7 +83,7 @@ let shaftRdoorsClosedStatus = {
 };
 
 let shaftLdoorsClosedStatus = {
-  floor0_LdoorClosed: false,
+  floor0_LdoorClosed: true,
   floor1_LdoorClosed: true,
   floor2_LdoorClosed: true,
   floor3_LdoorClosed: true,
@@ -95,7 +93,7 @@ let shaftLdoorsClosedStatus = {
 };
 
 let shaftRdoorsOpenStatus = {
-  floor0_RdoorOpen: true,
+  floor0_RdoorOpen: false,
   floor1_RdoorOpen: false,
   floor2_RdoorOpen: false,
   floor3_RdoorOpen: false,
@@ -105,7 +103,7 @@ let shaftRdoorsOpenStatus = {
 };
 
 let shaftLdoorsOpenStatus = {
-  floor0_LdoorOpen: true,
+  floor0_LdoorOpen: false,
   floor1_LdoorOpen: false,
   floor2_LdoorOpen: false,
   floor3_LdoorOpen: false,
@@ -122,7 +120,7 @@ const floorLiftLevels = {
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor2_YPos:
-    gameCanvas.height * 0.750 -
+    gameCanvas.height * 0.75 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor3_YPos:
@@ -130,7 +128,7 @@ const floorLiftLevels = {
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor4_YPos:
-    gameCanvas.height * 0.500 -
+    gameCanvas.height * 0.5 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor5_YPos:
@@ -138,7 +136,7 @@ const floorLiftLevels = {
     gameElements.floorsHeight -
     gameElements.liftsHeight,
   floor6_YPos:
-    gameCanvas.height * 0.250 -
+    gameCanvas.height * 0.25 -
     gameElements.floorsHeight -
     gameElements.liftsHeight,
 };
@@ -181,7 +179,9 @@ document.addEventListener("keydown", function (event) {
       }
       floorLevelSelected = floorLiftLevels.floor1_YPos;
       resetRliftFloorSelection();
+      resetLliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF1 = true;
+      movingElementsStatusAndPos.liftL_calledToF1 = true;
       break;
     case "2":
       if (movingElementsStatusAndPos.liftR_isMoving) {
@@ -242,7 +242,10 @@ async function gameRoutine() {
   createLabel(
     gameCanvas.width / 2,
     gameCanvas.height * 0.07,
-    "<Floor-Level> " + floorLevelSelected.toFixed(2) + " <Lift-Level> " + movingElementsStatusAndPos.liftR_YPos.toFixed(2),
+    "<Floor-Level> " +
+      floorLevelSelected.toFixed(2) +
+      " <Lift-Level> " +
+      movingElementsStatusAndPos.liftR_YPos.toFixed(2),
     "63px Arial Black",
     "gold",
     "black",
@@ -567,8 +570,8 @@ function liftsPosUpdate() {
     movingElementsStatusAndPos.liftR_isOnFloor6 = true;
     movingElementsStatusAndPos.liftR_isMoving = false;
   }
-// Lift Floor-Check logic Left
-if (movingElementsStatusAndPos.liftL_YPos === floorLiftLevels.floor0_YPos) {
+  // Lift Floor-Check logic Left
+  if (movingElementsStatusAndPos.liftL_YPos === floorLiftLevels.floor0_YPos) {
     resetLliftFloorStatus();
     movingElementsStatusAndPos.liftL_isOnFloor0 = true;
     movingElementsStatusAndPos.liftL_isMoving = false;
@@ -1051,22 +1054,22 @@ function drawLiftDoors() {
     gameElements.shaftDoorsHeight
   );
 
-  // DEBUGGING-CODE
-  // ctx.fillStyle = "#00FF00";
-  // ctx.fillRect(
-  //   gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-  //   floorLiftLevels.floor6_YPos,
-  //   100,
-  //   3
-  // );
+  // DEBUGGING - CODE
+  ctx.fillStyle = "#00FF00";
+  ctx.fillRect(
+    gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
+    floorLiftLevels.floor1_YPos,
+    100,
+    3
+  );
 
-  // ctx.fillStyle = "#0000AA";
-  // ctx.fillRect(
-  //   gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-  //   movingElementsStatusAndPos.liftR_YPos,
-  //   100,
-  //   3
-  // );
+  ctx.fillStyle = "#0000AA";
+  ctx.fillRect(
+    gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
+    floorLevelSelected,
+    100,
+    3
+  );
 }
 
 function drawCeiling() {
