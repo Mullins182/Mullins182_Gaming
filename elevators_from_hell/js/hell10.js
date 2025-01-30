@@ -151,7 +151,7 @@ const floorLiftLevels = {
     gameElements.liftsHeight,
 };
 
-// For debugging
+// ___________________________ DEBUGGING ___________________________
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
 const debugMode = true;
 
@@ -267,12 +267,18 @@ async function gameRoutine() {
   // );
 
   if (debugMode) {
+    let isOnLift =
+      movingElementsStatusAndPos.playerOnLiftR ||
+      movingElementsStatusAndPos.playerOnLiftL
+        ? true
+        : false;
+
     createLabel(
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
-      "<Floor-Level> " +
-        movingElementsStatusAndPos.playerOnLiftR +
-        " <Lift-Level> " +
+      "<Lift-Entered> " +
+        isOnLift +
+        "<PlayerPosX> " +
         movingElementsStatusAndPos.playerPosX.toFixed(2),
       "63px Arial Black",
       "gold",
@@ -342,6 +348,10 @@ function playerOnLift() {
   movingElementsStatusAndPos.playerOnLiftR =
     movingElementsStatusAndPos.playerPosX >
     gameCanvas.width * 0.8 - gameElements.liftsWidth / 2
+      ? true
+      : false;
+  movingElementsStatusAndPos.playerOnLiftL =
+    movingElementsStatusAndPos.playerPosX < gameCanvas.width * 0.2
       ? true
       : false;
 }
@@ -604,7 +614,7 @@ function playerPosUpdate(moveDirection) {
       ? (movingElementsStatusAndPos.playerPosX += gameElements.playerSpeed)
       : moveDirection === "stop"
       ? movingElementsStatusAndPos.playerPosX
-      : movingElementsStatusAndPos.playerPosX;
+      : gameCanvas.width / 2;
 
   movingElementsStatusAndPos.playerPosY =
     movingElementsStatusAndPos.playerOnLiftR
@@ -613,7 +623,8 @@ function playerPosUpdate(moveDirection) {
           (gameElements.liftsHeight - gameElements.playerHeight))
       : movingElementsStatusAndPos.playerOnLiftL
       ? (movingElementsStatusAndPos.playerPosY =
-          movingElementsStatusAndPos.liftL_YPos)
+          movingElementsStatusAndPos.liftL_YPos +
+          (gameElements.liftsHeight - gameElements.playerHeight))
       : movingElementsStatusAndPos.playerPosY;
 }
 
