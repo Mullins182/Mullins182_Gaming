@@ -39,7 +39,8 @@ let gameElements = {
 
 let movingElementsStatusAndPos = {
   playerPosX: gameCanvas.width / 2,
-  playerPosY: gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
+  playerPosY:
+    gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
   playerOnLiftR: false,
   playerOnLiftL: false,
 
@@ -260,60 +261,60 @@ function initGame() {
 async function gameRoutine() {
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-//   console.log(
-//     "Stockwerk 1 - Türöffnung:", 
-//     gameElements.shaftDoorsRW_f1
-// );
+  //   console.log(
+  //     "Stockwerk 1 - Türöffnung:",
+  //     gameElements.shaftDoorsRW_f1
+  // );
 
-if (debugMode) {
-  createLabel(
-    gameCanvas.width / 2,
-    gameCanvas.height * 0.07,
-    "<Floor-Level> " +
-      movingElementsStatusAndPos.playerOnLiftR +
-      " <Lift-Level> " + movingElementsStatusAndPos.playerPosX.toFixed(2),
-    "63px Arial Black",
-    "gold",
-    "black",
-    3,
-    8,
-    17,
-    "strokeText",
-    "gold",
-    3
-  );
-} else {
-  createLabel(
-    gameCanvas.width / 2,
-    gameCanvas.height * 0.07,
-    "ELEVATORS FROM HELL",
-    "63px Arial Black",
-    "gold",
-    "black",
-    3,
-    8,
-    17,
-    "strokeText",
-    "gold",
-    3
-  );
-}
+  if (debugMode) {
+    createLabel(
+      gameCanvas.width / 2,
+      gameCanvas.height * 0.07,
+      "<Floor-Level> " +
+        movingElementsStatusAndPos.playerOnLiftR +
+        " <Lift-Level> " +
+        movingElementsStatusAndPos.playerPosX.toFixed(2),
+      "63px Arial Black",
+      "gold",
+      "black",
+      3,
+      8,
+      17,
+      "strokeText",
+      "gold",
+      3
+    );
+  } else {
+    createLabel(
+      gameCanvas.width / 2,
+      gameCanvas.height * 0.07,
+      "ELEVATORS FROM HELL",
+      "63px Arial Black",
+      "gold",
+      "black",
+      3,
+      8,
+      17,
+      "strokeText",
+      "gold",
+      3
+    );
+  }
 
   createLabel(
     185,
     gameCanvas.height - 75,
-   "EXIT",
-   "33px Arial Black",
-   "gold",
-   "darkred",
-   2,
-   7,
-   20,
-   "strokeText",
-   "red",
-   1.6
+    "EXIT",
+    "33px Arial Black",
+    "gold",
+    "darkred",
+    2,
+    7,
+    20,
+    "strokeText",
+    "red",
+    1.6
   );
-
 
   liftsPosUpdate();
   playerPosUpdate(gameElements.playerMovement);
@@ -325,7 +326,10 @@ if (debugMode) {
   drawCeiling();
   drawLifts();
   drawLiftDoors();
-  drawPlayer(movingElementsStatusAndPos.playerPosX, movingElementsStatusAndPos.playerPosY);
+  drawPlayer(
+    movingElementsStatusAndPos.playerPosX,
+    movingElementsStatusAndPos.playerPosY
+  );
 
   await new Promise((resolve) => setTimeout(resolve, 15));
 
@@ -335,8 +339,11 @@ if (debugMode) {
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 
 function playerOnLift() {
-  movingElementsStatusAndPos.playerOnLiftR = movingElementsStatusAndPos.playerPosX > gameCanvas.width * 0.8 - gameElements.liftsWidth / 2
-  ? true : false;
+  movingElementsStatusAndPos.playerOnLiftR =
+    movingElementsStatusAndPos.playerPosX >
+    gameCanvas.width * 0.8 - gameElements.liftsWidth / 2
+      ? true
+      : false;
 }
 
 // ___________________________ SHAFT-DOORS-LOGIC ___________________________
@@ -501,7 +508,7 @@ function shaftDoorsLogic() {
     !shaftRdoorsOpenStatus.floor1_RdoorOpen
       ? (gameElements.shaftDoorsRW_f1 -= 0.5)
       : gameElements.shaftDoorsRW_f1;
-      
+
   gameElements.shaftDoorsRW_f2 =
     movingElementsStatusAndPos.liftR_calledToF2 &&
     movingElementsStatusAndPos.liftR_isOnFloor2 &&
@@ -590,16 +597,24 @@ function shaftDoorsLogic() {
 // ___________________________ PLAYER-POS-UPDATES ___________________________
 
 function playerPosUpdate(moveDirection) {
-    movingElementsStatusAndPos.playerPosX = moveDirection === "left" 
-    ? movingElementsStatusAndPos.playerPosX -= gameElements.playerSpeed
-    : moveDirection === "right" ? movingElementsStatusAndPos.playerPosX += gameElements.playerSpeed
-    : moveDirection === "stop" ? movingElementsStatusAndPos.playerPosX
-    : movingElementsStatusAndPos.playerPosX;
+  movingElementsStatusAndPos.playerPosX =
+    moveDirection === "left"
+      ? (movingElementsStatusAndPos.playerPosX -= gameElements.playerSpeed)
+      : moveDirection === "right"
+      ? (movingElementsStatusAndPos.playerPosX += gameElements.playerSpeed)
+      : moveDirection === "stop"
+      ? movingElementsStatusAndPos.playerPosX
+      : movingElementsStatusAndPos.playerPosX;
 
-    movingElementsStatusAndPos.playerPosY = 
-    movingElementsStatusAndPos.playerOnLiftR ? movingElementsStatusAndPos.playerPosY = movingElementsStatusAndPos.liftR_YPos + (gameElements.liftsHeight - gameElements.playerHeight)
-    : movingElementsStatusAndPos.playerOnLiftL ? movingElementsStatusAndPos.playerPosY = movingElementsStatusAndPos.liftL_YPos
-    : movingElementsStatusAndPos.playerPosY;
+  movingElementsStatusAndPos.playerPosY =
+    movingElementsStatusAndPos.playerOnLiftR
+      ? (movingElementsStatusAndPos.playerPosY =
+          movingElementsStatusAndPos.liftR_YPos +
+          (gameElements.liftsHeight - gameElements.playerHeight))
+      : movingElementsStatusAndPos.playerOnLiftL
+      ? (movingElementsStatusAndPos.playerPosY =
+          movingElementsStatusAndPos.liftL_YPos)
+      : movingElementsStatusAndPos.playerPosY;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
@@ -1150,20 +1165,10 @@ function drawLiftDoors() {
 
   if (debugMode) {
     ctx.fillStyle = "#0000FF";
-    ctx.fillRect(
-      0,
-      floorLiftLevels.floor1_YPos,
-      1600,
-      3
-    );
-  
+    ctx.fillRect(0, floorLiftLevels.floor1_YPos, 1600, 3);
+
     ctx.fillStyle = "#00FF00";
-    ctx.fillRect(
-      0,
-      floorLevelSelected,
-      1600,
-      3
-    );    
+    ctx.fillRect(0, floorLevelSelected, 1600, 3);
   }
 }
 
@@ -1253,12 +1258,7 @@ function drawFloors() {
 
 function drawPlayer(xPos, yPos) {
   ctx.fillStyle = "#FF0000";
-  ctx.fillRect(
-    xPos,
-    yPos,
-    gameElements.playerWidth,
-    gameElements.playerHeight
-  );
+  ctx.fillRect(xPos, yPos, gameElements.playerWidth, gameElements.playerHeight);
 }
 
 function createLabel(
