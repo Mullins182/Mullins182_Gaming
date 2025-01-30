@@ -31,9 +31,15 @@ let gameElements = {
   liftsWidth: 75,
   liftsHeight: 88,
   liftSpeed: 1.25,
+  playerHeight: 40,
+  playerWidth: 20,
+  playerSpeed: 2.35,
+  playerMovement: "stop",
 };
 
 let movingElementsStatusAndPos = {
+  playerPosX: gameCanvas.width / 2,
+  playerPosY: gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
   liftR_YPos:
     gameCanvas.height * 1.0 -
     (gameElements.liftsHeight + gameElements.floorsHeight),
@@ -226,6 +232,15 @@ document.addEventListener("keydown", function (event) {
       resetRliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF6 = true;
       break;
+    case "ArrowLeft":
+      gameElements.playerMovement = "left";
+      break;
+    case "ArrowRight":
+      gameElements.playerMovement = "right";
+      break;
+    case "ArrowDown":
+      gameElements.playerMovement = "stop";
+      break;
     default:
       break;
   }
@@ -282,6 +297,7 @@ if (debugMode) {
 }
 
   liftsPosUpdate();
+  playerPosUpdate(gameElements.playerMovement);
   shaftDoorsLogic();
 
   drawFloors();
@@ -289,6 +305,7 @@ if (debugMode) {
   drawCeiling();
   drawLifts();
   drawLiftDoors();
+  drawPlayer(movingElementsStatusAndPos.playerPosX, movingElementsStatusAndPos.playerPosY);
 
   await new Promise((resolve) => setTimeout(resolve, 15));
 
@@ -541,6 +558,16 @@ function shaftDoorsLogic() {
     !shaftLdoorsOpenStatus.floor6_LdoorOpen
       ? (gameElements.shaftDoorsLW_f6 -= 0.5)
       : gameElements.shaftDoorsLW_f6;
+}
+
+// ___________________________ PLAYER-POS-UPDATES ___________________________
+
+function playerPosUpdate(moveDirection) {
+    movingElementsStatusAndPos.playerPosX = moveDirection === "left" 
+    ? movingElementsStatusAndPos.playerPosX -= gameElements.playerSpeed
+    : moveDirection === "right" ? movingElementsStatusAndPos.playerPosX += gameElements.playerSpeed
+    : moveDirection === "stop" ? movingElementsStatusAndPos.playerPosX
+    : movingElementsStatusAndPos.playerPosX;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
@@ -1189,6 +1216,16 @@ function drawFloors() {
     gameCanvas.height * 0.25 - gameElements.floorsHeight,
     gameElements.floorsWidth,
     gameElements.floorsHeight
+  );
+}
+
+function drawPlayer(xPos, yPos) {
+  ctx.fillStyle = "#FF0000";
+  ctx.fillRect(
+    xPos,
+    yPos,
+    gameElements.playerWidth,
+    gameElements.playerHeight
   );
 }
 
