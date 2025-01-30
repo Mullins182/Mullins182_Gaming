@@ -143,6 +143,7 @@ const floorLiftLevels = {
 
 // For debugging
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
+const debugMode = false;
 
 // ___________________________ GAME-LABEL ___________________________
 createLabel(
@@ -171,7 +172,9 @@ document.addEventListener("keydown", function (event) {
       }
       floorLevelSelected = floorLiftLevels.floor0_YPos;
       resetRliftFloorSelection();
+      resetLliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF0 = true;
+      movingElementsStatusAndPos.liftL_calledToF0 = true;
       break;
     case "1":
       if (movingElementsStatusAndPos.liftR_isMoving) {
@@ -179,9 +182,9 @@ document.addEventListener("keydown", function (event) {
       }
       floorLevelSelected = floorLiftLevels.floor1_YPos;
       resetRliftFloorSelection();
-      // resetLliftFloorSelection();
+      resetLliftFloorSelection();
       movingElementsStatusAndPos.liftR_calledToF1 = true;
-      // movingElementsStatusAndPos.liftL_calledToF1 = true;
+      movingElementsStatusAndPos.liftL_calledToF1 = true;
       break;
     case "2":
       if (movingElementsStatusAndPos.liftR_isMoving) {
@@ -244,6 +247,7 @@ async function gameRoutine() {
 //     gameElements.shaftDoorsRW_f1
 // );
 
+if (debugMode) {
   createLabel(
     gameCanvas.width / 2,
     gameCanvas.height * 0.07,
@@ -260,20 +264,22 @@ async function gameRoutine() {
     "gold",
     3
   );
-  // createLabel(
-  //   gameCanvas.width / 2,
-  //   gameCanvas.height * 0.07,
-  //   "ELEVATORS FROM HELL",
-  //   "63px Arial Black",
-  //   "gold",
-  //   "black",
-  //   3,
-  //   8,
-  //   17,
-  //   "strokeText",
-  //   "gold",
-  //   3
-  // );
+} else {
+  createLabel(
+    gameCanvas.width / 2,
+    gameCanvas.height * 0.07,
+    "ELEVATORS FROM HELL",
+    "63px Arial Black",
+    "gold",
+    "black",
+    3,
+    8,
+    17,
+    "strokeText",
+    "gold",
+    3
+  );
+}
 
   liftsPosUpdate();
   shaftDoorsLogic();
@@ -688,6 +694,35 @@ function liftsPosUpdate() {
           : (movingElementsStatusAndPos.liftR_YPos -= gameElements.liftSpeed);
     }
   }
+
+  //__________________________________ LEFT LIFT __________________________________
+
+  if (movingElementsStatusAndPos.liftL_calledToF0) {
+    if (
+      !movingElementsStatusAndPos.liftL_isOnFloor0 &&
+      shaftLdoorsClosedCheck()
+    ) {
+      movingElementsStatusAndPos.liftL_isMoving = true;
+      resetLliftFloorStatus();
+      movingElementsStatusAndPos.liftL_YPos =
+        movingElementsStatusAndPos.liftL_YPos < floorLiftLevels.floor0_YPos
+          ? (movingElementsStatusAndPos.liftL_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftL_YPos -= gameElements.liftSpeed);
+    }
+  }
+  if (movingElementsStatusAndPos.liftL_calledToF1) {
+    if (
+      !movingElementsStatusAndPos.liftL_isOnFloor1 &&
+      shaftLdoorsClosedCheck()
+    ) {
+      movingElementsStatusAndPos.liftL_isMoving = true;
+      resetLliftFloorStatus();
+      movingElementsStatusAndPos.liftL_YPos =
+        movingElementsStatusAndPos.liftL_YPos < floorLiftLevels.floor1_YPos
+          ? (movingElementsStatusAndPos.liftL_YPos += gameElements.liftSpeed)
+          : (movingElementsStatusAndPos.liftL_YPos -= gameElements.liftSpeed);
+    }
+  }
 }
 
 function resetRliftFloorSelection() {
@@ -1054,21 +1089,23 @@ function drawLiftDoors() {
 
   // __________________________________________________ DEBUGGING - CODE __________________________________________________
 
-  ctx.fillStyle = "#0000FF";
-  ctx.fillRect(
-    0,
-    floorLiftLevels.floor1_YPos,
-    1600,
-    3
-  );
-
-  ctx.fillStyle = "#00FF00";
-  ctx.fillRect(
-    0,
-    floorLevelSelected,
-    1600,
-    3
-  );
+  if (debugMode) {
+    ctx.fillStyle = "#0000FF";
+    ctx.fillRect(
+      0,
+      floorLiftLevels.floor1_YPos,
+      1600,
+      3
+    );
+  
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(
+      0,
+      floorLevelSelected,
+      1600,
+      3
+    );    
+  }
 }
 
 function drawCeiling() {
