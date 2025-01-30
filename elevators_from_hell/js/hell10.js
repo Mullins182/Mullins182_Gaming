@@ -331,11 +331,11 @@ async function gameRoutine() {
   drawWalls();
   drawCeiling();
   drawLifts();
-  drawLiftDoors();
   drawPlayer(
     movingElementsStatusAndPos.playerPosX,
     movingElementsStatusAndPos.playerPosY
   );
+  drawLiftDoors();
 
   await new Promise((resolve) => setTimeout(resolve, 15));
 
