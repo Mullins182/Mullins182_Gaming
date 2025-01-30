@@ -40,6 +40,9 @@ let gameElements = {
 let movingElementsStatusAndPos = {
   playerPosX: gameCanvas.width / 2,
   playerPosY: gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
+  playerOnLiftR: false,
+  playerOnLiftL: false,
+
   liftR_YPos:
     gameCanvas.height * 1.0 -
     (gameElements.liftsHeight + gameElements.floorsHeight),
@@ -149,7 +152,7 @@ const floorLiftLevels = {
 
 // For debugging
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
-const debugMode = false;
+const debugMode = true;
 
 // ___________________________ GAME-LABEL ___________________________
 createLabel(
@@ -267,8 +270,8 @@ if (debugMode) {
     gameCanvas.width / 2,
     gameCanvas.height * 0.07,
     "<Floor-Level> " +
-      floorLevelSelected.toFixed(2) +
-      " <Lift-Level> " + movingElementsStatusAndPos.liftR_YPos.toFixed(2),
+      movingElementsStatusAndPos.playerOnLiftR +
+      " <Lift-Level> " + movingElementsStatusAndPos.playerPosX.toFixed(2),
     "63px Arial Black",
     "gold",
     "black",
@@ -296,8 +299,25 @@ if (debugMode) {
   );
 }
 
+  createLabel(
+    185,
+    gameCanvas.height - 75,
+   "EXIT",
+   "33px Arial Black",
+   "gold",
+   "darkred",
+   2,
+   7,
+   20,
+   "strokeText",
+   "red",
+   1.6
+  );
+
+
   liftsPosUpdate();
   playerPosUpdate(gameElements.playerMovement);
+  playerOnLift();
   shaftDoorsLogic();
 
   drawFloors();
@@ -310,6 +330,13 @@ if (debugMode) {
   await new Promise((resolve) => setTimeout(resolve, 15));
 
   requestAnimationFrame(gameRoutine);
+}
+
+// ___________________________ PLAYER ON LIFT-CHECK ___________________________
+
+function playerOnLift() {
+  movingElementsStatusAndPos.playerOnLiftR = movingElementsStatusAndPos.playerPosX > gameCanvas.width * 0.8 - gameElements.liftsWidth / 2
+  ? true : false;
 }
 
 // ___________________________ SHAFT-DOORS-LOGIC ___________________________
@@ -568,6 +595,11 @@ function playerPosUpdate(moveDirection) {
     : moveDirection === "right" ? movingElementsStatusAndPos.playerPosX += gameElements.playerSpeed
     : moveDirection === "stop" ? movingElementsStatusAndPos.playerPosX
     : movingElementsStatusAndPos.playerPosX;
+
+    movingElementsStatusAndPos.playerPosY = 
+    movingElementsStatusAndPos.playerOnLiftR ? movingElementsStatusAndPos.playerPosY = movingElementsStatusAndPos.liftR_YPos + (gameElements.liftsHeight - gameElements.playerHeight)
+    : movingElementsStatusAndPos.playerOnLiftL ? movingElementsStatusAndPos.playerPosY = movingElementsStatusAndPos.liftL_YPos
+    : movingElementsStatusAndPos.playerPosY;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
