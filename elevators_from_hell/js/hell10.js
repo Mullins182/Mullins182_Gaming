@@ -153,7 +153,7 @@ const floorLiftLevels = {
 
 // ___________________________ DEBUGGING ___________________________
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
-const debugMode = true;
+let debugMode = false;
 let automaticLeftElevator = false;
 
 // ___________________________ GAME-LABEL ___________________________
@@ -251,6 +251,9 @@ document.addEventListener("keydown", function (event) {
       break;
     case "r":
       automaticLeftElevator = automaticLeftElevator ? false : true;
+      break;
+    case "d":
+      debugMode = debugMode ? false : true;
       break;
     default:
       break;
