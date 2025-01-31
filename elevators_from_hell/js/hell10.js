@@ -44,6 +44,7 @@ let moveableElems = {
   playerPosX: gameCanvas.width / 2,
   playerPosY:
     gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
+  playerOnFloor: 0,
   playerOnLiftR: false,
   playerOnLiftL: false,
 
@@ -251,9 +252,11 @@ document.addEventListener("keydown", function (event) {
       break;
     case "ArrowDown":
       gameElements.playerMovement = "stop";
+      playerOnLift(true);
       break;
     case "ArrowUp":
       gameElements.playerMovement = "stop";
+      playerOnLift(false);
       break;
     case "r":
       automaticLeftElevator = automaticLeftElevator ? false : true;
@@ -294,10 +297,10 @@ async function gameRoutine() {
     createLabel(
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
-      "<Lift-Entered> " +
-        isOnLift +
-        "<PlayerPosX> " +
-        moveableElems.playerPosX.toFixed(2),
+      "<PlayerOnFloor> " +
+        moveableElems.playerOnFloor +
+        "<PlayerOnLiftL> " +
+        moveableElems.playerOnLiftL,
       "63px Arial Black",
       "gold",
       "black",
@@ -351,8 +354,8 @@ async function gameRoutine() {
     gameElements.playerMovement = "stop";
   }
 
+  playerOnFloorCheck();
   liftsPosUpdate();
-  playerOnLift();
   shaftDoorsLogic();
 
   drawFloors();
@@ -416,14 +419,20 @@ async function gameRoutine() {
 
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 
-function playerOnLift() {
-  moveableElems.playerOnLiftR =
-    moveableElems.playerPosX >
-    gameCanvas.width * 0.8 - gameElements.liftsWidth / 2
-      ? true
-      : false;
-  moveableElems.playerOnLiftL =
-    moveableElems.playerPosX < gameCanvas.width * 0.2 ? true : false;
+function playerOnLift(keyDown) {
+
+  if (moveableElems.playerOnLiftL) {
+    if (!moveableElems.liftL_isMoving && shaftLdoorsOpenCheck() && keyDown) {
+      moveableElems.playerOnLiftL = false;
+    }
+  }
+  else {
+    if (moveableElems.playerOnFloor === 0 && moveableElems.liftL_isOnFloor0 && !keyDown) {
+      if (moveableElems.playerPosX > gameCanvas.width * 0.199 - gameElements.liftsWidth / 3 && moveableElems.playerPosX < gameCanvas.width * 0.199 + gameElements.liftsWidth / 4) {
+        moveableElems.playerOnLiftL = true;
+      }
+    }  
+  }
 }
 
 function playerCollisionCheck() {
@@ -686,9 +695,11 @@ function shaftDoorsLogic() {
 
 // ___________________________ PLAYER-POS-UPDATES ___________________________
 
-function playerPosUpdate(moveDirection) {
-  moveableElems.playerPosX =
-    moveDirection === "left"
+function playerPosUpdate(moveDirection) {  
+  moveableElems.playerPosX = 
+        moveableElems.playerOnLiftL || moveableElems.playerOnLiftR
+      ? moveableElems.playerPosX
+      : moveDirection === "left"
       ? (moveableElems.playerPosX -= gameElements.playerSpeed)
       : moveDirection === "right"
       ? (moveableElems.playerPosX += gameElements.playerSpeed)
@@ -705,6 +716,18 @@ function playerPosUpdate(moveDirection) {
         moveableElems.liftL_YPos +
         (gameElements.liftsHeight - gameElements.playerHeight))
     : moveableElems.playerPosY;
+}
+
+function playerOnFloorCheck() {
+  moveableElems.playerOnFloor = 
+  moveableElems.playerPosY === floorLiftLevels.floor0_YPos + 48
+  ? 0 : moveableElems.playerPosY === floorLiftLevels.floor1_YPos + 48
+  ? 1 : moveableElems.playerPosY === floorLiftLevels.floor2_YPos + 48
+  ? 2 : moveableElems.playerPosY === floorLiftLevels.floor3_YPos + 48
+  ? 3 : moveableElems.playerPosY === floorLiftLevels.floor4_YPos + 48
+  ? 4 : moveableElems.playerPosY === floorLiftLevels.floor5_YPos + 48
+  ? 5 : moveableElems.playerPosY === floorLiftLevels.floor6_YPos + 48
+  ? 6 : 0;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
