@@ -11,6 +11,9 @@ let gameElements = {
   floorsHeight: 6,
   WallsHeight: gameCanvas.height * 0.89,
   wallsWidth: 15,
+  exitDoorHeight: 180,
+  exitSignColor: "red",
+  exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
   ceilingHeight: 23,
   shaftDoorsHeight: 90,
@@ -43,6 +46,9 @@ let moveableElems = {
     gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
   playerOnLiftR: false,
   playerOnLiftL: false,
+
+  exitDoorUnlocked: false,
+  exitDoorPosY: gameCanvas.height * 0.80,
 
   liftR_YPos:
     gameCanvas.height * 1.0 -
@@ -255,6 +261,11 @@ document.addEventListener("keydown", function (event) {
     case "d":
       debugMode = debugMode ? false : true;
       break;
+    case "Escape":
+      moveableElems.exitDoorUnlocked = moveableElems.exitDoorUnlocked
+      ? false
+      : true;
+      break;
     default:
       break;
   }
@@ -320,17 +331,27 @@ async function gameRoutine() {
     "EXIT",
     "33px Arial Black",
     "gold",
-    "darkred",
+    gameElements.exitSignShadowColor,
     2,
     7,
     20,
     "strokeText",
-    "red",
+    gameElements.exitSignColor,
     1.6
   );
 
+  if (!playerCollisionCheck()) {
+    playerPosUpdate(gameElements.playerMovement);
+  }
+  else {
+    moveableElems.playerPosX = moveableElems.playerPosX > 500
+    ? moveableElems.playerPosX -= gameElements.playerSpeed
+    : moveableElems.playerPosX += gameElements.playerSpeed
+
+    gameElements.playerMovement = "stop";
+  }
+
   liftsPosUpdate();
-  playerPosUpdate(gameElements.playerMovement);
   playerOnLift();
   shaftDoorsLogic();
 
@@ -340,6 +361,21 @@ async function gameRoutine() {
   drawLifts();
   drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
   drawLiftDoors();
+
+  if (moveableElems.exitDoorUnlocked) {
+    gameElements.exitSignColor = "yellowgreen";
+    gameElements.exitSignShadowColor = "darkgreen";
+    moveableElems.exitDoorPosY = moveableElems.exitDoorPosY > (gameCanvas.height - (gameElements.exitDoorHeight * 1.55))
+    ? moveableElems.exitDoorPosY -= 0.05
+    : moveableElems.exitDoorPosY;
+  }
+  else {
+    gameElements.exitSignColor = "red";
+    gameElements.exitSignShadowColor = "darkred";
+    moveableElems.exitDoorPosY = moveableElems.exitDoorPosY < (gameCanvas.height - gameElements.exitDoorHeight)
+    ? moveableElems.exitDoorPosY += 0.05
+    : moveableElems.exitDoorPosY;
+  }
 
   if (automaticLeftElevator) {
     if (moveableElems.liftL_isMoving || !shaftLdoorsOpenCheck()) {
@@ -388,6 +424,16 @@ function playerOnLift() {
       : false;
   moveableElems.playerOnLiftL =
     moveableElems.playerPosX < gameCanvas.width * 0.2 ? true : false;
+}
+
+function playerCollisionCheck() {
+
+  return (moveableElems.playerPosX <= (gameCanvas.width * 0.05 + gameElements.wallsWidth)
+  ? true
+  : moveableElems.playerPosX >= (gameCanvas.width * 0.95 - gameElements.playerWidth)
+  ? true
+  : false
+  );
 }
 
 // ___________________________ SHAFT-DOORS-LOGIC ___________________________
@@ -1258,6 +1304,17 @@ function drawCeiling() {
 }
 
 function drawWalls() {
+
+  // EXIT-DOOR
+  ctx.fillStyle = "#FFFF00";
+  ctx.fillRect(
+    gameCanvas.width * 0.051,
+    moveableElems.exitDoorPosY,
+    gameElements.wallsWidth - 5,
+    gameElements.exitDoorHeight
+  );
+  // ____________________
+
   ctx.fillStyle = "#373737";
   ctx.fillRect(
     gameCanvas.width * 0.05,
