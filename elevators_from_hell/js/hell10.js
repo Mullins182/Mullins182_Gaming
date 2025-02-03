@@ -374,19 +374,25 @@ async function gameRoutine() {
   if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
     drawLifts();
     drawCeiling();
-    drawShaftsElements();
     drawWalls();
     drawFloors();
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     drawLiftDoors();
+    drawShaftsElements();
+    if (debugMode) {
+      drawDebugLine();
+    }
   } else {
     drawLifts();
     drawCeiling();
     drawLiftDoors();
     drawWalls();
     drawFloors();
-    drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     drawShaftsElements();
+    drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
+    if (debugMode) {
+      drawDebugLine();
+    }
   }
 
   if (moveableElems.exitDoorUnlocked) {
@@ -447,15 +453,21 @@ async function gameRoutine() {
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 
 function playerOnLift(keyDown) {
-  if (moveableElems.playerOnLiftL) {
-    if (!moveableElems.liftL_isMoving && shaftLdoorsOpenCheck() && keyDown) {
-      moveableElems.playerOnLiftL = false;
+  if (keyDown) {
+    if (moveableElems.playerOnLiftL) {
+      if (!moveableElems.liftL_isMoving && shaftLdoorsOpenCheck()) {
+        moveableElems.playerOnLiftL = false;
+      }
     }
   } else {
     if (
-      moveableElems.playerOnFloor === 0 &&
-      moveableElems.liftL_isOnFloor0 &&
-      !keyDown
+      (moveableElems.playerOnFloor === 0 && moveableElems.liftL_isOnFloor0) ||
+      (moveableElems.playerOnFloor === 1 && moveableElems.liftL_isOnFloor1) ||
+      (moveableElems.playerOnFloor === 2 && moveableElems.liftL_isOnFloor2) ||
+      (moveableElems.playerOnFloor === 3 && moveableElems.liftL_isOnFloor3) ||
+      (moveableElems.playerOnFloor === 4 && moveableElems.liftL_isOnFloor4) ||
+      (moveableElems.playerOnFloor === 5 && moveableElems.liftL_isOnFloor5) ||
+      (moveableElems.playerOnFloor === 6 && moveableElems.liftL_isOnFloor6)
     ) {
       if (
         moveableElems.playerPosX >
@@ -1345,16 +1357,16 @@ function drawLiftDoors() {
     gameElements.shaftDoorsRW_f6,
     gameElements.shaftDoorsHeight
   );
+}
 
-  // __________________________________________________ DEBUGGING - CODE __________________________________________________
+// __________________________________________________ DEBUGGING - CODE __________________________________________________
 
-  if (debugMode) {
-    // ctx.fillStyle = "#0000FF";
-    // ctx.fillRect(0, floorLiftLevels.floor1_YPos, 1600, 3);
+function drawDebugLine() {
+  // ctx.fillStyle = "#0000FF";
+  // ctx.fillRect(0, floorLiftLevels.floor1_YPos, 1600, 3);
 
-    ctx.fillStyle = "#00FF00";
-    ctx.fillRect(0, floorLevelSelected, 1600, 3);
-  }
+  ctx.fillStyle = "#00FF00";
+  ctx.fillRect(0, floorLevelSelected, 1600, 3);
 }
 
 function drawShaftsElements() {
