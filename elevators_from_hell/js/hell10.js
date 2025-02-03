@@ -22,6 +22,13 @@ let gameElements = {
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
   ceilingHeight: 23,
+  floor0_YPos: gameCanvas.height * 1.0 - 6,
+  floor1_YPos: gameCanvas.height * 0.875 - 6,
+  floor2_YPos: gameCanvas.height * 0.75 - 6,
+  floor3_YPos: gameCanvas.height * 0.625 - 6,
+  floor4_YPos: gameCanvas.height * 0.5 - 6,
+  floor5_YPos: gameCanvas.height * 0.375 - 6,
+  floor6_YPos: gameCanvas.height * 0.25 - 6,
   shaftDoorsHeight: 90,
   shaftDoorsLW_f0: 38.75,
   shaftDoorsRW_f0: 38.75,
@@ -171,6 +178,46 @@ const floorLiftLevels = {
     gameElements.liftsHeight,
 };
 
+// Konstanten für bessere Lesbarkeit und Wartbarkeit
+const KEYS = {
+  NUMBERS: {
+    FLOOR_0: "0",
+    FLOOR_1: "1",
+    FLOOR_2: "2",
+    FLOOR_3: "3",
+    FLOOR_4: "4",
+    FLOOR_5: "5",
+    FLOOR_6: "6",
+  },
+  DIRECTIONS: {
+    LEFT: "ArrowLeft",
+    RIGHT: "ArrowRight",
+    UP: "ArrowUp",
+    DOWN: "ArrowDown",
+  },
+  SPECIAL_KEYS: {
+    TOGGLE_AUTO_LEFT_ELEVATOR: "r",
+    TOGGLE_DEBUG_MODE: "d",
+    TOGGLE_EXIT_DOOR: "Escape",
+  },
+};
+
+const FLOOR_LEVELS = {
+  floor0_YPos: floorLiftLevels.floor0_YPos,
+  floor1_YPos: floorLiftLevels.floor1_YPos,
+  floor2_YPos: floorLiftLevels.floor2_YPos,
+  floor3_YPos: floorLiftLevels.floor3_YPos,
+  floor4_YPos: floorLiftLevels.floor4_YPos,
+  floor5_YPos: floorLiftLevels.floor5_YPos,
+  floor6_YPos: floorLiftLevels.floor6_YPos,
+};
+
+// Hilfsfunktion zur Floor-Level-Bestimmung
+function getFloorLevel(floorNumber) {
+  const floorKey = `floor${floorNumber}_YPos`;
+  return FLOOR_LEVELS[floorKey];
+}
+
 // ___________________________ DEBUGGING ___________________________
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
 let debugMode = false;
@@ -192,162 +239,67 @@ createLabel(
   3
 );
 
-// ___________________________ Tastatur-Event-Listener ___________________________
+// ___________________________ Keyboard-Event-Listener ___________________________
+
 document.addEventListener("keydown", function (event) {
-  console.log("Taste gedrückt: " + event.key);
+  // Loggt gedrückte Taste
+  console.log(`Taste gedrückt: ${event.key}`);
 
+  // Floor-Level-Auswahl
+  if (Object.values(KEYS.NUMBERS).includes(event.key)) {
+    const floorNumber = parseInt(event.key);
+    handleFloorSelection(floorNumber);
+    return;
+  }
+
+  // Bewegungssteuerung
   switch (event.key) {
-    case "0":
-      if (moveableElems.liftR_isMoving) {
-        break;
-      }
-      floorLevelSelected = floorLiftLevels.floor0_YPos;
-
-      if (moveableElems.playerOnLiftL) {
-        resetLliftFloorSelection();
-        moveableElems.liftL_calledToF0 = true;
-      } else if (moveableElems.playerOnLiftR) {
-        resetRliftFloorSelection();
-        moveableElems.liftR_calledToF0 = true;
-      }
-      break;
-    case "1":
-      floorLevelSelected = floorLiftLevels.floor1_YPos;
-      if (moveableElems.playerOnLiftL) {
-        if (moveableElems.liftL_isMoving) {
-          break;
-        }
-
-        resetLliftFloorSelection();
-        moveableElems.liftL_calledToF1 = true;
-      } else if (moveableElems.playerOnLiftR) {
-        if (moveableElems.liftR_isMoving) {
-          break;
-        }
-
-        resetRliftFloorSelection();
-        moveableElems.liftR_calledToF1 = true;
-      }
-      break;
-    case "2":
-      floorLevelSelected = floorLiftLevels.floor2_YPos;
-      if (moveableElems.playerOnLiftL) {
-        if (moveableElems.liftL_isMoving) {
-          break;
-        }
-
-        resetLliftFloorSelection();
-        moveableElems.liftL_calledToF2 = true;
-      } else if (moveableElems.playerOnLiftR) {
-        if (moveableElems.liftR_isMoving) {
-          break;
-        }
-
-        resetRliftFloorSelection();
-        moveableElems.liftR_calledToF2 = true;
-      }
-      break;
-    case "3":
-      floorLevelSelected = floorLiftLevels.floor3_YPos;
-      if (moveableElems.playerOnLiftL) {
-        if (moveableElems.liftL_isMoving) {
-          break;
-        }
-
-        resetLliftFloorSelection();
-        moveableElems.liftL_calledToF3 = true;
-      } else if (moveableElems.playerOnLiftR) {
-        if (moveableElems.liftR_isMoving) {
-          break;
-        }
-
-        resetRliftFloorSelection();
-        moveableElems.liftR_calledToF3 = true;
-      }
-      break;
-    case "4":
-      floorLevelSelected = floorLiftLevels.floor4_YPos;
-      if (moveableElems.playerOnLiftL) {
-        if (moveableElems.liftL_isMoving) {
-          break;
-        }
-
-        resetLliftFloorSelection();
-        moveableElems.liftL_calledToF4 = true;
-      } else if (moveableElems.playerOnLiftR) {
-        if (moveableElems.liftR_isMoving) {
-          break;
-        }
-
-        resetRliftFloorSelection();
-        moveableElems.liftR_calledToF4 = true;
-      }
-      break;
-    case "5":
-      floorLevelSelected = floorLiftLevels.floor5_YPos;
-      if (moveableElems.playerOnLiftL) {
-        if (moveableElems.liftL_isMoving) {
-          break;
-        }
-
-        resetLliftFloorSelection();
-        moveableElems.liftL_calledToF5 = true;
-      } else if (moveableElems.playerOnLiftR) {
-        if (moveableElems.liftR_isMoving) {
-          break;
-        }
-
-        resetRliftFloorSelection();
-        moveableElems.liftR_calledToF5 = true;
-      }
-      break;
-    case "6":
-      floorLevelSelected = floorLiftLevels.floor6_YPos;
-      if (moveableElems.playerOnLiftL) {
-        if (moveableElems.liftL_isMoving) {
-          break;
-        }
-
-        resetLliftFloorSelection();
-        moveableElems.liftL_calledToF6 = true;
-      } else if (moveableElems.playerOnLiftR) {
-        if (moveableElems.liftR_isMoving) {
-          break;
-        }
-
-        resetRliftFloorSelection();
-        moveableElems.liftR_calledToF6 = true;
-      }
-      break;
-    case "ArrowLeft":
+    case KEYS.DIRECTIONS.LEFT:
       gameElements.playerMovement = "left";
       break;
-    case "ArrowRight":
+    case KEYS.DIRECTIONS.RIGHT:
       gameElements.playerMovement = "right";
       break;
-    case "ArrowDown":
+    case KEYS.DIRECTIONS.DOWN:
       gameElements.playerMovement = "stop";
       playerOnLift(true);
       break;
-    case "ArrowUp":
+    case KEYS.DIRECTIONS.UP:
       gameElements.playerMovement = "stop";
       playerOnLift(false);
       break;
-    case "r":
-      automaticLeftElevator = automaticLeftElevator ? false : true;
+    case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_LEFT_ELEVATOR:
+      automaticLeftElevator = !automaticLeftElevator;
       break;
-    case "d":
-      debugMode = debugMode ? false : true;
+    case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
+      debugMode = !debugMode;
       break;
-    case "Escape":
-      moveableElems.exitDoorUnlocked = moveableElems.exitDoorUnlocked
-        ? false
-        : true;
-      break;
-    default:
+    case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
+      moveableElems.exitDoorUnlocked = !moveableElems.exitDoorUnlocked;
       break;
   }
 });
+
+// Floor-Auswahl Logik
+function handleFloorSelection(floorNumber) {
+  // Prüfung ob Lift bewegt wird
+  const isLeftLiftMoving =
+    moveableElems.playerOnLiftL && moveableElems.liftL_isMoving;
+  const isRightLiftMoving =
+    moveableElems.playerOnLiftR && moveableElems.liftR_isMoving;
+
+  if (isLeftLiftMoving || isRightLiftMoving) return;
+
+  floorLevelSelected = getFloorLevel(floorNumber);
+
+  if (moveableElems.playerOnLiftL) {
+    resetLliftFloorSelection();
+    moveableElems[`liftL_calledToF${floorNumber}`] = true;
+  } else if (moveableElems.playerOnLiftR) {
+    resetRliftFloorSelection();
+    moveableElems[`liftR_calledToF${floorNumber}`] = true;
+  }
+}
 
 initGame();
 
@@ -374,8 +326,8 @@ async function gameRoutine() {
       gameCanvas.height * 0.07,
       "<PlayerOnFloor> " +
         moveableElems.playerOnFloor +
-        "<PlayerOnLiftL> " +
-        moveableElems.playerOnLiftL,
+        " <PlayerOnLift?> " +
+        isOnLift,
       "63px Arial Black",
       "gold",
       "black",
@@ -521,6 +473,11 @@ function playerOnLift(keyDown) {
         moveableElems.playerOnLiftL = false;
       }
     }
+    if (moveableElems.playerOnLiftR) {
+      if (!moveableElems.liftR_isMoving && shaftRdoorsOpenCheck()) {
+        moveableElems.playerOnLiftR = false;
+      }
+    }
   } else {
     if (
       (moveableElems.playerOnFloor === 0 && moveableElems.liftL_isOnFloor0) ||
@@ -538,6 +495,24 @@ function playerOnLift(keyDown) {
           gameCanvas.width * 0.199 + gameElements.liftsWidth / 4
       ) {
         moveableElems.playerOnLiftL = true;
+      }
+    }
+    if (
+      (moveableElems.playerOnFloor === 0 && moveableElems.liftR_isOnFloor0) ||
+      (moveableElems.playerOnFloor === 1 && moveableElems.liftR_isOnFloor1) ||
+      (moveableElems.playerOnFloor === 2 && moveableElems.liftR_isOnFloor2) ||
+      (moveableElems.playerOnFloor === 3 && moveableElems.liftR_isOnFloor3) ||
+      (moveableElems.playerOnFloor === 4 && moveableElems.liftR_isOnFloor4) ||
+      (moveableElems.playerOnFloor === 5 && moveableElems.liftR_isOnFloor5) ||
+      (moveableElems.playerOnFloor === 6 && moveableElems.liftR_isOnFloor6)
+    ) {
+      if (
+        moveableElems.playerPosX >
+          gameCanvas.width * 0.799 - gameElements.liftsWidth / 3 &&
+        moveableElems.playerPosX <
+          gameCanvas.width * 0.799 + gameElements.liftsWidth / 4
+      ) {
+        moveableElems.playerOnLiftR = true;
       }
     }
   }
@@ -828,21 +803,37 @@ function playerPosUpdate(moveDirection) {
 
 function playerOnFloorCheck() {
   moveableElems.playerOnFloor =
-    moveableElems.playerPosY === floorLiftLevels.floor0_YPos + 48
+    moveableElems.playerPosY > gameElements.floor1_YPos
       ? 0
-      : moveableElems.playerPosY === floorLiftLevels.floor1_YPos + 48
+      : moveableElems.playerPosY > gameElements.floor2_YPos
       ? 1
-      : moveableElems.playerPosY === floorLiftLevels.floor2_YPos + 48
+      : moveableElems.playerPosY > gameElements.floor3_YPos
       ? 2
-      : moveableElems.playerPosY === floorLiftLevels.floor3_YPos + 48
+      : moveableElems.playerPosY > gameElements.floor4_YPos
       ? 3
-      : moveableElems.playerPosY === floorLiftLevels.floor4_YPos + 48
+      : moveableElems.playerPosY > gameElements.floor5_YPos
       ? 4
-      : moveableElems.playerPosY === floorLiftLevels.floor5_YPos + 48
+      : moveableElems.playerPosY > gameElements.floor6_YPos
       ? 5
       : moveableElems.playerPosY === floorLiftLevels.floor6_YPos + 48
       ? 6
-      : 0;
+      : 101;
+  // moveableElems.playerOnFloor =
+  //   moveableElems.playerPosY === floorLiftLevels.floor0_YPos + 48
+  //     ? 0
+  //     : moveableElems.playerPosY === floorLiftLevels.floor1_YPos + 48
+  //     ? 1
+  //     : moveableElems.playerPosY === floorLiftLevels.floor2_YPos + 48
+  //     ? 2
+  //     : moveableElems.playerPosY === floorLiftLevels.floor3_YPos + 48
+  //     ? 3
+  //     : moveableElems.playerPosY === floorLiftLevels.floor4_YPos + 48
+  //     ? 4
+  //     : moveableElems.playerPosY === floorLiftLevels.floor5_YPos + 48
+  //     ? 5
+  //     : moveableElems.playerPosY === floorLiftLevels.floor6_YPos + 48
+  //     ? 6
+  //     : 0;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
@@ -1497,7 +1488,7 @@ function drawFloors() {
   gameElements.floorsWidth += 500;
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameCanvas.height * 1.0 - gameElements.floorsHeight,
+    gameElements.floor0_YPos,
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
@@ -1507,42 +1498,42 @@ function drawFloors() {
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameCanvas.height * 0.875 - gameElements.floorsHeight,
+    gameElements.floor1_YPos,
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameCanvas.height * 0.75 - gameElements.floorsHeight,
+    gameElements.floor2_YPos,
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameCanvas.height * 0.625 - gameElements.floorsHeight,
+    gameElements.floor3_YPos,
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameCanvas.height * 0.5 - gameElements.floorsHeight,
+    gameElements.floor4_YPos,
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameCanvas.height * 0.375 - gameElements.floorsHeight,
+    gameElements.floor5_YPos,
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameCanvas.height * 0.25 - gameElements.floorsHeight,
+    gameElements.floor6_YPos,
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
