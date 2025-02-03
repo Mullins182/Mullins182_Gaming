@@ -202,60 +202,122 @@ document.addEventListener("keydown", function (event) {
         break;
       }
       floorLevelSelected = floorLiftLevels.floor0_YPos;
-      resetRliftFloorSelection();
-      resetLliftFloorSelection();
-      moveableElems.liftR_calledToF0 = true;
-      moveableElems.liftL_calledToF0 = true;
+
+      if (moveableElems.playerOnLiftL) {
+        resetLliftFloorSelection();
+        moveableElems.liftL_calledToF0 = true;
+      } else if (moveableElems.playerOnLiftR) {
+        resetRliftFloorSelection();
+        moveableElems.liftR_calledToF0 = true;
+      }
       break;
     case "1":
-      if (moveableElems.liftR_isMoving) {
-        break;
-      }
       floorLevelSelected = floorLiftLevels.floor1_YPos;
-      resetRliftFloorSelection();
-      resetLliftFloorSelection();
-      moveableElems.liftR_calledToF1 = true;
-      moveableElems.liftL_calledToF1 = true;
+      if (moveableElems.playerOnLiftL) {
+        if (moveableElems.liftL_isMoving) {
+          break;
+        }
+
+        resetLliftFloorSelection();
+        moveableElems.liftL_calledToF1 = true;
+      } else if (moveableElems.playerOnLiftR) {
+        if (moveableElems.liftR_isMoving) {
+          break;
+        }
+
+        resetRliftFloorSelection();
+        moveableElems.liftR_calledToF1 = true;
+      }
       break;
     case "2":
-      if (moveableElems.liftR_isMoving) {
-        break;
-      }
       floorLevelSelected = floorLiftLevels.floor2_YPos;
-      resetRliftFloorSelection();
-      moveableElems.liftR_calledToF2 = true;
+      if (moveableElems.playerOnLiftL) {
+        if (moveableElems.liftL_isMoving) {
+          break;
+        }
+
+        resetLliftFloorSelection();
+        moveableElems.liftL_calledToF2 = true;
+      } else if (moveableElems.playerOnLiftR) {
+        if (moveableElems.liftR_isMoving) {
+          break;
+        }
+
+        resetRliftFloorSelection();
+        moveableElems.liftR_calledToF2 = true;
+      }
       break;
     case "3":
-      if (moveableElems.liftR_isMoving) {
-        break;
-      }
       floorLevelSelected = floorLiftLevels.floor3_YPos;
-      resetRliftFloorSelection();
-      moveableElems.liftR_calledToF3 = true;
+      if (moveableElems.playerOnLiftL) {
+        if (moveableElems.liftL_isMoving) {
+          break;
+        }
+
+        resetLliftFloorSelection();
+        moveableElems.liftL_calledToF3 = true;
+      } else if (moveableElems.playerOnLiftR) {
+        if (moveableElems.liftR_isMoving) {
+          break;
+        }
+
+        resetRliftFloorSelection();
+        moveableElems.liftR_calledToF3 = true;
+      }
       break;
     case "4":
-      if (moveableElems.liftR_isMoving) {
-        break;
-      }
       floorLevelSelected = floorLiftLevels.floor4_YPos;
-      resetRliftFloorSelection();
-      moveableElems.liftR_calledToF4 = true;
+      if (moveableElems.playerOnLiftL) {
+        if (moveableElems.liftL_isMoving) {
+          break;
+        }
+
+        resetLliftFloorSelection();
+        moveableElems.liftL_calledToF4 = true;
+      } else if (moveableElems.playerOnLiftR) {
+        if (moveableElems.liftR_isMoving) {
+          break;
+        }
+
+        resetRliftFloorSelection();
+        moveableElems.liftR_calledToF4 = true;
+      }
       break;
     case "5":
-      if (moveableElems.liftR_isMoving) {
-        break;
-      }
       floorLevelSelected = floorLiftLevels.floor5_YPos;
-      resetRliftFloorSelection();
-      moveableElems.liftR_calledToF5 = true;
+      if (moveableElems.playerOnLiftL) {
+        if (moveableElems.liftL_isMoving) {
+          break;
+        }
+
+        resetLliftFloorSelection();
+        moveableElems.liftL_calledToF5 = true;
+      } else if (moveableElems.playerOnLiftR) {
+        if (moveableElems.liftR_isMoving) {
+          break;
+        }
+
+        resetRliftFloorSelection();
+        moveableElems.liftR_calledToF5 = true;
+      }
       break;
     case "6":
-      if (moveableElems.liftR_isMoving) {
-        break;
-      }
       floorLevelSelected = floorLiftLevels.floor6_YPos;
-      resetRliftFloorSelection();
-      moveableElems.liftR_calledToF6 = true;
+      if (moveableElems.playerOnLiftL) {
+        if (moveableElems.liftL_isMoving) {
+          break;
+        }
+
+        resetLliftFloorSelection();
+        moveableElems.liftL_calledToF6 = true;
+      } else if (moveableElems.playerOnLiftR) {
+        if (moveableElems.liftR_isMoving) {
+          break;
+        }
+
+        resetRliftFloorSelection();
+        moveableElems.liftR_calledToF6 = true;
+      }
       break;
     case "ArrowLeft":
       gameElements.playerMovement = "left";
