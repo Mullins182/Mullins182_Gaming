@@ -11,6 +11,12 @@ let gameElements = {
   floorsHeight: 6,
   WallsHeight: gameCanvas.height * 0.89,
   wallsWidth: 15,
+  shaftsWidth: 120,
+  shaftsHeight: 23,
+  shaftsLWidth: 25,
+  shaftsRWidth: 25,
+  shaftsLHeight: 113,
+  shaftsRHeight: 113,
   exitDoorHeight: 180,
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
@@ -50,6 +56,13 @@ let moveableElems = {
 
   exitDoorUnlocked: false,
   exitDoorPosY: gameCanvas.height * 0.8,
+
+  shaftsPosX: gameCanvas.width * 0.164,
+  shaftsPosY: gameCanvas.height * 0.875 - gameElements.floorsHeight,
+  shaftsLposX: gameCanvas.width * 0.161,
+  shaftsLposY: gameCanvas.height * 0.875 - gameElements.floorsHeight,
+  shaftsRposX: gameCanvas.width * 0.2235,
+  shaftsRposY: gameCanvas.height * 0.875 - gameElements.floorsHeight,
 
   liftR_YPos:
     gameCanvas.height * 1.0 -
@@ -358,12 +371,23 @@ async function gameRoutine() {
   liftsPosUpdate();
   shaftDoorsLogic();
 
-  drawFloors();
-  drawWalls();
-  drawCeiling();
-  drawLifts();
-  drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
-  drawLiftDoors();
+  if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
+    drawLifts();
+    drawCeiling();
+    drawShaftsElements();
+    drawWalls();
+    drawFloors();
+    drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
+    drawLiftDoors();
+  } else {
+    drawLifts();
+    drawCeiling();
+    drawLiftDoors();
+    drawWalls();
+    drawFloors();
+    drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
+    drawShaftsElements();
+  }
 
   if (moveableElems.exitDoorUnlocked) {
     gameElements.exitSignColor = "yellowgreen";
@@ -1331,6 +1355,29 @@ function drawLiftDoors() {
     ctx.fillStyle = "#00FF00";
     ctx.fillRect(0, floorLevelSelected, 1600, 3);
   }
+}
+
+function drawShaftsElements() {
+  ctx.fillStyle = "#131313";
+  ctx.fillRect(
+    moveableElems.shaftsPosX,
+    moveableElems.shaftsPosY,
+    gameElements.shaftsWidth,
+    gameElements.shaftsHeight
+  );
+  ctx.fillStyle = "#252525";
+  ctx.fillRect(
+    moveableElems.shaftsLposX,
+    moveableElems.shaftsLposY,
+    gameElements.shaftsLWidth,
+    gameElements.shaftsLHeight
+  );
+  ctx.fillRect(
+    moveableElems.shaftsRposX,
+    moveableElems.shaftsRposY,
+    gameElements.shaftsRWidth,
+    gameElements.shaftsRHeight
+  );
 }
 
 function drawCeiling() {
