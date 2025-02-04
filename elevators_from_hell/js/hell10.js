@@ -254,22 +254,6 @@ let floorLevelSelected = floorLiftLevels.floor0_YPos;
 let debugMode = false;
 let automaticLeftElevator = false;
 
-// ___________________________ GAME-LABEL ___________________________
-createLabel(
-  gameCanvas.width / 2,
-  gameCanvas.height * 0.07,
-  "ELEVATORS FROM HELL",
-  "63px Arial Black",
-  "gold",
-  "black",
-  3,
-  8,
-  17,
-  "strokeText",
-  "gold",
-  3
-);
-
 // ___________________________ Keyboard-Event-Listener ___________________________
 
 document.addEventListener("keydown", function (event) {
