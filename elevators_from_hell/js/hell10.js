@@ -304,6 +304,7 @@ document.addEventListener("keydown", function (event) {
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
       debugMode = !debugMode;
+      console.log(moveableElems.exitDoorFloorDist);
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
       moveableElems.exitDoorUnlocked = !moveableElems.exitDoorUnlocked;
@@ -321,13 +322,13 @@ function handleFloorSelection(floorNumber) {
 
   if (isLeftLiftMoving || isRightLiftMoving) return;
 
-  floorLevelSelected = getFloorLevel(floorNumber);
-
   if (moveableElems.playerOnLiftL) {
     resetLliftFloorSelection();
+    floorLevelSelected = getFloorLevel(floorNumber);
     moveableElems[`liftL_calledToF${floorNumber}`] = true;
   } else if (moveableElems.playerOnLiftR) {
     resetRliftFloorSelection();
+    floorLevelSelected = getFloorLevel(floorNumber);
     moveableElems[`liftR_calledToF${floorNumber}`] = true;
   }
 }
@@ -401,7 +402,7 @@ async function gameRoutine() {
     1.6
   );
 
-  if (!playerCollisionCheck()) {
+  if (!playerCollisionCheck() || playerCanLeave()) {
     playerPosUpdate(gameElements.playerMovement);
   } else {
     moveableElems.playerPosX =
@@ -490,9 +491,23 @@ async function gameRoutine() {
     }
   }
 
+  // moveableElems.exitDoorFloorDist =
+  //   gameCanvas.height * 0.8 + gameElements.exitDoorHeight;
+
   await new Promise((resolve) => setTimeout(resolve, 15));
 
   requestAnimationFrame(gameRoutine);
+}
+
+// ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
+
+function playerCanLeave() {
+  return moveableElems.exitDoorPosY <
+    gameCanvas.height * 0.8 - gameElements.playerHeight * 1.15 &&
+    moveableElems.playerPosX < 500 &&
+    moveableElems.playerOnFloor === 0
+    ? true
+    : false;
 }
 
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
@@ -550,11 +565,11 @@ function playerOnLift(keyDown) {
 }
 
 function playerCollisionCheck() {
-  return moveableElems.playerPosX <=
-    gameCanvas.width * 0.05 + gameElements.wallsWidth
+  return moveableElems.playerPosX >=
+    gameCanvas.width * 0.95 - gameElements.playerWidth
     ? true
-    : moveableElems.playerPosX >=
-      gameCanvas.width * 0.95 - gameElements.playerWidth
+    : moveableElems.playerPosX <=
+      gameCanvas.width * 0.05 + gameElements.wallsWidth
     ? true
     : false;
 }
