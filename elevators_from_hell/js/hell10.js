@@ -64,6 +64,7 @@ let moveableElems = {
   exitDoorUnlocked: false,
   exitDoorPosY: gameCanvas.height * 0.8,
 
+  // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
   shaftTopF0PosY_left: gameCanvas.height * 0.875 - gameElements.floorsHeight,
   shaftTopF1PosY_left: gameCanvas.height * 0.75 - gameElements.floorsHeight,
@@ -72,19 +73,30 @@ let moveableElems = {
   shaftTopF4PosY_left: gameCanvas.height * 0.375 - gameElements.floorsHeight,
   shaftTopF5PosY_left: gameCanvas.height * 0.25 - gameElements.floorsHeight,
   shaftTopF6PosY_left: gameCanvas.height * 0.13 - gameElements.floorsHeight,
+
+  // TOP ELEMETS RIGHT SHAFT
   shaftTopF0PosX_right: gameCanvas.width * 0.764,
   shaftTopF0PosY_right: gameCanvas.height * 0.875 - gameElements.floorsHeight,
+  shaftTopF1PosY_right: gameCanvas.height * 0.75 - gameElements.floorsHeight,
+  shaftTopF2PosY_right: gameCanvas.height * 0.625 - gameElements.floorsHeight,
+  shaftTopF3PosY_right: gameCanvas.height * 0.5 - gameElements.floorsHeight,
+  shaftTopF4PosY_right: gameCanvas.height * 0.375 - gameElements.floorsHeight,
+  shaftTopF5PosY_right: gameCanvas.height * 0.25 - gameElements.floorsHeight,
+  shaftTopF6PosY_right: gameCanvas.height * 0.13 - gameElements.floorsHeight,
 
+  // LEFT SHAFT SIDE ELEMETS
   shaftF0LposX_left: gameCanvas.width * 0.161,
   shaftF0LposY_left: gameCanvas.height * 0.875 - gameElements.floorsHeight,
   shaftF0RposX_left: gameCanvas.width * 0.2235,
   shaftF0RposY_left: gameCanvas.height * 0.875 - gameElements.floorsHeight,
 
+  // RIGHT SHAFT SIDE ELEMENTS
   shaftF0LposX_right: gameCanvas.width * 0.761,
   shaftF0LposY_right: gameCanvas.height * 0.875 - gameElements.floorsHeight,
   shaftF0RposX_right: gameCanvas.width * 0.823,
   shaftF0RposY_right: gameCanvas.height * 0.875 - gameElements.floorsHeight,
 
+  // LIFTS POSITIONS
   liftR_YPos:
     gameCanvas.height * 1.0 -
     (gameElements.liftsHeight + gameElements.floorsHeight),
@@ -1460,6 +1472,12 @@ function drawShaftsElements() {
     gameElements.shaftsWidth,
     gameElements.shaftsHeight
   );
+  ctx.fillRect(
+    moveableElems.shaftTopF0PosX_right,
+    moveableElems.shaftTopF1PosY_right,
+    gameElements.shaftsWidth,
+    gameElements.shaftsHeight
+  );
   // Floor 2
   ctx.fillRect(
     moveableElems.shaftTopF0PosX_left,
@@ -1467,6 +1485,13 @@ function drawShaftsElements() {
     gameElements.shaftsWidth,
     gameElements.shaftsHeight
   );
+  ctx.fillRect(
+    moveableElems.shaftTopF0PosX_right,
+    moveableElems.shaftTopF2PosY_right,
+    gameElements.shaftsWidth,
+    gameElements.shaftsHeight
+  );
+
   // Floor 3
   ctx.fillRect(
     moveableElems.shaftTopF0PosX_left,
@@ -1474,6 +1499,13 @@ function drawShaftsElements() {
     gameElements.shaftsWidth,
     gameElements.shaftsHeight
   );
+  ctx.fillRect(
+    moveableElems.shaftTopF0PosX_right,
+    moveableElems.shaftTopF3PosY_right,
+    gameElements.shaftsWidth,
+    gameElements.shaftsHeight
+  );
+
   // Floor 4
   ctx.fillRect(
     moveableElems.shaftTopF0PosX_left,
@@ -1481,6 +1513,13 @@ function drawShaftsElements() {
     gameElements.shaftsWidth,
     gameElements.shaftsHeight
   );
+  ctx.fillRect(
+    moveableElems.shaftTopF0PosX_right,
+    moveableElems.shaftTopF4PosY_right,
+    gameElements.shaftsWidth,
+    gameElements.shaftsHeight
+  );
+
   // Floor 5
   ctx.fillRect(
     moveableElems.shaftTopF0PosX_left,
@@ -1488,10 +1527,23 @@ function drawShaftsElements() {
     gameElements.shaftsWidth,
     gameElements.shaftsHeight
   );
+  ctx.fillRect(
+    moveableElems.shaftTopF0PosX_right,
+    moveableElems.shaftTopF5PosY_right,
+    gameElements.shaftsWidth,
+    gameElements.shaftsHeight
+  );
+
   // Floor 6
   ctx.fillRect(
     moveableElems.shaftTopF0PosX_left,
     moveableElems.shaftTopF6PosY_left,
+    gameElements.shaftsWidth,
+    gameElements.shaftsHeight
+  );
+  ctx.fillRect(
+    moveableElems.shaftTopF0PosX_right,
+    moveableElems.shaftTopF6PosY_right,
     gameElements.shaftsWidth,
     gameElements.shaftsHeight
   );
