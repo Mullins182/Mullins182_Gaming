@@ -344,10 +344,35 @@ function initGame() {
 async function gameRoutine() {
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-  //   console.log(
-  //     "Stockwerk 1 - Türöffnung:",
-  //     gameElements.shaftDoorsRW_f1
-  // );
+  drawLabelsLogic();
+  playerMoveAndCollisionsLogic();
+  playerOnFloorCheck();
+  liftsPosUpdate();
+  shaftDoorsLogic();
+  exitDoorLogic();
+  automaticLiftControl();
+  elementsDrawingLogic();
+
+  await new Promise((resolve) => setTimeout(resolve, 15));
+
+  requestAnimationFrame(gameRoutine);
+}
+
+function drawLabelsLogic() {
+  createLabel(
+    185,
+    gameCanvas.height - 75,
+    "EXIT",
+    "33px Arial Black",
+    "gold",
+    gameElements.exitSignShadowColor,
+    2,
+    7,
+    20,
+    "strokeText",
+    gameElements.exitSignColor,
+    1.6
+  );
 
   if (debugMode) {
     let isOnLift =
@@ -386,22 +411,9 @@ async function gameRoutine() {
       3
     );
   }
+}
 
-  createLabel(
-    185,
-    gameCanvas.height - 75,
-    "EXIT",
-    "33px Arial Black",
-    "gold",
-    gameElements.exitSignShadowColor,
-    2,
-    7,
-    20,
-    "strokeText",
-    gameElements.exitSignColor,
-    1.6
-  );
-
+function playerMoveAndCollisionsLogic() {
   if (!playerCollisionCheck() || playerCanLeave()) {
     playerPosUpdate(gameElements.playerMovement);
   } else {
@@ -412,11 +424,9 @@ async function gameRoutine() {
 
     gameElements.playerMovement = "stop";
   }
+}
 
-  playerOnFloorCheck();
-  liftsPosUpdate();
-  shaftDoorsLogic();
-
+function elementsDrawingLogic() {
   if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
     drawLifts();
     drawCeiling();
@@ -440,25 +450,9 @@ async function gameRoutine() {
       drawDebugLine();
     }
   }
+}
 
-  if (moveableElems.exitDoorUnlocked) {
-    gameElements.exitSignColor = "yellowgreen";
-    gameElements.exitSignShadowColor = "darkgreen";
-    moveableElems.exitDoorPosY =
-      moveableElems.exitDoorPosY >
-      gameCanvas.height - gameElements.exitDoorHeight * 1.55
-        ? (moveableElems.exitDoorPosY -= 0.05)
-        : moveableElems.exitDoorPosY;
-  } else {
-    gameElements.exitSignColor = "red";
-    gameElements.exitSignShadowColor = "darkred";
-    moveableElems.exitDoorPosY =
-      moveableElems.exitDoorPosY <
-      gameCanvas.height - gameElements.exitDoorHeight
-        ? (moveableElems.exitDoorPosY += 0.05)
-        : moveableElems.exitDoorPosY;
-  }
-
+function automaticLiftControl() {
   if (automaticLeftElevator) {
     if (moveableElems.liftL_isMoving || !shaftLdoorsOpenCheck()) {
     } else {
@@ -490,13 +484,26 @@ async function gameRoutine() {
       moveableElems.liftL_calledToF0 = randomNum == 0 ? true : false;
     }
   }
+}
 
-  // moveableElems.exitDoorFloorDist =
-  //   gameCanvas.height * 0.8 + gameElements.exitDoorHeight;
-
-  await new Promise((resolve) => setTimeout(resolve, 15));
-
-  requestAnimationFrame(gameRoutine);
+function exitDoorLogic() {
+  if (moveableElems.exitDoorUnlocked) {
+    gameElements.exitSignColor = "yellowgreen";
+    gameElements.exitSignShadowColor = "darkgreen";
+    moveableElems.exitDoorPosY =
+      moveableElems.exitDoorPosY >
+      gameCanvas.height - gameElements.exitDoorHeight * 1.55
+        ? (moveableElems.exitDoorPosY -= 0.05)
+        : moveableElems.exitDoorPosY;
+  } else {
+    gameElements.exitSignColor = "red";
+    gameElements.exitSignShadowColor = "darkred";
+    moveableElems.exitDoorPosY =
+      moveableElems.exitDoorPosY <
+      gameCanvas.height - gameElements.exitDoorHeight
+        ? (moveableElems.exitDoorPosY += 0.05)
+        : moveableElems.exitDoorPosY;
+  }
 }
 
 // ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
@@ -1471,7 +1478,7 @@ function drawDebugLine() {
 function drawShaftsElements() {
   // ____________________________ SHAFT TOP ELEMENT ____________________________
 
-  ctx.fillStyle = "#131313";
+  ctx.fillStyle = "#060606";
   // Floor 0
   ctx.fillRect(
     gameElements.shaftTopF0PosX_left,
@@ -1570,7 +1577,7 @@ function drawShaftsElements() {
 
   // ____________________________ SHAFT SIDE ELEMENTS ____________________________
 
-  ctx.fillStyle = "#252525";
+  ctx.fillStyle = "#111111";
   // Floor 0 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
     gameElements.shaftF0LposX_left,
@@ -1767,7 +1774,7 @@ function drawCeiling() {
 
 function drawWalls() {
   // EXIT-DOOR
-  ctx.fillStyle = "#FFFF00";
+  ctx.fillStyle = "#111111";
   ctx.fillRect(
     gameCanvas.width * 0.051,
     moveableElems.exitDoorPosY,
