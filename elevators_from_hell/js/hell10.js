@@ -420,8 +420,8 @@ async function gameRoutine() {
   if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
     drawLifts();
     drawCeiling();
-    drawWalls();
     drawFloors();
+    drawWalls();
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     drawLiftDoors();
     drawShaftsElements();
@@ -431,9 +431,9 @@ async function gameRoutine() {
   } else {
     drawLifts();
     drawCeiling();
-    drawLiftDoors();
-    drawWalls();
     drawFloors();
+    drawWalls();
+    drawLiftDoors();
     drawShaftsElements();
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     if (debugMode) {
