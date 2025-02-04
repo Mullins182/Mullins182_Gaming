@@ -106,38 +106,14 @@ let moveableElems = {
     gameCanvas.height * 1.0 -
     (gameElements.liftsHeight + gameElements.floorsHeight),
   liftR_isMoving: false,
-  liftR_isOnFloor0: true,
-  liftR_calledToF0: true,
-  liftR_isOnFloor1: false,
-  liftR_calledToF1: false,
-  liftR_isOnFloor2: false,
-  liftR_calledToF2: false,
-  liftR_isOnFloor3: false,
-  liftR_calledToF3: false,
-  liftR_isOnFloor4: false,
-  liftR_calledToF4: false,
-  liftR_isOnFloor5: false,
-  liftR_calledToF5: false,
-  liftR_isOnFloor6: false,
-  liftR_calledToF6: false,
+  liftR_isOnFloor: 0,
+  liftR_calledToFloor: 0,
   liftL_YPos:
     gameCanvas.height * 1.0 -
     (gameElements.liftsHeight + gameElements.floorsHeight),
   liftL_isMoving: false,
-  liftL_isOnFloor0: true,
-  liftL_calledToF0: true,
-  liftL_isOnFloor1: false,
-  liftL_calledToF1: false,
-  liftL_isOnFloor2: false,
-  liftL_calledToF2: false,
-  liftL_isOnFloor3: false,
-  liftL_calledToF3: false,
-  liftL_isOnFloor4: false,
-  liftL_calledToF4: false,
-  liftL_isOnFloor5: false,
-  liftL_calledToF5: false,
-  liftL_isOnFloor6: false,
-  liftL_calledToF6: false,
+  liftL_isOnFloor: 0,
+  liftL_calledToFloor: 0,
 };
 
 let shaftRdoorsClosedStatus = {
@@ -307,13 +283,11 @@ function handleFloorSelection(floorNumber) {
   if (isLeftLiftMoving || isRightLiftMoving) return;
 
   if (moveableElems.playerOnLiftL) {
-    resetLliftFloorSelection();
     floorLevelSelected = getFloorLevel(floorNumber);
-    moveableElems[`liftL_calledToF${floorNumber}`] = true;
+    moveableElems.liftL_calledToFloor = floorNumber;
   } else if (moveableElems.playerOnLiftR) {
-    resetRliftFloorSelection();
     floorLevelSelected = getFloorLevel(floorNumber);
-    moveableElems[`liftR_calledToF${floorNumber}`] = true;
+    moveableElems.liftR_calledToFloor = floorNumber;
   }
 }
 
@@ -323,8 +297,9 @@ initGame();
 function initGame() {
   gameRoutine();
 }
-
+// ___________________________              ___________________________
 // ___________________________ GAME-ROUTINE ___________________________
+// ___________________________              ___________________________
 async function gameRoutine() {
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
@@ -342,6 +317,10 @@ async function gameRoutine() {
   requestAnimationFrame(gameRoutine);
 }
 
+// ___________________________              ___________________________
+// ___________________________              ___________________________
+// ___________________________              ___________________________
+
 function drawLabelsLogic() {
   createLabel(
     185,
@@ -358,6 +337,21 @@ function drawLabelsLogic() {
     1.6
   );
 
+  // createLabel(
+  //   185,
+  //   gameCanvas.height - 75,
+  //   moveableElems.lift,
+  //   "33px Arial Black",
+  //   "gold",
+  //   gameElements.exitSignShadowColor,
+  //   2,
+  //   7,
+  //   20,
+  //   "strokeText",
+  //   gameElements.exitSignColor,
+  //   1.6
+  // );
+
   if (debugMode) {
     let isOnLift =
       moveableElems.playerOnLiftR || moveableElems.playerOnLiftL ? true : false;
@@ -368,7 +362,7 @@ function drawLabelsLogic() {
       "<PlayerOnFloor> " +
         moveableElems.playerOnFloor +
         " <PlayerOnLift?> " +
-        isOnLift,
+        moveableElems.liftL_calledToFloor,
       "63px Arial Black",
       "gold",
       "black",
@@ -459,13 +453,7 @@ function automaticLiftControl() {
           ? floorLiftLevels.floor0_YPos
           : floorLiftLevels.floor6_YPos;
 
-      moveableElems.liftL_calledToF6 = randomNum == 6 ? true : false;
-      moveableElems.liftL_calledToF5 = randomNum == 5 ? true : false;
-      moveableElems.liftL_calledToF4 = randomNum == 4 ? true : false;
-      moveableElems.liftL_calledToF3 = randomNum == 3 ? true : false;
-      moveableElems.liftL_calledToF2 = randomNum == 2 ? true : false;
-      moveableElems.liftL_calledToF1 = randomNum == 1 ? true : false;
-      moveableElems.liftL_calledToF0 = randomNum == 0 ? true : false;
+      moveableElems.liftL_calledToFloor = randomNum;
     }
   }
 }
@@ -496,7 +484,7 @@ function playerCanLeave() {
   return moveableElems.exitDoorPosY <
     gameCanvas.height * 0.8 - gameElements.playerHeight * 1.15 &&
     moveableElems.playerPosX < 500 &&
-    moveableElems.playerOnFloor === 0
+    moveableElems.playerOnFloor == 0
     ? true
     : false;
 }
@@ -517,13 +505,19 @@ function playerOnLift(keyDown) {
     }
   } else {
     if (
-      (moveableElems.playerOnFloor === 0 && moveableElems.liftL_isOnFloor0) ||
-      (moveableElems.playerOnFloor === 1 && moveableElems.liftL_isOnFloor1) ||
-      (moveableElems.playerOnFloor === 2 && moveableElems.liftL_isOnFloor2) ||
-      (moveableElems.playerOnFloor === 3 && moveableElems.liftL_isOnFloor3) ||
-      (moveableElems.playerOnFloor === 4 && moveableElems.liftL_isOnFloor4) ||
-      (moveableElems.playerOnFloor === 5 && moveableElems.liftL_isOnFloor5) ||
-      (moveableElems.playerOnFloor === 6 && moveableElems.liftL_isOnFloor6)
+      (moveableElems.playerOnFloor === 0 &&
+        moveableElems.liftL_isOnFloor === 0) ||
+      (moveableElems.playerOnFloor === 1 &&
+        moveableElems.liftL_isOnFloor === 1) ||
+      (moveableElems.playerOnFloor === 2 &&
+        moveableElems.liftL_isOnFloor === 2) ||
+      (moveableElems.playerOnFloor === 3 &&
+        moveableElems.liftL_isOnFloor === 3) ||
+      (moveableElems.playerOnFloor === 4 &&
+        moveableElems.liftL_isOnFloor === 4) ||
+      (moveableElems.playerOnFloor === 5 &&
+        moveableElems.liftL_isOnFloor === 5) ||
+      (moveableElems.playerOnFloor === 6 && moveableElems.liftL_isOnFloor === 6)
     ) {
       if (
         moveableElems.playerPosX >
@@ -535,13 +529,19 @@ function playerOnLift(keyDown) {
       }
     }
     if (
-      (moveableElems.playerOnFloor === 0 && moveableElems.liftR_isOnFloor0) ||
-      (moveableElems.playerOnFloor === 1 && moveableElems.liftR_isOnFloor1) ||
-      (moveableElems.playerOnFloor === 2 && moveableElems.liftR_isOnFloor2) ||
-      (moveableElems.playerOnFloor === 3 && moveableElems.liftR_isOnFloor3) ||
-      (moveableElems.playerOnFloor === 4 && moveableElems.liftR_isOnFloor4) ||
-      (moveableElems.playerOnFloor === 5 && moveableElems.liftR_isOnFloor5) ||
-      (moveableElems.playerOnFloor === 6 && moveableElems.liftR_isOnFloor6)
+      (moveableElems.playerOnFloor === 0 &&
+        moveableElems.liftR_isOnFloor === 0) ||
+      (moveableElems.playerOnFloor === 1 &&
+        moveableElems.liftR_isOnFloor === 1) ||
+      (moveableElems.playerOnFloor === 2 &&
+        moveableElems.liftR_isOnFloor === 2) ||
+      (moveableElems.playerOnFloor === 3 &&
+        moveableElems.liftR_isOnFloor === 3) ||
+      (moveableElems.playerOnFloor === 4 &&
+        moveableElems.liftR_isOnFloor === 4) ||
+      (moveableElems.playerOnFloor === 5 &&
+        moveableElems.liftR_isOnFloor === 5) ||
+      (moveableElems.playerOnFloor === 6 && moveableElems.liftR_isOnFloor === 6)
     ) {
       if (
         moveableElems.playerPosX >
@@ -630,184 +630,184 @@ function shaftDoorsLogic() {
 
   // __________________________________________________ CLOSE-DOORS __________________________________________________
   gameElements.shaftDoorsRW_f0 =
-    !moveableElems.liftR_calledToF0 &&
+    !moveableElems.liftR_calledToFloor == 0 &&
     !shaftRdoorsClosedStatus.floor0_RdoorClosed
       ? (gameElements.shaftDoorsRW_f0 += 0.25)
       : gameElements.shaftDoorsRW_f0;
 
   gameElements.shaftDoorsRW_f1 =
-    !moveableElems.liftR_calledToF1 &&
+    !moveableElems.liftR_calledToFloor == 1 &&
     !shaftRdoorsClosedStatus.floor1_RdoorClosed
       ? (gameElements.shaftDoorsRW_f1 += 0.25)
       : gameElements.shaftDoorsRW_f1;
 
   gameElements.shaftDoorsRW_f2 =
-    !moveableElems.liftR_calledToF2 &&
+    !moveableElems.liftR_calledToFloor == 2 &&
     !shaftRdoorsClosedStatus.floor2_RdoorClosed
       ? (gameElements.shaftDoorsRW_f2 += 0.25)
       : gameElements.shaftDoorsRW_f2;
 
   gameElements.shaftDoorsRW_f3 =
-    !moveableElems.liftR_calledToF3 &&
+    !moveableElems.liftR_calledToFloor == 3 &&
     !shaftRdoorsClosedStatus.floor3_RdoorClosed
       ? (gameElements.shaftDoorsRW_f3 += 0.25)
       : gameElements.shaftDoorsRW_f3;
 
   gameElements.shaftDoorsRW_f4 =
-    !moveableElems.liftR_calledToF4 &&
+    !moveableElems.liftR_calledToFloor == 4 &&
     !shaftRdoorsClosedStatus.floor4_RdoorClosed
       ? (gameElements.shaftDoorsRW_f4 += 0.25)
       : gameElements.shaftDoorsRW_f4;
 
   gameElements.shaftDoorsRW_f5 =
-    !moveableElems.liftR_calledToF5 &&
+    !moveableElems.liftR_calledToFloor == 5 &&
     !shaftRdoorsClosedStatus.floor5_RdoorClosed
       ? (gameElements.shaftDoorsRW_f5 += 0.25)
       : gameElements.shaftDoorsRW_f5;
 
   gameElements.shaftDoorsRW_f6 =
-    !moveableElems.liftR_calledToF6 &&
+    !moveableElems.liftR_calledToFloor == 6 &&
     !shaftRdoorsClosedStatus.floor6_RdoorClosed
       ? (gameElements.shaftDoorsRW_f6 += 0.25)
       : gameElements.shaftDoorsRW_f6;
 
   gameElements.shaftDoorsLW_f0 =
-    !moveableElems.liftL_calledToF0 &&
+    !moveableElems.liftL_calledToFloor == 0 &&
     !shaftLdoorsClosedStatus.floor0_LdoorClosed
       ? (gameElements.shaftDoorsLW_f0 += 0.25)
       : gameElements.shaftDoorsLW_f0;
 
   gameElements.shaftDoorsLW_f1 =
-    !moveableElems.liftL_calledToF1 &&
+    !moveableElems.liftL_calledToFloor == 1 &&
     !shaftLdoorsClosedStatus.floor1_LdoorClosed
       ? (gameElements.shaftDoorsLW_f1 += 0.25)
       : gameElements.shaftDoorsLW_f1;
 
   gameElements.shaftDoorsLW_f2 =
-    !moveableElems.liftL_calledToF2 &&
+    !moveableElems.liftL_calledToFloor == 2 &&
     !shaftLdoorsClosedStatus.floor2_LdoorClosed
       ? (gameElements.shaftDoorsLW_f2 += 0.25)
       : gameElements.shaftDoorsLW_f2;
 
   gameElements.shaftDoorsLW_f3 =
-    !moveableElems.liftL_calledToF3 &&
+    !moveableElems.liftL_calledToFloor == 3 &&
     !shaftLdoorsClosedStatus.floor3_LdoorClosed
       ? (gameElements.shaftDoorsLW_f3 += 0.25)
       : gameElements.shaftDoorsLW_f3;
 
   gameElements.shaftDoorsLW_f4 =
-    !moveableElems.liftL_calledToF4 &&
+    !moveableElems.liftL_calledToFloor == 4 &&
     !shaftLdoorsClosedStatus.floor4_LdoorClosed
       ? (gameElements.shaftDoorsLW_f4 += 0.25)
       : gameElements.shaftDoorsLW_f4;
 
   gameElements.shaftDoorsLW_f5 =
-    !moveableElems.liftL_calledToF5 &&
+    !moveableElems.liftL_calledToFloor == 5 &&
     !shaftLdoorsClosedStatus.floor5_LdoorClosed
       ? (gameElements.shaftDoorsLW_f5 += 0.25)
       : gameElements.shaftDoorsLW_f5;
 
   gameElements.shaftDoorsLW_f6 =
-    !moveableElems.liftL_calledToF6 &&
+    !moveableElems.liftL_calledToFloor == 6 &&
     !shaftLdoorsClosedStatus.floor6_LdoorClosed
       ? (gameElements.shaftDoorsLW_f6 += 0.25)
       : gameElements.shaftDoorsLW_f6;
 
   // __________________________________________________ OPEN-DOORS __________________________________________________
   gameElements.shaftDoorsRW_f0 =
-    moveableElems.liftR_calledToF0 &&
-    moveableElems.liftR_isOnFloor0 &&
+    moveableElems.liftR_calledToFloor == 0 &&
+    moveableElems.liftR_isOnFloor == 0 &&
     !shaftRdoorsOpenStatus.floor0_RdoorOpen
       ? (gameElements.shaftDoorsRW_f0 -= 0.25)
       : gameElements.shaftDoorsRW_f0;
 
   gameElements.shaftDoorsRW_f1 =
-    moveableElems.liftR_calledToF1 &&
-    moveableElems.liftR_isOnFloor1 &&
+    moveableElems.liftR_calledToFloor == 1 &&
+    moveableElems.liftR_isOnFloor == 1 &&
     !shaftRdoorsOpenStatus.floor1_RdoorOpen
       ? (gameElements.shaftDoorsRW_f1 -= 0.25)
       : gameElements.shaftDoorsRW_f1;
 
   gameElements.shaftDoorsRW_f2 =
-    moveableElems.liftR_calledToF2 &&
-    moveableElems.liftR_isOnFloor2 &&
+    moveableElems.liftR_calledToFloor == 2 &&
+    moveableElems.liftR_isOnFloor == 2 &&
     !shaftRdoorsOpenStatus.floor2_RdoorOpen
       ? (gameElements.shaftDoorsRW_f2 -= 0.25)
       : gameElements.shaftDoorsRW_f2;
 
   gameElements.shaftDoorsRW_f3 =
-    moveableElems.liftR_calledToF3 &&
-    moveableElems.liftR_isOnFloor3 &&
+    moveableElems.liftR_calledToFloor == 3 &&
+    moveableElems.liftR_isOnFloor == 3 &&
     !shaftRdoorsOpenStatus.floor3_RdoorOpen
       ? (gameElements.shaftDoorsRW_f3 -= 0.25)
       : gameElements.shaftDoorsRW_f3;
 
   gameElements.shaftDoorsRW_f4 =
-    moveableElems.liftR_calledToF4 &&
-    moveableElems.liftR_isOnFloor4 &&
+    moveableElems.liftR_calledToFloor == 4 &&
+    moveableElems.liftR_isOnFloor == 4 &&
     !shaftRdoorsOpenStatus.floor4_RdoorOpen
       ? (gameElements.shaftDoorsRW_f4 -= 0.25)
       : gameElements.shaftDoorsRW_f4;
 
   gameElements.shaftDoorsRW_f5 =
-    moveableElems.liftR_calledToF5 &&
-    moveableElems.liftR_isOnFloor5 &&
+    moveableElems.liftR_calledToFloor == 5 &&
+    moveableElems.liftR_isOnFloor == 5 &&
     !shaftRdoorsOpenStatus.floor5_RdoorOpen
       ? (gameElements.shaftDoorsRW_f5 -= 0.25)
       : gameElements.shaftDoorsRW_f5;
 
   gameElements.shaftDoorsRW_f6 =
-    moveableElems.liftR_calledToF6 &&
-    moveableElems.liftR_isOnFloor6 &&
+    moveableElems.liftR_calledToFloor == 6 &&
+    moveableElems.liftR_isOnFloor == 6 &&
     !shaftRdoorsOpenStatus.floor6_RdoorOpen
       ? (gameElements.shaftDoorsRW_f6 -= 0.25)
       : gameElements.shaftDoorsRW_f6;
 
   gameElements.shaftDoorsLW_f0 =
-    moveableElems.liftL_calledToF0 &&
-    moveableElems.liftL_isOnFloor0 &&
+    moveableElems.liftL_calledToFloor == 0 &&
+    moveableElems.liftL_isOnFloor == 0 &&
     !shaftLdoorsOpenStatus.floor0_LdoorOpen
       ? (gameElements.shaftDoorsLW_f0 -= 0.25)
       : gameElements.shaftDoorsLW_f0;
 
   gameElements.shaftDoorsLW_f1 =
-    moveableElems.liftL_calledToF1 &&
-    moveableElems.liftL_isOnFloor1 &&
+    moveableElems.liftL_calledToFloor == 1 &&
+    moveableElems.liftL_isOnFloor == 1 &&
     !shaftLdoorsOpenStatus.floor1_LdoorOpen
       ? (gameElements.shaftDoorsLW_f1 -= 0.25)
       : gameElements.shaftDoorsLW_f1;
 
   gameElements.shaftDoorsLW_f2 =
-    moveableElems.liftL_calledToF2 &&
-    moveableElems.liftL_isOnFloor2 &&
+    moveableElems.liftL_calledToFloor == 2 &&
+    moveableElems.liftL_isOnFloor == 2 &&
     !shaftLdoorsOpenStatus.floor2_LdoorOpen
       ? (gameElements.shaftDoorsLW_f2 -= 0.25)
       : gameElements.shaftDoorsLW_f2;
 
   gameElements.shaftDoorsLW_f3 =
-    moveableElems.liftL_calledToF3 &&
-    moveableElems.liftL_isOnFloor3 &&
+    moveableElems.liftL_calledToFloor == 3 &&
+    moveableElems.liftL_isOnFloor == 3 &&
     !shaftLdoorsOpenStatus.floor3_LdoorOpen
       ? (gameElements.shaftDoorsLW_f3 -= 0.25)
       : gameElements.shaftDoorsLW_f3;
 
   gameElements.shaftDoorsLW_f4 =
-    moveableElems.liftL_calledToF4 &&
-    moveableElems.liftL_isOnFloor4 &&
+    moveableElems.liftL_calledToFloor == 4 &&
+    moveableElems.liftL_isOnFloor == 4 &&
     !shaftLdoorsOpenStatus.floor4_LdoorOpen
       ? (gameElements.shaftDoorsLW_f4 -= 0.25)
       : gameElements.shaftDoorsLW_f4;
 
   gameElements.shaftDoorsLW_f5 =
-    moveableElems.liftL_calledToF5 &&
-    moveableElems.liftL_isOnFloor5 &&
+    moveableElems.liftL_calledToFloor == 5 &&
+    moveableElems.liftL_isOnFloor == 5 &&
     !shaftLdoorsOpenStatus.floor5_LdoorOpen
       ? (gameElements.shaftDoorsLW_f5 -= 0.25)
       : gameElements.shaftDoorsLW_f5;
 
   gameElements.shaftDoorsLW_f6 =
-    moveableElems.liftL_calledToF6 &&
-    moveableElems.liftL_isOnFloor6 &&
+    moveableElems.liftL_calledToFloor == 6 &&
+    moveableElems.liftL_isOnFloor == 6 &&
     !shaftLdoorsOpenStatus.floor6_LdoorOpen
       ? (gameElements.shaftDoorsLW_f6 -= 0.25)
       : gameElements.shaftDoorsLW_f6;
@@ -855,22 +855,6 @@ function playerOnFloorCheck() {
       : moveableElems.playerPosY === floorLiftLevels.floor6_YPos + 48
       ? 6
       : 101;
-  // moveableElems.playerOnFloor =
-  //   moveableElems.playerPosY === floorLiftLevels.floor0_YPos + 48
-  //     ? 0
-  //     : moveableElems.playerPosY === floorLiftLevels.floor1_YPos + 48
-  //     ? 1
-  //     : moveableElems.playerPosY === floorLiftLevels.floor2_YPos + 48
-  //     ? 2
-  //     : moveableElems.playerPosY === floorLiftLevels.floor3_YPos + 48
-  //     ? 3
-  //     : moveableElems.playerPosY === floorLiftLevels.floor4_YPos + 48
-  //     ? 4
-  //     : moveableElems.playerPosY === floorLiftLevels.floor5_YPos + 48
-  //     ? 5
-  //     : moveableElems.playerPosY === floorLiftLevels.floor6_YPos + 48
-  //     ? 6
-  //     : 0;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
@@ -878,125 +862,118 @@ function playerOnFloorCheck() {
 // Lift Floor-Check logic Right
 function liftsPosUpdate() {
   if (moveableElems.liftR_YPos === floorLiftLevels.floor0_YPos) {
-    moveableElems.liftR_isOnFloor0 = true;
+    moveableElems.liftR_isOnFloor = 0;
     moveableElems.liftR_isMoving = false;
   }
   if (moveableElems.liftR_YPos === floorLiftLevels.floor1_YPos) {
-    moveableElems.liftR_isOnFloor1 = true;
+    moveableElems.liftR_isOnFloor = 1;
     moveableElems.liftR_isMoving = false;
   }
   if (moveableElems.liftR_YPos === floorLiftLevels.floor2_YPos) {
-    moveableElems.liftR_isOnFloor2 = true;
+    moveableElems.liftR_isOnFloor = 2;
     moveableElems.liftR_isMoving = false;
   }
   if (moveableElems.liftR_YPos === floorLiftLevels.floor3_YPos) {
-    moveableElems.liftR_isOnFloor3 = true;
+    moveableElems.liftR_isOnFloor = 3;
     moveableElems.liftR_isMoving = false;
   }
   if (moveableElems.liftR_YPos === floorLiftLevels.floor4_YPos) {
-    moveableElems.liftR_isOnFloor4 = true;
+    moveableElems.liftR_isOnFloor = 4;
     moveableElems.liftR_isMoving = false;
   }
   if (moveableElems.liftR_YPos === floorLiftLevels.floor5_YPos) {
-    moveableElems.liftR_isOnFloor5 = true;
+    moveableElems.liftR_isOnFloor = 5;
     moveableElems.liftR_isMoving = false;
   }
   if (moveableElems.liftR_YPos === floorLiftLevels.floor6_YPos) {
-    moveableElems.liftR_isOnFloor6 = true;
+    moveableElems.liftR_isOnFloor = 6;
     moveableElems.liftR_isMoving = false;
   }
   // Lift Floor-Check logic Left
   if (moveableElems.liftL_YPos === floorLiftLevels.floor0_YPos) {
-    moveableElems.liftL_isOnFloor0 = true;
+    moveableElems.liftL_isOnFloor = 0;
     moveableElems.liftL_isMoving = false;
   }
   if (moveableElems.liftL_YPos === floorLiftLevels.floor1_YPos) {
-    moveableElems.liftL_isOnFloor1 = true;
+    moveableElems.liftL_isOnFloor = 1;
     moveableElems.liftL_isMoving = false;
   }
   if (moveableElems.liftL_YPos === floorLiftLevels.floor2_YPos) {
-    moveableElems.liftL_isOnFloor2 = true;
+    moveableElems.liftL_isOnFloor = 2;
     moveableElems.liftL_isMoving = false;
   }
   if (moveableElems.liftL_YPos === floorLiftLevels.floor3_YPos) {
-    moveableElems.liftL_isOnFloor3 = true;
+    moveableElems.liftL_isOnFloor = 3;
     moveableElems.liftL_isMoving = false;
   }
   if (moveableElems.liftL_YPos === floorLiftLevels.floor4_YPos) {
-    moveableElems.liftL_isOnFloor4 = true;
+    moveableElems.liftL_isOnFloor = 4;
     moveableElems.liftL_isMoving = false;
   }
   if (moveableElems.liftL_YPos === floorLiftLevels.floor5_YPos) {
-    moveableElems.liftL_isOnFloor5 = true;
+    moveableElems.liftL_isOnFloor = 5;
     moveableElems.liftL_isMoving = false;
   }
   if (moveableElems.liftL_YPos === floorLiftLevels.floor6_YPos) {
-    moveableElems.liftL_isOnFloor6 = true;
+    moveableElems.liftL_isOnFloor = 6;
     moveableElems.liftL_isMoving = false;
   }
 
   // LIFT MOVEMENT LOGIC
-  if (moveableElems.liftR_calledToF0) {
-    if (!moveableElems.liftR_isOnFloor0 && shaftRdoorsClosedCheck()) {
+  if (moveableElems.liftR_calledToFloor == 0) {
+    if (!moveableElems.liftR_isOnFloor == 0 && shaftRdoorsClosedCheck()) {
       moveableElems.liftR_isMoving = true;
-      resetRliftFloorStatus();
       moveableElems.liftR_YPos += gameElements.liftSpeed;
     }
   }
-  if (moveableElems.liftR_calledToF1) {
-    if (!moveableElems.liftR_isOnFloor1 && shaftRdoorsClosedCheck()) {
+  if (moveableElems.liftR_calledToFloor == 1) {
+    if (!moveableElems.liftR_isOnFloor == 1 && shaftRdoorsClosedCheck()) {
       moveableElems.liftR_isMoving = true;
-      resetRliftFloorStatus();
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor1_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToF2) {
-    if (!moveableElems.liftR_isOnFloor2 && shaftRdoorsClosedCheck()) {
+  if (moveableElems.liftR_calledToFloor == 2) {
+    if (!moveableElems.liftR_isOnFloor == 2 && shaftRdoorsClosedCheck()) {
       moveableElems.liftR_isMoving = true;
-      resetRliftFloorStatus();
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor2_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToF3) {
-    if (!moveableElems.liftR_isOnFloor3 && shaftRdoorsClosedCheck()) {
+  if (moveableElems.liftR_calledToFloor == 3) {
+    if (!moveableElems.liftR_isOnFloor == 3 && shaftRdoorsClosedCheck()) {
       moveableElems.liftR_isMoving = true;
-      resetRliftFloorStatus();
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor3_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToF4) {
-    if (!moveableElems.liftR_isOnFloor4 && shaftRdoorsClosedCheck()) {
+  if (moveableElems.liftR_calledToFloor == 4) {
+    if (!moveableElems.liftR_isOnFloor == 4 && shaftRdoorsClosedCheck()) {
       moveableElems.liftR_isMoving = true;
-      resetRliftFloorStatus();
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor4_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToF5) {
-    if (!moveableElems.liftR_isOnFloor5 && shaftRdoorsClosedCheck()) {
+  if (moveableElems.liftR_calledToFloor == 5) {
+    if (!moveableElems.liftR_isOnFloor == 5 && shaftRdoorsClosedCheck()) {
       moveableElems.liftR_isMoving = true;
-      resetRliftFloorStatus();
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor5_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToF6) {
-    if (!moveableElems.liftR_isOnFloor6 && shaftRdoorsClosedCheck()) {
+  if (moveableElems.liftR_calledToFloor == 6) {
+    if (!moveableElems.liftR_isOnFloor == 6 && shaftRdoorsClosedCheck()) {
       moveableElems.liftR_isMoving = true;
-      resetRliftFloorStatus();
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor6_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
@@ -1006,116 +983,69 @@ function liftsPosUpdate() {
 
   //__________________________________ LEFT LIFT __________________________________
 
-  if (moveableElems.liftL_calledToF0) {
-    if (!moveableElems.liftL_isOnFloor0 && shaftLdoorsClosedCheck()) {
+  if (moveableElems.liftL_calledToFloor == 0) {
+    if (!moveableElems.liftL_isOnFloor == 0 && shaftLdoorsClosedCheck()) {
       moveableElems.liftL_isMoving = true;
-      resetLliftFloorStatus();
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor0_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToF1) {
-    if (!moveableElems.liftL_isOnFloor1 && shaftLdoorsClosedCheck()) {
+  if (moveableElems.liftL_calledToFloor == 1) {
+    if (!moveableElems.liftL_isOnFloor == 1 && shaftLdoorsClosedCheck()) {
       moveableElems.liftL_isMoving = true;
-      resetLliftFloorStatus();
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor1_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToF2) {
-    if (!moveableElems.liftL_isOnFloor2 && shaftLdoorsClosedCheck()) {
+  if (moveableElems.liftL_calledToFloor == 2) {
+    if (!moveableElems.liftL_isOnFloor == 2 && shaftLdoorsClosedCheck()) {
       moveableElems.liftL_isMoving = true;
-      resetLliftFloorStatus();
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor2_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToF3) {
-    if (!moveableElems.liftL_isOnFloor3 && shaftLdoorsClosedCheck()) {
+  if (moveableElems.liftL_calledToFloor == 3) {
+    if (!moveableElems.liftL_isOnFloor == 3 && shaftLdoorsClosedCheck()) {
       moveableElems.liftL_isMoving = true;
-      resetLliftFloorStatus();
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor3_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToF4) {
-    if (!moveableElems.liftL_isOnFloor4 && shaftLdoorsClosedCheck()) {
+  if (moveableElems.liftL_calledToFloor == 4) {
+    if (!moveableElems.liftL_isOnFloor == 4 && shaftLdoorsClosedCheck()) {
       moveableElems.liftL_isMoving = true;
-      resetLliftFloorStatus();
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor4_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToF5) {
-    if (!moveableElems.liftL_isOnFloor5 && shaftLdoorsClosedCheck()) {
+  if (moveableElems.liftL_calledToFloor == 5) {
+    if (!moveableElems.liftL_isOnFloor == 5 && shaftLdoorsClosedCheck()) {
       moveableElems.liftL_isMoving = true;
-      resetLliftFloorStatus();
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor5_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToF6) {
-    if (!moveableElems.liftL_isOnFloor6 && shaftLdoorsClosedCheck()) {
+  if (moveableElems.liftL_calledToFloor == 6) {
+    if (!moveableElems.liftL_isOnFloor == 6 && shaftLdoorsClosedCheck()) {
       moveableElems.liftL_isMoving = true;
-      resetLliftFloorStatus();
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor6_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-}
-
-function resetRliftFloorSelection() {
-  moveableElems.liftR_calledToF0 = false;
-  moveableElems.liftR_calledToF1 = false;
-  moveableElems.liftR_calledToF2 = false;
-  moveableElems.liftR_calledToF3 = false;
-  moveableElems.liftR_calledToF4 = false;
-  moveableElems.liftR_calledToF5 = false;
-  moveableElems.liftR_calledToF6 = false;
-}
-
-function resetLliftFloorSelection() {
-  moveableElems.liftL_calledToF0 = false;
-  moveableElems.liftL_calledToF1 = false;
-  moveableElems.liftL_calledToF2 = false;
-  moveableElems.liftL_calledToF3 = false;
-  moveableElems.liftL_calledToF4 = false;
-  moveableElems.liftL_calledToF5 = false;
-  moveableElems.liftL_calledToF6 = false;
-}
-
-function resetRliftFloorStatus() {
-  moveableElems.liftR_isOnFloor0 = false;
-  moveableElems.liftR_isOnFloor1 = false;
-  moveableElems.liftR_isOnFloor2 = false;
-  moveableElems.liftR_isOnFloor3 = false;
-  moveableElems.liftR_isOnFloor4 = false;
-  moveableElems.liftR_isOnFloor5 = false;
-  moveableElems.liftR_isOnFloor6 = false;
-}
-
-function resetLliftFloorStatus() {
-  moveableElems.liftL_isOnFloor0 = false;
-  moveableElems.liftL_isOnFloor1 = false;
-  moveableElems.liftL_isOnFloor2 = false;
-  moveableElems.liftL_isOnFloor3 = false;
-  moveableElems.liftL_isOnFloor4 = false;
-  moveableElems.liftL_isOnFloor5 = false;
-  moveableElems.liftL_isOnFloor6 = false;
 }
 
 function shaftRdoorsClosedCheck() {
