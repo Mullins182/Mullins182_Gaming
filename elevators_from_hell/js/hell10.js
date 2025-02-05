@@ -359,9 +359,9 @@ function drawLabelsLogic() {
     createLabel(
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
-      "<PlayerOnFloor> " +
-        moveableElems.playerOnFloor +
-        " <PlayerOnLift?> " +
+      "<LiftLOnFloor> " +
+        moveableElems.liftL_isOnFloor +
+        " <LiftLCalledTo> " +
         moveableElems.liftL_calledToFloor,
       "63px Arial Black",
       "gold",
@@ -630,85 +630,85 @@ function shaftDoorsLogic() {
 
   // __________________________________________________ CLOSE-DOORS __________________________________________________
   gameElements.shaftDoorsRW_f0 =
-    !moveableElems.liftR_calledToFloor == 0 &&
+    moveableElems.liftR_calledToFloor != 0 &&
     !shaftRdoorsClosedStatus.floor0_RdoorClosed
       ? (gameElements.shaftDoorsRW_f0 += 0.25)
       : gameElements.shaftDoorsRW_f0;
 
   gameElements.shaftDoorsRW_f1 =
-    !moveableElems.liftR_calledToFloor == 1 &&
+    moveableElems.liftR_calledToFloor != 1 &&
     !shaftRdoorsClosedStatus.floor1_RdoorClosed
       ? (gameElements.shaftDoorsRW_f1 += 0.25)
       : gameElements.shaftDoorsRW_f1;
 
   gameElements.shaftDoorsRW_f2 =
-    !moveableElems.liftR_calledToFloor == 2 &&
+    moveableElems.liftR_calledToFloor != 2 &&
     !shaftRdoorsClosedStatus.floor2_RdoorClosed
       ? (gameElements.shaftDoorsRW_f2 += 0.25)
       : gameElements.shaftDoorsRW_f2;
 
   gameElements.shaftDoorsRW_f3 =
-    !moveableElems.liftR_calledToFloor == 3 &&
+    moveableElems.liftR_calledToFloor != 3 &&
     !shaftRdoorsClosedStatus.floor3_RdoorClosed
       ? (gameElements.shaftDoorsRW_f3 += 0.25)
       : gameElements.shaftDoorsRW_f3;
 
   gameElements.shaftDoorsRW_f4 =
-    !moveableElems.liftR_calledToFloor == 4 &&
+    moveableElems.liftR_calledToFloor != 4 &&
     !shaftRdoorsClosedStatus.floor4_RdoorClosed
       ? (gameElements.shaftDoorsRW_f4 += 0.25)
       : gameElements.shaftDoorsRW_f4;
 
   gameElements.shaftDoorsRW_f5 =
-    !moveableElems.liftR_calledToFloor == 5 &&
+    moveableElems.liftR_calledToFloor != 5 &&
     !shaftRdoorsClosedStatus.floor5_RdoorClosed
       ? (gameElements.shaftDoorsRW_f5 += 0.25)
       : gameElements.shaftDoorsRW_f5;
 
   gameElements.shaftDoorsRW_f6 =
-    !moveableElems.liftR_calledToFloor == 6 &&
+    moveableElems.liftR_calledToFloor != 6 &&
     !shaftRdoorsClosedStatus.floor6_RdoorClosed
       ? (gameElements.shaftDoorsRW_f6 += 0.25)
       : gameElements.shaftDoorsRW_f6;
 
   gameElements.shaftDoorsLW_f0 =
-    !moveableElems.liftL_calledToFloor == 0 &&
+    moveableElems.liftL_calledToFloor != 0 &&
     !shaftLdoorsClosedStatus.floor0_LdoorClosed
       ? (gameElements.shaftDoorsLW_f0 += 0.25)
       : gameElements.shaftDoorsLW_f0;
 
   gameElements.shaftDoorsLW_f1 =
-    !moveableElems.liftL_calledToFloor == 1 &&
+    moveableElems.liftL_calledToFloor != 1 &&
     !shaftLdoorsClosedStatus.floor1_LdoorClosed
       ? (gameElements.shaftDoorsLW_f1 += 0.25)
       : gameElements.shaftDoorsLW_f1;
 
   gameElements.shaftDoorsLW_f2 =
-    !moveableElems.liftL_calledToFloor == 2 &&
+    moveableElems.liftL_calledToFloor != 2 &&
     !shaftLdoorsClosedStatus.floor2_LdoorClosed
       ? (gameElements.shaftDoorsLW_f2 += 0.25)
       : gameElements.shaftDoorsLW_f2;
 
   gameElements.shaftDoorsLW_f3 =
-    !moveableElems.liftL_calledToFloor == 3 &&
+    moveableElems.liftL_calledToFloor != 3 &&
     !shaftLdoorsClosedStatus.floor3_LdoorClosed
       ? (gameElements.shaftDoorsLW_f3 += 0.25)
       : gameElements.shaftDoorsLW_f3;
 
   gameElements.shaftDoorsLW_f4 =
-    !moveableElems.liftL_calledToFloor == 4 &&
+    moveableElems.liftL_calledToFloor != 4 &&
     !shaftLdoorsClosedStatus.floor4_LdoorClosed
       ? (gameElements.shaftDoorsLW_f4 += 0.25)
       : gameElements.shaftDoorsLW_f4;
 
   gameElements.shaftDoorsLW_f5 =
-    !moveableElems.liftL_calledToFloor == 5 &&
+    moveableElems.liftL_calledToFloor != 5 &&
     !shaftLdoorsClosedStatus.floor5_LdoorClosed
       ? (gameElements.shaftDoorsLW_f5 += 0.25)
       : gameElements.shaftDoorsLW_f5;
 
   gameElements.shaftDoorsLW_f6 =
-    !moveableElems.liftL_calledToFloor == 6 &&
+    moveableElems.liftL_calledToFloor != 6 &&
     !shaftLdoorsClosedStatus.floor6_LdoorClosed
       ? (gameElements.shaftDoorsLW_f6 += 0.25)
       : gameElements.shaftDoorsLW_f6;
@@ -919,15 +919,15 @@ function liftsPosUpdate() {
     moveableElems.liftL_isMoving = false;
   }
 
-  // LIFT MOVEMENT LOGIC
+  // LIFT MOVEMENT LOGIC - RIGHT LIFT
   if (moveableElems.liftR_calledToFloor == 0) {
-    if (!moveableElems.liftR_isOnFloor == 0 && shaftRdoorsClosedCheck()) {
+    if (moveableElems.liftR_isOnFloor != 0 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos += gameElements.liftSpeed;
     }
   }
   if (moveableElems.liftR_calledToFloor == 1) {
-    if (!moveableElems.liftR_isOnFloor == 1 && shaftRdoorsClosedCheck()) {
+    if (moveableElems.liftR_isOnFloor != 1 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor1_YPos
@@ -936,7 +936,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftR_calledToFloor == 2) {
-    if (!moveableElems.liftR_isOnFloor == 2 && shaftRdoorsClosedCheck()) {
+    if (moveableElems.liftR_isOnFloor != 2 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor2_YPos
@@ -945,7 +945,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftR_calledToFloor == 3) {
-    if (!moveableElems.liftR_isOnFloor == 3 && shaftRdoorsClosedCheck()) {
+    if (moveableElems.liftR_isOnFloor != 3 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor3_YPos
@@ -954,7 +954,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftR_calledToFloor == 4) {
-    if (!moveableElems.liftR_isOnFloor == 4 && shaftRdoorsClosedCheck()) {
+    if (moveableElems.liftR_isOnFloor != 4 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor4_YPos
@@ -963,7 +963,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftR_calledToFloor == 5) {
-    if (!moveableElems.liftR_isOnFloor == 5 && shaftRdoorsClosedCheck()) {
+    if (moveableElems.liftR_isOnFloor != 5 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor5_YPos
@@ -972,7 +972,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftR_calledToFloor == 6) {
-    if (!moveableElems.liftR_isOnFloor == 6 && shaftRdoorsClosedCheck()) {
+    if (moveableElems.liftR_isOnFloor != 6 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
         moveableElems.liftR_YPos < floorLiftLevels.floor6_YPos
@@ -984,7 +984,7 @@ function liftsPosUpdate() {
   //__________________________________ LEFT LIFT __________________________________
 
   if (moveableElems.liftL_calledToFloor == 0) {
-    if (!moveableElems.liftL_isOnFloor == 0 && shaftLdoorsClosedCheck()) {
+    if (moveableElems.liftL_isOnFloor != 0 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor0_YPos
@@ -993,7 +993,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftL_calledToFloor == 1) {
-    if (!moveableElems.liftL_isOnFloor == 1 && shaftLdoorsClosedCheck()) {
+    if (moveableElems.liftL_isOnFloor != 1 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor1_YPos
@@ -1002,7 +1002,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftL_calledToFloor == 2) {
-    if (!moveableElems.liftL_isOnFloor == 2 && shaftLdoorsClosedCheck()) {
+    if (moveableElems.liftL_isOnFloor != 2 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor2_YPos
@@ -1011,7 +1011,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftL_calledToFloor == 3) {
-    if (!moveableElems.liftL_isOnFloor == 3 && shaftLdoorsClosedCheck()) {
+    if (moveableElems.liftL_isOnFloor != 3 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor3_YPos
@@ -1020,7 +1020,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftL_calledToFloor == 4) {
-    if (!moveableElems.liftL_isOnFloor == 4 && shaftLdoorsClosedCheck()) {
+    if (moveableElems.liftL_isOnFloor != 4 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor4_YPos
@@ -1029,7 +1029,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftL_calledToFloor == 5) {
-    if (!moveableElems.liftL_isOnFloor == 5 && shaftLdoorsClosedCheck()) {
+    if (moveableElems.liftL_isOnFloor != 5 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor5_YPos
@@ -1038,7 +1038,7 @@ function liftsPosUpdate() {
     }
   }
   if (moveableElems.liftL_calledToFloor == 6) {
-    if (!moveableElems.liftL_isOnFloor == 6 && shaftLdoorsClosedCheck()) {
+    if (moveableElems.liftL_isOnFloor != 6 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
         moveableElems.liftL_YPos < floorLiftLevels.floor6_YPos
@@ -1048,7 +1048,7 @@ function liftsPosUpdate() {
   }
 }
 
-function shaftRdoorsClosedCheck() {
+function shaftRdoorsClosed() {
   return Object.values(shaftRdoorsClosedStatus).every(Boolean);
 }
 
@@ -1056,7 +1056,7 @@ function shaftRdoorsOpenCheck() {
   return Object.values(shaftRdoorsOpenStatus).some(Boolean);
 }
 
-function shaftLdoorsClosedCheck() {
+function shaftLdoorsClosed() {
   return Object.values(shaftLdoorsClosedStatus).every(Boolean);
 }
 
