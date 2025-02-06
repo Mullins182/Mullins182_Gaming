@@ -303,14 +303,14 @@ function initGame() {
 async function gameRoutine() {
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-  drawLabelsLogic();
-  playerMoveAndCollisionsLogic();
-  playerOnFloorCheck();
+  drawLabels();
+  movementAndCollisions();
+  playerIsOnFloor();
   liftsPosUpdate();
-  shaftDoorsLogic();
-  exitDoorLogic();
+  shaftDoors();
+  exitDoor();
   automaticLiftControl();
-  elementsDrawingLogic();
+  drawGameElements();
 
   await new Promise((resolve) => setTimeout(resolve, 15));
 
@@ -321,7 +321,7 @@ async function gameRoutine() {
 // ___________________________              ___________________________
 // ___________________________              ___________________________
 
-function drawLabelsLogic() {
+function drawLabels() {
   createLabel(
     185,
     gameCanvas.height - 75,
@@ -391,7 +391,7 @@ function drawLabelsLogic() {
   }
 }
 
-function playerMoveAndCollisionsLogic() {
+function movementAndCollisions() {
   if (!playerCollisionCheck() || playerCanLeave()) {
     playerPosUpdate(gameElements.playerMovement);
   } else {
@@ -404,7 +404,7 @@ function playerMoveAndCollisionsLogic() {
   }
 }
 
-function elementsDrawingLogic() {
+function drawGameElements() {
   if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
     drawLifts();
     drawCeiling();
@@ -458,7 +458,7 @@ function automaticLiftControl() {
   }
 }
 
-function exitDoorLogic() {
+function exitDoor() {
   if (moveableElems.exitDoorUnlocked) {
     gameElements.exitSignColor = "yellowgreen";
     gameElements.exitSignShadowColor = "darkgreen";
@@ -567,7 +567,7 @@ function playerCollisionCheck() {
 
 // ___________________________ SHAFT-DOORS-LOGIC ___________________________
 
-function shaftDoorsLogic() {
+function shaftDoors() {
   shaftRdoorsClosedStatus.floor0_RdoorClosed =
     gameElements.shaftDoorsRW_f0 > 38.5 ? true : false;
   shaftRdoorsOpenStatus.floor0_RdoorOpen =
@@ -838,7 +838,7 @@ function playerPosUpdate(moveDirection) {
     : moveableElems.playerPosY;
 }
 
-function playerOnFloorCheck() {
+function playerIsOnFloor() {
   moveableElems.playerOnFloor =
     moveableElems.playerPosY > gameElements.floor1_YPos
       ? 0
