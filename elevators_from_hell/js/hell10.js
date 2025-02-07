@@ -6,6 +6,21 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
+let lastTime = 0;
+let animationInterval = 250; // Initial value while idling
+
+// Sprite-Variablen
+let playerSpriteIdle = new Image();
+playerSpriteIdle.src = "./assets/sprites/player/idle/Idle.png";
+let playerSpriteIdle2 = new Image();
+playerSpriteIdle2.src = "./assets/sprites/player/idle/Idle_2.png";
+let playerSpriteRun = new Image();
+playerSpriteRun.src = "./assets/sprites/player/run/Run.png";
+const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
+const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
+let currentFrame = 0;
+let totalFrames = 7; // Anzahl der Frames in Ihrem Spritesheet
+
 let gameElements = {
   floorsWidth: gameCanvas.width * 0.9,
   floorsHeight: 6,
@@ -47,9 +62,9 @@ let gameElements = {
   liftsWidth: 75,
   liftsHeight: 88,
   liftSpeed: 1.25,
-  playerHeight: 40,
-  playerWidth: 20,
-  playerSpeed: 2.35,
+  playerHeight: 110,
+  playerWidth: 100,
+  playerSpeed: 2.75,
   playerMovement: "stop",
 
   // TOP ELEMENTS LEFT SHAFT
@@ -295,12 +310,23 @@ initGame();
 
 // ___________________________ GAME INI ___________________________
 function initGame() {
-  gameRoutine();
+  ctx.imageSmoothingEnabled = false;
+  requestAnimationFrame(gameRoutine);
 }
 // ___________________________              ___________________________
 // ___________________________ GAME-ROUTINE ___________________________
 // ___________________________              ___________________________
-async function gameRoutine() {
+async function gameRoutine(timestamp) {
+  if (!lastTime) lastTime = timestamp;
+  const elapsed = timestamp - lastTime;
+
+  if (elapsed > animationInterval) {
+    lastTime = timestamp;
+    currentFrame = (currentFrame + 1) % totalFrames;
+    // Frame-Update
+    currentFrame = (currentFrame + 1) % totalFrames;
+  }
+
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
   drawLabels();
@@ -557,10 +583,12 @@ function playerOnLift(keyDown) {
 
 function playerCollisionCheck() {
   return moveableElems.playerPosX >=
-    gameCanvas.width * 0.95 - gameElements.playerWidth
+    gameCanvas.width * 0.95 - gameElements.playerWidth * 3
     ? true
     : moveableElems.playerPosX <=
-      gameCanvas.width * 0.05 + gameElements.wallsWidth
+      gameCanvas.width * 0.05 +
+        gameElements.wallsWidth -
+        gameElements.playerWidth / 2.2
     ? true
     : false;
 }
@@ -1771,8 +1799,50 @@ function drawFloors() {
 }
 
 function drawPlayer(xPos, yPos) {
-  ctx.fillStyle = "#FF0000";
-  ctx.fillRect(xPos, yPos, gameElements.playerWidth, gameElements.playerHeight);
+  ctx.save(); // Speichern des aktuellen Kontextzustands
+
+  if (gameElements.playerMovement === "left") {
+    // Spiegeln für Bewegung nach links
+    ctx.scale(-1, 1);
+    xPos = -xPos - gameElements.playerWidth; // Anpassen der X-Position für gespiegelte Zeichnung
+  }
+
+  if (gameElements.playerMovement === "stop") {
+    totalFrames = 7;
+    animationInterval = 200;
+
+    ctx.drawImage(
+      playerSpriteIdle,
+      currentFrame * spriteWidth,
+      0,
+      spriteWidth,
+      spriteHeight,
+      xPos,
+      yPos,
+      gameElements.playerWidth,
+      gameElements.playerHeight
+    );
+  } else if (
+    gameElements.playerMovement === "left" ||
+    gameElements.playerMovement === "right"
+  ) {
+    totalFrames = 10;
+    animationInterval = 50;
+
+    ctx.drawImage(
+      playerSpriteRun,
+      currentFrame * spriteWidth,
+      0,
+      spriteWidth,
+      spriteHeight,
+      xPos,
+      yPos,
+      gameElements.playerWidth,
+      gameElements.playerHeight
+    );
+  }
+
+  ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }
 
 function createLabel(
