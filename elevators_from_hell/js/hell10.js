@@ -10,12 +10,15 @@ let lastTime = 0;
 let animationInterval = 250; // Initial value while idling
 
 // Sprite-Variablen
-let playerSpriteIdle = new Image();
-playerSpriteIdle.src = "./assets/sprites/player/idle/Idle.png";
-let playerSpriteIdle2 = new Image();
-playerSpriteIdle2.src = "./assets/sprites/player/idle/Idle_2.png";
-let playerSpriteRun = new Image();
-playerSpriteRun.src = "./assets/sprites/player/run/Run.png";
+let spriteSheets = {
+  run: new Image(),
+  idle: new Image(),
+};
+// Vorladen der Spritesheets
+spriteSheets.run.src = "./assets/sprites/player/run/Run.png";
+spriteSheets.idle.src = "./assets/sprites/player/idle/Idle_2.png";
+let playerSprite = spriteSheets.idle;
+
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
 let currentFrame = 0;
@@ -261,16 +264,28 @@ document.addEventListener("keydown", function (event) {
   // Bewegungssteuerung
   switch (event.key) {
     case KEYS.DIRECTIONS.LEFT:
+      changePlayerSprite("left");
+      totalFrames = 10;
+      animationInterval = 100;
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
+      changePlayerSprite("left");
+      totalFrames = 10;
+      animationInterval = 100;
       gameElements.playerMovement = "right";
       break;
     case KEYS.DIRECTIONS.DOWN:
+      changePlayerSprite("stop");
+      totalFrames = 13;
+      animationInterval = 200;
       gameElements.playerMovement = "stop";
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
+      changePlayerSprite("stop");
+      totalFrames = 13;
+      animationInterval = 200;
       gameElements.playerMovement = "stop";
       playerOnLift(false);
       break;
@@ -313,6 +328,16 @@ function initGame() {
   ctx.imageSmoothingEnabled = false;
   requestAnimationFrame(gameRoutine);
 }
+
+function changePlayerSprite(movement) {
+  if (movement === "left" || movement === "right") {
+    playerSprite = spriteSheets.run;
+  } else {
+    playerSprite = spriteSheets.idle;
+  }
+  gameElements.playerMovement = movement;
+}
+
 // ___________________________              ___________________________
 // ___________________________ GAME-ROUTINE ___________________________
 // ___________________________              ___________________________
@@ -1807,40 +1832,17 @@ function drawPlayer(xPos, yPos) {
     xPos = -xPos - gameElements.playerWidth; // Anpassen der X-Position für gespiegelte Zeichnung
   }
 
-  if (gameElements.playerMovement === "stop") {
-    totalFrames = 7;
-    animationInterval = 200;
-
-    ctx.drawImage(
-      playerSpriteIdle,
-      currentFrame * spriteWidth,
-      0,
-      spriteWidth,
-      spriteHeight,
-      xPos,
-      yPos,
-      gameElements.playerWidth,
-      gameElements.playerHeight
-    );
-  } else if (
-    gameElements.playerMovement === "left" ||
-    gameElements.playerMovement === "right"
-  ) {
-    totalFrames = 10;
-    animationInterval = 50;
-
-    ctx.drawImage(
-      playerSpriteRun,
-      currentFrame * spriteWidth,
-      0,
-      spriteWidth,
-      spriteHeight,
-      xPos,
-      yPos,
-      gameElements.playerWidth,
-      gameElements.playerHeight
-    );
-  }
+  ctx.drawImage(
+    playerSprite,
+    currentFrame * spriteWidth,
+    0,
+    spriteWidth,
+    spriteHeight,
+    xPos,
+    yPos,
+    gameElements.playerWidth,
+    gameElements.playerHeight
+  );
 
   ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }

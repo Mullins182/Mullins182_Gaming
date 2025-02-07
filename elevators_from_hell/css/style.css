@@ -6,5 +6,8 @@
   background-color: #000;
 }
 #mainCanvas {
-  background-color: black;
+  background-image: url("images/wallpaper.jpg");
+  background-position: 95px 100px;
+  background-size: 90%;
+  background-repeat: no-repeat;
 }
