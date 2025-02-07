@@ -264,13 +264,19 @@ document.addEventListener("keydown", function (event) {
   // Bewegungssteuerung
   switch (event.key) {
     case KEYS.DIRECTIONS.LEFT:
+      if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
+        break;
+      }
       changePlayerSprite("left");
       totalFrames = 10;
       animationInterval = 100;
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
-      changePlayerSprite("left");
+      if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
+        break;
+      }
+      changePlayerSprite("right");
       totalFrames = 10;
       animationInterval = 100;
       gameElements.playerMovement = "right";
@@ -294,7 +300,6 @@ document.addEventListener("keydown", function (event) {
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
       debugMode = !debugMode;
-      console.log(moveableElems.exitDoorFloorDist);
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
       moveableElems.exitDoorUnlocked = !moveableElems.exitDoorUnlocked;
@@ -412,8 +417,8 @@ function drawLabels() {
       gameCanvas.height * 0.07,
       "<LiftLOnFloor> " +
         moveableElems.liftL_isOnFloor +
-        " <LiftLCalledTo> " +
-        moveableElems.liftL_calledToFloor,
+        " <PlayerOnLift> " +
+        moveableElems.playerOnLiftL,
       "63px Arial Black",
       "gold",
       "black",
@@ -452,6 +457,7 @@ function movementAndCollisions() {
         : (moveableElems.playerPosX += gameElements.playerSpeed);
 
     gameElements.playerMovement = "stop";
+    changePlayerSprite("stop");
   }
 }
 
@@ -532,8 +538,7 @@ function exitDoor() {
 // ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
 
 function playerCanLeave() {
-  return moveableElems.exitDoorPosY <
-    gameCanvas.height * 0.8 - gameElements.playerHeight * 1.15 &&
+  return moveableElems.exitDoorPosY < gameCanvas.height * 0.73 &&
     moveableElems.playerPosX < 500 &&
     moveableElems.playerOnFloor == 0
     ? true
@@ -571,10 +576,9 @@ function playerOnLift(keyDown) {
       (moveableElems.playerOnFloor === 6 && moveableElems.liftL_isOnFloor === 6)
     ) {
       if (
-        moveableElems.playerPosX >
-          gameCanvas.width * 0.199 - gameElements.liftsWidth / 3 &&
+        moveableElems.playerPosX > gameElements.shaftF0LposX_left &&
         moveableElems.playerPosX <
-          gameCanvas.width * 0.199 + gameElements.liftsWidth / 4
+          gameElements.shaftF0RposX_left - gameElements.playerWidth / 1.7
       ) {
         moveableElems.playerOnLiftL = true;
       }
@@ -608,12 +612,12 @@ function playerOnLift(keyDown) {
 
 function playerCollisionCheck() {
   return moveableElems.playerPosX >=
-    gameCanvas.width * 0.95 - gameElements.playerWidth * 3
+    gameCanvas.width * 0.95 - gameElements.playerWidth / 1.85
     ? true
     : moveableElems.playerPosX <=
       gameCanvas.width * 0.05 +
         gameElements.wallsWidth -
-        gameElements.playerWidth / 2.2
+        gameElements.playerWidth / 2.25
     ? true
     : false;
 }
@@ -870,9 +874,7 @@ function shaftDoors() {
 
 function playerPosUpdate(moveDirection) {
   moveableElems.playerPosX =
-    moveableElems.playerOnLiftL || moveableElems.playerOnLiftR
-      ? moveableElems.playerPosX
-      : moveDirection === "left"
+    moveDirection === "left"
       ? (moveableElems.playerPosX -= gameElements.playerSpeed)
       : moveDirection === "right"
       ? (moveableElems.playerPosX += gameElements.playerSpeed)
