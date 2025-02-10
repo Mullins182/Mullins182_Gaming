@@ -403,7 +403,7 @@ function drawLabels() {
       "<LiftLOnFloor> " +
         moveableElems.liftL_isOnFloor +
         " <PlayerOnLift> " +
-        moveableElems.playerOnLiftL,
+        isOnLift,
       "63px Arial Black",
       "gold",
       "black",
@@ -561,9 +561,8 @@ function playerOnLift(getOutOfLift) {
       (moveableElems.playerOnFloor === 6 && moveableElems.liftL_isOnFloor === 6)
     ) {
       if (
-        moveableElems.playerPosX > gameElements.shaftF0LposX_left &&
-        moveableElems.playerPosX <
-          gameElements.shaftF0RposX_left - gameElements.playerWidth / 1.7
+        moveableElems.playerPosX > gameCanvas.width * 0.16 &&
+        moveableElems.playerPosX < gameCanvas.width * 0.185
       ) {
         moveableElems.playerOnLiftL = true;
       }
@@ -584,10 +583,8 @@ function playerOnLift(getOutOfLift) {
       (moveableElems.playerOnFloor === 6 && moveableElems.liftR_isOnFloor === 6)
     ) {
       if (
-        moveableElems.playerPosX >
-          gameCanvas.width * 0.799 - gameElements.liftsWidth / 3 &&
-        moveableElems.playerPosX <
-          gameCanvas.width * 0.799 + gameElements.liftsWidth / 4
+        moveableElems.playerPosX > gameCanvas.width * 0.76 &&
+        moveableElems.playerPosX < gameCanvas.width * 0.79
       ) {
         moveableElems.playerOnLiftR = true;
       }
