@@ -16,7 +16,7 @@ let spriteSheets = {
 };
 // Vorladen der Spritesheets
 spriteSheets.run.src = "./assets/sprites/player/run/Run.png";
-spriteSheets.idle.src = "./assets/sprites/player/idle/Idle_2.png";
+spriteSheets.idle.src = "./assets/sprites/player/idle/Idle.png";
 let playerSprite = spriteSheets.idle;
 
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
@@ -283,14 +283,14 @@ document.addEventListener("keydown", function (event) {
       break;
     case KEYS.DIRECTIONS.DOWN:
       changePlayerSprite("stop");
-      totalFrames = 13;
+      totalFrames = 7;
       animationInterval = 200;
       gameElements.playerMovement = "stop";
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
       changePlayerSprite("stop");
-      totalFrames = 13;
+      totalFrames = 7;
       animationInterval = 200;
       gameElements.playerMovement = "stop";
       playerOnLift(false);
@@ -330,7 +330,7 @@ initGame();
 
 // ___________________________ GAME INI ___________________________
 function initGame() {
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = true;
   requestAnimationFrame(gameRoutine);
 }
 
@@ -392,21 +392,6 @@ function drawLabels() {
     gameElements.exitSignColor,
     1.6
   );
-
-  // createLabel(
-  //   185,
-  //   gameCanvas.height - 75,
-  //   moveableElems.lift,
-  //   "33px Arial Black",
-  //   "gold",
-  //   gameElements.exitSignShadowColor,
-  //   2,
-  //   7,
-  //   20,
-  //   "strokeText",
-  //   gameElements.exitSignColor,
-  //   1.6
-  // );
 
   if (debugMode) {
     let isOnLift =
