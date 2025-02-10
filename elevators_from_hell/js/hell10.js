@@ -532,8 +532,8 @@ function playerCanLeave() {
 
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 
-function playerOnLift(keyDown) {
-  if (keyDown) {
+function playerOnLift(getOutOfLift) {
+  if (getOutOfLift) {
     if (moveableElems.playerOnLiftL) {
       if (!moveableElems.liftL_isMoving && shaftLdoorsOpenCheck()) {
         moveableElems.playerOnLiftL = false;
