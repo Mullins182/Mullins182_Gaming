@@ -336,11 +336,20 @@ function initGame() {
 
 function changePlayerSprite(movement) {
   if (movement === "left" || movement === "right") {
-    playerSprite = spriteSheets.run;
+    if (playerSprite === spriteSheets.run) {
+    } else {
+      playerSprite = spriteSheets.run;
+    }
   } else {
-    playerSprite = spriteSheets.idle;
+    if (playerSprite === spriteSheets.idle) {
+    } else {
+      playerSprite = spriteSheets.idle;
+    }
   }
-  gameElements.playerMovement = movement;
+  gameElements.playerMovement =
+    gameElements.playerMovement === movement
+      ? gameElements.playerMovement
+      : movement;
 }
 
 // ___________________________              ___________________________
