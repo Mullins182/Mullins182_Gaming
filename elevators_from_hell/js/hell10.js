@@ -36,6 +36,8 @@ let gameElements = {
   shaftsLHeight: 113,
   shaftsRHeight: 113,
   exitDoorHeight: 180,
+  floorNumbersColor: "gold",
+  floorNumbersShadowColor: "red",
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -330,7 +332,7 @@ initGame();
 
 // ___________________________ GAME INI ___________________________
 function initGame() {
-  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingEnabled = false;
   requestAnimationFrame(gameRoutine);
 }
 
@@ -437,6 +439,35 @@ function drawLabels() {
       "strokeText",
       "gold",
       3
+    );
+  }
+
+  for (let i = 0; i < 7; i++) {
+    createLabel(
+      gameCanvas.width / 2,
+      i === 0
+        ? gameElements.floor0_YPos - 50
+        : i === 1
+        ? gameElements.floor1_YPos - 50
+        : i === 2
+        ? gameElements.floor2_YPos - 50
+        : i === 3
+        ? gameElements.floor3_YPos - 50
+        : i === 4
+        ? gameElements.floor4_YPos - 50
+        : i === 5
+        ? gameElements.floor5_YPos - 50
+        : gameElements.floor6_YPos - 50,
+      i,
+      "50px Arial Black",
+      "gold",
+      gameElements.floorNumbersShadowColor,
+      1,
+      2,
+      3,
+      "strokeText",
+      gameElements.floorNumbersColor,
+      1.0
     );
   }
 }
