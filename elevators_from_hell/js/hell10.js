@@ -36,8 +36,8 @@ let gameElements = {
   shaftsLHeight: 113,
   shaftsRHeight: 113,
   exitDoorHeight: 180,
-  floorNumbersColor: "gold",
-  floorNumbersShadowColor: "red",
+  floorNumbersColor: "red",
+  floorNumbersShadowColor: "darkred",
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -460,20 +460,20 @@ function drawLabels() {
         : gameElements.floor6_YPos - 50,
       i,
       "50px Arial Black",
-      "gold",
+      "black",
       gameElements.floorNumbersShadowColor,
-      1,
       2,
-      3,
+      7,
+      15,
       "strokeText",
       gameElements.floorNumbersColor,
-      1.0
+      1.6
     );
   }
 }
 
 function movementAndCollisions() {
-  if (!playerCollisionCheck() || playerCanLeave()) {
+  if (!playerCollision() || playerCanLeave()) {
     playerPosUpdate(gameElements.playerMovement);
   } else {
     moveableElems.playerPosX =
@@ -632,7 +632,7 @@ function playerOnLift(getOutOfLift) {
   }
 }
 
-function playerCollisionCheck() {
+function playerCollision() {
   return moveableElems.playerPosX >=
     gameCanvas.width * 0.95 - gameElements.playerWidth / 1.85
     ? true
@@ -1142,7 +1142,7 @@ function shaftLdoorsOpenCheck() {
 }
 
 function drawLifts() {
-  ctx.fillStyle = "#BFBF00";
+  ctx.fillStyle = "#ffd457";
   ctx.fillRect(
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
     moveableElems.liftL_YPos,
