@@ -24,7 +24,7 @@ const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
 let currentFrame = 0;
 let totalFrames = 7; // Anzahl der Frames in Ihrem Spritesheet
 
-let gameElements = {
+const gameElements = {
   floorsWidth: gameCanvas.width * 0.9,
   floorsHeight: 6,
   WallsHeight: gameCanvas.height * 0.89,
@@ -110,7 +110,7 @@ let gameElements = {
   shaftF0RposX_right: gameCanvas.width * 0.823,
 };
 
-let moveableElems = {
+const moveableElems = {
   playerPosX: gameCanvas.width / 2,
   playerPosY:
     gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
@@ -136,7 +136,7 @@ let moveableElems = {
   liftL_calledToFloor: 0,
 };
 
-let shaftRdoorsClosedStatus = {
+const shaftRdoorsClosedStatus = {
   floor0_RdoorClosed: true,
   floor1_RdoorClosed: true,
   floor2_RdoorClosed: true,
@@ -146,7 +146,7 @@ let shaftRdoorsClosedStatus = {
   floor6_RdoorClosed: true,
 };
 
-let shaftLdoorsClosedStatus = {
+const shaftLdoorsClosedStatus = {
   floor0_LdoorClosed: true,
   floor1_LdoorClosed: true,
   floor2_LdoorClosed: true,
@@ -156,7 +156,7 @@ let shaftLdoorsClosedStatus = {
   floor6_LdoorClosed: true,
 };
 
-let shaftRdoorsOpenStatus = {
+const shaftRdoorsOpenStatus = {
   floor0_RdoorOpen: false,
   floor1_RdoorOpen: false,
   floor2_RdoorOpen: false,
@@ -166,7 +166,7 @@ let shaftRdoorsOpenStatus = {
   floor6_RdoorOpen: false,
 };
 
-let shaftLdoorsOpenStatus = {
+const shaftLdoorsOpenStatus = {
   floor0_LdoorOpen: false,
   floor1_LdoorOpen: false,
   floor2_LdoorOpen: false,
@@ -239,12 +239,6 @@ const FLOOR_LEVELS = {
   floor6_YPos: floorLiftLevels.floor6_YPos,
 };
 
-// Hilfsfunktion zur Floor-Level-Bestimmung
-function getFloorLevel(floorNumber) {
-  const floorKey = `floor${floorNumber}_YPos`;
-  return FLOOR_LEVELS[floorKey];
-}
-
 // ___________________________ DEBUGGING ___________________________
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
 let debugMode = false;
@@ -309,6 +303,12 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
+// Hilfsfunktion zur Floor-Level-Bestimmung
+function getFloorLevel(floorNumber) {
+  const floorKey = `floor${floorNumber}_YPos`;
+  return FLOOR_LEVELS[floorKey];
+}
+
 // Floor-Auswahl Logik
 function handleFloorSelection(floorNumber) {
   // Prüfung ob Lift bewegt wird
@@ -328,10 +328,10 @@ function handleFloorSelection(floorNumber) {
   }
 }
 
-initGame();
+initialize();
 
 // ___________________________ GAME INI ___________________________
-function initGame() {
+function initialize() {
   ctx.imageSmoothingEnabled = false;
   requestAnimationFrame(gameRoutine);
 }
