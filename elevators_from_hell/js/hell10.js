@@ -282,14 +282,20 @@ document.addEventListener("keydown", function (event) {
     case KEYS.DIRECTIONS.DOWN:
       changePlayerSprite("stop");
       totalFrames = 7;
-      animationInterval = 200;
+      // animationInterval = 200;
+      currentFrame = 0;
+      animationInterval = 200; // Reset des Intervalls
+      lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
       changePlayerSprite("stop");
       totalFrames = 7;
-      animationInterval = 200;
+      // animationInterval = 200;
+      currentFrame = 0;
+      animationInterval = 200; // Reset des Intervalls
+      lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
       playerOnLift(false);
       break;
@@ -474,19 +480,19 @@ function drawLabels() {
 
 function movementAndCollisions() {
   if (!playerCollision() || playerCanLeave()) {
-    playerPosUpdate(gameElements.playerMovement);
-    isColliding = false; // Spieler kollidiert nicht
+      playerPosUpdate(gameElements.playerMovement);
+      isColliding = false;
   } else {
-    gameElements.playerMovement = "stop";
-    changePlayerSprite("stop");
-    isColliding = true; // Spieler kollidiert
-  
-    moveableElems.playerPosX =
-      moveableElems.playerPosX > 500
-        ? (moveableElems.playerPosX -= gameElements.playerSpeed)
-        : (moveableElems.playerPosX += gameElements.playerSpeed);
-
-      // gameElements.playerMovement = "stop";
+      gameElements.playerMovement = "stop";
+      isColliding = true;
+      // Sichere Initialisierung der Idle-Animation
+      currentFrame = 0;
+      totalFrames = 7;
+      playerSprite = spriteSheets.idle;
+      moveableElems.playerPosX = moveableElems.playerPosX < gameCanvas.width / 2
+      ? moveableElems.playerPosX + 5 : moveableElems.playerPosX - 5;
+      animationInterval = 200; // Reset des Intervalls
+      lastTime = performance.now(); // Reset des Zeitstempels
   }
 }
 
