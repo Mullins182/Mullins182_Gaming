@@ -9,6 +9,8 @@ gameCanvas.height = 900;
 let lastTime = 0;
 let animationInterval = 250; // Initial value while idling
 
+let isColliding = false;
+
 // Sprite-Variablen
 let spriteSheets = {
   run: new Image(),
@@ -339,19 +341,17 @@ function initialize() {
 function changePlayerSprite(movement) {
   if (movement === "left" || movement === "right") {
     if (playerSprite === spriteSheets.run) {
+
     } else {
       playerSprite = spriteSheets.run;
     }
   } else {
     if (playerSprite === spriteSheets.idle) {
+
     } else {
       playerSprite = spriteSheets.idle;
     }
   }
-  gameElements.playerMovement =
-    gameElements.playerMovement === movement
-      ? gameElements.playerMovement
-      : movement;
 }
 
 // ___________________________              ___________________________
@@ -361,11 +361,11 @@ async function gameRoutine(timestamp) {
   if (!lastTime) lastTime = timestamp;
   const elapsed = timestamp - lastTime;
 
-  if (elapsed > animationInterval) {
+  if (elapsed > animationInterval && !isColliding) {
     lastTime = timestamp;
-    currentFrame = (currentFrame + 1) % totalFrames;
+    // currentFrame = (currentFrame + 1) % totalFrames;
     // Frame-Update
-    currentFrame = (currentFrame + 1) % totalFrames;
+    currentFrame = (++currentFrame) % totalFrames;
   }
 
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
@@ -475,14 +475,18 @@ function drawLabels() {
 function movementAndCollisions() {
   if (!playerCollision() || playerCanLeave()) {
     playerPosUpdate(gameElements.playerMovement);
+    isColliding = false; // Spieler kollidiert nicht
   } else {
+    gameElements.playerMovement = "stop";
+    changePlayerSprite("stop");
+    isColliding = true; // Spieler kollidiert
+  
     moveableElems.playerPosX =
       moveableElems.playerPosX > 500
         ? (moveableElems.playerPosX -= gameElements.playerSpeed)
         : (moveableElems.playerPosX += gameElements.playerSpeed);
 
-    gameElements.playerMovement = "stop";
-    changePlayerSprite("stop");
+      // gameElements.playerMovement = "stop";
   }
 }
 
