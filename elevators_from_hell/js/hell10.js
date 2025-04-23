@@ -1868,8 +1868,7 @@ function drawCallElevatorBtns() {
     20,
     40
   );
-
-  drawTriangle(50, 15, 800);
+  // Floor 0
   // Upper Button
   ctx.fillStyle = "#00FF00";
   ctx.fillRect(
@@ -1879,23 +1878,32 @@ function drawCallElevatorBtns() {
     15
   );
   // Lower Button
-  ctx.fillStyle = "#00FF00";
-  ctx.fillRect(
-    gameCanvas.width * 0.25,
-    gameElements.floor0_YPos * 0.95,
-    17,
-    15
+  drawTriangle(
+    gameCanvas.width * 0.5025,
+    gameElements.floor0_YPos * 0.955,
+    12,
+    "greenyellow",
+    "down"
   );
 }
 
-function drawTriangle(posX, posY, width) {
-  ctx.beginPath();
-    ctx.moveTo(posX, posY);      // Erster Eckpunkt
-    ctx.lineTo(posX + width, posY);     // Zweiter Eckpunkt
-    ctx.lineTo(posX + (width / 2), posY + width);     // Dritter Eckpunkt
+function drawTriangle(posX, posY, width, fillColor, dir) {
+  if (dir == "down") {
+    ctx.beginPath();
+      ctx.moveTo(posX, posY);      // Erster Eckpunkt
+      ctx.lineTo(posX + width, posY);     // Zweiter Eckpunkt
+      ctx.lineTo(posX + (width / 2), posY + width);     // Dritter Eckpunkt
+      ctx.closePath();         // Pfad schließen (zurück zum Startpunkt)
+  }
+  if (dir == "up") {
+    ctx.beginPath();
+    ctx.moveTo(posX + width / 2, posY);      // Erster Eckpunkt
+    ctx.lineTo(posX, posY + width);     // Zweiter Eckpunkt
+    ctx.lineTo(posX + width, posY + width);     // Dritter Eckpunkt
     ctx.closePath();         // Pfad schließen (zurück zum Startpunkt)
+  }
     ctx.stroke();            // Linien zeichnen
-    ctx.fillStyle = "greenyellow";
+    ctx.fillStyle = fillColor;
     ctx.fill();             // Optional: Dreieck ausfüllen
 }
 
