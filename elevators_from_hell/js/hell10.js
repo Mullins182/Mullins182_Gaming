@@ -38,8 +38,8 @@ const gameElements = {
   shaftsLHeight: 113,
   shaftsRHeight: 113,
   exitDoorHeight: 180,
-  floorNumbersColor: "red",
-  floorNumbersShadowColor: "darkred",
+  floorNumbersColor: "yellowgreen",
+  floorNumbersShadowColor: "black",
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -448,7 +448,7 @@ function drawLabels() {
 
   for (let i = 0; i < 7; i++) {
     createLabel(
-      gameCanvas.width / 2,
+      gameCanvas.width * 0.89,
       i === 0
         ? gameElements.floor0_YPos - 50
         : i === 1
@@ -466,9 +466,9 @@ function drawLabels() {
       "50px Arial Black",
       "black",
       gameElements.floorNumbersShadowColor,
-      2,
-      7,
-      15,
+      3.5,
+      6,
+      6,
       "strokeText",
       gameElements.floorNumbersColor,
       1.6
@@ -505,6 +505,7 @@ function drawGameElements() {
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     drawLiftDoors();
     drawShaftsElements();
+    drawCallElevatorBtns();
     if (debugMode) {
       drawDebugLine();
     }
@@ -515,6 +516,7 @@ function drawGameElements() {
     drawWalls();
     drawLiftDoors();
     drawShaftsElements();
+    drawCallElevatorBtns();
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     if (debugMode) {
       drawDebugLine();
@@ -1855,6 +1857,46 @@ function drawFloors() {
     gameElements.floorsWidth,
     gameElements.floorsHeight
   );
+}
+
+function drawCallElevatorBtns() {
+  // Plate
+  ctx.fillStyle = "#000";
+  ctx.fillRect(
+    gameCanvas.width / 2,
+    gameElements.floor0_YPos * 0.93,
+    20,
+    40
+  );
+
+  drawTriangle(50, 15, 800);
+  // Upper Button
+  ctx.fillStyle = "#00FF00";
+  ctx.fillRect(
+    gameCanvas.width * 0.25,
+    gameElements.floor0_YPos * 0.93,
+    17,
+    15
+  );
+  // Lower Button
+  ctx.fillStyle = "#00FF00";
+  ctx.fillRect(
+    gameCanvas.width * 0.25,
+    gameElements.floor0_YPos * 0.95,
+    17,
+    15
+  );
+}
+
+function drawTriangle(posX, posY, width) {
+  ctx.beginPath();
+    ctx.moveTo(posX, posY);      // Erster Eckpunkt
+    ctx.lineTo(posX + width, posY);     // Zweiter Eckpunkt
+    ctx.lineTo(posX + (width / 2), posY + width);     // Dritter Eckpunkt
+    ctx.closePath();         // Pfad schließen (zurück zum Startpunkt)
+    ctx.stroke();            // Linien zeichnen
+    ctx.fillStyle = "greenyellow";
+    ctx.fill();             // Optional: Dreieck ausfüllen
 }
 
 function drawPlayer(xPos, yPos) {
