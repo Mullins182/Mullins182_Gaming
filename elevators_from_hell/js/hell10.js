@@ -347,13 +347,11 @@ function initialize() {
 function changePlayerSprite(movement) {
   if (movement === "left" || movement === "right") {
     if (playerSprite === spriteSheets.run) {
-
     } else {
       playerSprite = spriteSheets.run;
     }
   } else {
     if (playerSprite === spriteSheets.idle) {
-
     } else {
       playerSprite = spriteSheets.idle;
     }
@@ -371,7 +369,7 @@ async function gameRoutine(timestamp) {
     lastTime = timestamp;
     // currentFrame = (currentFrame + 1) % totalFrames;
     // Frame-Update
-    currentFrame = (++currentFrame) % totalFrames;
+    currentFrame = ++currentFrame % totalFrames;
   }
 
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
@@ -480,19 +478,21 @@ function drawLabels() {
 
 function movementAndCollisions() {
   if (!playerCollision() || playerCanLeave()) {
-      playerPosUpdate(gameElements.playerMovement);
-      isColliding = false;
+    playerPosUpdate(gameElements.playerMovement);
+    isColliding = false;
   } else {
-      gameElements.playerMovement = "stop";
-      isColliding = true;
-      // Sichere Initialisierung der Idle-Animation
-      currentFrame = 0;
-      totalFrames = 7;
-      playerSprite = spriteSheets.idle;
-      moveableElems.playerPosX = moveableElems.playerPosX < gameCanvas.width / 2
-      ? moveableElems.playerPosX + 5 : moveableElems.playerPosX - 5;
-      animationInterval = 200; // Reset des Intervalls
-      lastTime = performance.now(); // Reset des Zeitstempels
+    gameElements.playerMovement = "stop";
+    isColliding = true;
+    // Sichere Initialisierung der Idle-Animation
+    currentFrame = 0;
+    totalFrames = 7;
+    playerSprite = spriteSheets.idle;
+    moveableElems.playerPosX =
+      moveableElems.playerPosX < gameCanvas.width / 2
+        ? moveableElems.playerPosX + 5
+        : moveableElems.playerPosX - 5;
+    animationInterval = 200; // Reset des Intervalls
+    lastTime = performance.now(); // Reset des Zeitstempels
   }
 }
 
