@@ -505,7 +505,17 @@ function drawGameElements() {
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     drawLiftDoors();
     drawShaftsElements();
-    drawCallElevatorBtns();
+    for (let i = 0; i < 7; i++) {
+
+      drawCallElevatorBtns(
+        gameCanvas.width / 2,
+        gameElements[`floor${i}_YPos`] - 65,
+        gameCanvas.width * 0.5025,
+        gameElements[`floor${i}_YPos`] - 58,
+        gameElements[`floor${i}_YPos`] - 43
+      );
+    }
+
     if (debugMode) {
       drawDebugLine();
     }
@@ -516,7 +526,16 @@ function drawGameElements() {
     drawWalls();
     drawLiftDoors();
     drawShaftsElements();
-    drawCallElevatorBtns();
+    for (let i = 0; i < 7; i++) {
+
+      drawCallElevatorBtns(
+        gameCanvas.width / 2,
+        gameElements[`floor${i}_YPos`] - 65,
+        gameCanvas.width * 0.5025,
+        gameElements[`floor${i}_YPos`] - 58,
+        gameElements[`floor${i}_YPos`] - 43
+      );
+    }
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     if (debugMode) {
       drawDebugLine();
@@ -1859,28 +1878,27 @@ function drawFloors() {
   );
 }
 
-function drawCallElevatorBtns() {
+function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPosY) {
   // Plate
-  ctx.fillStyle = "#000";
+  ctx.fillStyle = "#242424";
   ctx.fillRect(
-    gameCanvas.width / 2,
-    gameElements.floor0_YPos * 0.93,
+    platePosX,
+    platePosY,
     20,
     40
   );
-  // Floor 0
   // Upper Button
-  ctx.fillStyle = "#00FF00";
-  ctx.fillRect(
-    gameCanvas.width * 0.25,
-    gameElements.floor0_YPos * 0.93,
-    17,
-    15
+  drawTriangle(
+    triPosx,
+    triUpPosY,
+    12,
+    "greenyellow",
+    "up"
   );
   // Lower Button
   drawTriangle(
-    gameCanvas.width * 0.5025,
-    gameElements.floor0_YPos * 0.955,
+    triPosx,
+    triDwnPosY,
     12,
     "greenyellow",
     "down"
