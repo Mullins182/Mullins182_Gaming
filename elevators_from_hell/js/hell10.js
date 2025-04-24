@@ -1190,7 +1190,7 @@ function drawLifts() {
 }
 
 function drawLiftDoors() {
-  ctx.fillStyle = "#3F0000";
+  ctx.fillStyle = "#700";
 
   // Floor 0 | left
   ctx.fillRect(
