@@ -430,7 +430,7 @@ function drawLabels() {
       "<LiftLOnFloor> " +
         moveableElems.liftL_isOnFloor +
         " <PlayerOnLift> " +
-        isOnLift,
+        moveableElems.playerOnFloor,
       "63px Arial Black",
       "gold",
       "black",
@@ -490,7 +490,7 @@ function drawLabels() {
 
 function exitBtnActCheck() {
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 7; i++) {
     exitButtonsStatus[`floor${i}`] = 
       moveableElems.playerOnFloor == i &&
       moveableElems.playerPosX > gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
@@ -612,6 +612,16 @@ function automaticLiftControl() {
 }
 
 function exitDoor() {
+
+  let activationCounter = 0
+
+  for (let value in exitButtonsStatus.value) {
+
+    activationCounter = value ? activationCounter++ : activationCounter;
+  }
+
+  moveableElems.exitDoorUnlocked = activationCounter === 7 ? true : false;
+
   if (moveableElems.exitDoorUnlocked) {
     gameElements.exitSignColor = "yellowgreen";
     gameElements.exitSignShadowColor = "darkgreen";
@@ -1000,7 +1010,7 @@ function playerIsOnFloor() {
       ? 4
       : moveableElems.playerPosY > gameElements.floor6_YPos
       ? 5
-      : moveableElems.playerPosY === floorLiftLevels.floor6_YPos + 48
+      : moveableElems.playerPosY < gameElements.floor6_YPos
       ? 6
       : 101;
 }
