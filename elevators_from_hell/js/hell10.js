@@ -207,6 +207,16 @@ const floorLiftLevels = {
     gameElements.liftsHeight,
 };
 
+const exitButtonsStatus = {
+  floor0: false,
+  floor1: false,
+  floor2: false,
+  floor3: false,
+  floor4: false,
+  floor5: false,
+  floor6: false
+};
+
 // Konstanten für bessere Lesbarkeit und Wartbarkeit
 const KEYS = {
   NUMBERS: {
@@ -514,6 +524,13 @@ function drawGameElements() {
         gameElements[`floor${i}_YPos`] - 55,
         gameElements[`floor${i}_YPos`] - 43
       );
+
+      drawExitButtons(
+        gameCanvas.width / 1.8165,
+        gameElements[`floor${i}_YPos`] - 64,
+        gameCanvas.width / 1.8,
+        gameElements[`floor${i}_YPos`] - 55
+      )
     }
 
     if (debugMode) {
@@ -538,9 +555,10 @@ function drawGameElements() {
 
       drawExitButtons(
         gameCanvas.width / 1.8165,
-        gameElements[`floor${i}_YPos`] - 64,
+        gameElements[`floor${i}_YPos`] - 55,
         gameCanvas.width / 1.8,
-        gameElements[`floor${i}_YPos`] - 55
+        gameElements[`floor${i}_YPos`] - 46,
+        exitButtonsStatus[`floor${i}`] ? true : false
       )
     }
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
@@ -1912,7 +1930,7 @@ function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPos
   );
 }
 
-function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY) {
+function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY, btnActivated) {
     // Plate
     ctx.fillStyle = "#FF000095";
     ctx.fillRect(
@@ -1922,7 +1940,7 @@ function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY) {
       17
     );
 
-    ctx.fillStyle = "#00FF0070";
+    ctx.fillStyle = btnActivated ? "#00FF0088" : "#FF0000FF";
     ctx.beginPath();
 
     // Draw Circle -> (posX, posY, radius, startangle, endangle)
