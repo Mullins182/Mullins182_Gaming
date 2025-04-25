@@ -51,6 +51,7 @@ const gameElements = {
   floor4_YPos: gameCanvas.height * 0.5 - 6,
   floor5_YPos: gameCanvas.height * 0.375 - 6,
   floor6_YPos: gameCanvas.height * 0.25 - 6,
+  exitBtnsXpos: gameCanvas.width / 1.8,
   shaftDoorsHeight: 90,
   shaftDoorsLW_f0: 38.75,
   shaftDoorsRW_f0: 38.75,
@@ -72,7 +73,7 @@ const gameElements = {
   playerHeight: 110,
   playerWidth: 100,
   playerSpeed: 2.75,
-  playerMovement: "stop",
+  playerMovement: "stop",  
 
   // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
@@ -307,6 +308,7 @@ document.addEventListener("keydown", function (event) {
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
+      exitBtnActCheck();
       playerOnLift(false);
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_LEFT_ELEVATOR:
@@ -486,6 +488,18 @@ function drawLabels() {
   }
 }
 
+function exitBtnActCheck() {
+
+  for (let i = 0; i < 8; i++) {
+    exitButtonsStatus[`floor${i}`] = 
+      moveableElems.playerOnFloor == i &&
+      moveableElems.playerPosX > gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
+      moveableElems.playerPosX < gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25
+      ? exitButtonsStatus[`floor${i}`] ? false : true
+      : exitButtonsStatus[`floor${i}`];
+  }
+}
+
 function movementAndCollisions() {
   if (!playerCollision() || playerCanLeave()) {
     playerPosUpdate(gameElements.playerMovement);
@@ -527,9 +541,10 @@ function drawGameElements() {
 
       drawExitButtons(
         gameCanvas.width / 1.8165,
-        gameElements[`floor${i}_YPos`] - 64,
-        gameCanvas.width / 1.8,
-        gameElements[`floor${i}_YPos`] - 55
+        gameElements[`floor${i}_YPos`] - 55,
+        gameElements.exitBtnsXpos,
+        gameElements[`floor${i}_YPos`] - 46,
+        exitButtonsStatus[`floor${i}`] ? true : false
       )
     }
 
@@ -556,7 +571,7 @@ function drawGameElements() {
       drawExitButtons(
         gameCanvas.width / 1.8165,
         gameElements[`floor${i}_YPos`] - 55,
-        gameCanvas.width / 1.8,
+        gameElements.exitBtnsXpos,
         gameElements[`floor${i}_YPos`] - 46,
         exitButtonsStatus[`floor${i}`] ? true : false
       )
