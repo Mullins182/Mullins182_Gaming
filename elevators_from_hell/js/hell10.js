@@ -509,9 +509,9 @@ function drawGameElements() {
 
       drawCallElevatorBtns(
         gameCanvas.width / 2,
-        gameElements[`floor${i}_YPos`] - 65,
+        gameElements[`floor${i}_YPos`] - 63,
         gameCanvas.width * 0.5025,
-        gameElements[`floor${i}_YPos`] - 58,
+        gameElements[`floor${i}_YPos`] - 55,
         gameElements[`floor${i}_YPos`] - 43
       );
     }
@@ -530,7 +530,7 @@ function drawGameElements() {
 
       drawCallElevatorBtns(
         gameCanvas.width / 2,
-        gameElements[`floor${i}_YPos`] - 62,
+        gameElements[`floor${i}_YPos`] - 63,
         gameCanvas.width * 0.5025,
         gameElements[`floor${i}_YPos`] - 55,
         gameElements[`floor${i}_YPos`] - 43
@@ -1880,7 +1880,7 @@ function drawFloors() {
 
 function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPosY) {
   // Plate
-  ctx.fillStyle = "#242424";
+  ctx.fillStyle = "#AE000065";
   ctx.fillRect(
     platePosX,
     platePosY,
