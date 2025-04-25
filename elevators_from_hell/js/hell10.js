@@ -535,6 +535,11 @@ function drawGameElements() {
         gameElements[`floor${i}_YPos`] - 55,
         gameElements[`floor${i}_YPos`] - 43
       );
+
+      drawExitButtons(
+        gameCanvas.width / 1.8,
+        gameElements[`floor${i}_YPos`] - 55,
+      )
     }
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     if (debugMode) {
@@ -1903,6 +1908,18 @@ function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPos
     "greenyellow",
     "down"
   );
+}
+
+function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY) {
+    // Plate
+    ctx.fillStyle = "#00000095";
+    ctx.fillRect(
+      platePosX,
+      platePosY,
+      17,
+      17
+    );
+  
 }
 
 function drawTriangle(posX, posY, width, fillColor, dir) {
