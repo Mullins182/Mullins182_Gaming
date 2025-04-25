@@ -1919,7 +1919,13 @@ function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY) {
       17,
       17
     );
-  
+
+    ctx.fillStyle = "#00FF00";
+    ctx.beginPath();
+    // Draw Circle -> (posX, posY, radius, startangle, endangle)
+    ctx.arc(500, 300, 300, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.fill();
 }
 
 function drawTriangle(posX, posY, width, fillColor, dir) {
