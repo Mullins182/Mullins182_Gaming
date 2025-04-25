@@ -1173,7 +1173,7 @@ function shaftLdoorsOpenCheck() {
 }
 
 function drawLifts() {
-  ctx.fillStyle = "#ffd457";
+  ctx.fillStyle = "#f4ff51";
   ctx.fillRect(
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
     moveableElems.liftL_YPos,
