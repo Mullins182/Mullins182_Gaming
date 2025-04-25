@@ -530,9 +530,9 @@ function drawGameElements() {
 
       drawCallElevatorBtns(
         gameCanvas.width / 2,
-        gameElements[`floor${i}_YPos`] - 65,
+        gameElements[`floor${i}_YPos`] - 62,
         gameCanvas.width * 0.5025,
-        gameElements[`floor${i}_YPos`] - 58,
+        gameElements[`floor${i}_YPos`] - 55,
         gameElements[`floor${i}_YPos`] - 43
       );
     }
@@ -1885,7 +1885,7 @@ function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPos
     platePosX,
     platePosY,
     20,
-    40
+    35
   );
   // Upper Button
   drawTriangle(
@@ -1910,14 +1910,14 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
     ctx.beginPath();
       ctx.moveTo(posX, posY);      // Erster Eckpunkt
       ctx.lineTo(posX + width, posY);     // Zweiter Eckpunkt
-      ctx.lineTo(posX + (width / 2), posY + width);     // Dritter Eckpunkt
+      ctx.lineTo(posX + (width / 2), posY + (width / 1.5));     // Dritter Eckpunkt
       ctx.closePath();         // Pfad schließen (zurück zum Startpunkt)
   }
   if (dir == "up") {
     ctx.beginPath();
     ctx.moveTo(posX + width / 2, posY);      // Erster Eckpunkt
-    ctx.lineTo(posX, posY + width);     // Zweiter Eckpunkt
-    ctx.lineTo(posX + width, posY + width);     // Dritter Eckpunkt
+    ctx.lineTo(posX, posY + (width / 1.5));     // Zweiter Eckpunkt
+    ctx.lineTo(posX + width, posY + (width / 1.5));     // Dritter Eckpunkt
     ctx.closePath();         // Pfad schließen (zurück zum Startpunkt)
   }
     ctx.stroke();            // Linien zeichnen
