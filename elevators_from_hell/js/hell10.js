@@ -537,8 +537,10 @@ function drawGameElements() {
       );
 
       drawExitButtons(
+        gameCanvas.width / 1.8165,
+        gameElements[`floor${i}_YPos`] - 64,
         gameCanvas.width / 1.8,
-        gameElements[`floor${i}_YPos`] - 55,
+        gameElements[`floor${i}_YPos`] - 55
       )
     }
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
@@ -1897,7 +1899,7 @@ function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPos
     triPosx,
     triUpPosY,
     12,
-    "greenyellow",
+    "darkgreen",
     "up"
   );
   // Lower Button
@@ -1905,14 +1907,14 @@ function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPos
     triPosx,
     triDwnPosY,
     12,
-    "greenyellow",
+    "darkgreen",
     "down"
   );
 }
 
 function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY) {
     // Plate
-    ctx.fillStyle = "#00000095";
+    ctx.fillStyle = "#FF000095";
     ctx.fillRect(
       platePosX,
       platePosY,
@@ -1920,10 +1922,11 @@ function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY) {
       17
     );
 
-    ctx.fillStyle = "#00FF00";
+    ctx.fillStyle = "#00FF0070";
     ctx.beginPath();
+
     // Draw Circle -> (posX, posY, radius, startangle, endangle)
-    ctx.arc(500, 300, 300, 0, 2 * Math.PI);
+    ctx.arc(btnPosX, btnPosY, 4, 0, 2 * Math.PI);
     ctx.stroke();
     ctx.fill();
 }
