@@ -6,10 +6,8 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
-let lastTime = 0;
-let animationInterval = 250; // Initial value while idling
-
 let isColliding = false;
+let exitBtnActCounter = 0;
 
 // Sprite-Variablen
 let spriteSheets = {
@@ -25,6 +23,8 @@ const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
 let currentFrame = 0;
 let totalFrames = 7; // Anzahl der Frames in Ihrem Spritesheet
+let lastTime = 0;
+let animationInterval = 250; // Initial value while idling
 
 const gameElements = {
   floorsWidth: gameCanvas.width * 0.9,
@@ -318,7 +318,9 @@ document.addEventListener("keydown", function (event) {
       debugMode = !debugMode;
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
-      moveableElems.exitDoorUnlocked = !moveableElems.exitDoorUnlocked;
+      for (let key in exitButtonsStatus) {
+        exitButtonsStatus[key] = !exitButtonsStatus[key];
+      }
       break;
   }
 });
@@ -331,7 +333,7 @@ function getFloorLevel(floorNumber) {
 
 // Floor-Auswahl Logik
 function handleFloorSelection(floorNumber) {
-  // Prüfung ob Lift bewegt wird
+  // Prüfung ob Lift L/R bewegt wird und Spieler sich in ihm befindet
   const isLeftLiftMoving =
     moveableElems.playerOnLiftL && moveableElems.liftL_isMoving;
   const isRightLiftMoving =
@@ -427,9 +429,9 @@ function drawLabels() {
     createLabel(
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
-      "<LiftLOnFloor> " +
-        moveableElems.liftL_isOnFloor +
-        " <PlayerOnLift> " +
+      "<ActCount> " +
+        exitBtnActCounter +
+        " <PlayerOnFloor> " +
         moveableElems.playerOnFloor,
       "63px Arial Black",
       "gold",
@@ -613,13 +615,15 @@ function automaticLiftControl() {
 }
 
 function exitDoor() {
-  let activationCounter = 0;
+  exitBtnActCounter = 0;
 
-  for (let value in exitButtonsStatus.value) {
-    activationCounter = value ? activationCounter++ : activationCounter;
+  for (let key in exitButtonsStatus) {
+    exitBtnActCounter = exitButtonsStatus[key]
+      ? ++exitBtnActCounter
+      : exitBtnActCounter;
   }
 
-  moveableElems.exitDoorUnlocked = activationCounter === 7 ? true : false;
+  moveableElems.exitDoorUnlocked = exitBtnActCounter === 7 ? true : false;
 
   if (moveableElems.exitDoorUnlocked) {
     gameElements.exitSignColor = "yellowgreen";
