@@ -73,7 +73,7 @@ const gameElements = {
   playerHeight: 110,
   playerWidth: 100,
   playerSpeed: 2.75,
-  playerMovement: "stop",  
+  playerMovement: "stop",
 
   // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
@@ -215,7 +215,7 @@ const exitButtonsStatus = {
   floor3: false,
   floor4: false,
   floor5: false,
-  floor6: false
+  floor6: false,
 };
 
 // Konstanten für bessere Lesbarkeit und Wartbarkeit
@@ -489,14 +489,17 @@ function drawLabels() {
 }
 
 function exitBtnActCheck() {
-
   for (let i = 0; i < 7; i++) {
-    exitButtonsStatus[`floor${i}`] = 
+    exitButtonsStatus[`floor${i}`] =
       moveableElems.playerOnFloor == i &&
-      moveableElems.playerPosX > gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
-      moveableElems.playerPosX < gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25
-      ? exitButtonsStatus[`floor${i}`] ? false : true
-      : exitButtonsStatus[`floor${i}`];
+      moveableElems.playerPosX >
+        gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
+      moveableElems.playerPosX <
+        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25
+        ? exitButtonsStatus[`floor${i}`]
+          ? false
+          : true
+        : exitButtonsStatus[`floor${i}`];
   }
 }
 
@@ -530,7 +533,6 @@ function drawGameElements() {
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
-
       drawCallElevatorBtns(
         gameCanvas.width / 2,
         gameElements[`floor${i}_YPos`] - 63,
@@ -545,7 +547,7 @@ function drawGameElements() {
         gameElements.exitBtnsXpos,
         gameElements[`floor${i}_YPos`] - 46,
         exitButtonsStatus[`floor${i}`] ? true : false
-      )
+      );
     }
 
     if (debugMode) {
@@ -559,7 +561,6 @@ function drawGameElements() {
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
-
       drawCallElevatorBtns(
         gameCanvas.width / 2,
         gameElements[`floor${i}_YPos`] - 63,
@@ -574,7 +575,7 @@ function drawGameElements() {
         gameElements.exitBtnsXpos,
         gameElements[`floor${i}_YPos`] - 46,
         exitButtonsStatus[`floor${i}`] ? true : false
-      )
+      );
     }
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
     if (debugMode) {
@@ -612,11 +613,9 @@ function automaticLiftControl() {
 }
 
 function exitDoor() {
-
-  let activationCounter = 0
+  let activationCounter = 0;
 
   for (let value in exitButtonsStatus.value) {
-
     activationCounter = value ? activationCounter++ : activationCounter;
   }
 
@@ -1928,70 +1927,54 @@ function drawFloors() {
   );
 }
 
-function drawCallElevatorBtns(platePosX,platePosY, triPosx, triUpPosY, triDwnPosY) {
+function drawCallElevatorBtns(
+  platePosX,
+  platePosY,
+  triPosx,
+  triUpPosY,
+  triDwnPosY
+) {
   // Plate
   ctx.fillStyle = "#AE000065";
-  ctx.fillRect(
-    platePosX,
-    platePosY,
-    20,
-    35
-  );
+  ctx.fillRect(platePosX, platePosY, 20, 35);
   // Upper Button
-  drawTriangle(
-    triPosx,
-    triUpPosY,
-    12,
-    "darkgreen",
-    "up"
-  );
+  drawTriangle(triPosx, triUpPosY, 12, "darkgreen", "up");
   // Lower Button
-  drawTriangle(
-    triPosx,
-    triDwnPosY,
-    12,
-    "darkgreen",
-    "down"
-  );
+  drawTriangle(triPosx, triDwnPosY, 12, "darkgreen", "down");
 }
 
 function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY, btnActivated) {
-    // Plate
-    ctx.fillStyle = "#FF000095";
-    ctx.fillRect(
-      platePosX,
-      platePosY,
-      17,
-      17
-    );
+  // Plate
+  ctx.fillStyle = "#FF000095";
+  ctx.fillRect(platePosX, platePosY, 17, 17);
 
-    ctx.fillStyle = btnActivated ? "#00FF0088" : "#FF0000FF";
-    ctx.beginPath();
+  ctx.fillStyle = btnActivated ? "#00FF0088" : "#FF0000FF";
+  ctx.beginPath();
 
-    // Draw Circle -> (posX, posY, radius, startangle, endangle)
-    ctx.arc(btnPosX, btnPosY, 4, 0, 2 * Math.PI);
-    ctx.stroke();
-    ctx.fill();
+  // Draw Circle -> (posX, posY, radius, startangle, endangle)
+  ctx.arc(btnPosX, btnPosY, 4, 0, 2 * Math.PI);
+  ctx.stroke();
+  ctx.fill();
 }
 
 function drawTriangle(posX, posY, width, fillColor, dir) {
   if (dir == "down") {
     ctx.beginPath();
-      ctx.moveTo(posX, posY);      // Erster Eckpunkt
-      ctx.lineTo(posX + width, posY);     // Zweiter Eckpunkt
-      ctx.lineTo(posX + (width / 2), posY + (width / 1.5));     // Dritter Eckpunkt
-      ctx.closePath();         // Pfad schließen (zurück zum Startpunkt)
+    ctx.moveTo(posX, posY); // Erster Eckpunkt
+    ctx.lineTo(posX + width, posY); // Zweiter Eckpunkt
+    ctx.lineTo(posX + width / 2, posY + width / 1.5); // Dritter Eckpunkt
+    ctx.closePath(); // Pfad schließen (zurück zum Startpunkt)
   }
   if (dir == "up") {
     ctx.beginPath();
-    ctx.moveTo(posX + width / 2, posY);      // Erster Eckpunkt
-    ctx.lineTo(posX, posY + (width / 1.5));     // Zweiter Eckpunkt
-    ctx.lineTo(posX + width, posY + (width / 1.5));     // Dritter Eckpunkt
-    ctx.closePath();         // Pfad schließen (zurück zum Startpunkt)
+    ctx.moveTo(posX + width / 2, posY); // Erster Eckpunkt
+    ctx.lineTo(posX, posY + width / 1.5); // Zweiter Eckpunkt
+    ctx.lineTo(posX + width, posY + width / 1.5); // Dritter Eckpunkt
+    ctx.closePath(); // Pfad schließen (zurück zum Startpunkt)
   }
-    ctx.stroke();            // Linien zeichnen
-    ctx.fillStyle = fillColor;
-    ctx.fill();             // Optional: Dreieck ausfüllen
+  ctx.stroke(); // Linien zeichnen
+  ctx.fillStyle = fillColor;
+  ctx.fill(); // Optional: Dreieck ausfüllen
 }
 
 function drawPlayer(xPos, yPos) {
