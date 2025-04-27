@@ -388,7 +388,6 @@ async function gameRoutine(timestamp) {
 
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-  drawLabels();
   movementAndCollisions();
   playerIsOnFloor();
   liftsPosUpdate();
@@ -407,6 +406,7 @@ async function gameRoutine(timestamp) {
 // ___________________________              ___________________________
 
 function drawLabels() {
+  // EXIT SIGN
   createLabel(
     185,
     gameCanvas.height - 75,
@@ -459,7 +459,7 @@ function drawLabels() {
       3
     );
   }
-
+  // Floor Numbers for each Floor
   for (let i = 0; i < 7; i++) {
     createLabel(
       gameCanvas.width * 0.89,
@@ -483,6 +483,35 @@ function drawLabels() {
       3.5,
       6,
       6,
+      "strokeText",
+      gameElements.floorNumbersColor,
+      1.6
+    );
+  }
+  // Left Shaft Lift Position Display
+  for (let i = 0; i < 7; i++) {
+    createLabel(
+      gameCanvas.width * 0.2,
+      i === 0
+        ? gameElements.floor0_YPos - 98
+        : i === 1
+        ? gameElements.floor1_YPos - 98
+        : i === 2
+        ? gameElements.floor2_YPos - 98
+        : i === 3
+        ? gameElements.floor3_YPos - 98
+        : i === 4
+        ? gameElements.floor4_YPos - 98
+        : i === 5
+        ? gameElements.floor5_YPos - 98
+        : gameElements.floor6_YPos - 95,
+      i,
+      "18px Arial",
+      "black",
+      "transparent",
+      0,
+      0,
+      0,
       "strokeText",
       gameElements.floorNumbersColor,
       1.6
@@ -552,6 +581,8 @@ function drawGameElements() {
       );
     }
 
+    drawLabels();
+
     if (debugMode) {
       drawDebugLine();
     }
@@ -580,6 +611,7 @@ function drawGameElements() {
       );
     }
     drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
+    drawLabels();
     if (debugMode) {
       drawDebugLine();
     }
@@ -1550,9 +1582,6 @@ function drawLiftDoors() {
 // __________________________________________________ DEBUGGING - CODE __________________________________________________
 
 function drawDebugLine() {
-  // ctx.fillStyle = "#0000FF";
-  // ctx.fillRect(0, floorLiftLevels.floor1_YPos, 1600, 3);
-
   ctx.fillStyle = "#00FF00";
   ctx.fillRect(0, floorLevelSelected, 1600, 3);
 }
