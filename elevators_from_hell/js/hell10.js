@@ -495,23 +495,36 @@ function drawLabels() {
   // Left Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      gameCanvas.width * 0.2,
+      moveableElems.liftL_isOnFloor === 0
+        ? gameCanvas.width * 0.18
+        : moveableElems.liftL_isOnFloor === 1
+        ? gameCanvas.width * 0.18 + 13
+        : moveableElems.liftL_isOnFloor === 2
+        ? gameCanvas.width * 0.18 + 23
+        : moveableElems.liftL_isOnFloor === 3
+        ? gameCanvas.width * 0.18 + 33
+        : moveableElems.liftL_isOnFloor === 4
+        ? gameCanvas.width * 0.18 + 43
+        : moveableElems.liftL_isOnFloor === 5
+        ? gameCanvas.width * 0.18 + 53
+        : gameCanvas.width * 0.18 + 63,
       i === 0
-        ? gameElements.floor0_YPos - 98
+        ? gameElements.floor0_YPos - 100
         : i === 1
-        ? gameElements.floor1_YPos - 98
+        ? gameElements.floor1_YPos - 100
         : i === 2
-        ? gameElements.floor2_YPos - 98
+        ? gameElements.floor2_YPos - 100
         : i === 3
-        ? gameElements.floor3_YPos - 98
+        ? gameElements.floor3_YPos - 100
         : i === 4
-        ? gameElements.floor4_YPos - 98
+        ? gameElements.floor4_YPos - 100
         : i === 5
-        ? gameElements.floor5_YPos - 98
+        ? gameElements.floor5_YPos - 100
         : gameElements.floor6_YPos - 95,
+
       moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
-      "18px Arial",
-      "greenyellow",
+      "14px Arial Black",
+      "orange",
       "transparent",
       0,
       0,
@@ -524,23 +537,35 @@ function drawLabels() {
   // Right Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      gameCanvas.width * 0.8,
+      moveableElems.liftR_isOnFloor === 0
+        ? gameCanvas.width * 0.78
+        : moveableElems.liftR_isOnFloor === 1
+        ? gameCanvas.width * 0.78 + 13
+        : moveableElems.liftR_isOnFloor === 2
+        ? gameCanvas.width * 0.78 + 23
+        : moveableElems.liftR_isOnFloor === 3
+        ? gameCanvas.width * 0.78 + 33
+        : moveableElems.liftR_isOnFloor === 4
+        ? gameCanvas.width * 0.78 + 43
+        : moveableElems.liftR_isOnFloor === 5
+        ? gameCanvas.width * 0.78 + 53
+        : gameCanvas.width * 0.78 + 63,
       i === 0
-        ? gameElements.floor0_YPos - 98
+        ? gameElements.floor0_YPos - 100
         : i === 1
-        ? gameElements.floor1_YPos - 98
+        ? gameElements.floor1_YPos - 100
         : i === 2
-        ? gameElements.floor2_YPos - 98
+        ? gameElements.floor2_YPos - 100
         : i === 3
-        ? gameElements.floor3_YPos - 98
+        ? gameElements.floor3_YPos - 100
         : i === 4
-        ? gameElements.floor4_YPos - 98
+        ? gameElements.floor4_YPos - 100
         : i === 5
-        ? gameElements.floor5_YPos - 98
+        ? gameElements.floor5_YPos - 100
         : gameElements.floor6_YPos - 95,
       moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
-      "18px Arial",
-      "greenyellow",
+      "14px Arial Black",
+      "orange",
       "transparent",
       0,
       0,
