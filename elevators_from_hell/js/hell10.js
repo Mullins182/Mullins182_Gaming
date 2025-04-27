@@ -462,22 +462,22 @@ function drawLabels() {
   // Floor Numbers for each Floor
   for (let i = 0; i < 7; i++) {
     createLabel(
-      gameCanvas.width * 0.89,
+      gameCanvas.width * 0.37,
       i === 0
-        ? gameElements.floor0_YPos - 50
+        ? gameElements.floor0_YPos - 75
         : i === 1
-        ? gameElements.floor1_YPos - 50
+        ? gameElements.floor1_YPos - 75
         : i === 2
-        ? gameElements.floor2_YPos - 50
+        ? gameElements.floor2_YPos - 75
         : i === 3
-        ? gameElements.floor3_YPos - 50
+        ? gameElements.floor3_YPos - 75
         : i === 4
-        ? gameElements.floor4_YPos - 50
+        ? gameElements.floor4_YPos - 75
         : i === 5
-        ? gameElements.floor5_YPos - 50
-        : gameElements.floor6_YPos - 50,
+        ? gameElements.floor5_YPos - 75
+        : gameElements.floor6_YPos - 75,
       "Floor " + i,
-      "30px Arial Black",
+      "25px Arial Black",
       "black",
       gameElements.floorNumbersShadowColor,
       3.5,
