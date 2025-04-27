@@ -505,7 +505,7 @@ function drawLabels() {
         : i === 5
         ? gameElements.floor5_YPos - 98
         : gameElements.floor6_YPos - 95,
-      i,
+      moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
       "18px Arial",
       "black",
       "transparent",
@@ -513,7 +513,36 @@ function drawLabels() {
       0,
       0,
       "strokeText",
-      gameElements.floorNumbersColor,
+      "greenyellow",
+      1.6
+    );
+  }
+  // Right Shaft Lift Position Display
+  for (let i = 0; i < 7; i++) {
+    createLabel(
+      gameCanvas.width * 0.8,
+      i === 0
+        ? gameElements.floor0_YPos - 98
+        : i === 1
+        ? gameElements.floor1_YPos - 98
+        : i === 2
+        ? gameElements.floor2_YPos - 98
+        : i === 3
+        ? gameElements.floor3_YPos - 98
+        : i === 4
+        ? gameElements.floor4_YPos - 98
+        : i === 5
+        ? gameElements.floor5_YPos - 98
+        : gameElements.floor6_YPos - 95,
+      moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
+      "18px Arial",
+      "black",
+      "transparent",
+      0,
+      0,
+      0,
+      "strokeText",
+      "greenyellow",
       1.6
     );
   }
@@ -620,12 +649,7 @@ function drawGameElements() {
 
 function automaticLiftControl() {
   if (automaticElevator) {
-    if (
-      moveableElems.liftL_isMoving ||
-      moveableElems.liftR_isMoving ||
-      !shaftLdoorsOpenCheck() ||
-      !shaftRdoorsOpenCheck()
-    ) {
+    if (moveableElems.liftL_isMoving || moveableElems.liftR_isMoving) {
     } else {
       let randomNum = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
       let randomNum2 = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
@@ -647,8 +671,14 @@ function automaticLiftControl() {
       //     ? floorLiftLevels.floor0_YPos
       //     : floorLiftLevels.floor6_YPos;
 
-      moveableElems.liftL_calledToFloor = randomNum;
-      moveableElems.liftR_calledToFloor = randomNum2;
+      if (!shaftLdoorsOpenCheck() || !shaftRdoorsOpenCheck()) {
+      }
+      moveableElems.liftL_calledToFloor = shaftLdoorsOpenCheck()
+        ? randomNum
+        : moveableElems.liftL_calledToFloor;
+      moveableElems.liftR_calledToFloor = shaftRdoorsOpenCheck()
+        ? randomNum2
+        : moveableElems.liftR_calledToFloor;
     }
   }
 }
