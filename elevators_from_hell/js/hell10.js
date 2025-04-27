@@ -9,6 +9,10 @@ gameCanvas.height = 900;
 let isColliding = false;
 let exitBtnActCounter = 0;
 
+// Lift Cabins inner view
+const cabinView = new Image();
+cabinView.src = "./assets/img/liftCabins/cabinView3.png";
+
 // Sprite-Variablen
 let spriteSheets = {
   run: new Image(),
@@ -1295,20 +1299,35 @@ function shaftLdoorsOpenCheck() {
 }
 
 function drawLifts() {
-  ctx.fillStyle = "#f4ff51";
-  ctx.fillRect(
+  // ctx.fillStyle = "#f4ff51";
+  // ctx.fillRect(
+  //   gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
+  //   moveableElems.liftL_YPos,
+  //   gameElements.liftsWidth,
+  //   gameElements.liftsHeight
+  // );
+
+  ctx.drawImage(
+    cabinView,
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
     moveableElems.liftL_YPos,
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
-
-  ctx.fillRect(
+  ctx.drawImage(
+    cabinView,
     gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
     moveableElems.liftR_YPos,
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
+
+  // ctx.fillRect(
+  //   gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
+  //   moveableElems.liftR_YPos,
+  //   gameElements.liftsWidth,
+  //   gameElements.liftsHeight
+  // );
 }
 
 function drawLiftDoors() {
