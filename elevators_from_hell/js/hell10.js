@@ -51,7 +51,7 @@ const gameElements = {
   floor4_YPos: gameCanvas.height * 0.5 - 6,
   floor5_YPos: gameCanvas.height * 0.375 - 6,
   floor6_YPos: gameCanvas.height * 0.25 - 6,
-  exitBtnsXpos: gameCanvas.width / 1.8,
+  exitBtnsXpos: gameCanvas.width / 1.931,
   shaftDoorsHeight: 90,
   shaftDoorsLW_f0: 38.75,
   shaftDoorsRW_f0: 38.75,
@@ -572,10 +572,10 @@ function drawGameElements() {
       );
 
       drawExitButtons(
-        gameCanvas.width / 1.8165,
-        gameElements[`floor${i}_YPos`] - 55,
+        gameCanvas.width / 1.95,
+        gameElements[`floor${i}_YPos`] - 52,
         gameElements.exitBtnsXpos,
-        gameElements[`floor${i}_YPos`] - 46,
+        gameElements[`floor${i}_YPos`] - 43,
         exitButtonsStatus[`floor${i}`] ? true : false
       );
     }
