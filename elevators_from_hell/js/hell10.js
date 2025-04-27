@@ -38,8 +38,8 @@ const gameElements = {
   shaftsLHeight: 113,
   shaftsRHeight: 113,
   exitDoorHeight: 180,
-  floorNumbersColor: "yellowgreen",
-  floorNumbersShadowColor: "black",
+  floorNumbersColor: "goldenrod",
+  floorNumbersShadowColor: "darkgoldenrod",
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -255,7 +255,7 @@ const FLOOR_LEVELS = {
 // ___________________________ DEBUGGING ___________________________
 let floorLevelSelected = floorLiftLevels.floor0_YPos;
 let debugMode = false;
-let automaticLeftElevator = false;
+let automaticElevator = false;
 
 // ___________________________ Keyboard-Event-Listener ___________________________
 
@@ -312,7 +312,7 @@ document.addEventListener("keydown", function (event) {
       playerOnLift(false);
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_LEFT_ELEVATOR:
-      automaticLeftElevator = !automaticLeftElevator;
+      automaticElevator = !automaticElevator;
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
       debugMode = !debugMode;
@@ -476,8 +476,8 @@ function drawLabels() {
         : i === 5
         ? gameElements.floor5_YPos - 50
         : gameElements.floor6_YPos - 50,
-      i,
-      "50px Arial Black",
+      "Floor " + i,
+      "30px Arial Black",
       "black",
       gameElements.floorNumbersShadowColor,
       3.5,
@@ -544,10 +544,10 @@ function drawGameElements() {
       );
 
       drawExitButtons(
-        gameCanvas.width / 1.8165,
-        gameElements[`floor${i}_YPos`] - 55,
+        gameCanvas.width / 1.95,
+        gameElements[`floor${i}_YPos`] - 52,
         gameElements.exitBtnsXpos,
-        gameElements[`floor${i}_YPos`] - 46,
+        gameElements[`floor${i}_YPos`] - 43,
         exitButtonsStatus[`floor${i}`] ? true : false
       );
     }
@@ -587,29 +587,36 @@ function drawGameElements() {
 }
 
 function automaticLiftControl() {
-  if (automaticLeftElevator) {
-    if (moveableElems.liftL_isMoving || !shaftLdoorsOpenCheck()) {
+  if (automaticElevator) {
+    if (
+      moveableElems.liftL_isMoving ||
+      moveableElems.liftR_isMoving ||
+      !shaftLdoorsOpenCheck() ||
+      !shaftRdoorsOpenCheck()
+    ) {
     } else {
       let randomNum = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
-      console.log(randomNum);
-      floorLevelSelected =
-        randomNum == 6
-          ? floorLiftLevels.floor6_YPos
-          : randomNum == 5
-          ? floorLiftLevels.floor5_YPos
-          : randomNum == 4
-          ? floorLiftLevels.floor4_YPos
-          : randomNum == 3
-          ? floorLiftLevels.floor3_YPos
-          : randomNum == 2
-          ? floorLiftLevels.floor2_YPos
-          : randomNum == 1
-          ? floorLiftLevels.floor1_YPos
-          : randomNum == 0
-          ? floorLiftLevels.floor0_YPos
-          : floorLiftLevels.floor6_YPos;
+      let randomNum2 = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+      console.log(randomNum, "|", randomNum2);
+      // floorLevelSelected =
+      //   randomNum == 6
+      //     ? floorLiftLevels.floor6_YPos
+      //     : randomNum == 5
+      //     ? floorLiftLevels.floor5_YPos
+      //     : randomNum == 4
+      //     ? floorLiftLevels.floor4_YPos
+      //     : randomNum == 3
+      //     ? floorLiftLevels.floor3_YPos
+      //     : randomNum == 2
+      //     ? floorLiftLevels.floor2_YPos
+      //     : randomNum == 1
+      //     ? floorLiftLevels.floor1_YPos
+      //     : randomNum == 0
+      //     ? floorLiftLevels.floor0_YPos
+      //     : floorLiftLevels.floor6_YPos;
 
       moveableElems.liftL_calledToFloor = randomNum;
+      moveableElems.liftR_calledToFloor = randomNum2;
     }
   }
 }
