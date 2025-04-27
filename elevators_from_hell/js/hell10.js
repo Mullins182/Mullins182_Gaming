@@ -511,12 +511,12 @@ function drawLabels() {
         : gameElements.floor6_YPos - 95,
       moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
       "18px Arial",
-      "black",
+      "greenyellow",
       "transparent",
       0,
       0,
       0,
-      "strokeText",
+      "fillText",
       "greenyellow",
       1.6
     );
@@ -540,12 +540,12 @@ function drawLabels() {
         : gameElements.floor6_YPos - 95,
       moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
       "18px Arial",
-      "black",
+      "greenyellow",
       "transparent",
       0,
       0,
       0,
-      "strokeText",
+      "fillText",
       "greenyellow",
       1.6
     );
