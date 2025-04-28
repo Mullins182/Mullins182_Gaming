@@ -6,6 +6,8 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
+const sound = new Howl({src: ['./assets/sounds/liftMoving.wav']});
+
 let isColliding = false;
 let exitBtnActCounter = 0;
 
@@ -280,6 +282,7 @@ document.addEventListener("keydown", function (event) {
       if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
         break;
       }
+      sound.play();
       changePlayerSprite("left");
       totalFrames = 10;
       animationInterval = 100;
