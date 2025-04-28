@@ -8,7 +8,9 @@ gameCanvas.height = 900;
 
 const liftSnd = new Howl({ src: ["./assets/sounds/liftMoving.wav"] });
 const runSnd = new Howl({ src: ["./assets/sounds/running.mp3"] });
+const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
 
+let btnSoundBuffer = 0;
 let isColliding = false;
 let exitBtnActCounter = 0;
 
@@ -300,7 +302,6 @@ document.addEventListener("keydown", function (event) {
     case KEYS.DIRECTIONS.DOWN:
       changePlayerSprite("stop");
       totalFrames = 7;
-      // animationInterval = 200;
       currentFrame = 0;
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
@@ -310,7 +311,6 @@ document.addEventListener("keydown", function (event) {
     case KEYS.DIRECTIONS.UP:
       changePlayerSprite("stop");
       totalFrames = 7;
-      // animationInterval = 200;
       currentFrame = 0;
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
@@ -730,6 +730,11 @@ function playSounds() {
   } else {
     // await sndFadeout();
     liftSnd.stop();
+  }
+
+  if (exitBtnActCounter != btnSoundBuffer) {
+    btnPress.play();
+    btnSoundBuffer > exitBtnActCounter ? btnSoundBuffer-- : btnSoundBuffer++;
   }
 
   if (playerSprite == spriteSheets.run) {
