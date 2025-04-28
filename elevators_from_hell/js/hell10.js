@@ -6,8 +6,8 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
-const liftSnd = new Howl({src: ['./assets/sounds/liftMoving.wav']});
-const runSnd = new Howl({src: ['./assets/sounds/running.mp3']});
+const liftSnd = new Howl({ src: ["./assets/sounds/liftMoving.wav"] });
+const runSnd = new Howl({ src: ["./assets/sounds/running.mp3"] });
 
 let isColliding = false;
 let exitBtnActCounter = 0;
@@ -717,7 +717,6 @@ function automaticLiftControl() {
 }
 
 function playSounds() {
-
   if (moveableElems.liftL_isMoving && !moveableElems.liftR_isMoving) {
     liftSnd.stereo(-0.65);
   } else if (moveableElems.liftR_isMoving && !moveableElems.liftL_isMoving) {
@@ -729,8 +728,8 @@ function playSounds() {
   if (moveableElems.liftR_isMoving || moveableElems.liftL_isMoving) {
     liftSnd.playing() ? null : liftSnd.play();
   } else {
-      // await sndFadeout();
-      liftSnd.stop();
+    // await sndFadeout();
+    liftSnd.stop();
   }
 
   if (playerSprite == spriteSheets.run) {
@@ -742,8 +741,9 @@ function playSounds() {
   }
 }
 
-async function sndFadeout() { // DEBUG !
-  for (let i = 1.00; i > 0; i = i - 0.01) {
+async function sndFadeout() {
+  // DEBUG !
+  for (let i = 1.0; i > 0; i = i - 0.01) {
     liftSnd.volume(i);
   }
 }
