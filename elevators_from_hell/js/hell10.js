@@ -6,7 +6,8 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
-const sound = new Howl({src: ['./assets/sounds/liftMoving.wav']});
+const liftSnd = new Howl({src: ['./assets/sounds/liftMoving.wav']});
+const runSnd = new Howl({src: ['./assets/sounds/running.mp3']});
 
 let isColliding = false;
 let exitBtnActCounter = 0;
@@ -282,7 +283,6 @@ document.addEventListener("keydown", function (event) {
       if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
         break;
       }
-      sound.play();
       changePlayerSprite("left");
       totalFrames = 10;
       animationInterval = 100;
@@ -402,6 +402,7 @@ async function gameRoutine(timestamp) {
   exitDoor();
   automaticLiftControl();
   drawGameElements();
+  playSounds();
 
   await new Promise((resolve) => setTimeout(resolve, 15));
 
@@ -712,6 +713,38 @@ function automaticLiftControl() {
         ? randomNum2
         : moveableElems.liftR_calledToFloor;
     }
+  }
+}
+
+function playSounds() {
+
+  if (moveableElems.liftL_isMoving && !moveableElems.liftR_isMoving) {
+    liftSnd.stereo(-0.65);
+  } else if (moveableElems.liftR_isMoving && !moveableElems.liftL_isMoving) {
+    liftSnd.stereo(0.65);
+  } else {
+    liftSnd.stereo(0);
+  }
+
+  if (moveableElems.liftR_isMoving || moveableElems.liftL_isMoving) {
+    liftSnd.playing() ? null : liftSnd.play();
+  } else {
+      // await sndFadeout();
+      liftSnd.stop();
+  }
+
+  if (playerSprite == spriteSheets.run) {
+    runSnd.rate(0.7);
+    !runSnd.playing() ? runSnd.play() : null;
+    // runSnd.seek() >= 0.49 ? runSnd.stop() : null;
+  } else {
+    runSnd.stop();
+  }
+}
+
+async function sndFadeout() { // DEBUG !
+  for (let i = 1.00; i > 0; i = i - 0.01) {
+    liftSnd.volume(i);
   }
 }
 
@@ -1765,7 +1798,7 @@ function drawShaftsElements() {
 
   // ____________________________ SHAFT SIDE ELEMENTS ____________________________
 
-  ctx.fillStyle = "#111111";
+  ctx.fillStyle = "#222222";
   // Floor 0 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
     gameElements.shaftF0LposX_left,
