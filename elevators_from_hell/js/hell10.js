@@ -733,7 +733,7 @@ function playSounds() {
   }
 
   if (playerSprite == spriteSheets.run) {
-    runSnd.rate(0.7);
+    runSnd.rate(0.58);
     !runSnd.playing() ? runSnd.play() : null;
     // runSnd.seek() >= 0.49 ? runSnd.stop() : null;
   } else {
@@ -741,8 +741,7 @@ function playSounds() {
   }
 }
 
-async function sndFadeout() {
-  // DEBUG !
+function sndFadeout() {
   for (let i = 1.0; i > 0; i = i - 0.01) {
     liftSnd.volume(i);
   }
