@@ -721,7 +721,7 @@ function automaticLiftControl() {
   }
 }
 
-async function fadeOutLift(sound, setFading, duration = 366) {
+async function fadeOutLift(sound, setFading, duration = 800) {
   if (!sound.playing() || setFading()) return;
   setFading(true);
   sound.fade(sound.volume(), 0, duration);
@@ -737,25 +737,25 @@ async function fadeOutLift(sound, setFading, duration = 366) {
 async function playSounds() {
   // LIFTS STEREO Panning
 
-  if (!liftLFading || liftRFading) {
+  // if (!liftLFading || !liftRFading) {
 
-    if (moveableElems.liftL_isMoving && !moveableElems.liftR_isMoving) {
-      liftSndL.stereo(-0.65);
-      liftSndR.stereo(0);
-    } else if (moveableElems.liftR_isMoving && !moveableElems.liftL_isMoving) {
-      liftSndL.stereo(0);
-      liftSndR.stereo(0.65);
-    } else {
-      // liftSndL.stereo(0);
-      // liftSndR.stereo(0);
-    }
-  }
+  //   if (moveableElems.liftL_isMoving && !moveableElems.liftR_isMoving) {
+  //     liftSndL.stereo(-0.65);
+  //     liftSndR.stereo(0);
+  //   } else if (moveableElems.liftR_isMoving && !moveableElems.liftL_isMoving) {
+  //     liftSndL.stereo(0);
+  //     liftSndR.stereo(0.65);
+  //   } else {
+  //     liftSndL.stereo(0);
+  //     liftSndR.stereo(0);
+  //   }
+  // }
 
   // LIFT L
   if (moveableElems.liftL_isMoving) {
     if (!liftSndL.playing()) {
       liftLFading = false; // Fade-Status zurücksetzen, falls nötig
-      liftSndL.volume(0.8);
+      liftSndL.volume(0.2);
       liftSndL.seek(0);
       liftSndL.play();
     }
@@ -767,7 +767,7 @@ async function playSounds() {
   if (moveableElems.liftR_isMoving) {
     if (!liftSndR.playing()) {
       liftRFading = false;
-      liftSndR.volume(0.8);
+      liftSndR.volume(0.2);
       liftSndR.seek(0);
       liftSndR.play();
     }
