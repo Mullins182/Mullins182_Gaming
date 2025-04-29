@@ -6,10 +6,14 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
-const liftSnd = new Howl({ src: ["./assets/sounds/liftMoving.wav"] });
+const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
+const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
 const runSnd = new Howl({ src: ["./assets/sounds/running.mp3"] });
 const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
 
+// Status-Flag pro Sound
+let liftLFading = false;
+let liftRFading = false;
 let btnSoundBuffer = 0;
 let isColliding = false;
 let exitBtnActCounter = 0;
@@ -363,6 +367,7 @@ initialize();
 function initialize() {
   ctx.imageSmoothingEnabled = false;
   requestAnimationFrame(gameRoutine);
+  Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
 }
 
 function changePlayerSprite(movement) {
@@ -716,39 +721,72 @@ function automaticLiftControl() {
   }
 }
 
-function playSounds() {
-  if (moveableElems.liftL_isMoving && !moveableElems.liftR_isMoving) {
-    liftSnd.stereo(-0.65);
-  } else if (moveableElems.liftR_isMoving && !moveableElems.liftL_isMoving) {
-    liftSnd.stereo(0.65);
-  } else {
-    liftSnd.stereo(0);
+async function fadeOutLift(sound, setFading, duration = 366) {
+  if (!sound.playing() || setFading()) return;
+  setFading(true);
+  sound.fade(sound.volume(), 0, duration);
+  sound.once('fade', () => {
+    // Nur stoppen, wenn der Sound nicht zwischenzeitlich neu gestartet wurde
+    if (sound.volume() === 0 && sound.playing()) {
+      sound.stop();
+    }
+    setFading(false);
+  });
+}
+
+async function playSounds() {
+  // LIFTS STEREO Panning
+
+  if (!liftLFading || liftRFading) {
+
+    if (moveableElems.liftL_isMoving && !moveableElems.liftR_isMoving) {
+      liftSndL.stereo(-0.65);
+      liftSndR.stereo(0);
+    } else if (moveableElems.liftR_isMoving && !moveableElems.liftL_isMoving) {
+      liftSndL.stereo(0);
+      liftSndR.stereo(0.65);
+    } else {
+      // liftSndL.stereo(0);
+      // liftSndR.stereo(0);
+    }
   }
 
-  if (moveableElems.liftR_isMoving || moveableElems.liftL_isMoving) {
-    liftSnd.playing() ? null : liftSnd.play();
+  // LIFT L
+  if (moveableElems.liftL_isMoving) {
+    if (!liftSndL.playing()) {
+      liftLFading = false; // Fade-Status zurücksetzen, falls nötig
+      liftSndL.volume(0.8);
+      liftSndL.seek(0);
+      liftSndL.play();
+    }
   } else {
-    // await sndFadeout();
-    liftSnd.stop();
+    fadeOutLift(liftSndL, (v) => { if (v !== undefined) liftLFading = v; return liftLFading; });
   }
 
+  // LIFT R
+  if (moveableElems.liftR_isMoving) {
+    if (!liftSndR.playing()) {
+      liftRFading = false;
+      liftSndR.volume(0.8);
+      liftSndR.seek(0);
+      liftSndR.play();
+    }
+  } else {
+    fadeOutLift(liftSndR, (v) => { if (v !== undefined) liftRFading = v; return liftRFading; });
+  }
+
+  // EXIT BUTTONS
   if (exitBtnActCounter != btnSoundBuffer) {
     btnPress.play();
     btnSoundBuffer > exitBtnActCounter ? btnSoundBuffer-- : btnSoundBuffer++;
   }
 
+  // PLAYER MOVEMENT
   if (playerSprite == spriteSheets.run) {
     runSnd.rate(0.58);
-    !runSnd.playing() ? runSnd.play() : null;
-    // runSnd.seek() >= 0.49 ? runSnd.stop() : null;
+    if (!runSnd.playing()) runSnd.play();
   } else {
     runSnd.stop();
-  }
-}
-
-function sndFadeout() {
-  for (let i = 1.0; i > 0; i = i - 0.01) {
-    liftSnd.volume(i);
   }
 }
 
