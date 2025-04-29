@@ -10,6 +10,7 @@ const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
 const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
 const runSnd = new Howl({ src: ["./assets/sounds/running.mp3"] });
 const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
+const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.mp3"]});
 
 // Status-Flag pro Sound
 let liftLFading = false;
@@ -17,6 +18,8 @@ let liftRFading = false;
 let btnSoundBuffer = 0;
 let isColliding = false;
 let exitBtnActCounter = 0;
+let exitDoorOpening = false;
+let exitDoorClosing = false;
 
 // Lift Cabins inner view
 const cabinView = new Image();
@@ -787,6 +790,18 @@ async function playSounds() {
     if (!runSnd.playing()) runSnd.play();
   } else {
     runSnd.stop();
+  }
+
+  // EXIT DOOR
+                  // NOT FUNCTIONING YET !
+  exitDoorOpening = moveableElems.exitDoorUnlocked ? true : false;
+
+  if (exitDoorOpening) {
+    exitDoorSnd.playing() ? null : exitDoorSnd.play();
+    exitDoorSnd.seek() > 2.5 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
+  } else {
+    exitDoorSnd.seek(3.0);
+    exitDoorSnd.stop();
   }
 }
 
