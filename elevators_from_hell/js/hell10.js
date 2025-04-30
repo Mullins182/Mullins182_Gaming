@@ -18,8 +18,8 @@ let liftRFading = false;
 let btnSoundBuffer = 0;
 let isColliding = false;
 let exitBtnActCounter = 0;
-let exitDoorOpening = false;
-let exitDoorClosing = false;
+let exitDoorMoving = false;
+let exitDoorStopped = true;
 
 // Lift Cabins inner view
 const cabinView = new Image();
@@ -403,7 +403,7 @@ async function gameRoutine(timestamp) {
 
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-  movementAndCollisions();
+  playerMovandColl();
   playerIsOnFloor();
   liftsPosUpdate();
   shaftDoors();
@@ -604,7 +604,7 @@ function exitBtnActCheck() {
   }
 }
 
-function movementAndCollisions() {
+function playerMovandColl() {
   if (!playerCollision() || playerCanLeave()) {
     playerPosUpdate(gameElements.playerMovement);
     isColliding = false;
@@ -793,15 +793,27 @@ async function playSounds() {
   }
 
   // EXIT DOOR
-                  // NOT FUNCTIONING YET !
-  exitDoorOpening = moveableElems.exitDoorUnlocked ? true : false;
 
-  if (exitDoorOpening) {
+  if (moveableElems.exitDoorUnlocked && moveableElems.exitDoorPosY >
+    gameCanvas.height - gameElements.exitDoorHeight) {
+      exitDoorStopped = false;
+      exitDoorMoving = true;
+  } else if (!moveableElems.exitDoorUnlocked && moveableElems.exitDoorPosY <
+    gameCanvas.height - gameElements.exitDoorHeight) {
+      exitDoorStopped = false;
+      exitDoorMoving = true;
+  } else {
+    exitDoorMoving = false;
+    exitDoorStopped = true;
+  }
+
+  console.log(exitDoorMoving, exitDoorStopped);
+
+  if (exitDoorMoving) {
     exitDoorSnd.playing() ? null : exitDoorSnd.play();
     exitDoorSnd.seek() > 2.5 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
-  } else {
-    exitDoorSnd.seek(3.0);
-    exitDoorSnd.stop();
+  } else if (exitDoorStopped) {
+    exitDoorSnd.playing() ? null : exitDoorSnd.seek(5.0);
   }
 }
 
