@@ -373,7 +373,7 @@ function initialize() {
   Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
   liftSndR.volume(0.2);
   liftSndL.volume(0.2);
-  exitDoorSnd.volume(0.73);
+  exitDoorSnd.volume(0.55);
 }
 
 function changePlayerSprite(movement) {
@@ -793,7 +793,7 @@ async function playSounds() {
     runSnd.stop();
   }
 
-  // EXIT DOOR
+  // EXIT DOOR LOGIC
   if (moveableElems.exitDoorUnlocked && moveableElems.exitDoorPosY >
     gameCanvas.height - gameElements.exitDoorHeight * 1.55) {
       exitDoorStopped = false;
@@ -811,7 +811,7 @@ async function playSounds() {
 
   if (exitDoorMoving) {
     exitDoorSnd.playing() ? null : exitDoorSnd.play();
-    exitDoorSnd.seek() > 2.5 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
+    exitDoorSnd.seek() > 2.30 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
   } else if (exitDoorStopped) {
     exitDoorSnd.playing() ? null : exitDoorSnd.seek(5.0);
   }
