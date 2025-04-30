@@ -371,6 +371,9 @@ function initialize() {
   ctx.imageSmoothingEnabled = false;
   requestAnimationFrame(gameRoutine);
   Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
+  liftSndR.volume(0.2);
+  liftSndL.volume(0.2);
+  exitDoorSnd.volume(0.73);
 }
 
 function changePlayerSprite(movement) {
@@ -758,7 +761,6 @@ async function playSounds() {
   if (moveableElems.liftL_isMoving) {
     if (!liftSndL.playing()) {
       liftLFading = false; // Fade-Status zurücksetzen, falls nötig
-      liftSndL.volume(0.2);
       liftSndL.seek(0);
       liftSndL.play();
     }
@@ -770,7 +772,6 @@ async function playSounds() {
   if (moveableElems.liftR_isMoving) {
     if (!liftSndR.playing()) {
       liftRFading = false;
-      liftSndR.volume(0.2);
       liftSndR.seek(0);
       liftSndR.play();
     }
@@ -793,9 +794,8 @@ async function playSounds() {
   }
 
   // EXIT DOOR
-
   if (moveableElems.exitDoorUnlocked && moveableElems.exitDoorPosY >
-    gameCanvas.height - gameElements.exitDoorHeight) {
+    gameCanvas.height - gameElements.exitDoorHeight * 1.55) {
       exitDoorStopped = false;
       exitDoorMoving = true;
   } else if (!moveableElems.exitDoorUnlocked && moveableElems.exitDoorPosY <
@@ -807,7 +807,7 @@ async function playSounds() {
     exitDoorStopped = true;
   }
 
-  console.log(exitDoorMoving, exitDoorStopped);
+  console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
 
   if (exitDoorMoving) {
     exitDoorSnd.playing() ? null : exitDoorSnd.play();
