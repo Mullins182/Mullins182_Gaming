@@ -807,7 +807,7 @@ async function playSounds() {
     exitDoorStopped = true;
   }
 
-  console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
+  // console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
 
   if (exitDoorMoving) {
     exitDoorSnd.playing() ? null : exitDoorSnd.play();
