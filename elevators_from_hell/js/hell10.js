@@ -371,8 +371,6 @@ function initialize() {
   ctx.imageSmoothingEnabled = false;
   requestAnimationFrame(gameRoutine);
   Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
-  liftSndR.volume(0.2);
-  liftSndL.volume(0.2);
   exitDoorSnd.volume(0.55);
 }
 
@@ -760,7 +758,8 @@ async function playSounds() {
   // LIFT L
   if (moveableElems.liftL_isMoving) {
     if (!liftSndL.playing()) {
-      liftLFading = false; // Fade-Status zurücksetzen, falls nötig
+      liftLFading = false;
+      liftSndL.volume(0.25);
       liftSndL.seek(0);
       liftSndL.play();
     }
@@ -772,6 +771,7 @@ async function playSounds() {
   if (moveableElems.liftR_isMoving) {
     if (!liftSndR.playing()) {
       liftRFading = false;
+      liftSndR.volume(0.25);
       liftSndR.seek(0);
       liftSndR.play();
     }
