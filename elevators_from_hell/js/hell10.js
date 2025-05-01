@@ -10,7 +10,7 @@ const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
 const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
 const runSnd = new Howl({ src: ["./assets/sounds/running.mp3"] });
 const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
-const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.mp3"]});
+const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.mp3"] });
 
 // Status-Flag pro Sound
 let liftLFading = false;
@@ -729,7 +729,7 @@ async function fadeOutLift(sound, setFading, duration = 800) {
   if (!sound.playing() || setFading()) return;
   setFading(true);
   sound.fade(sound.volume(), 0, duration);
-  sound.once('fade', () => {
+  sound.once("fade", () => {
     // Nur stoppen, wenn der Sound nicht zwischenzeitlich neu gestartet wurde
     if (sound.volume() === 0 && sound.playing()) {
       sound.stop();
@@ -764,7 +764,10 @@ async function playSounds() {
       liftSndL.play();
     }
   } else {
-    fadeOutLift(liftSndL, (v) => { if (v !== undefined) liftLFading = v; return liftLFading; });
+    fadeOutLift(liftSndL, (v) => {
+      if (v !== undefined) liftLFading = v;
+      return liftLFading;
+    });
   }
 
   // LIFT R
@@ -776,7 +779,10 @@ async function playSounds() {
       liftSndR.play();
     }
   } else {
-    fadeOutLift(liftSndR, (v) => { if (v !== undefined) liftRFading = v; return liftRFading; });
+    fadeOutLift(liftSndR, (v) => {
+      if (v !== undefined) liftRFading = v;
+      return liftRFading;
+    });
   }
 
   // EXIT BUTTONS
@@ -794,14 +800,19 @@ async function playSounds() {
   }
 
   // EXIT DOOR LOGIC
-  if (moveableElems.exitDoorUnlocked && moveableElems.exitDoorPosY >
-    gameCanvas.height - gameElements.exitDoorHeight * 1.55) {
-      exitDoorStopped = false;
-      exitDoorMoving = true;
-  } else if (!moveableElems.exitDoorUnlocked && moveableElems.exitDoorPosY <
-    gameCanvas.height - gameElements.exitDoorHeight) {
-      exitDoorStopped = false;
-      exitDoorMoving = true;
+  if (
+    moveableElems.exitDoorUnlocked &&
+    moveableElems.exitDoorPosY >
+      gameCanvas.height - gameElements.exitDoorHeight * 1.55
+  ) {
+    exitDoorStopped = false;
+    exitDoorMoving = true;
+  } else if (
+    !moveableElems.exitDoorUnlocked &&
+    moveableElems.exitDoorPosY < gameCanvas.height - gameElements.exitDoorHeight
+  ) {
+    exitDoorStopped = false;
+    exitDoorMoving = true;
   } else {
     exitDoorMoving = false;
     exitDoorStopped = true;
@@ -811,7 +822,7 @@ async function playSounds() {
 
   if (exitDoorMoving) {
     exitDoorSnd.playing() ? null : exitDoorSnd.play();
-    exitDoorSnd.seek() > 2.30 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
+    exitDoorSnd.seek() > 2.3 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
   } else if (exitDoorStopped) {
     exitDoorSnd.playing() ? null : exitDoorSnd.seek(5.0);
   }
