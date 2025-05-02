@@ -23,7 +23,7 @@ let exitDoorStopped = true;
 
 // Lift Cabins inner view
 const cabinView = new Image();
-cabinView.src = "./assets/img/liftCabins/cabinView3.png";
+cabinView.src = "./assets/img/liftCabins/cabinView4.png";
 
 // Sprite-Variablen
 let spriteSheets = {
