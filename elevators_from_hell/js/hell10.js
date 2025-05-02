@@ -9,6 +9,10 @@ gameCanvas.height = 900;
 // Sound-Initializing
 const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
 const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
+const liftDoorsRop = new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] });
+const liftDoorsLop = new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] });
+const liftDoorsRcl = new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] });
+const liftDoorsLcl = new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] });
 const runSnd = new Howl({ src: ["./assets/sounds/running.wav"] });
 const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
 const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] });
@@ -770,6 +774,11 @@ async function playSounds() {
   } else {
     fadeOutLift(liftSndL, (v) => {
       if (v !== undefined) liftLFading = v;
+      if (!liftDoorsLop.playing()) {
+        liftDoorsLop.volume(0.15);
+        liftDoorsLop.rate(1.65);
+        liftDoorsLop.play();
+      }
       return liftLFading;
     });
   }
@@ -786,6 +795,11 @@ async function playSounds() {
   } else {
     fadeOutLift(liftSndR, (v) => {
       if (v !== undefined) liftRFading = v;
+      if (!liftDoorsRop.playing()) {
+        liftDoorsRop.volume(0.15);
+        liftDoorsRop.rate(1.65);
+        liftDoorsRop.play();
+      }
       return liftRFading;
     });
   }
