@@ -760,9 +760,10 @@ async function playSounds() {
     if (!liftSndL.playing()) {
       liftLFading = false;
       liftSndL.volume(0.25);
-      liftSndL.seek(0);
       liftSndL.play();
     }
+    liftLFading = false;
+    liftSndL.seek() > 3.0 ? liftSndL.seek(1.0) : liftSndL.seek();
   } else {
     fadeOutLift(liftSndL, (v) => {
       if (v !== undefined) liftLFading = v;
@@ -775,9 +776,10 @@ async function playSounds() {
     if (!liftSndR.playing()) {
       liftRFading = false;
       liftSndR.volume(0.25);
-      liftSndR.seek(0);
       liftSndR.play();
     }
+    liftRFading = false;
+    liftSndR.seek() > 3.0 ? liftSndR.seek(1.0) : liftSndR.seek();
   } else {
     fadeOutLift(liftSndR, (v) => {
       if (v !== undefined) liftRFading = v;
