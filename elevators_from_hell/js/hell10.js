@@ -810,28 +810,48 @@ async function playSounds() {
     moveableElems.exitDoorPosY >
       gameCanvas.height - gameElements.exitDoorHeight * 1.55
   ) {
-    exitDoorStopped = false;
-    exitDoorMoving = true;
+    if (!exitDoorMoving) {
+      exitDoorMoving = true;
+    }
+    if (exitDoorStopped) {
+      exitDoorStopped = false;
+    }
   } else if (
     !moveableElems.exitDoorUnlocked &&
     moveableElems.exitDoorPosY < gameCanvas.height - gameElements.exitDoorHeight
   ) {
-    exitDoorStopped = false;
-    exitDoorMoving = true;
+    if (!exitDoorMoving) {
+      exitDoorMoving = true;
+    }
+    if (exitDoorStopped) {
+      exitDoorStopped = false;
+    }
   } else {
-    exitDoorMoving = false;
-    exitDoorStopped = true;
+    if (exitDoorMoving) {
+      exitDoorMoving = false;
+    }
+    if (!exitDoorStopped) {
+      exitDoorStopped = true;
+    }
   }
 
   // console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
 
-  exitDoorSnd.volume(0.4);
-
   if (exitDoorMoving) {
-    exitDoorSnd.playing() ? null : exitDoorSnd.play();
+    // exitDoorSnd.playing() ? null : exitDoorSnd.play();
+    // exitDoorSnd.seek() > 2.3 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
+    if (!exitDoorSnd.playing()) {
+      exitDoorSnd.volume(0.4);
+      exitDoorSnd.play();
+    }
     exitDoorSnd.seek() > 2.3 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
-  } else if (exitDoorStopped) {
-    exitDoorSnd.playing() ? null : exitDoorSnd.seek(5.0);
+  } else {
+    if (exitDoorStopped) {
+      if (exitDoorSnd.playing()) {
+      } else {
+        exitDoorSnd.seek(5.0);
+      }
+    }
   }
 }
 
