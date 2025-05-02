@@ -6,31 +6,34 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
+// Sound-Initializing
 const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
 const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
-const runSnd = new Howl({ src: ["./assets/sounds/running.mp3"] });
+const runSnd = new Howl({ src: ["./assets/sounds/running.wav"] });
 const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
-const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.mp3"] });
+const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] });
 
-// Status-Flag pro Sound
+// Sound-Variables
 let liftLFading = false;
 let liftRFading = false;
 let btnSoundBuffer = 0;
-let isColliding = false;
 let exitBtnActCounter = 0;
 let exitDoorMoving = false;
 let exitDoorStopped = true;
+
+// Collision-Variables
+let isColliding = false;
 
 // Lift Cabins inner view
 const cabinView = new Image();
 cabinView.src = "./assets/img/liftCabins/cabinView4.png";
 
-// Sprite-Variablen
+// Sprite-Variables
 let spriteSheets = {
   run: new Image(),
   idle: new Image(),
 };
-// Vorladen der Spritesheets
+// Spritesheets Initializing
 spriteSheets.run.src = "./assets/sprites/player/run/Run.png";
 spriteSheets.idle.src = "./assets/sprites/player/idle/Idle.png";
 let playerSprite = spriteSheets.idle;
@@ -276,17 +279,17 @@ let automaticElevator = false;
 // ___________________________ Keyboard-Event-Listener ___________________________
 
 document.addEventListener("keydown", function (event) {
-  // Loggt gedrückte Taste
+  // Log pressed key
   console.log(`Taste gedrückt: ${event.key}`);
 
-  // Floor-Level-Auswahl
+  // Floor-Level-Selection
   if (Object.values(KEYS.NUMBERS).includes(event.key)) {
     const floorNumber = parseInt(event.key);
     handleFloorSelection(floorNumber);
     return;
   }
 
-  // Bewegungssteuerung
+  // Player Movement
   switch (event.key) {
     case KEYS.DIRECTIONS.LEFT:
       if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
@@ -2079,7 +2082,7 @@ function drawCeiling() {
 
 function drawWalls() {
   // EXIT-DOOR
-  ctx.fillStyle = "#111111";
+  ctx.fillStyle = "#700";
   ctx.fillRect(
     gameCanvas.width * 0.051,
     moveableElems.exitDoorPosY,
