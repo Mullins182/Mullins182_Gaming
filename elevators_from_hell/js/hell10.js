@@ -763,6 +763,17 @@ async function playSounds() {
   // }
 
   // LIFT L
+  if (
+    moveableElems.liftL_calledToFloor != moveableElems.liftL_isOnFloor &&
+    !moveableElems.liftL_isMoving
+  ) {
+    if (!liftDoorsLcl.playing()) {
+      liftDoorsLcl.volume(0.15);
+      liftDoorsLcl.rate(1.0);
+      liftDoorsLcl.play();
+    }
+  }
+
   if (moveableElems.liftL_isMoving) {
     if (!liftSndL.playing()) {
       liftLFading = false;
@@ -784,6 +795,17 @@ async function playSounds() {
   }
 
   // LIFT R
+  if (
+    moveableElems.liftR_calledToFloor != moveableElems.liftR_isOnFloor &&
+    !moveableElems.liftR_isMoving
+  ) {
+    if (!liftDoorsRcl.playing()) {
+      liftDoorsRcl.volume(0.15);
+      liftDoorsRcl.rate(1.0);
+      liftDoorsRcl.play();
+    }
+  }
+
   if (moveableElems.liftR_isMoving) {
     if (!liftSndR.playing()) {
       liftRFading = false;
