@@ -798,10 +798,12 @@ async function playSounds() {
 
   // PLAYER MOVEMENT
   if (playerSprite === spriteSheets.run) {
-    runSnd.rate(0.58);
-    if (!runSnd.playing()) runSnd.play();
+    if (!runSnd.playing()) {
+      runSnd.rate(0.58);
+      runSnd.play();
+    }
   } else {
-    runSnd.stop();
+    runSnd.playing() ? runSnd.stop() : null;
   }
 
   // EXIT DOOR LOGIC
@@ -838,10 +840,8 @@ async function playSounds() {
   // console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
 
   if (exitDoorMoving) {
-    // exitDoorSnd.playing() ? null : exitDoorSnd.play();
-    // exitDoorSnd.seek() > 2.3 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
     if (!exitDoorSnd.playing()) {
-      exitDoorSnd.volume(0.4);
+      exitDoorSnd.volume(0.15);
       exitDoorSnd.play();
     }
     exitDoorSnd.seek() > 2.3 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
