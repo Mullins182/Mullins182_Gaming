@@ -6,8 +6,8 @@ const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
-const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
-const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves.wav"] });
+const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
+const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
 const runSnd = new Howl({ src: ["./assets/sounds/running.mp3"] });
 const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
 const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.mp3"] });
@@ -368,10 +368,10 @@ initialize();
 
 // ___________________________ GAME INI ___________________________
 function initialize() {
-  ctx.imageSmoothingEnabled = false;
-  requestAnimationFrame(gameRoutine);
+  html5: true;
+  ctx.imageSmoothingEnabled = true;
   Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
-  exitDoorSnd.volume(0.55);
+  requestAnimationFrame(gameRoutine);
 }
 
 function changePlayerSprite(movement) {
@@ -792,7 +792,7 @@ async function playSounds() {
   }
 
   // PLAYER MOVEMENT
-  if (playerSprite == spriteSheets.run) {
+  if (playerSprite === spriteSheets.run) {
     runSnd.rate(0.58);
     if (!runSnd.playing()) runSnd.play();
   } else {
@@ -819,6 +819,8 @@ async function playSounds() {
   }
 
   // console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
+
+  exitDoorSnd.volume(0.4);
 
   if (exitDoorMoving) {
     exitDoorSnd.playing() ? null : exitDoorSnd.play();
