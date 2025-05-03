@@ -698,37 +698,44 @@ function drawGameElements() {
 
 function automaticLiftControl() {
   if (automaticElevator) {
-    if (moveableElems.liftL_isMoving || moveableElems.liftR_isMoving) {
-    } else {
-      let randomNum = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
-      let randomNum2 = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
-      console.log(randomNum, "|", randomNum2);
-      // floorLevelSelected =
-      //   randomNum == 6
-      //     ? floorLiftLevels.floor6_YPos
-      //     : randomNum == 5
-      //     ? floorLiftLevels.floor5_YPos
-      //     : randomNum == 4
-      //     ? floorLiftLevels.floor4_YPos
-      //     : randomNum == 3
-      //     ? floorLiftLevels.floor3_YPos
-      //     : randomNum == 2
-      //     ? floorLiftLevels.floor2_YPos
-      //     : randomNum == 1
-      //     ? floorLiftLevels.floor1_YPos
-      //     : randomNum == 0
-      //     ? floorLiftLevels.floor0_YPos
-      //     : floorLiftLevels.floor6_YPos;
+    let randomNum;
+    let randomNum2;
 
-      if (!shaftLdoorsOpenCheck() || !shaftRdoorsOpenCheck()) {
-      }
-      moveableElems.liftL_calledToFloor = shaftLdoorsOpenCheck()
+    for (let i = 256; i > 0; --i) {
+      randomNum = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+    }
+    for (let i = 387; i > 0; --i) {
+      randomNum2 = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+    }
+
+    console.log(randomNum, "|", randomNum2);
+
+    moveableElems.liftL_calledToFloor =
+      !moveableElems.liftL_isMoving && shaftLdoorsOpenCheck()
         ? randomNum
         : moveableElems.liftL_calledToFloor;
-      moveableElems.liftR_calledToFloor = shaftRdoorsOpenCheck()
+
+    moveableElems.liftR_calledToFloor =
+      !moveableElems.liftR_isMoving && shaftRdoorsOpenCheck()
         ? randomNum2
         : moveableElems.liftR_calledToFloor;
-    }
+
+    // floorLevelSelected =
+    //   randomNum == 6
+    //     ? floorLiftLevels.floor6_YPos
+    //     : randomNum == 5
+    //     ? floorLiftLevels.floor5_YPos
+    //     : randomNum == 4
+    //     ? floorLiftLevels.floor4_YPos
+    //     : randomNum == 3
+    //     ? floorLiftLevels.floor3_YPos
+    //     : randomNum == 2
+    //     ? floorLiftLevels.floor2_YPos
+    //     : randomNum == 1
+    //     ? floorLiftLevels.floor1_YPos
+    //     : randomNum == 0
+    //     ? floorLiftLevels.floor0_YPos
+    //     : floorLiftLevels.floor6_YPos;
   }
 }
 
