@@ -75,6 +75,7 @@ const gameElements = {
   floor5_YPos: gameCanvas.height * 0.375 - 6,
   floor6_YPos: gameCanvas.height * 0.25 - 6,
   exitBtnsXpos: gameCanvas.width / 1.931,
+  callElevatorBtnsXpos: gameCanvas.width * 0.5025,
   shaftDoorsHeight: 90,
   shaftDoorsLW_f0: 38.75,
   shaftDoorsRW_f0: 38.75,
@@ -241,6 +242,11 @@ const exitButtonsStatus = {
   floor6: false,
 };
 
+const callElevatorBtnsStatus = {
+  floor0: 0,
+  floor1: 0,
+};
+
 // Konstanten für bessere Lesbarkeit und Wartbarkeit
 const KEYS = {
   NUMBERS: {
@@ -320,6 +326,7 @@ document.addEventListener("keydown", function (event) {
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
+      callElevatorBtnsCheck(2);
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
@@ -329,6 +336,7 @@ document.addEventListener("keydown", function (event) {
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
+      callElevatorBtnsCheck(1);
       exitBtnActCheck();
       playerOnLift(false);
       break;
@@ -597,6 +605,22 @@ function drawLabels() {
   }
 }
 
+function callElevatorBtnsCheck(value) {
+  for (let i = 0; i < 7; i++) {
+    value = callElevatorBtnsStatus[`floor${i}`] + value;
+
+    callElevatorBtnsStatus[`floor${i}`] =
+      callElevatorBtnsStatus[`floor${i}`] < 3 &&
+      moveableElems.playerOnFloor == i &&
+      moveableElems.playerPosX >
+        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
+      moveableElems.playerPosX <
+        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
+        ? value
+        : callElevatorBtnsStatus[`floor${i}`];
+  }
+}
+
 function exitBtnActCheck() {
   for (let i = 0; i < 7; i++) {
     exitButtonsStatus[`floor${i}`] =
@@ -645,9 +669,10 @@ function drawGameElements() {
       drawCallElevatorBtns(
         gameCanvas.width / 2,
         gameElements[`floor${i}_YPos`] - 63,
-        gameCanvas.width * 0.5025,
+        gameElements.callElevatorBtnsXpos,
         gameElements[`floor${i}_YPos`] - 55,
-        gameElements[`floor${i}_YPos`] - 43
+        gameElements[`floor${i}_YPos`] - 43,
+        callElevatorBtnsStatus[`floor${i}`]
       );
 
       drawExitButtons(
@@ -675,9 +700,10 @@ function drawGameElements() {
       drawCallElevatorBtns(
         gameCanvas.width / 2,
         gameElements[`floor${i}_YPos`] - 63,
-        gameCanvas.width * 0.5025,
+        gameElements.callElevatorBtnsXpos,
         gameElements[`floor${i}_YPos`] - 55,
-        gameElements[`floor${i}_YPos`] - 43
+        gameElements[`floor${i}_YPos`] - 43,
+        callElevatorBtnsStatus[`floor${i}`]
       );
 
       drawExitButtons(
@@ -2232,15 +2258,25 @@ function drawCallElevatorBtns(
   platePosY,
   triPosx,
   triUpPosY,
-  triDwnPosY
+  triDwnPosY,
+  btnActive
 ) {
   // Plate
-  ctx.fillStyle = "#AE000065";
+  ctx.fillStyle = "#050000";
   ctx.fillRect(platePosX, platePosY, 20, 35);
   // Upper Button
-  drawTriangle(triPosx, triUpPosY, 12, "darkgreen", "up");
+  btnActive === 1
+    ? drawTriangle(triPosx, triUpPosY, 12, "greenyellow", "up")
+    : drawTriangle(triPosx, triUpPosY, 12, "darkgreen", "up");
   // Lower Button
-  drawTriangle(triPosx, triDwnPosY, 12, "darkgreen", "down");
+  btnActive === 2
+    ? drawTriangle(triPosx, triDwnPosY, 12, "greenyellow", "down")
+    : drawTriangle(triPosx, triDwnPosY, 12, "darkgreen", "down");
+  // Both Buttons
+  if (btnActive === 3) {
+    drawTriangle(triPosx, triUpPosY, 12, "greenyellow", "up");
+    drawTriangle(triPosx, triDwnPosY, 12, "greenyellow", "down");
+  }
 }
 
 function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY, btnActivated) {
