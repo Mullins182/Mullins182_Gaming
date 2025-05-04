@@ -203,7 +203,7 @@ const shaftLdoorsOpenStatus = {
   floor6_LdoorOpen: false,
 };
 
-const floorLiftLevels = {
+const floorLevels = {
   floor0_YPos:
     gameCanvas.height - (gameElements.liftsHeight + gameElements.floorsHeight),
   floor1_YPos:
@@ -245,6 +245,11 @@ const exitButtonsStatus = {
 const callElevatorBtnsStatus = {
   floor0: 0,
   floor1: 0,
+  floor2: 0,
+  floor3: 0,
+  floor4: 0,
+  floor5: 0,
+  floor6: 0,
 };
 
 // Konstanten für bessere Lesbarkeit und Wartbarkeit
@@ -272,17 +277,17 @@ const KEYS = {
 };
 
 const FLOOR_LEVELS = {
-  floor0_YPos: floorLiftLevels.floor0_YPos,
-  floor1_YPos: floorLiftLevels.floor1_YPos,
-  floor2_YPos: floorLiftLevels.floor2_YPos,
-  floor3_YPos: floorLiftLevels.floor3_YPos,
-  floor4_YPos: floorLiftLevels.floor4_YPos,
-  floor5_YPos: floorLiftLevels.floor5_YPos,
-  floor6_YPos: floorLiftLevels.floor6_YPos,
+  floor0_YPos: floorLevels.floor0_YPos,
+  floor1_YPos: floorLevels.floor1_YPos,
+  floor2_YPos: floorLevels.floor2_YPos,
+  floor3_YPos: floorLevels.floor3_YPos,
+  floor4_YPos: floorLevels.floor4_YPos,
+  floor5_YPos: floorLevels.floor5_YPos,
+  floor6_YPos: floorLevels.floor6_YPos,
 };
 
 // ___________________________ DEBUGGING ___________________________
-let floorLevelSelected = floorLiftLevels.floor0_YPos;
+let floorLevelSelected = floorLevels.floor0_YPos;
 let debugMode = false;
 let automaticElevator = false;
 
@@ -607,11 +612,16 @@ function drawLabels() {
 
 function callElevatorBtnsCheck(value) {
   for (let i = 0; i < 7; i++) {
-    value = callElevatorBtnsStatus[`floor${i}`] + value;
+    value =
+      moveableElems.playerOnFloor === i &&
+      callElevatorBtnsStatus[`floor${i}`] != value &&
+      callElevatorBtnsStatus[`floor${i}`] < 3
+        ? callElevatorBtnsStatus[`floor${i}`] + value
+        : value;
 
     callElevatorBtnsStatus[`floor${i}`] =
-      callElevatorBtnsStatus[`floor${i}`] < 3 &&
-      moveableElems.playerOnFloor == i &&
+      callElevatorBtnsStatus[`floor${i}`] !== 3 &&
+      moveableElems.playerOnFloor === i &&
       moveableElems.playerPosX >
         gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
       moveableElems.playerPosX <
@@ -1332,60 +1342,60 @@ function playerIsOnFloor() {
 
 // Lift Floor-Check logic Right
 function liftsPosUpdate() {
-  if (moveableElems.liftR_YPos === floorLiftLevels.floor0_YPos) {
+  if (moveableElems.liftR_YPos === floorLevels.floor0_YPos) {
     moveableElems.liftR_isOnFloor = 0;
     moveableElems.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLiftLevels.floor1_YPos) {
+  if (moveableElems.liftR_YPos === floorLevels.floor1_YPos) {
     moveableElems.liftR_isOnFloor = 1;
     moveableElems.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLiftLevels.floor2_YPos) {
+  if (moveableElems.liftR_YPos === floorLevels.floor2_YPos) {
     moveableElems.liftR_isOnFloor = 2;
     moveableElems.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLiftLevels.floor3_YPos) {
+  if (moveableElems.liftR_YPos === floorLevels.floor3_YPos) {
     moveableElems.liftR_isOnFloor = 3;
     moveableElems.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLiftLevels.floor4_YPos) {
+  if (moveableElems.liftR_YPos === floorLevels.floor4_YPos) {
     moveableElems.liftR_isOnFloor = 4;
     moveableElems.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLiftLevels.floor5_YPos) {
+  if (moveableElems.liftR_YPos === floorLevels.floor5_YPos) {
     moveableElems.liftR_isOnFloor = 5;
     moveableElems.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLiftLevels.floor6_YPos) {
+  if (moveableElems.liftR_YPos === floorLevels.floor6_YPos) {
     moveableElems.liftR_isOnFloor = 6;
     moveableElems.liftR_isMoving = false;
   }
   // Lift Floor-Check logic Left
-  if (moveableElems.liftL_YPos === floorLiftLevels.floor0_YPos) {
+  if (moveableElems.liftL_YPos === floorLevels.floor0_YPos) {
     moveableElems.liftL_isOnFloor = 0;
     moveableElems.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLiftLevels.floor1_YPos) {
+  if (moveableElems.liftL_YPos === floorLevels.floor1_YPos) {
     moveableElems.liftL_isOnFloor = 1;
     moveableElems.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLiftLevels.floor2_YPos) {
+  if (moveableElems.liftL_YPos === floorLevels.floor2_YPos) {
     moveableElems.liftL_isOnFloor = 2;
     moveableElems.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLiftLevels.floor3_YPos) {
+  if (moveableElems.liftL_YPos === floorLevels.floor3_YPos) {
     moveableElems.liftL_isOnFloor = 3;
     moveableElems.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLiftLevels.floor4_YPos) {
+  if (moveableElems.liftL_YPos === floorLevels.floor4_YPos) {
     moveableElems.liftL_isOnFloor = 4;
     moveableElems.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLiftLevels.floor5_YPos) {
+  if (moveableElems.liftL_YPos === floorLevels.floor5_YPos) {
     moveableElems.liftL_isOnFloor = 5;
     moveableElems.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLiftLevels.floor6_YPos) {
+  if (moveableElems.liftL_YPos === floorLevels.floor6_YPos) {
     moveableElems.liftL_isOnFloor = 6;
     moveableElems.liftL_isMoving = false;
   }
@@ -1401,7 +1411,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftR_isOnFloor != 1 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLiftLevels.floor1_YPos
+        moveableElems.liftR_YPos < floorLevels.floor1_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
@@ -1410,7 +1420,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftR_isOnFloor != 2 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLiftLevels.floor2_YPos
+        moveableElems.liftR_YPos < floorLevels.floor2_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
@@ -1419,7 +1429,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftR_isOnFloor != 3 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLiftLevels.floor3_YPos
+        moveableElems.liftR_YPos < floorLevels.floor3_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
@@ -1428,7 +1438,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftR_isOnFloor != 4 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLiftLevels.floor4_YPos
+        moveableElems.liftR_YPos < floorLevels.floor4_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
@@ -1437,7 +1447,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftR_isOnFloor != 5 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLiftLevels.floor5_YPos
+        moveableElems.liftR_YPos < floorLevels.floor5_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
@@ -1446,7 +1456,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftR_isOnFloor != 6 && shaftRdoorsClosed()) {
       moveableElems.liftR_isMoving = true;
       moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLiftLevels.floor6_YPos
+        moveableElems.liftR_YPos < floorLevels.floor6_YPos
           ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
           : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
     }
@@ -1458,7 +1468,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftL_isOnFloor != 0 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLiftLevels.floor0_YPos
+        moveableElems.liftL_YPos < floorLevels.floor0_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
@@ -1467,7 +1477,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftL_isOnFloor != 1 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLiftLevels.floor1_YPos
+        moveableElems.liftL_YPos < floorLevels.floor1_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
@@ -1476,7 +1486,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftL_isOnFloor != 2 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLiftLevels.floor2_YPos
+        moveableElems.liftL_YPos < floorLevels.floor2_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
@@ -1485,7 +1495,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftL_isOnFloor != 3 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLiftLevels.floor3_YPos
+        moveableElems.liftL_YPos < floorLevels.floor3_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
@@ -1494,7 +1504,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftL_isOnFloor != 4 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLiftLevels.floor4_YPos
+        moveableElems.liftL_YPos < floorLevels.floor4_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
@@ -1503,7 +1513,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftL_isOnFloor != 5 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLiftLevels.floor5_YPos
+        moveableElems.liftL_YPos < floorLevels.floor5_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
@@ -1512,7 +1522,7 @@ function liftsPosUpdate() {
     if (moveableElems.liftL_isOnFloor != 6 && shaftLdoorsClosed()) {
       moveableElems.liftL_isMoving = true;
       moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLiftLevels.floor6_YPos
+        moveableElems.liftL_YPos < floorLevels.floor6_YPos
           ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
@@ -2266,16 +2276,16 @@ function drawCallElevatorBtns(
   ctx.fillRect(platePosX, platePosY, 20, 35);
   // Upper Button
   btnActive === 1
-    ? drawTriangle(triPosx, triUpPosY, 12, "greenyellow", "up")
-    : drawTriangle(triPosx, triUpPosY, 12, "darkgreen", "up");
+    ? drawTriangle(triPosx, triUpPosY, 12, "lime", "up")
+    : drawTriangle(triPosx, triUpPosY, 12, "darkred", "up");
   // Lower Button
   btnActive === 2
-    ? drawTriangle(triPosx, triDwnPosY, 12, "greenyellow", "down")
-    : drawTriangle(triPosx, triDwnPosY, 12, "darkgreen", "down");
+    ? drawTriangle(triPosx, triDwnPosY, 12, "lime", "down")
+    : drawTriangle(triPosx, triDwnPosY, 12, "darkred", "down");
   // Both Buttons
   if (btnActive === 3) {
-    drawTriangle(triPosx, triUpPosY, 12, "greenyellow", "up");
-    drawTriangle(triPosx, triDwnPosY, 12, "greenyellow", "down");
+    drawTriangle(triPosx, triUpPosY, 12, "lime", "up");
+    drawTriangle(triPosx, triDwnPosY, 12, "lime", "down");
   }
 }
 
