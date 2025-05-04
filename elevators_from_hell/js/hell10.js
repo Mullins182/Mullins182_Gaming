@@ -430,6 +430,7 @@ async function gameRoutine(timestamp) {
   shaftDoors();
   exitDoor();
   automaticLiftControl();
+  liftCalledCheck();
   drawGameElements();
   playSounds();
 
@@ -1527,6 +1528,29 @@ function liftsPosUpdate() {
           : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
     }
   }
+}
+// In THE WORKS !
+function liftCalledCheck() {
+  for (let i = 0; i < 7; ++i) {
+    moveableElems.liftR_calledToFloor =
+      callElevatorBtnsStatus[`floor${i}`] !== 0 &&
+      moveableElems.liftR_isOnFloor - i < moveableElems.liftL_isOnFloor - i
+        ? i
+        : moveableElems.liftR_calledToFloor;
+
+    moveableElems.liftL_calledToFloor =
+      callElevatorBtnsStatus[`floor${i}`] !== 0 &&
+      moveableElems.liftL_isOnFloor - i < moveableElems.liftR_isOnFloor - i
+        ? i
+        : moveableElems.liftL_calledToFloor;
+
+    callElevatorBtnsStatus[`floor${i}`] =
+      moveableElems.liftR_calledToFloor === moveableElems.liftR_isOnFloor ||
+      moveableElems.liftL_calledToFloor === moveableElems.liftL_isOnFloor
+        ? 0
+        : callElevatorBtnsStatus[`floor${i}`];
+  }
+  // console.log(moveableElems.liftR_calledToFloor);
 }
 
 function shaftRdoorsClosed() {
