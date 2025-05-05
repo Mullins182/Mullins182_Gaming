@@ -139,8 +139,7 @@ const gameElements = {
 
 const moveableElems = {
   playerPosX: gameCanvas.width / 2,
-  playerPosY:
-    gameCanvas.height - (gameElements.floorsHeight + gameElements.playerHeight),
+  playerPosY: gameElements.floor0_YPos - gameElements.playerHeight,
   playerOnFloor: 0,
   playerOnLiftR: false,
   playerOnLiftL: false,
@@ -270,8 +269,9 @@ const KEYS = {
     DOWN: "ArrowDown",
   },
   SPECIAL_KEYS: {
-    TOGGLE_AUTO_LEFT_ELEVATOR: "r",
+    TOGGLE_AUTO_ELEVATOR: "r",
     TOGGLE_DEBUG_MODE: "d",
+    CHANGE_PLAYER_YPOS: "t",
     TOGGLE_EXIT_DOOR: "Escape",
   },
 };
@@ -331,7 +331,7 @@ document.addEventListener("keydown", function (event) {
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
-      callElevatorBtnsCheck(2);
+      moveableElems.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
@@ -341,11 +341,11 @@ document.addEventListener("keydown", function (event) {
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
-      callElevatorBtnsCheck(1);
+      moveableElems.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
       exitBtnActCheck();
       playerOnLift(false);
       break;
-    case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_LEFT_ELEVATOR:
+    case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_ELEVATOR:
       automaticElevator = !automaticElevator;
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
@@ -356,6 +356,21 @@ document.addEventListener("keydown", function (event) {
         exitButtonsStatus[key] = !exitButtonsStatus[key];
       }
       break;
+    case KEYS.SPECIAL_KEYS.CHANGE_PLAYER_YPOS:
+      moveableElems.playerPosY =
+        moveableElems.playerOnFloor === 0
+          ? gameElements.floor1_YPos - gameElements.playerHeight
+          : moveableElems.playerOnFloor === 1
+          ? gameElements.floor2_YPos - gameElements.playerHeight
+          : moveableElems.playerOnFloor === 2
+          ? gameElements.floor3_YPos - gameElements.playerHeight
+          : moveableElems.playerOnFloor === 3
+          ? gameElements.floor4_YPos - gameElements.playerHeight
+          : moveableElems.playerOnFloor === 4
+          ? gameElements.floor5_YPos - gameElements.playerHeight
+          : moveableElems.playerOnFloor === 5
+          ? gameElements.floor6_YPos - gameElements.playerHeight
+          : gameElements.floor0_YPos - gameElements.playerHeight;
   }
 });
 
@@ -683,7 +698,8 @@ function drawGameElements() {
         gameElements.callElevatorBtnsXpos,
         gameElements[`floor${i}_YPos`] - 55,
         gameElements[`floor${i}_YPos`] - 43,
-        callElevatorBtnsStatus[`floor${i}`]
+        callElevatorBtnsStatus[`floor${i}`],
+        i
       );
 
       drawExitButtons(
@@ -714,7 +730,8 @@ function drawGameElements() {
         gameElements.callElevatorBtnsXpos,
         gameElements[`floor${i}_YPos`] - 55,
         gameElements[`floor${i}_YPos`] - 43,
-        callElevatorBtnsStatus[`floor${i}`]
+        callElevatorBtnsStatus[`floor${i}`],
+        i
       );
 
       drawExitButtons(
@@ -1532,25 +1549,33 @@ function liftsPosUpdate() {
 // In THE WORKS !
 function liftCalledCheck() {
   for (let i = 0; i < 7; ++i) {
+    callElevatorBtnsStatus[`floor${i}`] =
+      moveableElems.liftR_isOnFloor === i || moveableElems.liftL_isOnFloor === i
+        ? 0
+        : callElevatorBtnsStatus[`floor${i}`];
+
     moveableElems.liftR_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
-      moveableElems.liftR_isOnFloor - i < moveableElems.liftL_isOnFloor - i
+      moveableElems.liftR_isOnFloor !== i &&
+      Math.abs(i - moveableElems.liftR_isOnFloor) <
+        Math.abs(i - moveableElems.liftL_isOnFloor)
+        ? i
+        : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
+          moveableElems.liftR_isOnFloor !== i &&
+          Math.abs(i - moveableElems.liftR_isOnFloor) ===
+            Math.abs(i - moveableElems.liftL_isOnFloor)
         ? i
         : moveableElems.liftR_calledToFloor;
 
     moveableElems.liftL_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
-      moveableElems.liftL_isOnFloor - i < moveableElems.liftR_isOnFloor - i
+      moveableElems.liftL_isOnFloor !== i &&
+      Math.abs(i - moveableElems.liftL_isOnFloor) <
+        Math.abs(i - moveableElems.liftR_isOnFloor)
         ? i
         : moveableElems.liftL_calledToFloor;
-
-    callElevatorBtnsStatus[`floor${i}`] =
-      moveableElems.liftR_calledToFloor === moveableElems.liftR_isOnFloor ||
-      moveableElems.liftL_calledToFloor === moveableElems.liftL_isOnFloor
-        ? 0
-        : callElevatorBtnsStatus[`floor${i}`];
   }
-  // console.log(moveableElems.liftR_calledToFloor);
+  // console.log();
 }
 
 function shaftRdoorsClosed() {
@@ -2293,11 +2318,28 @@ function drawCallElevatorBtns(
   triPosx,
   triUpPosY,
   triDwnPosY,
-  btnActive
+  btnActive,
+  floor
 ) {
   // Plate
   ctx.fillStyle = "#050000";
   ctx.fillRect(platePosX, platePosY, 20, 35);
+
+  if (floor === 0) {
+    // Upper Button
+    btnActive === 1
+      ? drawTriangle(triPosx, triUpPosY, 12, "lime", "up")
+      : drawTriangle(triPosx, triUpPosY, 12, "darkred", "up");
+    return;
+  }
+
+  if (floor === 6) {
+    btnActive === 2
+      ? drawTriangle(triPosx, triDwnPosY, 12, "lime", "down")
+      : drawTriangle(triPosx, triDwnPosY, 12, "darkred", "down");
+    return;
+  }
+
   // Upper Button
   btnActive === 1
     ? drawTriangle(triPosx, triUpPosY, 12, "lime", "up")
