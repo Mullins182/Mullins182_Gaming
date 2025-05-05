@@ -20,7 +20,8 @@ const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] });
 // Sound-Variables
 let liftLFading = false;
 let liftRFading = false;
-let btnSoundBuffer = 0;
+let callLiftBtnSndCount = 0;
+let exitBtnSndCount = 0;
 let exitBtnActCounter = 0;
 let exitDoorMoving = false;
 let exitDoorStopped = true;
@@ -74,7 +75,7 @@ const gameElements = {
   floor4_YPos: gameCanvas.height * 0.5 - 6,
   floor5_YPos: gameCanvas.height * 0.375 - 6,
   floor6_YPos: gameCanvas.height * 0.25 - 6,
-  exitBtnsXpos: gameCanvas.width / 1.931,
+  exitBtnsXpos: gameCanvas.width / 1.921,
   callElevatorBtnsXpos: gameCanvas.width * 0.5025,
   shaftDoorsHeight: 90,
   shaftDoorsLW_f0: 38.75,
@@ -703,7 +704,7 @@ function drawGameElements() {
       );
 
       drawExitButtons(
-        gameCanvas.width / 1.95,
+        gameCanvas.width / 1.94,
         gameElements[`floor${i}_YPos`] - 52,
         gameElements.exitBtnsXpos,
         gameElements[`floor${i}_YPos`] - 43,
@@ -735,7 +736,7 @@ function drawGameElements() {
       );
 
       drawExitButtons(
-        gameCanvas.width / 1.95,
+        gameCanvas.width / 1.94,
         gameElements[`floor${i}_YPos`] - 52,
         gameElements.exitBtnsXpos,
         gameElements[`floor${i}_YPos`] - 43,
@@ -888,11 +889,16 @@ async function playSounds() {
   }
 
   // EXIT BUTTONS
-  if (exitBtnActCounter != btnSoundBuffer) {
+  if (exitBtnActCounter != exitBtnSndCount) {
     btnPress.play();
-    btnSoundBuffer > exitBtnActCounter ? btnSoundBuffer-- : btnSoundBuffer++;
+    exitBtnSndCount > exitBtnActCounter ? exitBtnSndCount-- : exitBtnSndCount++;
   }
 
+  // LIFT CALLING BUTTONS
+  if (callLiftBtnSndCount > 0) {
+    btnPress.play();
+    callLiftBtnSndCount--;
+  }
   // PLAYER MOVEMENT
   if (playerSprite === spriteSheets.run) {
     if (!runSnd.playing()) {
@@ -2322,7 +2328,7 @@ function drawCallElevatorBtns(
   floor
 ) {
   // Plate
-  ctx.fillStyle = "#050000";
+  ctx.fillStyle = "#9d3a08";
   ctx.fillRect(platePosX, platePosY, 20, 35);
 
   if (floor === 0) {
@@ -2357,10 +2363,10 @@ function drawCallElevatorBtns(
 
 function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY, btnActivated) {
   // Plate
-  ctx.fillStyle = "#FF000095";
+  ctx.fillStyle = "#9d3a08";
   ctx.fillRect(platePosX, platePosY, 17, 17);
 
-  ctx.fillStyle = btnActivated ? "#00FF0088" : "#FF0000FF";
+  ctx.fillStyle = btnActivated ? "#d4ff00" : "#ff3e00";
   ctx.beginPath();
 
   // Draw Circle -> (posX, posY, radius, startangle, endangle)
