@@ -19,23 +19,6 @@ const sounds = {
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
 };
 
-// Sound-Variables
-let liftLFading = false;
-let liftRFading = false;
-let callLiftBtnSndCount = 0;
-let callLiftBtnActCount = 0;
-let exitBtnSndCount = 0;
-let exitBtnActCounter = 0;
-let exitDoorMoving = false;
-let exitDoorStopped = true;
-
-// Collision-Variables
-let isColliding = false;
-
-// Lift Cabins inner view
-const cabinView = new Image();
-cabinView.src = "./assets/img/liftCabins/cabinView4.png";
-
 // Sprite-Variables
 let player_spriteSheet = {
   idle: new Image(),
@@ -56,6 +39,21 @@ npc_spriteSheet.idle.src = "";
 npc_spriteSheet.move.src = "";
 let npcSprite = npc_spriteSheet.idle;
 
+// Lift Cabins inner view
+const cabinView = new Image();
+cabinView.src = "./assets/img/liftCabins/cabinView4.png";
+
+// Sound-Variables
+let liftLFading = false;
+let liftRFading = false;
+let callLiftBtnSndCount = 0;
+let callLiftBtnActCount = 0;
+let exitBtnSndCount = 0;
+let exitBtnActCounter = 0;
+let exitDoorMoving = false;
+let exitDoorStopped = true;
+
+// Sprite-Variables
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
 let currentFrame = 0;
@@ -63,6 +61,10 @@ let totalFrames = 7; // Anzahl der Frames in Ihrem Spritesheet
 let lastTime = 0;
 let animationInterval = 250; // Initial value while idling
 
+// Collision-Variables
+let isColliding = false;
+
+// Canvas-Element-Variables
 const gameElements = {
   floorsWidth: gameCanvas.width * 0.9,
   floorsHeight: 6,
@@ -75,6 +77,7 @@ const gameElements = {
   shaftsLHeight: 113,
   shaftsRHeight: 113,
   exitDoorHeight: 180,
+  exitDoorUnlocked: false,
   floorNumbersColor: "darkgoldenrod",
   floorNumbersShadowColor: "orangered",
   exitSignColor: "red",
@@ -151,7 +154,7 @@ const gameElements = {
   shaftF0RposX_right: gameCanvas.width * 0.823,
 };
 
-const moveableElems = {
+const flexElemsPosInit = {
   playerPosX: gameCanvas.width / 2,
   playerPosY: gameElements.floor0_YPos - gameElements.playerHeight,
   playerYposOffset: 20,
@@ -159,10 +162,9 @@ const moveableElems = {
   playerOnLiftR: false,
   playerOnLiftL: false,
 
-  exitDoorUnlocked: false,
   exitDoorPosY: gameCanvas.height * 0.8,
 
-  // LIFTS POSITIONS
+  // Lifts
   liftR_YPos:
     gameCanvas.height * 1.0 -
     (gameElements.liftsHeight + gameElements.floorsHeight),
@@ -322,7 +324,7 @@ document.addEventListener("keydown", function (event) {
   // Player Movement
   switch (event.key) {
     case KEYS.DIRECTIONS.LEFT:
-      if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
+      if (flexElemsPosInit.playerOnLiftL || flexElemsPosInit.playerOnLiftR) {
         break;
       }
       changePlayerSprite("left");
@@ -331,7 +333,7 @@ document.addEventListener("keydown", function (event) {
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
-      if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
+      if (flexElemsPosInit.playerOnLiftL || flexElemsPosInit.playerOnLiftR) {
         break;
       }
       changePlayerSprite("right");
@@ -346,12 +348,12 @@ document.addEventListener("keydown", function (event) {
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
-      moveableElems.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
+      flexElemsPosInit.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
       callLiftBtnActCount =
-        moveableElems.playerOnFloor !== 0 &&
-        moveableElems.playerPosX >
+        flexElemsPosInit.playerOnFloor !== 0 &&
+        flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
-        moveableElems.playerPosX <
+        flexElemsPosInit.playerPosX <
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
           ? ++callLiftBtnActCount
           : callLiftBtnActCount;
@@ -365,12 +367,12 @@ document.addEventListener("keydown", function (event) {
       animationInterval = 200; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
-      moveableElems.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
+      flexElemsPosInit.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
       callLiftBtnActCount =
-        moveableElems.playerOnFloor !== 6 &&
-        moveableElems.playerPosX >
+        flexElemsPosInit.playerOnFloor !== 6 &&
+        flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
-        moveableElems.playerPosX <
+        flexElemsPosInit.playerPosX <
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
           ? ++callLiftBtnActCount
           : callLiftBtnActCount;
@@ -389,18 +391,18 @@ document.addEventListener("keydown", function (event) {
       }
       break;
     case KEYS.SPECIAL_KEYS.CHANGE_PLAYER_YPOS:
-      moveableElems.playerPosY =
-        moveableElems.playerOnFloor === 0
+      flexElemsPosInit.playerPosY =
+        flexElemsPosInit.playerOnFloor === 0
           ? gameElements.floor1_YPos - gameElements.playerHeight
-          : moveableElems.playerOnFloor === 1
+          : flexElemsPosInit.playerOnFloor === 1
           ? gameElements.floor2_YPos - gameElements.playerHeight
-          : moveableElems.playerOnFloor === 2
+          : flexElemsPosInit.playerOnFloor === 2
           ? gameElements.floor3_YPos - gameElements.playerHeight
-          : moveableElems.playerOnFloor === 3
+          : flexElemsPosInit.playerOnFloor === 3
           ? gameElements.floor4_YPos - gameElements.playerHeight
-          : moveableElems.playerOnFloor === 4
+          : flexElemsPosInit.playerOnFloor === 4
           ? gameElements.floor5_YPos - gameElements.playerHeight
-          : moveableElems.playerOnFloor === 5
+          : flexElemsPosInit.playerOnFloor === 5
           ? gameElements.floor6_YPos - gameElements.playerHeight
           : gameElements.floor0_YPos - gameElements.playerHeight;
   }
@@ -416,18 +418,18 @@ function getFloorLevel(floorNumber) {
 function handleFloorSelection(floorNumber) {
   // Prüfung ob Lift L/R bewegt wird und Spieler sich in ihm befindet
   const isLeftLiftMoving =
-    moveableElems.playerOnLiftL && moveableElems.liftL_isMoving;
+    flexElemsPosInit.playerOnLiftL && flexElemsPosInit.liftL_isMoving;
   const isRightLiftMoving =
-    moveableElems.playerOnLiftR && moveableElems.liftR_isMoving;
+    flexElemsPosInit.playerOnLiftR && flexElemsPosInit.liftR_isMoving;
 
   if (isLeftLiftMoving || isRightLiftMoving) return;
 
-  if (moveableElems.playerOnLiftL) {
+  if (flexElemsPosInit.playerOnLiftL) {
     floorLevelSelected = getFloorLevel(floorNumber);
-    moveableElems.liftL_calledToFloor = floorNumber;
-  } else if (moveableElems.playerOnLiftR) {
+    flexElemsPosInit.liftL_calledToFloor = floorNumber;
+  } else if (flexElemsPosInit.playerOnLiftR) {
     floorLevelSelected = getFloorLevel(floorNumber);
-    moveableElems.liftR_calledToFloor = floorNumber;
+    flexElemsPosInit.liftR_calledToFloor = floorNumber;
   }
 }
 
@@ -509,7 +511,9 @@ function drawLabels() {
 
   if (debugMode) {
     let isOnLift =
-      moveableElems.playerOnLiftR || moveableElems.playerOnLiftL ? true : false;
+      flexElemsPosInit.playerOnLiftR || flexElemsPosInit.playerOnLiftL
+        ? true
+        : false;
 
     createLabel(
       gameCanvas.width / 2,
@@ -517,7 +521,7 @@ function drawLabels() {
       "<ActCount> " +
         exitBtnActCounter +
         " <PlayerOnFloor> " +
-        moveableElems.playerOnFloor,
+        flexElemsPosInit.playerOnFloor,
       "63px Arial Black",
       "gold",
       "black",
@@ -576,17 +580,17 @@ function drawLabels() {
   // Left Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      moveableElems.liftL_isOnFloor === 0
+      flexElemsPosInit.liftL_isOnFloor === 0
         ? gameCanvas.width * 0.18
-        : moveableElems.liftL_isOnFloor === 1
+        : flexElemsPosInit.liftL_isOnFloor === 1
         ? gameCanvas.width * 0.18 + 13
-        : moveableElems.liftL_isOnFloor === 2
+        : flexElemsPosInit.liftL_isOnFloor === 2
         ? gameCanvas.width * 0.18 + 23
-        : moveableElems.liftL_isOnFloor === 3
+        : flexElemsPosInit.liftL_isOnFloor === 3
         ? gameCanvas.width * 0.18 + 33
-        : moveableElems.liftL_isOnFloor === 4
+        : flexElemsPosInit.liftL_isOnFloor === 4
         ? gameCanvas.width * 0.18 + 43
-        : moveableElems.liftL_isOnFloor === 5
+        : flexElemsPosInit.liftL_isOnFloor === 5
         ? gameCanvas.width * 0.18 + 53
         : gameCanvas.width * 0.18 + 63,
       i === 0
@@ -603,7 +607,9 @@ function drawLabels() {
         ? gameElements.floor5_YPos - 100
         : gameElements.floor6_YPos - 95,
 
-      moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
+      flexElemsPosInit.liftL_isOnFloor == 0
+        ? "E"
+        : flexElemsPosInit.liftL_isOnFloor,
       "14px Arial Black",
       "orange",
       "transparent",
@@ -618,17 +624,17 @@ function drawLabels() {
   // Right Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      moveableElems.liftR_isOnFloor === 0
+      flexElemsPosInit.liftR_isOnFloor === 0
         ? gameCanvas.width * 0.78
-        : moveableElems.liftR_isOnFloor === 1
+        : flexElemsPosInit.liftR_isOnFloor === 1
         ? gameCanvas.width * 0.78 + 13
-        : moveableElems.liftR_isOnFloor === 2
+        : flexElemsPosInit.liftR_isOnFloor === 2
         ? gameCanvas.width * 0.78 + 23
-        : moveableElems.liftR_isOnFloor === 3
+        : flexElemsPosInit.liftR_isOnFloor === 3
         ? gameCanvas.width * 0.78 + 33
-        : moveableElems.liftR_isOnFloor === 4
+        : flexElemsPosInit.liftR_isOnFloor === 4
         ? gameCanvas.width * 0.78 + 43
-        : moveableElems.liftR_isOnFloor === 5
+        : flexElemsPosInit.liftR_isOnFloor === 5
         ? gameCanvas.width * 0.78 + 53
         : gameCanvas.width * 0.78 + 63,
       i === 0
@@ -644,7 +650,9 @@ function drawLabels() {
         : i === 5
         ? gameElements.floor5_YPos - 100
         : gameElements.floor6_YPos - 95,
-      moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
+      flexElemsPosInit.liftR_isOnFloor == 0
+        ? "E"
+        : flexElemsPosInit.liftR_isOnFloor,
       "14px Arial Black",
       "orange",
       "transparent",
@@ -661,20 +669,20 @@ function drawLabels() {
 function callElevatorBtnsCheck(value) {
   const playerInteractPos = {
     callLiftBtns:
-      moveableElems.playerPosX >
+      flexElemsPosInit.playerPosX >
         gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
-      moveableElems.playerPosX <
+      flexElemsPosInit.playerPosX <
         gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
     exitBtns:
-      moveableElems.playerPosX >
+      flexElemsPosInit.playerPosX >
         gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
-      moveableElems.playerPosX <
+      flexElemsPosInit.playerPosX <
         gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
   };
 
   for (let i = 0; i < 7; i++) {
     value =
-      moveableElems.playerOnFloor === i &&
+      flexElemsPosInit.playerOnFloor === i &&
       callElevatorBtnsStatus[`floor${i}`] != value &&
       callElevatorBtnsStatus[`floor${i}`] < 3
         ? callElevatorBtnsStatus[`floor${i}`] + value
@@ -684,7 +692,7 @@ function callElevatorBtnsCheck(value) {
 
     callElevatorBtnsStatus[`floor${i}`] =
       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-      moveableElems.playerOnFloor === i &&
+      flexElemsPosInit.playerOnFloor === i &&
       playerInteractPos.callLiftBtns
         ? value
         : callElevatorBtnsStatus[`floor${i}`];
@@ -694,20 +702,20 @@ function callElevatorBtnsCheck(value) {
 function exitBtnActCheck() {
   const playerInteractPos = {
     callLiftBtns:
-      moveableElems.playerPosX >
+      flexElemsPosInit.playerPosX >
         gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
-      moveableElems.playerPosX <
+      flexElemsPosInit.playerPosX <
         gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
     exitBtns:
-      moveableElems.playerPosX >
+      flexElemsPosInit.playerPosX >
         gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
-      moveableElems.playerPosX <
+      flexElemsPosInit.playerPosX <
         gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
   };
 
   for (let i = 0; i < 7; i++) {
     exitButtonsStatus[`floor${i}`] =
-      moveableElems.playerOnFloor === i && playerInteractPos.exitBtns
+      flexElemsPosInit.playerOnFloor === i && playerInteractPos.exitBtns
         ? exitButtonsStatus[`floor${i}`]
           ? false
           : true
@@ -726,22 +734,22 @@ function playerMovandColl() {
     currentFrame = 0;
     totalFrames = 7;
     playerSprite = player_spriteSheet.idle;
-    moveableElems.playerPosX =
-      moveableElems.playerPosX < gameCanvas.width / 2
-        ? moveableElems.playerPosX + 5
-        : moveableElems.playerPosX - 5;
+    flexElemsPosInit.playerPosX =
+      flexElemsPosInit.playerPosX < gameCanvas.width / 2
+        ? flexElemsPosInit.playerPosX + 5
+        : flexElemsPosInit.playerPosX - 5;
     animationInterval = 200; // Reset des Intervalls
     lastTime = performance.now(); // Reset des Zeitstempels
   }
 }
 
 function drawGameElements() {
-  if (moveableElems.playerOnLiftL || moveableElems.playerOnLiftR) {
+  if (flexElemsPosInit.playerOnLiftL || flexElemsPosInit.playerOnLiftR) {
     drawLifts();
     drawCeiling();
     drawFloors();
     drawWalls();
-    drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
+    drawPlayer(flexElemsPosInit.playerPosX, flexElemsPosInit.playerPosY);
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -795,7 +803,7 @@ function drawGameElements() {
         exitButtonsStatus[`floor${i}`] ? true : false
       );
     }
-    drawPlayer(moveableElems.playerPosX, moveableElems.playerPosY);
+    drawPlayer(flexElemsPosInit.playerPosX, flexElemsPosInit.playerPosY);
     drawLabels();
     if (debugMode) {
       drawDebugLine();
@@ -817,15 +825,15 @@ function automaticLiftControl() {
 
     console.log(randomNum, "|", randomNum2);
 
-    moveableElems.liftL_calledToFloor =
-      !moveableElems.liftL_isMoving && shaftLdoorsOpenCheck()
+    flexElemsPosInit.liftL_calledToFloor =
+      !flexElemsPosInit.liftL_isMoving && shaftLdoorsOpenCheck()
         ? randomNum
-        : moveableElems.liftL_calledToFloor;
+        : flexElemsPosInit.liftL_calledToFloor;
 
-    moveableElems.liftR_calledToFloor =
-      !moveableElems.liftR_isMoving && shaftRdoorsOpenCheck()
+    flexElemsPosInit.liftR_calledToFloor =
+      !flexElemsPosInit.liftR_isMoving && shaftRdoorsOpenCheck()
         ? randomNum2
-        : moveableElems.liftR_calledToFloor;
+        : flexElemsPosInit.liftR_calledToFloor;
 
     // floorLevelSelected =
     //   randomNum == 6
@@ -878,8 +886,8 @@ async function playSounds() {
 
   // LIFT L
   if (
-    moveableElems.liftL_calledToFloor != moveableElems.liftL_isOnFloor &&
-    !moveableElems.liftL_isMoving
+    flexElemsPosInit.liftL_calledToFloor != flexElemsPosInit.liftL_isOnFloor &&
+    !flexElemsPosInit.liftL_isMoving
   ) {
     if (!sounds.liftDoorsLcl.playing()) {
       sounds.liftDoorsLcl.volume(0.15);
@@ -888,7 +896,7 @@ async function playSounds() {
     }
   }
 
-  if (moveableElems.liftL_isMoving) {
+  if (flexElemsPosInit.liftL_isMoving) {
     if (!sounds.liftSndL.playing()) {
       liftLFading = false;
       sounds.liftSndL.volume(0.25);
@@ -912,8 +920,8 @@ async function playSounds() {
 
   // LIFT R
   if (
-    moveableElems.liftR_calledToFloor != moveableElems.liftR_isOnFloor &&
-    !moveableElems.liftR_isMoving
+    flexElemsPosInit.liftR_calledToFloor != flexElemsPosInit.liftR_isOnFloor &&
+    !flexElemsPosInit.liftR_isMoving
   ) {
     if (!sounds.liftDoorsRcl.playing()) {
       sounds.liftDoorsRcl.volume(0.15);
@@ -922,7 +930,7 @@ async function playSounds() {
     }
   }
 
-  if (moveableElems.liftR_isMoving) {
+  if (flexElemsPosInit.liftR_isMoving) {
     if (!sounds.liftSndR.playing()) {
       liftRFading = false;
       sounds.liftSndR.volume(0.25);
@@ -967,8 +975,8 @@ async function playSounds() {
 
   // EXIT DOOR LOGIC
   if (
-    moveableElems.exitDoorUnlocked &&
-    moveableElems.exitDoorPosY >
+    gameElements.exitDoorUnlocked &&
+    flexElemsPosInit.exitDoorPosY >
       gameCanvas.height - gameElements.exitDoorHeight * 1.55
   ) {
     if (!exitDoorMoving) {
@@ -978,8 +986,9 @@ async function playSounds() {
       exitDoorStopped = false;
     }
   } else if (
-    !moveableElems.exitDoorUnlocked &&
-    moveableElems.exitDoorPosY < gameCanvas.height - gameElements.exitDoorHeight
+    !gameElements.exitDoorUnlocked &&
+    flexElemsPosInit.exitDoorPosY <
+      gameCanvas.height - gameElements.exitDoorHeight
   ) {
     if (!exitDoorMoving) {
       exitDoorMoving = true;
@@ -1025,33 +1034,33 @@ function exitDoor() {
       : exitBtnActCounter;
   }
 
-  moveableElems.exitDoorUnlocked = exitBtnActCounter === 7 ? true : false;
+  gameElements.exitDoorUnlocked = exitBtnActCounter === 7 ? true : false;
 
-  if (moveableElems.exitDoorUnlocked) {
+  if (gameElements.exitDoorUnlocked) {
     gameElements.exitSignColor = "yellowgreen";
     gameElements.exitSignShadowColor = "darkgreen";
-    moveableElems.exitDoorPosY =
-      moveableElems.exitDoorPosY >
+    flexElemsPosInit.exitDoorPosY =
+      flexElemsPosInit.exitDoorPosY >
       gameCanvas.height - gameElements.exitDoorHeight * 1.55
-        ? (moveableElems.exitDoorPosY -= 0.05)
-        : moveableElems.exitDoorPosY;
+        ? (flexElemsPosInit.exitDoorPosY -= 0.05)
+        : flexElemsPosInit.exitDoorPosY;
   } else {
     gameElements.exitSignColor = "red";
     gameElements.exitSignShadowColor = "darkred";
-    moveableElems.exitDoorPosY =
-      moveableElems.exitDoorPosY <
+    flexElemsPosInit.exitDoorPosY =
+      flexElemsPosInit.exitDoorPosY <
       gameCanvas.height - gameElements.exitDoorHeight
-        ? (moveableElems.exitDoorPosY += 0.05)
-        : moveableElems.exitDoorPosY;
+        ? (flexElemsPosInit.exitDoorPosY += 0.05)
+        : flexElemsPosInit.exitDoorPosY;
   }
 }
 
 // ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
 
 function playerCanLeave() {
-  return moveableElems.exitDoorPosY < gameCanvas.height * 0.73 &&
-    moveableElems.playerPosX < 500 &&
-    moveableElems.playerOnFloor == 0
+  return flexElemsPosInit.exitDoorPosY < gameCanvas.height * 0.73 &&
+    flexElemsPosInit.playerPosX < 500 &&
+    flexElemsPosInit.playerOnFloor == 0
     ? true
     : false;
 }
@@ -1060,69 +1069,71 @@ function playerCanLeave() {
 
 function playerOnLift(getOutOfLift) {
   if (getOutOfLift) {
-    if (moveableElems.playerOnLiftL) {
-      if (!moveableElems.liftL_isMoving && shaftLdoorsOpenCheck()) {
-        moveableElems.playerOnLiftL = false;
+    if (flexElemsPosInit.playerOnLiftL) {
+      if (!flexElemsPosInit.liftL_isMoving && shaftLdoorsOpenCheck()) {
+        flexElemsPosInit.playerOnLiftL = false;
       }
     }
-    if (moveableElems.playerOnLiftR) {
-      if (!moveableElems.liftR_isMoving && shaftRdoorsOpenCheck()) {
-        moveableElems.playerOnLiftR = false;
+    if (flexElemsPosInit.playerOnLiftR) {
+      if (!flexElemsPosInit.liftR_isMoving && shaftRdoorsOpenCheck()) {
+        flexElemsPosInit.playerOnLiftR = false;
       }
     }
   } else {
     if (
-      (moveableElems.playerOnFloor === 0 &&
-        moveableElems.liftL_isOnFloor === 0) ||
-      (moveableElems.playerOnFloor === 1 &&
-        moveableElems.liftL_isOnFloor === 1) ||
-      (moveableElems.playerOnFloor === 2 &&
-        moveableElems.liftL_isOnFloor === 2) ||
-      (moveableElems.playerOnFloor === 3 &&
-        moveableElems.liftL_isOnFloor === 3) ||
-      (moveableElems.playerOnFloor === 4 &&
-        moveableElems.liftL_isOnFloor === 4) ||
-      (moveableElems.playerOnFloor === 5 &&
-        moveableElems.liftL_isOnFloor === 5) ||
-      (moveableElems.playerOnFloor === 6 && moveableElems.liftL_isOnFloor === 6)
+      (flexElemsPosInit.playerOnFloor === 0 &&
+        flexElemsPosInit.liftL_isOnFloor === 0) ||
+      (flexElemsPosInit.playerOnFloor === 1 &&
+        flexElemsPosInit.liftL_isOnFloor === 1) ||
+      (flexElemsPosInit.playerOnFloor === 2 &&
+        flexElemsPosInit.liftL_isOnFloor === 2) ||
+      (flexElemsPosInit.playerOnFloor === 3 &&
+        flexElemsPosInit.liftL_isOnFloor === 3) ||
+      (flexElemsPosInit.playerOnFloor === 4 &&
+        flexElemsPosInit.liftL_isOnFloor === 4) ||
+      (flexElemsPosInit.playerOnFloor === 5 &&
+        flexElemsPosInit.liftL_isOnFloor === 5) ||
+      (flexElemsPosInit.playerOnFloor === 6 &&
+        flexElemsPosInit.liftL_isOnFloor === 6)
     ) {
       if (
-        moveableElems.playerPosX > gameCanvas.width * 0.16 &&
-        moveableElems.playerPosX < gameCanvas.width * 0.185
+        flexElemsPosInit.playerPosX > gameCanvas.width * 0.16 &&
+        flexElemsPosInit.playerPosX < gameCanvas.width * 0.185
       ) {
-        moveableElems.playerOnLiftL = true;
+        flexElemsPosInit.playerOnLiftL = true;
       }
     }
     if (
-      (moveableElems.playerOnFloor === 0 &&
-        moveableElems.liftR_isOnFloor === 0) ||
-      (moveableElems.playerOnFloor === 1 &&
-        moveableElems.liftR_isOnFloor === 1) ||
-      (moveableElems.playerOnFloor === 2 &&
-        moveableElems.liftR_isOnFloor === 2) ||
-      (moveableElems.playerOnFloor === 3 &&
-        moveableElems.liftR_isOnFloor === 3) ||
-      (moveableElems.playerOnFloor === 4 &&
-        moveableElems.liftR_isOnFloor === 4) ||
-      (moveableElems.playerOnFloor === 5 &&
-        moveableElems.liftR_isOnFloor === 5) ||
-      (moveableElems.playerOnFloor === 6 && moveableElems.liftR_isOnFloor === 6)
+      (flexElemsPosInit.playerOnFloor === 0 &&
+        flexElemsPosInit.liftR_isOnFloor === 0) ||
+      (flexElemsPosInit.playerOnFloor === 1 &&
+        flexElemsPosInit.liftR_isOnFloor === 1) ||
+      (flexElemsPosInit.playerOnFloor === 2 &&
+        flexElemsPosInit.liftR_isOnFloor === 2) ||
+      (flexElemsPosInit.playerOnFloor === 3 &&
+        flexElemsPosInit.liftR_isOnFloor === 3) ||
+      (flexElemsPosInit.playerOnFloor === 4 &&
+        flexElemsPosInit.liftR_isOnFloor === 4) ||
+      (flexElemsPosInit.playerOnFloor === 5 &&
+        flexElemsPosInit.liftR_isOnFloor === 5) ||
+      (flexElemsPosInit.playerOnFloor === 6 &&
+        flexElemsPosInit.liftR_isOnFloor === 6)
     ) {
       if (
-        moveableElems.playerPosX > gameCanvas.width * 0.76 &&
-        moveableElems.playerPosX < gameCanvas.width * 0.79
+        flexElemsPosInit.playerPosX > gameCanvas.width * 0.76 &&
+        flexElemsPosInit.playerPosX < gameCanvas.width * 0.79
       ) {
-        moveableElems.playerOnLiftR = true;
+        flexElemsPosInit.playerOnLiftR = true;
       }
     }
   }
 }
 
 function playerCollision() {
-  return moveableElems.playerPosX >=
+  return flexElemsPosInit.playerPosX >=
     gameCanvas.width * 0.95 - gameElements.playerWidth / 1.85
     ? true
-    : moveableElems.playerPosX <=
+    : flexElemsPosInit.playerPosX <=
       gameCanvas.width * 0.05 +
         gameElements.wallsWidth -
         gameElements.playerWidth / 2.25
@@ -1195,184 +1206,184 @@ function shaftDoors() {
 
   // __________________________________________________ CLOSE-DOORS __________________________________________________
   gameElements.shaftDoorsRW_f0 =
-    moveableElems.liftR_calledToFloor != 0 &&
+    flexElemsPosInit.liftR_calledToFloor != 0 &&
     !shaftRdoorsClosedStatus.floor0_RdoorClosed
       ? (gameElements.shaftDoorsRW_f0 += 0.25)
       : gameElements.shaftDoorsRW_f0;
 
   gameElements.shaftDoorsRW_f1 =
-    moveableElems.liftR_calledToFloor != 1 &&
+    flexElemsPosInit.liftR_calledToFloor != 1 &&
     !shaftRdoorsClosedStatus.floor1_RdoorClosed
       ? (gameElements.shaftDoorsRW_f1 += 0.25)
       : gameElements.shaftDoorsRW_f1;
 
   gameElements.shaftDoorsRW_f2 =
-    moveableElems.liftR_calledToFloor != 2 &&
+    flexElemsPosInit.liftR_calledToFloor != 2 &&
     !shaftRdoorsClosedStatus.floor2_RdoorClosed
       ? (gameElements.shaftDoorsRW_f2 += 0.25)
       : gameElements.shaftDoorsRW_f2;
 
   gameElements.shaftDoorsRW_f3 =
-    moveableElems.liftR_calledToFloor != 3 &&
+    flexElemsPosInit.liftR_calledToFloor != 3 &&
     !shaftRdoorsClosedStatus.floor3_RdoorClosed
       ? (gameElements.shaftDoorsRW_f3 += 0.25)
       : gameElements.shaftDoorsRW_f3;
 
   gameElements.shaftDoorsRW_f4 =
-    moveableElems.liftR_calledToFloor != 4 &&
+    flexElemsPosInit.liftR_calledToFloor != 4 &&
     !shaftRdoorsClosedStatus.floor4_RdoorClosed
       ? (gameElements.shaftDoorsRW_f4 += 0.25)
       : gameElements.shaftDoorsRW_f4;
 
   gameElements.shaftDoorsRW_f5 =
-    moveableElems.liftR_calledToFloor != 5 &&
+    flexElemsPosInit.liftR_calledToFloor != 5 &&
     !shaftRdoorsClosedStatus.floor5_RdoorClosed
       ? (gameElements.shaftDoorsRW_f5 += 0.25)
       : gameElements.shaftDoorsRW_f5;
 
   gameElements.shaftDoorsRW_f6 =
-    moveableElems.liftR_calledToFloor != 6 &&
+    flexElemsPosInit.liftR_calledToFloor != 6 &&
     !shaftRdoorsClosedStatus.floor6_RdoorClosed
       ? (gameElements.shaftDoorsRW_f6 += 0.25)
       : gameElements.shaftDoorsRW_f6;
 
   gameElements.shaftDoorsLW_f0 =
-    moveableElems.liftL_calledToFloor != 0 &&
+    flexElemsPosInit.liftL_calledToFloor != 0 &&
     !shaftLdoorsClosedStatus.floor0_LdoorClosed
       ? (gameElements.shaftDoorsLW_f0 += 0.25)
       : gameElements.shaftDoorsLW_f0;
 
   gameElements.shaftDoorsLW_f1 =
-    moveableElems.liftL_calledToFloor != 1 &&
+    flexElemsPosInit.liftL_calledToFloor != 1 &&
     !shaftLdoorsClosedStatus.floor1_LdoorClosed
       ? (gameElements.shaftDoorsLW_f1 += 0.25)
       : gameElements.shaftDoorsLW_f1;
 
   gameElements.shaftDoorsLW_f2 =
-    moveableElems.liftL_calledToFloor != 2 &&
+    flexElemsPosInit.liftL_calledToFloor != 2 &&
     !shaftLdoorsClosedStatus.floor2_LdoorClosed
       ? (gameElements.shaftDoorsLW_f2 += 0.25)
       : gameElements.shaftDoorsLW_f2;
 
   gameElements.shaftDoorsLW_f3 =
-    moveableElems.liftL_calledToFloor != 3 &&
+    flexElemsPosInit.liftL_calledToFloor != 3 &&
     !shaftLdoorsClosedStatus.floor3_LdoorClosed
       ? (gameElements.shaftDoorsLW_f3 += 0.25)
       : gameElements.shaftDoorsLW_f3;
 
   gameElements.shaftDoorsLW_f4 =
-    moveableElems.liftL_calledToFloor != 4 &&
+    flexElemsPosInit.liftL_calledToFloor != 4 &&
     !shaftLdoorsClosedStatus.floor4_LdoorClosed
       ? (gameElements.shaftDoorsLW_f4 += 0.25)
       : gameElements.shaftDoorsLW_f4;
 
   gameElements.shaftDoorsLW_f5 =
-    moveableElems.liftL_calledToFloor != 5 &&
+    flexElemsPosInit.liftL_calledToFloor != 5 &&
     !shaftLdoorsClosedStatus.floor5_LdoorClosed
       ? (gameElements.shaftDoorsLW_f5 += 0.25)
       : gameElements.shaftDoorsLW_f5;
 
   gameElements.shaftDoorsLW_f6 =
-    moveableElems.liftL_calledToFloor != 6 &&
+    flexElemsPosInit.liftL_calledToFloor != 6 &&
     !shaftLdoorsClosedStatus.floor6_LdoorClosed
       ? (gameElements.shaftDoorsLW_f6 += 0.25)
       : gameElements.shaftDoorsLW_f6;
 
   // __________________________________________________ OPEN-DOORS __________________________________________________
   gameElements.shaftDoorsRW_f0 =
-    moveableElems.liftR_calledToFloor == 0 &&
-    moveableElems.liftR_isOnFloor == 0 &&
+    flexElemsPosInit.liftR_calledToFloor == 0 &&
+    flexElemsPosInit.liftR_isOnFloor == 0 &&
     !shaftRdoorsOpenStatus.floor0_RdoorOpen
       ? (gameElements.shaftDoorsRW_f0 -= 0.25)
       : gameElements.shaftDoorsRW_f0;
 
   gameElements.shaftDoorsRW_f1 =
-    moveableElems.liftR_calledToFloor == 1 &&
-    moveableElems.liftR_isOnFloor == 1 &&
+    flexElemsPosInit.liftR_calledToFloor == 1 &&
+    flexElemsPosInit.liftR_isOnFloor == 1 &&
     !shaftRdoorsOpenStatus.floor1_RdoorOpen
       ? (gameElements.shaftDoorsRW_f1 -= 0.25)
       : gameElements.shaftDoorsRW_f1;
 
   gameElements.shaftDoorsRW_f2 =
-    moveableElems.liftR_calledToFloor == 2 &&
-    moveableElems.liftR_isOnFloor == 2 &&
+    flexElemsPosInit.liftR_calledToFloor == 2 &&
+    flexElemsPosInit.liftR_isOnFloor == 2 &&
     !shaftRdoorsOpenStatus.floor2_RdoorOpen
       ? (gameElements.shaftDoorsRW_f2 -= 0.25)
       : gameElements.shaftDoorsRW_f2;
 
   gameElements.shaftDoorsRW_f3 =
-    moveableElems.liftR_calledToFloor == 3 &&
-    moveableElems.liftR_isOnFloor == 3 &&
+    flexElemsPosInit.liftR_calledToFloor == 3 &&
+    flexElemsPosInit.liftR_isOnFloor == 3 &&
     !shaftRdoorsOpenStatus.floor3_RdoorOpen
       ? (gameElements.shaftDoorsRW_f3 -= 0.25)
       : gameElements.shaftDoorsRW_f3;
 
   gameElements.shaftDoorsRW_f4 =
-    moveableElems.liftR_calledToFloor == 4 &&
-    moveableElems.liftR_isOnFloor == 4 &&
+    flexElemsPosInit.liftR_calledToFloor == 4 &&
+    flexElemsPosInit.liftR_isOnFloor == 4 &&
     !shaftRdoorsOpenStatus.floor4_RdoorOpen
       ? (gameElements.shaftDoorsRW_f4 -= 0.25)
       : gameElements.shaftDoorsRW_f4;
 
   gameElements.shaftDoorsRW_f5 =
-    moveableElems.liftR_calledToFloor == 5 &&
-    moveableElems.liftR_isOnFloor == 5 &&
+    flexElemsPosInit.liftR_calledToFloor == 5 &&
+    flexElemsPosInit.liftR_isOnFloor == 5 &&
     !shaftRdoorsOpenStatus.floor5_RdoorOpen
       ? (gameElements.shaftDoorsRW_f5 -= 0.25)
       : gameElements.shaftDoorsRW_f5;
 
   gameElements.shaftDoorsRW_f6 =
-    moveableElems.liftR_calledToFloor == 6 &&
-    moveableElems.liftR_isOnFloor == 6 &&
+    flexElemsPosInit.liftR_calledToFloor == 6 &&
+    flexElemsPosInit.liftR_isOnFloor == 6 &&
     !shaftRdoorsOpenStatus.floor6_RdoorOpen
       ? (gameElements.shaftDoorsRW_f6 -= 0.25)
       : gameElements.shaftDoorsRW_f6;
 
   gameElements.shaftDoorsLW_f0 =
-    moveableElems.liftL_calledToFloor == 0 &&
-    moveableElems.liftL_isOnFloor == 0 &&
+    flexElemsPosInit.liftL_calledToFloor == 0 &&
+    flexElemsPosInit.liftL_isOnFloor == 0 &&
     !shaftLdoorsOpenStatus.floor0_LdoorOpen
       ? (gameElements.shaftDoorsLW_f0 -= 0.25)
       : gameElements.shaftDoorsLW_f0;
 
   gameElements.shaftDoorsLW_f1 =
-    moveableElems.liftL_calledToFloor == 1 &&
-    moveableElems.liftL_isOnFloor == 1 &&
+    flexElemsPosInit.liftL_calledToFloor == 1 &&
+    flexElemsPosInit.liftL_isOnFloor == 1 &&
     !shaftLdoorsOpenStatus.floor1_LdoorOpen
       ? (gameElements.shaftDoorsLW_f1 -= 0.25)
       : gameElements.shaftDoorsLW_f1;
 
   gameElements.shaftDoorsLW_f2 =
-    moveableElems.liftL_calledToFloor == 2 &&
-    moveableElems.liftL_isOnFloor == 2 &&
+    flexElemsPosInit.liftL_calledToFloor == 2 &&
+    flexElemsPosInit.liftL_isOnFloor == 2 &&
     !shaftLdoorsOpenStatus.floor2_LdoorOpen
       ? (gameElements.shaftDoorsLW_f2 -= 0.25)
       : gameElements.shaftDoorsLW_f2;
 
   gameElements.shaftDoorsLW_f3 =
-    moveableElems.liftL_calledToFloor == 3 &&
-    moveableElems.liftL_isOnFloor == 3 &&
+    flexElemsPosInit.liftL_calledToFloor == 3 &&
+    flexElemsPosInit.liftL_isOnFloor == 3 &&
     !shaftLdoorsOpenStatus.floor3_LdoorOpen
       ? (gameElements.shaftDoorsLW_f3 -= 0.25)
       : gameElements.shaftDoorsLW_f3;
 
   gameElements.shaftDoorsLW_f4 =
-    moveableElems.liftL_calledToFloor == 4 &&
-    moveableElems.liftL_isOnFloor == 4 &&
+    flexElemsPosInit.liftL_calledToFloor == 4 &&
+    flexElemsPosInit.liftL_isOnFloor == 4 &&
     !shaftLdoorsOpenStatus.floor4_LdoorOpen
       ? (gameElements.shaftDoorsLW_f4 -= 0.25)
       : gameElements.shaftDoorsLW_f4;
 
   gameElements.shaftDoorsLW_f5 =
-    moveableElems.liftL_calledToFloor == 5 &&
-    moveableElems.liftL_isOnFloor == 5 &&
+    flexElemsPosInit.liftL_calledToFloor == 5 &&
+    flexElemsPosInit.liftL_isOnFloor == 5 &&
     !shaftLdoorsOpenStatus.floor5_LdoorOpen
       ? (gameElements.shaftDoorsLW_f5 -= 0.25)
       : gameElements.shaftDoorsLW_f5;
 
   gameElements.shaftDoorsLW_f6 =
-    moveableElems.liftL_calledToFloor == 6 &&
-    moveableElems.liftL_isOnFloor == 6 &&
+    flexElemsPosInit.liftL_calledToFloor == 6 &&
+    flexElemsPosInit.liftL_isOnFloor == 6 &&
     !shaftLdoorsOpenStatus.floor6_LdoorOpen
       ? (gameElements.shaftDoorsLW_f6 -= 0.25)
       : gameElements.shaftDoorsLW_f6;
@@ -1381,47 +1392,47 @@ function shaftDoors() {
 // ___________________________ PLAYER-POS-UPDATES ___________________________
 
 function playerPosUpdate(moveDirection) {
-  moveableElems.playerPosX =
+  flexElemsPosInit.playerPosX =
     moveDirection === "left"
-      ? (moveableElems.playerPosX -= gameElements.playerSpeed)
+      ? (flexElemsPosInit.playerPosX -= gameElements.playerSpeed)
       : moveDirection === "right"
-      ? (moveableElems.playerPosX += gameElements.playerSpeed)
+      ? (flexElemsPosInit.playerPosX += gameElements.playerSpeed)
       : moveDirection === "stop"
-      ? moveableElems.playerPosX
+      ? flexElemsPosInit.playerPosX
       : gameCanvas.width / 2;
 
-  moveableElems.playerPosY = moveableElems.playerOnLiftR
-    ? (moveableElems.playerPosY =
-        moveableElems.liftR_YPos +
+  flexElemsPosInit.playerPosY = flexElemsPosInit.playerOnLiftR
+    ? (flexElemsPosInit.playerPosY =
+        flexElemsPosInit.liftR_YPos +
         (gameElements.liftsHeight - gameElements.playerHeight))
-    : moveableElems.playerOnLiftL
-    ? (moveableElems.playerPosY =
-        moveableElems.liftL_YPos +
+    : flexElemsPosInit.playerOnLiftL
+    ? (flexElemsPosInit.playerPosY =
+        flexElemsPosInit.liftL_YPos +
         (gameElements.liftsHeight - gameElements.playerHeight))
-    : moveableElems.playerPosY;
+    : flexElemsPosInit.playerPosY;
 }
 
 function playerIsOnFloor() {
-  moveableElems.playerOnFloor =
-    moveableElems.playerPosY + moveableElems.playerYposOffset >
+  flexElemsPosInit.playerOnFloor =
+    flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
     gameElements.floor1_YPos
       ? 0
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+      : flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
         gameElements.floor2_YPos
       ? 1
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+      : flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
         gameElements.floor3_YPos
       ? 2
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+      : flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
         gameElements.floor4_YPos
       ? 3
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+      : flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
         gameElements.floor5_YPos
       ? 4
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+      : flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
         gameElements.floor6_YPos
       ? 5
-      : moveableElems.playerPosY + moveableElems.playerYposOffset <
+      : flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset <
         gameElements.floor6_YPos
       ? 6
       : 101;
@@ -1431,189 +1442,189 @@ function playerIsOnFloor() {
 
 // Lift Floor-Check logic Right
 function liftsPosUpdate() {
-  if (moveableElems.liftR_YPos === floorLevels.floor0_YPos) {
-    moveableElems.liftR_isOnFloor = 0;
-    moveableElems.liftR_isMoving = false;
+  if (flexElemsPosInit.liftR_YPos === floorLevels.floor0_YPos) {
+    flexElemsPosInit.liftR_isOnFloor = 0;
+    flexElemsPosInit.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLevels.floor1_YPos) {
-    moveableElems.liftR_isOnFloor = 1;
-    moveableElems.liftR_isMoving = false;
+  if (flexElemsPosInit.liftR_YPos === floorLevels.floor1_YPos) {
+    flexElemsPosInit.liftR_isOnFloor = 1;
+    flexElemsPosInit.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLevels.floor2_YPos) {
-    moveableElems.liftR_isOnFloor = 2;
-    moveableElems.liftR_isMoving = false;
+  if (flexElemsPosInit.liftR_YPos === floorLevels.floor2_YPos) {
+    flexElemsPosInit.liftR_isOnFloor = 2;
+    flexElemsPosInit.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLevels.floor3_YPos) {
-    moveableElems.liftR_isOnFloor = 3;
-    moveableElems.liftR_isMoving = false;
+  if (flexElemsPosInit.liftR_YPos === floorLevels.floor3_YPos) {
+    flexElemsPosInit.liftR_isOnFloor = 3;
+    flexElemsPosInit.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLevels.floor4_YPos) {
-    moveableElems.liftR_isOnFloor = 4;
-    moveableElems.liftR_isMoving = false;
+  if (flexElemsPosInit.liftR_YPos === floorLevels.floor4_YPos) {
+    flexElemsPosInit.liftR_isOnFloor = 4;
+    flexElemsPosInit.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLevels.floor5_YPos) {
-    moveableElems.liftR_isOnFloor = 5;
-    moveableElems.liftR_isMoving = false;
+  if (flexElemsPosInit.liftR_YPos === floorLevels.floor5_YPos) {
+    flexElemsPosInit.liftR_isOnFloor = 5;
+    flexElemsPosInit.liftR_isMoving = false;
   }
-  if (moveableElems.liftR_YPos === floorLevels.floor6_YPos) {
-    moveableElems.liftR_isOnFloor = 6;
-    moveableElems.liftR_isMoving = false;
+  if (flexElemsPosInit.liftR_YPos === floorLevels.floor6_YPos) {
+    flexElemsPosInit.liftR_isOnFloor = 6;
+    flexElemsPosInit.liftR_isMoving = false;
   }
   // Lift Floor-Check logic Left
-  if (moveableElems.liftL_YPos === floorLevels.floor0_YPos) {
-    moveableElems.liftL_isOnFloor = 0;
-    moveableElems.liftL_isMoving = false;
+  if (flexElemsPosInit.liftL_YPos === floorLevels.floor0_YPos) {
+    flexElemsPosInit.liftL_isOnFloor = 0;
+    flexElemsPosInit.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLevels.floor1_YPos) {
-    moveableElems.liftL_isOnFloor = 1;
-    moveableElems.liftL_isMoving = false;
+  if (flexElemsPosInit.liftL_YPos === floorLevels.floor1_YPos) {
+    flexElemsPosInit.liftL_isOnFloor = 1;
+    flexElemsPosInit.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLevels.floor2_YPos) {
-    moveableElems.liftL_isOnFloor = 2;
-    moveableElems.liftL_isMoving = false;
+  if (flexElemsPosInit.liftL_YPos === floorLevels.floor2_YPos) {
+    flexElemsPosInit.liftL_isOnFloor = 2;
+    flexElemsPosInit.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLevels.floor3_YPos) {
-    moveableElems.liftL_isOnFloor = 3;
-    moveableElems.liftL_isMoving = false;
+  if (flexElemsPosInit.liftL_YPos === floorLevels.floor3_YPos) {
+    flexElemsPosInit.liftL_isOnFloor = 3;
+    flexElemsPosInit.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLevels.floor4_YPos) {
-    moveableElems.liftL_isOnFloor = 4;
-    moveableElems.liftL_isMoving = false;
+  if (flexElemsPosInit.liftL_YPos === floorLevels.floor4_YPos) {
+    flexElemsPosInit.liftL_isOnFloor = 4;
+    flexElemsPosInit.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLevels.floor5_YPos) {
-    moveableElems.liftL_isOnFloor = 5;
-    moveableElems.liftL_isMoving = false;
+  if (flexElemsPosInit.liftL_YPos === floorLevels.floor5_YPos) {
+    flexElemsPosInit.liftL_isOnFloor = 5;
+    flexElemsPosInit.liftL_isMoving = false;
   }
-  if (moveableElems.liftL_YPos === floorLevels.floor6_YPos) {
-    moveableElems.liftL_isOnFloor = 6;
-    moveableElems.liftL_isMoving = false;
+  if (flexElemsPosInit.liftL_YPos === floorLevels.floor6_YPos) {
+    flexElemsPosInit.liftL_isOnFloor = 6;
+    flexElemsPosInit.liftL_isMoving = false;
   }
 
   // LIFT MOVEMENT LOGIC - RIGHT LIFT
-  if (moveableElems.liftR_calledToFloor == 0) {
-    if (moveableElems.liftR_isOnFloor != 0 && shaftRdoorsClosed()) {
-      moveableElems.liftR_isMoving = true;
-      moveableElems.liftR_YPos += gameElements.liftSpeed;
+  if (flexElemsPosInit.liftR_calledToFloor == 0) {
+    if (flexElemsPosInit.liftR_isOnFloor != 0 && shaftRdoorsClosed()) {
+      flexElemsPosInit.liftR_isMoving = true;
+      flexElemsPosInit.liftR_YPos += gameElements.liftSpeed;
     }
   }
-  if (moveableElems.liftR_calledToFloor == 1) {
-    if (moveableElems.liftR_isOnFloor != 1 && shaftRdoorsClosed()) {
-      moveableElems.liftR_isMoving = true;
-      moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLevels.floor1_YPos
-          ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftR_calledToFloor == 1) {
+    if (flexElemsPosInit.liftR_isOnFloor != 1 && shaftRdoorsClosed()) {
+      flexElemsPosInit.liftR_isMoving = true;
+      flexElemsPosInit.liftR_YPos =
+        flexElemsPosInit.liftR_YPos < floorLevels.floor1_YPos
+          ? (flexElemsPosInit.liftR_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToFloor == 2) {
-    if (moveableElems.liftR_isOnFloor != 2 && shaftRdoorsClosed()) {
-      moveableElems.liftR_isMoving = true;
-      moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLevels.floor2_YPos
-          ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftR_calledToFloor == 2) {
+    if (flexElemsPosInit.liftR_isOnFloor != 2 && shaftRdoorsClosed()) {
+      flexElemsPosInit.liftR_isMoving = true;
+      flexElemsPosInit.liftR_YPos =
+        flexElemsPosInit.liftR_YPos < floorLevels.floor2_YPos
+          ? (flexElemsPosInit.liftR_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToFloor == 3) {
-    if (moveableElems.liftR_isOnFloor != 3 && shaftRdoorsClosed()) {
-      moveableElems.liftR_isMoving = true;
-      moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLevels.floor3_YPos
-          ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftR_calledToFloor == 3) {
+    if (flexElemsPosInit.liftR_isOnFloor != 3 && shaftRdoorsClosed()) {
+      flexElemsPosInit.liftR_isMoving = true;
+      flexElemsPosInit.liftR_YPos =
+        flexElemsPosInit.liftR_YPos < floorLevels.floor3_YPos
+          ? (flexElemsPosInit.liftR_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToFloor == 4) {
-    if (moveableElems.liftR_isOnFloor != 4 && shaftRdoorsClosed()) {
-      moveableElems.liftR_isMoving = true;
-      moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLevels.floor4_YPos
-          ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftR_calledToFloor == 4) {
+    if (flexElemsPosInit.liftR_isOnFloor != 4 && shaftRdoorsClosed()) {
+      flexElemsPosInit.liftR_isMoving = true;
+      flexElemsPosInit.liftR_YPos =
+        flexElemsPosInit.liftR_YPos < floorLevels.floor4_YPos
+          ? (flexElemsPosInit.liftR_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToFloor == 5) {
-    if (moveableElems.liftR_isOnFloor != 5 && shaftRdoorsClosed()) {
-      moveableElems.liftR_isMoving = true;
-      moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLevels.floor5_YPos
-          ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftR_calledToFloor == 5) {
+    if (flexElemsPosInit.liftR_isOnFloor != 5 && shaftRdoorsClosed()) {
+      flexElemsPosInit.liftR_isMoving = true;
+      flexElemsPosInit.liftR_YPos =
+        flexElemsPosInit.liftR_YPos < floorLevels.floor5_YPos
+          ? (flexElemsPosInit.liftR_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftR_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftR_calledToFloor == 6) {
-    if (moveableElems.liftR_isOnFloor != 6 && shaftRdoorsClosed()) {
-      moveableElems.liftR_isMoving = true;
-      moveableElems.liftR_YPos =
-        moveableElems.liftR_YPos < floorLevels.floor6_YPos
-          ? (moveableElems.liftR_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftR_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftR_calledToFloor == 6) {
+    if (flexElemsPosInit.liftR_isOnFloor != 6 && shaftRdoorsClosed()) {
+      flexElemsPosInit.liftR_isMoving = true;
+      flexElemsPosInit.liftR_YPos =
+        flexElemsPosInit.liftR_YPos < floorLevels.floor6_YPos
+          ? (flexElemsPosInit.liftR_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftR_YPos -= gameElements.liftSpeed);
     }
   }
 
   //__________________________________ LEFT LIFT __________________________________
 
-  if (moveableElems.liftL_calledToFloor == 0) {
-    if (moveableElems.liftL_isOnFloor != 0 && shaftLdoorsClosed()) {
-      moveableElems.liftL_isMoving = true;
-      moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLevels.floor0_YPos
-          ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftL_calledToFloor == 0) {
+    if (flexElemsPosInit.liftL_isOnFloor != 0 && shaftLdoorsClosed()) {
+      flexElemsPosInit.liftL_isMoving = true;
+      flexElemsPosInit.liftL_YPos =
+        flexElemsPosInit.liftL_YPos < floorLevels.floor0_YPos
+          ? (flexElemsPosInit.liftL_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToFloor == 1) {
-    if (moveableElems.liftL_isOnFloor != 1 && shaftLdoorsClosed()) {
-      moveableElems.liftL_isMoving = true;
-      moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLevels.floor1_YPos
-          ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftL_calledToFloor == 1) {
+    if (flexElemsPosInit.liftL_isOnFloor != 1 && shaftLdoorsClosed()) {
+      flexElemsPosInit.liftL_isMoving = true;
+      flexElemsPosInit.liftL_YPos =
+        flexElemsPosInit.liftL_YPos < floorLevels.floor1_YPos
+          ? (flexElemsPosInit.liftL_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToFloor == 2) {
-    if (moveableElems.liftL_isOnFloor != 2 && shaftLdoorsClosed()) {
-      moveableElems.liftL_isMoving = true;
-      moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLevels.floor2_YPos
-          ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftL_calledToFloor == 2) {
+    if (flexElemsPosInit.liftL_isOnFloor != 2 && shaftLdoorsClosed()) {
+      flexElemsPosInit.liftL_isMoving = true;
+      flexElemsPosInit.liftL_YPos =
+        flexElemsPosInit.liftL_YPos < floorLevels.floor2_YPos
+          ? (flexElemsPosInit.liftL_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToFloor == 3) {
-    if (moveableElems.liftL_isOnFloor != 3 && shaftLdoorsClosed()) {
-      moveableElems.liftL_isMoving = true;
-      moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLevels.floor3_YPos
-          ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftL_calledToFloor == 3) {
+    if (flexElemsPosInit.liftL_isOnFloor != 3 && shaftLdoorsClosed()) {
+      flexElemsPosInit.liftL_isMoving = true;
+      flexElemsPosInit.liftL_YPos =
+        flexElemsPosInit.liftL_YPos < floorLevels.floor3_YPos
+          ? (flexElemsPosInit.liftL_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToFloor == 4) {
-    if (moveableElems.liftL_isOnFloor != 4 && shaftLdoorsClosed()) {
-      moveableElems.liftL_isMoving = true;
-      moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLevels.floor4_YPos
-          ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftL_calledToFloor == 4) {
+    if (flexElemsPosInit.liftL_isOnFloor != 4 && shaftLdoorsClosed()) {
+      flexElemsPosInit.liftL_isMoving = true;
+      flexElemsPosInit.liftL_YPos =
+        flexElemsPosInit.liftL_YPos < floorLevels.floor4_YPos
+          ? (flexElemsPosInit.liftL_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToFloor == 5) {
-    if (moveableElems.liftL_isOnFloor != 5 && shaftLdoorsClosed()) {
-      moveableElems.liftL_isMoving = true;
-      moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLevels.floor5_YPos
-          ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftL_calledToFloor == 5) {
+    if (flexElemsPosInit.liftL_isOnFloor != 5 && shaftLdoorsClosed()) {
+      flexElemsPosInit.liftL_isMoving = true;
+      flexElemsPosInit.liftL_YPos =
+        flexElemsPosInit.liftL_YPos < floorLevels.floor5_YPos
+          ? (flexElemsPosInit.liftL_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftL_YPos -= gameElements.liftSpeed);
     }
   }
-  if (moveableElems.liftL_calledToFloor == 6) {
-    if (moveableElems.liftL_isOnFloor != 6 && shaftLdoorsClosed()) {
-      moveableElems.liftL_isMoving = true;
-      moveableElems.liftL_YPos =
-        moveableElems.liftL_YPos < floorLevels.floor6_YPos
-          ? (moveableElems.liftL_YPos += gameElements.liftSpeed)
-          : (moveableElems.liftL_YPos -= gameElements.liftSpeed);
+  if (flexElemsPosInit.liftL_calledToFloor == 6) {
+    if (flexElemsPosInit.liftL_isOnFloor != 6 && shaftLdoorsClosed()) {
+      flexElemsPosInit.liftL_isMoving = true;
+      flexElemsPosInit.liftL_YPos =
+        flexElemsPosInit.liftL_YPos < floorLevels.floor6_YPos
+          ? (flexElemsPosInit.liftL_YPos += gameElements.liftSpeed)
+          : (flexElemsPosInit.liftL_YPos -= gameElements.liftSpeed);
     }
   }
 }
@@ -1621,30 +1632,31 @@ function liftsPosUpdate() {
 function liftCalledCheck() {
   for (let i = 0; i < 7; ++i) {
     callElevatorBtnsStatus[`floor${i}`] =
-      moveableElems.liftR_isOnFloor === i || moveableElems.liftL_isOnFloor === i
+      flexElemsPosInit.liftR_isOnFloor === i ||
+      flexElemsPosInit.liftL_isOnFloor === i
         ? 0
         : callElevatorBtnsStatus[`floor${i}`];
 
-    moveableElems.liftR_calledToFloor =
+    flexElemsPosInit.liftR_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
-      moveableElems.liftR_isOnFloor !== i &&
-      Math.abs(i - moveableElems.liftR_isOnFloor) <
-        Math.abs(i - moveableElems.liftL_isOnFloor)
+      flexElemsPosInit.liftR_isOnFloor !== i &&
+      Math.abs(i - flexElemsPosInit.liftR_isOnFloor) <
+        Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
         ? i
         : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
-          moveableElems.liftR_isOnFloor !== i &&
-          Math.abs(i - moveableElems.liftR_isOnFloor) ===
-            Math.abs(i - moveableElems.liftL_isOnFloor)
+          flexElemsPosInit.liftR_isOnFloor !== i &&
+          Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
+            Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
         ? i
-        : moveableElems.liftR_calledToFloor;
+        : flexElemsPosInit.liftR_calledToFloor;
 
-    moveableElems.liftL_calledToFloor =
+    flexElemsPosInit.liftL_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
-      moveableElems.liftL_isOnFloor !== i &&
-      Math.abs(i - moveableElems.liftL_isOnFloor) <
-        Math.abs(i - moveableElems.liftR_isOnFloor)
+      flexElemsPosInit.liftL_isOnFloor !== i &&
+      Math.abs(i - flexElemsPosInit.liftL_isOnFloor) <
+        Math.abs(i - flexElemsPosInit.liftR_isOnFloor)
         ? i
-        : moveableElems.liftL_calledToFloor;
+        : flexElemsPosInit.liftL_calledToFloor;
   }
   // console.log();
 }
@@ -1677,14 +1689,14 @@ function drawLifts() {
   ctx.drawImage(
     cabinView,
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
-    moveableElems.liftL_YPos,
+    flexElemsPosInit.liftL_YPos,
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
   ctx.drawImage(
     cabinView,
     gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-    moveableElems.liftR_YPos,
+    flexElemsPosInit.liftR_YPos,
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
@@ -2304,7 +2316,7 @@ function drawWalls() {
   ctx.fillStyle = "#700";
   ctx.fillRect(
     gameCanvas.width * 0.051,
-    moveableElems.exitDoorPosY,
+    flexElemsPosInit.exitDoorPosY,
     gameElements.wallsWidth - 5,
     gameElements.exitDoorHeight
   );
