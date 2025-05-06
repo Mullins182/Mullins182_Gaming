@@ -21,6 +21,7 @@ const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] });
 let liftLFading = false;
 let liftRFading = false;
 let callLiftBtnSndCount = 0;
+let callLiftBtnActCount = 0;
 let exitBtnSndCount = 0;
 let exitBtnActCounter = 0;
 let exitDoorMoving = false;
@@ -333,6 +334,15 @@ document.addEventListener("keydown", function (event) {
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
       moveableElems.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
+      callLiftBtnActCount =
+        moveableElems.playerOnFloor !== 0 &&
+        moveableElems.playerPosX >
+          gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
+        moveableElems.playerPosX <
+          gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
+          ? ++callLiftBtnActCount
+          : callLiftBtnActCount;
+
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
@@ -343,6 +353,14 @@ document.addEventListener("keydown", function (event) {
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
       moveableElems.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
+      callLiftBtnActCount =
+        moveableElems.playerOnFloor !== 6 &&
+        moveableElems.playerPosX >
+          gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
+        moveableElems.playerPosX <
+          gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
+          ? ++callLiftBtnActCount
+          : callLiftBtnActCount;
       exitBtnActCheck();
       playerOnLift(false);
       break;
@@ -628,6 +646,19 @@ function drawLabels() {
 }
 
 function callElevatorBtnsCheck(value) {
+  const playerInteractPos = {
+    callLiftBtns:
+      moveableElems.playerPosX >
+        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
+      moveableElems.playerPosX <
+        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
+    exitBtns:
+      moveableElems.playerPosX >
+        gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
+      moveableElems.playerPosX <
+        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
+  };
+
   for (let i = 0; i < 7; i++) {
     value =
       moveableElems.playerOnFloor === i &&
@@ -636,26 +667,34 @@ function callElevatorBtnsCheck(value) {
         ? callElevatorBtnsStatus[`floor${i}`] + value
         : value;
 
+    // callLiftBtnActCount = playerInteractPos.callLiftBtns;
+
     callElevatorBtnsStatus[`floor${i}`] =
       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
       moveableElems.playerOnFloor === i &&
-      moveableElems.playerPosX >
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
-      moveableElems.playerPosX <
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
+      playerInteractPos.callLiftBtns
         ? value
         : callElevatorBtnsStatus[`floor${i}`];
   }
 }
 
 function exitBtnActCheck() {
-  for (let i = 0; i < 7; i++) {
-    exitButtonsStatus[`floor${i}`] =
-      moveableElems.playerOnFloor == i &&
+  const playerInteractPos = {
+    callLiftBtns:
+      moveableElems.playerPosX >
+        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
+      moveableElems.playerPosX <
+        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
+    exitBtns:
       moveableElems.playerPosX >
         gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
       moveableElems.playerPosX <
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25
+        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
+  };
+
+  for (let i = 0; i < 7; i++) {
+    exitButtonsStatus[`floor${i}`] =
+      moveableElems.playerOnFloor === i && playerInteractPos.exitBtns
         ? exitButtonsStatus[`floor${i}`]
           ? false
           : true
@@ -889,15 +928,15 @@ async function playSounds() {
   }
 
   // EXIT BUTTONS
-  if (exitBtnActCounter != exitBtnSndCount) {
+  if (exitBtnActCounter !== exitBtnSndCount) {
     btnPress.play();
-    exitBtnSndCount > exitBtnActCounter ? exitBtnSndCount-- : exitBtnSndCount++;
+    exitBtnSndCount = exitBtnActCounter;
   }
 
   // LIFT CALLING BUTTONS
-  if (callLiftBtnSndCount > 0) {
+  if (callLiftBtnSndCount !== callLiftBtnActCount) {
     btnPress.play();
-    callLiftBtnSndCount--;
+    callLiftBtnSndCount = callLiftBtnActCount;
   }
   // PLAYER MOVEMENT
   if (playerSprite === spriteSheets.run) {
