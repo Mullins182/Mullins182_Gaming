@@ -7,15 +7,17 @@ gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
 // Sound-Initializing
-const liftSndR = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
-const liftSndL = new Howl({ src: ["./assets/sounds/liftMoves2.wav"] });
-const liftDoorsRop = new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] });
-const liftDoorsLop = new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] });
-const liftDoorsRcl = new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] });
-const liftDoorsLcl = new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] });
-const runSnd = new Howl({ src: ["./assets/sounds/running.wav"] });
-const btnPress = new Howl({ src: ["./assets/sounds/buttonPressed.wav"] });
-const exitDoorSnd = new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] });
+const sounds = {
+  liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
+  liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
+  liftDoorsRop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
+  liftDoorsLop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
+  liftDoorsRcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
+  liftDoorsLcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
+  runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
+  btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
+  exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
+};
 
 // Sound-Variables
 let liftLFading = false;
@@ -35,14 +37,24 @@ const cabinView = new Image();
 cabinView.src = "./assets/img/liftCabins/cabinView4.png";
 
 // Sprite-Variables
-let spriteSheets = {
-  run: new Image(),
+let player_spriteSheet = {
   idle: new Image(),
+  run: new Image(),
 };
+
+let npc_spriteSheet = {
+  idle: new Image(),
+  move: new Image(),
+};
+
 // Spritesheets Initializing
-spriteSheets.run.src = "./assets/sprites/player/run/Run.png";
-spriteSheets.idle.src = "./assets/sprites/player/idle/Idle.png";
-let playerSprite = spriteSheets.idle;
+player_spriteSheet.run.src = "./assets/sprites/player/run/Run.png";
+player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle.png";
+let playerSprite = player_spriteSheet.idle;
+
+npc_spriteSheet.idle.src = "";
+npc_spriteSheet.move.src = "";
+let npcSprite = npc_spriteSheet.idle;
 
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
@@ -96,8 +108,8 @@ const gameElements = {
   liftsWidth: 75,
   liftsHeight: 88,
   liftSpeed: 1.25,
-  playerHeight: 110,
-  playerWidth: 100,
+  playerHeight: 121, // 110
+  playerWidth: 121, // 100
   playerSpeed: 2.75,
   playerMovement: "stop",
 
@@ -142,6 +154,7 @@ const gameElements = {
 const moveableElems = {
   playerPosX: gameCanvas.width / 2,
   playerPosY: gameElements.floor0_YPos - gameElements.playerHeight,
+  playerYposOffset: 20,
   playerOnFloor: 0,
   playerOnLiftR: false,
   playerOnLiftL: false,
@@ -430,14 +443,14 @@ function initialize() {
 
 function changePlayerSprite(movement) {
   if (movement === "left" || movement === "right") {
-    if (playerSprite === spriteSheets.run) {
+    if (playerSprite === player_spriteSheet.run) {
     } else {
-      playerSprite = spriteSheets.run;
+      playerSprite = player_spriteSheet.run;
     }
   } else {
-    if (playerSprite === spriteSheets.idle) {
+    if (playerSprite === player_spriteSheet.idle) {
     } else {
-      playerSprite = spriteSheets.idle;
+      playerSprite = player_spriteSheet.idle;
     }
   }
 }
@@ -712,7 +725,7 @@ function playerMovandColl() {
     // Sichere Initialisierung der Idle-Animation
     currentFrame = 0;
     totalFrames = 7;
-    playerSprite = spriteSheets.idle;
+    playerSprite = player_spriteSheet.idle;
     moveableElems.playerPosX =
       moveableElems.playerPosX < gameCanvas.width / 2
         ? moveableElems.playerPosX + 5
@@ -868,28 +881,30 @@ async function playSounds() {
     moveableElems.liftL_calledToFloor != moveableElems.liftL_isOnFloor &&
     !moveableElems.liftL_isMoving
   ) {
-    if (!liftDoorsLcl.playing()) {
-      liftDoorsLcl.volume(0.15);
-      liftDoorsLcl.rate(1.0);
-      liftDoorsLcl.play();
+    if (!sounds.liftDoorsLcl.playing()) {
+      sounds.liftDoorsLcl.volume(0.15);
+      sounds.liftDoorsLcl.rate(1.0);
+      sounds.liftDoorsLcl.play();
     }
   }
 
   if (moveableElems.liftL_isMoving) {
-    if (!liftSndL.playing()) {
+    if (!sounds.liftSndL.playing()) {
       liftLFading = false;
-      liftSndL.volume(0.25);
-      liftSndL.play();
+      sounds.liftSndL.volume(0.25);
+      sounds.liftSndL.play();
     }
     liftLFading = false;
-    liftSndL.seek() > 3.0 ? liftSndL.seek(1.0) : liftSndL.seek();
+    sounds.liftSndL.seek() > 3.0
+      ? sounds.liftSndL.seek(1.0)
+      : sounds.liftSndL.seek();
   } else {
-    fadeOutLift(liftSndL, (v) => {
+    fadeOutLift(sounds.liftSndL, (v) => {
       if (v !== undefined) liftLFading = v;
-      if (!liftDoorsLop.playing()) {
-        liftDoorsLop.volume(0.15);
-        liftDoorsLop.rate(1.65);
-        liftDoorsLop.play();
+      if (!sounds.liftDoorsLop.playing()) {
+        sounds.liftDoorsLop.volume(0.15);
+        sounds.liftDoorsLop.rate(1.65);
+        sounds.liftDoorsLop.play();
       }
       return liftLFading;
     });
@@ -900,28 +915,30 @@ async function playSounds() {
     moveableElems.liftR_calledToFloor != moveableElems.liftR_isOnFloor &&
     !moveableElems.liftR_isMoving
   ) {
-    if (!liftDoorsRcl.playing()) {
-      liftDoorsRcl.volume(0.15);
-      liftDoorsRcl.rate(1.0);
-      liftDoorsRcl.play();
+    if (!sounds.liftDoorsRcl.playing()) {
+      sounds.liftDoorsRcl.volume(0.15);
+      sounds.liftDoorsRcl.rate(1.0);
+      sounds.liftDoorsRcl.play();
     }
   }
 
   if (moveableElems.liftR_isMoving) {
-    if (!liftSndR.playing()) {
+    if (!sounds.liftSndR.playing()) {
       liftRFading = false;
-      liftSndR.volume(0.25);
-      liftSndR.play();
+      sounds.liftSndR.volume(0.25);
+      sounds.liftSndR.play();
     }
     liftRFading = false;
-    liftSndR.seek() > 3.0 ? liftSndR.seek(1.0) : liftSndR.seek();
+    sounds.liftSndR.seek() > 3.0
+      ? sounds.liftSndR.seek(1.0)
+      : sounds.liftSndR.seek();
   } else {
-    fadeOutLift(liftSndR, (v) => {
+    fadeOutLift(sounds.liftSndR, (v) => {
       if (v !== undefined) liftRFading = v;
-      if (!liftDoorsRop.playing()) {
-        liftDoorsRop.volume(0.15);
-        liftDoorsRop.rate(1.65);
-        liftDoorsRop.play();
+      if (!sounds.liftDoorsRop.playing()) {
+        sounds.liftDoorsRop.volume(0.15);
+        sounds.liftDoorsRop.rate(1.65);
+        sounds.liftDoorsRop.play();
       }
       return liftRFading;
     });
@@ -929,23 +946,23 @@ async function playSounds() {
 
   // EXIT BUTTONS
   if (exitBtnActCounter !== exitBtnSndCount) {
-    btnPress.play();
+    sounds.btnPress.play();
     exitBtnSndCount = exitBtnActCounter;
   }
 
   // LIFT CALLING BUTTONS
   if (callLiftBtnSndCount !== callLiftBtnActCount) {
-    btnPress.play();
+    sounds.btnPress.play();
     callLiftBtnSndCount = callLiftBtnActCount;
   }
   // PLAYER MOVEMENT
-  if (playerSprite === spriteSheets.run) {
-    if (!runSnd.playing()) {
-      runSnd.rate(0.58);
-      runSnd.play();
+  if (playerSprite === player_spriteSheet.run) {
+    if (!sounds.runSnd.playing()) {
+      sounds.runSnd.rate(0.58);
+      sounds.runSnd.play();
     }
   } else {
-    runSnd.playing() ? runSnd.stop() : null;
+    sounds.runSnd.playing() ? sounds.runSnd.stop() : null;
   }
 
   // EXIT DOOR LOGIC
@@ -982,16 +999,18 @@ async function playSounds() {
   // console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
 
   if (exitDoorMoving) {
-    if (!exitDoorSnd.playing()) {
-      exitDoorSnd.volume(0.15);
-      exitDoorSnd.play();
+    if (!sounds.exitDoorSnd.playing()) {
+      sounds.exitDoorSnd.volume(0.15);
+      sounds.exitDoorSnd.play();
     }
-    exitDoorSnd.seek() > 2.3 ? exitDoorSnd.seek(1.25) : exitDoorSnd.seek();
+    sounds.exitDoorSnd.seek() > 2.3
+      ? sounds.exitDoorSnd.seek(1.25)
+      : sounds.exitDoorSnd.seek();
   } else {
     if (exitDoorStopped) {
-      if (exitDoorSnd.playing()) {
+      if (sounds.exitDoorSnd.playing()) {
       } else {
-        exitDoorSnd.seek(5.0);
+        sounds.exitDoorSnd.seek(5.0);
       }
     }
   }
@@ -1384,19 +1403,26 @@ function playerPosUpdate(moveDirection) {
 
 function playerIsOnFloor() {
   moveableElems.playerOnFloor =
-    moveableElems.playerPosY > gameElements.floor1_YPos
+    moveableElems.playerPosY + moveableElems.playerYposOffset >
+    gameElements.floor1_YPos
       ? 0
-      : moveableElems.playerPosY > gameElements.floor2_YPos
+      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+        gameElements.floor2_YPos
       ? 1
-      : moveableElems.playerPosY > gameElements.floor3_YPos
+      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+        gameElements.floor3_YPos
       ? 2
-      : moveableElems.playerPosY > gameElements.floor4_YPos
+      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+        gameElements.floor4_YPos
       ? 3
-      : moveableElems.playerPosY > gameElements.floor5_YPos
+      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+        gameElements.floor5_YPos
       ? 4
-      : moveableElems.playerPosY > gameElements.floor6_YPos
+      : moveableElems.playerPosY + moveableElems.playerYposOffset >
+        gameElements.floor6_YPos
       ? 5
-      : moveableElems.playerPosY < gameElements.floor6_YPos
+      : moveableElems.playerPosY + moveableElems.playerYposOffset <
+        gameElements.floor6_YPos
       ? 6
       : 101;
 }
