@@ -62,8 +62,8 @@ const gameElements = {
   shaftsLHeight: 113,
   shaftsRHeight: 113,
   exitDoorHeight: 180,
-  floorNumbersColor: "goldenrod",
-  floorNumbersShadowColor: "darkgoldenrod",
+  floorNumbersColor: "darkgoldenrod",
+  floorNumbersShadowColor: "orangered",
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -503,14 +503,14 @@ function drawLabels() {
       gameCanvas.height * 0.07,
       "ELEVATORS FROM HELL",
       "63px Arial Black",
-      "gold",
+      "goldenrod",
       "black",
       3,
       8,
       17,
       "strokeText",
-      "gold",
-      3
+      "goldenrod",
+      2
     );
   }
   // Floor Numbers for each Floor
@@ -534,12 +534,12 @@ function drawLabels() {
       "25px Arial Black",
       "black",
       gameElements.floorNumbersShadowColor,
-      3.5,
+      2.25,
       6,
       6,
       "strokeText",
       gameElements.floorNumbersColor,
-      1.6
+      1.15
     );
   }
   // Left Shaft Lift Position Display
