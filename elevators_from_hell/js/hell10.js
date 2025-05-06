@@ -890,8 +890,8 @@ async function playSounds() {
     !flexElemsPosInit.liftL_isMoving
   ) {
     if (!sounds.liftDoorsLcl.playing()) {
-      sounds.liftDoorsLcl.volume(0.15);
-      sounds.liftDoorsLcl.rate(1.0);
+      sounds.liftDoorsLcl.volume(0.45);
+      sounds.liftDoorsLcl.rate(0.78);
       sounds.liftDoorsLcl.play();
     }
   }
@@ -899,7 +899,7 @@ async function playSounds() {
   if (flexElemsPosInit.liftL_isMoving) {
     if (!sounds.liftSndL.playing()) {
       liftLFading = false;
-      sounds.liftSndL.volume(0.25);
+      sounds.liftSndL.volume(0.55);
       sounds.liftSndL.play();
     }
     liftLFading = false;
@@ -910,7 +910,7 @@ async function playSounds() {
     fadeOutLift(sounds.liftSndL, (v) => {
       if (v !== undefined) liftLFading = v;
       if (!sounds.liftDoorsLop.playing()) {
-        sounds.liftDoorsLop.volume(0.15);
+        sounds.liftDoorsLop.volume(0.45);
         sounds.liftDoorsLop.rate(1.65);
         sounds.liftDoorsLop.play();
       }
@@ -924,8 +924,8 @@ async function playSounds() {
     !flexElemsPosInit.liftR_isMoving
   ) {
     if (!sounds.liftDoorsRcl.playing()) {
-      sounds.liftDoorsRcl.volume(0.15);
-      sounds.liftDoorsRcl.rate(1.0);
+      sounds.liftDoorsRcl.volume(0.45);
+      sounds.liftDoorsRcl.rate(0.78);
       sounds.liftDoorsRcl.play();
     }
   }
@@ -933,7 +933,7 @@ async function playSounds() {
   if (flexElemsPosInit.liftR_isMoving) {
     if (!sounds.liftSndR.playing()) {
       liftRFading = false;
-      sounds.liftSndR.volume(0.25);
+      sounds.liftSndR.volume(0.55);
       sounds.liftSndR.play();
     }
     liftRFading = false;
@@ -944,7 +944,7 @@ async function playSounds() {
     fadeOutLift(sounds.liftSndR, (v) => {
       if (v !== undefined) liftRFading = v;
       if (!sounds.liftDoorsRop.playing()) {
-        sounds.liftDoorsRop.volume(0.15);
+        sounds.liftDoorsRop.volume(0.45);
         sounds.liftDoorsRop.rate(1.65);
         sounds.liftDoorsRop.play();
       }
@@ -1009,7 +1009,7 @@ async function playSounds() {
 
   if (exitDoorMoving) {
     if (!sounds.exitDoorSnd.playing()) {
-      sounds.exitDoorSnd.volume(0.15);
+      sounds.exitDoorSnd.volume(0.6);
       sounds.exitDoorSnd.play();
     }
     sounds.exitDoorSnd.seek() > 2.3
