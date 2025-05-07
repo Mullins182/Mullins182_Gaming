@@ -779,7 +779,10 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
-    drawNpcSecBot();
+    npcSprite.onload = function () {
+      // Jetzt kann gezeichnet werden
+      drawNpcSecBot();
+    };
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -2506,10 +2509,10 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
   ctx.fill(); // Optional: Dreieck ausfüllen
 }
 
-function drawPlayer(xPos, yPos) {
+function drawPlayer(xPos, yPos, direction) {
   ctx.save(); // Speichern des aktuellen Kontextzustands
 
-  if (flexElemsPosInit.playerLastDir === "left") {
+  if (direction === "left") {
     // Spiegeln für Bewegung nach links
     ctx.scale(-1, 1);
     xPos = -xPos - gameElements.playerWidth; // Anpassen der X-Position für gespiegelte Zeichnung
@@ -2526,6 +2529,7 @@ function drawPlayer(xPos, yPos) {
     gameElements.playerWidth,
     gameElements.playerHeight
   );
+  ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 
   ctx.drawImage(
     npcSprite,
@@ -2538,25 +2542,20 @@ function drawPlayer(xPos, yPos) {
     gameElements.npcWidth,
     gameElements.npcHeight
   );
-
-  ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }
 
 function drawNpcSecBot() {
-  ctx.save(); // Speichern des aktuellen Kontextzustands
-
   ctx.drawImage(
     npcSprite,
     currentFrameNpc * 512,
     0,
     512,
     380,
-    gameCanvas.width / 1.55,
-    gameElements.floor0_YPos - gameElements.npcHeight,
+    gameCanvas.width / 1.68,
+    gameElements.floor1_YPos - gameElements.npcHeight,
     gameElements.npcWidth,
     gameElements.npcHeight
   );
-  ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }
 
 function createLabel(
