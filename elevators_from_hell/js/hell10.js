@@ -35,7 +35,7 @@ player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
 player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
 let playerSprite = player_spriteSheet.idle;
 
-npc_spriteSheet.idle.src = "";
+npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
 npc_spriteSheet.move.src = "";
 let npcSprite = npc_spriteSheet.idle;
 
@@ -56,10 +56,14 @@ let exitDoorStopped = true;
 // Sprite-Variables
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
-let currentFrame = 0;
-let totalFrames = 7; // Anzahl der Frames in Ihrem Spritesheet
-let lastTime = 0;
-let animationInterval = 125; // 250 Initial value while idling
+let currentFramePlayer = 0;
+let currentFrameNpc = 0;
+let totalFramesPlayer = 7; // Anzahl der Frames in Ihrem Spritesheet
+let totalFramesNpc = 11; // Anzahl der Frames in Ihrem Spritesheet
+let lastTimePlayer = 0;
+let lastTimeNpc = 0;
+let animationIntervalPlayer = 125; // 250 Initial value while idling
+let animationIntervalNpc = 90; // Initial value while idling
 
 // Collision-Variables
 let isColliding = false;
@@ -115,6 +119,8 @@ const gameElements = {
   playerWidth: 121, // 100
   playerSpeed: 2.75,
   playerMovement: "stop",
+  npcHeight: 80,
+  npcWidth: 100,
 
   // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
@@ -329,8 +335,8 @@ document.addEventListener("keydown", function (event) {
         break;
       }
       changePlayerSprite("left");
-      totalFrames = 10;
-      animationInterval = 80;
+      totalFramesPlayer = 10;
+      animationIntervalPlayer = 80;
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
@@ -338,17 +344,17 @@ document.addEventListener("keydown", function (event) {
         break;
       }
       changePlayerSprite("right");
-      totalFrames = 10;
-      animationInterval = 80;
+      totalFramesPlayer = 10;
+      animationIntervalPlayer = 80;
       gameElements.playerMovement = "right";
       break;
     case KEYS.DIRECTIONS.DOWN:
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
-        totalFrames = 7;
-        currentFrame = 0;
-        animationInterval = 125; // Reset des Intervalls
-        lastTime = performance.now(); // Reset des Zeitstempels
+        totalFramesPlayer = 7;
+        currentFramePlayer = 0;
+        animationIntervalPlayer = 125; // Reset des Intervalls
+        lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
       flexElemsPosInit.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
@@ -366,10 +372,10 @@ document.addEventListener("keydown", function (event) {
     case KEYS.DIRECTIONS.UP:
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
-        totalFrames = 7;
-        currentFrame = 0;
-        animationInterval = 125; // Reset des Intervalls
-        lastTime = performance.now(); // Reset des Zeitstempels
+        totalFramesPlayer = 7;
+        currentFramePlayer = 0;
+        animationIntervalPlayer = 125; // Reset des Intervalls
+        lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
       flexElemsPosInit.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
@@ -466,14 +472,21 @@ function changePlayerSprite(movement) {
 // ___________________________ GAME-ROUTINE ___________________________
 // ___________________________              ___________________________
 async function gameRoutine(timestamp) {
-  if (!lastTime) lastTime = timestamp;
-  const elapsed = timestamp - lastTime;
+  if (!lastTimePlayer) lastTimePlayer = timestamp;
+  if (!lastTimeNpc) lastTimeNpc = timestamp;
+  const elapsedPlayer = timestamp - lastTimePlayer;
+  const elapsedNpc = timestamp - lastTimeNpc;
 
-  if (elapsed > animationInterval && !isColliding) {
-    lastTime = timestamp;
-    // currentFrame = (currentFrame + 1) % totalFrames;
+  if (elapsedPlayer > animationIntervalPlayer && !isColliding) {
+    lastTimePlayer = timestamp;
     // Frame-Update
-    currentFrame = ++currentFrame % totalFrames;
+    currentFramePlayer = ++currentFramePlayer % totalFramesPlayer;
+  }
+
+  if (elapsedNpc > animationIntervalNpc) {
+    lastTimeNpc = timestamp;
+    // Frame-Update
+    currentFrameNpc = ++currentFrameNpc % totalFramesNpc;
   }
 
   flexElemsPosInit.playerLastDir =
@@ -743,15 +756,15 @@ function playerMovandColl() {
     gameElements.playerMovement = "stop";
     isColliding = true;
     // Sichere Initialisierung der Idle-Animation
-    currentFrame = 0;
-    totalFrames = 7;
+    currentFramePlayer = 0;
+    totalFramesPlayer = 7;
     playerSprite = player_spriteSheet.idle;
     flexElemsPosInit.playerPosX =
       flexElemsPosInit.playerPosX < gameCanvas.width / 2
         ? flexElemsPosInit.playerPosX + 5
         : flexElemsPosInit.playerPosX - 5;
-    animationInterval = 125; // Reset des Intervalls
-    lastTime = performance.now(); // Reset des Zeitstempels
+    animationIntervalPlayer = 125; // Reset des Intervalls
+    lastTimePlayer = performance.now(); // Reset des Zeitstempels
   }
 }
 
@@ -766,6 +779,7 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
+    drawNpcSecBot();
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -2492,7 +2506,7 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
   ctx.fill(); // Optional: Dreieck ausfüllen
 }
 
-function drawPlayer(xPos, yPos, lastDirection) {
+function drawPlayer(xPos, yPos) {
   ctx.save(); // Speichern des aktuellen Kontextzustands
 
   if (flexElemsPosInit.playerLastDir === "left") {
@@ -2503,7 +2517,7 @@ function drawPlayer(xPos, yPos, lastDirection) {
 
   ctx.drawImage(
     playerSprite,
-    currentFrame * spriteWidth,
+    currentFramePlayer * spriteWidth,
     0,
     spriteWidth,
     spriteHeight,
@@ -2513,6 +2527,35 @@ function drawPlayer(xPos, yPos, lastDirection) {
     gameElements.playerHeight
   );
 
+  ctx.drawImage(
+    npcSprite,
+    currentFrameNpc * 512,
+    0,
+    512,
+    380,
+    gameCanvas.width / 1.65,
+    gameElements.floor0_YPos - gameElements.npcHeight,
+    gameElements.npcWidth,
+    gameElements.npcHeight
+  );
+
+  ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
+}
+
+function drawNpcSecBot() {
+  ctx.save(); // Speichern des aktuellen Kontextzustands
+
+  ctx.drawImage(
+    npcSprite,
+    currentFrameNpc * 512,
+    0,
+    512,
+    380,
+    gameCanvas.width / 1.55,
+    gameElements.floor0_YPos - gameElements.npcHeight,
+    gameElements.npcWidth,
+    gameElements.npcHeight
+  );
   ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }
 
