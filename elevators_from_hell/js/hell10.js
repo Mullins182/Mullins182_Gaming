@@ -119,7 +119,7 @@ const gameElements = {
   playerWidth: 121, // 100
   playerSpeed: 2.75,
   playerMovement: "stop",
-  npcHeight: 80,
+  npcHeight: 70,
   npcWidth: 100,
 
   // TOP ELEMENTS LEFT SHAFT
