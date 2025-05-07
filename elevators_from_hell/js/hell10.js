@@ -31,8 +31,8 @@ let npc_spriteSheet = {
 };
 
 // Spritesheets Initializing
-player_spriteSheet.run.src = "./assets/sprites/player/run/Run.png";
-player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle.png";
+player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
+player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
 let playerSprite = player_spriteSheet.idle;
 
 npc_spriteSheet.idle.src = "";
@@ -59,7 +59,7 @@ const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
 let currentFrame = 0;
 let totalFrames = 7; // Anzahl der Frames in Ihrem Spritesheet
 let lastTime = 0;
-let animationInterval = 250; // Initial value while idling
+let animationInterval = 125; // 250 Initial value while idling
 
 // Collision-Variables
 let isColliding = false;
@@ -158,6 +158,7 @@ const flexElemsPosInit = {
   playerPosX: gameCanvas.width / 2,
   playerPosY: gameElements.floor0_YPos - gameElements.playerHeight,
   playerYposOffset: 20,
+  playerLastDir: "stop",
   playerOnFloor: 0,
   playerOnLiftR: false,
   playerOnLiftL: false,
@@ -329,7 +330,7 @@ document.addEventListener("keydown", function (event) {
       }
       changePlayerSprite("left");
       totalFrames = 10;
-      animationInterval = 100;
+      animationInterval = 80;
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
@@ -338,14 +339,14 @@ document.addEventListener("keydown", function (event) {
       }
       changePlayerSprite("right");
       totalFrames = 10;
-      animationInterval = 100;
+      animationInterval = 80;
       gameElements.playerMovement = "right";
       break;
     case KEYS.DIRECTIONS.DOWN:
       changePlayerSprite("stop");
       totalFrames = 7;
       currentFrame = 0;
-      animationInterval = 200; // Reset des Intervalls
+      animationInterval = 125; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
       flexElemsPosInit.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
@@ -364,7 +365,7 @@ document.addEventListener("keydown", function (event) {
       changePlayerSprite("stop");
       totalFrames = 7;
       currentFrame = 0;
-      animationInterval = 200; // Reset des Intervalls
+      animationInterval = 125; // Reset des Intervalls
       lastTime = performance.now(); // Reset des Zeitstempels
       gameElements.playerMovement = "stop";
       flexElemsPosInit.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
@@ -470,6 +471,13 @@ async function gameRoutine(timestamp) {
     // Frame-Update
     currentFrame = ++currentFrame % totalFrames;
   }
+
+  flexElemsPosInit.playerLastDir =
+    gameElements.playerMovement === "left"
+      ? "left"
+      : gameElements.playerMovement === "right"
+      ? "right"
+      : flexElemsPosInit.playerLastDir;
 
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
@@ -738,7 +746,7 @@ function playerMovandColl() {
       flexElemsPosInit.playerPosX < gameCanvas.width / 2
         ? flexElemsPosInit.playerPosX + 5
         : flexElemsPosInit.playerPosX - 5;
-    animationInterval = 200; // Reset des Intervalls
+    animationInterval = 125; // Reset des Intervalls
     lastTime = performance.now(); // Reset des Zeitstempels
   }
 }
@@ -749,7 +757,11 @@ function drawGameElements() {
     drawCeiling();
     drawFloors();
     drawWalls();
-    drawPlayer(flexElemsPosInit.playerPosX, flexElemsPosInit.playerPosY);
+    drawPlayer(
+      flexElemsPosInit.playerPosX,
+      flexElemsPosInit.playerPosY,
+      flexElemsPosInit.playerLastDir
+    );
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -803,7 +815,11 @@ function drawGameElements() {
         exitButtonsStatus[`floor${i}`] ? true : false
       );
     }
-    drawPlayer(flexElemsPosInit.playerPosX, flexElemsPosInit.playerPosY);
+    drawPlayer(
+      flexElemsPosInit.playerPosX,
+      flexElemsPosInit.playerPosY,
+      flexElemsPosInit.playerLastDir
+    );
     drawLabels();
     if (debugMode) {
       drawDebugLine();
@@ -2472,10 +2488,10 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
   ctx.fill(); // Optional: Dreieck ausfüllen
 }
 
-function drawPlayer(xPos, yPos) {
+function drawPlayer(xPos, yPos, lastDirection) {
   ctx.save(); // Speichern des aktuellen Kontextzustands
 
-  if (gameElements.playerMovement === "left") {
+  if (flexElemsPosInit.playerLastDir === "left") {
     // Spiegeln für Bewegung nach links
     ctx.scale(-1, 1);
     xPos = -xPos - gameElements.playerWidth; // Anpassen der X-Position für gespiegelte Zeichnung
