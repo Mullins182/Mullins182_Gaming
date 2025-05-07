@@ -343,12 +343,14 @@ document.addEventListener("keydown", function (event) {
       gameElements.playerMovement = "right";
       break;
     case KEYS.DIRECTIONS.DOWN:
-      changePlayerSprite("stop");
-      totalFrames = 7;
-      currentFrame = 0;
-      animationInterval = 125; // Reset des Intervalls
-      lastTime = performance.now(); // Reset des Zeitstempels
-      gameElements.playerMovement = "stop";
+      if (playerSprite !== player_spriteSheet.idle) {
+        changePlayerSprite("stop");
+        totalFrames = 7;
+        currentFrame = 0;
+        animationInterval = 125; // Reset des Intervalls
+        lastTime = performance.now(); // Reset des Zeitstempels
+        gameElements.playerMovement = "stop";
+      }
       flexElemsPosInit.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
       callLiftBtnActCount =
         flexElemsPosInit.playerOnFloor !== 0 &&
@@ -362,12 +364,14 @@ document.addEventListener("keydown", function (event) {
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
-      changePlayerSprite("stop");
-      totalFrames = 7;
-      currentFrame = 0;
-      animationInterval = 125; // Reset des Intervalls
-      lastTime = performance.now(); // Reset des Zeitstempels
-      gameElements.playerMovement = "stop";
+      if (playerSprite !== player_spriteSheet.idle) {
+        changePlayerSprite("stop");
+        totalFrames = 7;
+        currentFrame = 0;
+        animationInterval = 125; // Reset des Intervalls
+        lastTime = performance.now(); // Reset des Zeitstempels
+        gameElements.playerMovement = "stop";
+      }
       flexElemsPosInit.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
       callLiftBtnActCount =
         flexElemsPosInit.playerOnFloor !== 6 &&
