@@ -318,11 +318,11 @@ const FLOOR_LEVELS = {
 
 // ___________________________ DEBUGGING ___________________________
 const debugging = {
+  debugMode: false,
   showNpcRange: true,
+  floorLevelSelected: floorLevels.floor0_YPos,
+  automaticElevator: false,
 };
-let floorLevelSelected = floorLevels.floor0_YPos;
-let debugMode = false;
-let automaticElevator = false;
 
 // ___________________________ Keyboard-Event-Listener ___________________________
 
@@ -400,10 +400,10 @@ document.addEventListener("keydown", function (event) {
       playerOnLift(false);
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_ELEVATOR:
-      automaticElevator = !automaticElevator;
+      debugging.automaticElevator = !debugging.automaticElevator;
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
-      debugMode = !debugMode;
+      debugging.debugMode = !debugging.debugMode;
       break;
     case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
       for (let key in exitButtonsStatus) {
@@ -445,10 +445,10 @@ function handleFloorSelection(floorNumber) {
   if (isLeftLiftMoving || isRightLiftMoving) return;
 
   if (flexElemsPosInit.playerOnLiftL) {
-    floorLevelSelected = getFloorLevel(floorNumber);
+    debugging.floorLevelSelected = getFloorLevel(floorNumber);
     flexElemsPosInit.liftL_calledToFloor = floorNumber;
   } else if (flexElemsPosInit.playerOnLiftR) {
-    floorLevelSelected = getFloorLevel(floorNumber);
+    debugging.floorLevelSelected = getFloorLevel(floorNumber);
     flexElemsPosInit.liftR_calledToFloor = floorNumber;
   }
 }
@@ -560,7 +560,7 @@ function drawLabels() {
     1.6
   );
 
-  if (debugMode) {
+  if (debugging.debugMode) {
     let isOnLift =
       flexElemsPosInit.playerOnLiftR || flexElemsPosInit.playerOnLiftL
         ? true
@@ -836,7 +836,7 @@ function drawGameElements() {
 
     drawLabels();
 
-    if (debugMode) {
+    if (debugging.debugMode) {
       drawDebugLine();
     }
   } else {
@@ -879,14 +879,14 @@ function drawGameElements() {
       flexElemsPosInit.npcActMovDir
     );
     drawLabels();
-    if (debugMode) {
+    if (debugging.debugMode) {
       drawDebugLine();
     }
   }
 }
 
 function automaticLiftControl() {
-  if (automaticElevator) {
+  if (debugging.automaticElevator) {
     let randomNum;
     let randomNum2;
 
@@ -2085,7 +2085,7 @@ function drawLiftDoors() {
 
 function drawDebugLine() {
   ctx.fillStyle = "#00FF00";
-  ctx.fillRect(0, floorLevelSelected, 1600, 3);
+  ctx.fillRect(0, debugging.floorLevelSelected, 1600, 3);
 }
 
 function drawShaftsElements() {
