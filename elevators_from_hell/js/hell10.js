@@ -121,6 +121,8 @@ const gameElements = {
   playerMovement: "stop",
   npcHeight: 70,
   npcWidth: 100,
+  npcMovement: "left",
+  npcXaxisMirroringOffset: 70,
 
   // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
@@ -171,6 +173,7 @@ const flexElemsPosInit = {
 
   npcPosX: gameCanvas.width / 1.65,
   npcPosY: gameElements.floor5_YPos - gameElements.npcHeight,
+  npcActMovDir: "left",
 
   exitDoorPosY: gameCanvas.height * 0.8,
 
@@ -314,6 +317,9 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ DEBUGGING ___________________________
+const debugging = {
+  showNpcRange: true,
+};
 let floorLevelSelected = floorLevels.floor0_YPos;
 let debugMode = false;
 let automaticElevator = false;
@@ -499,7 +505,7 @@ async function gameRoutine(timestamp) {
       ? "right"
       : flexElemsPosInit.playerLastDir;
 
-  npcRoutine();
+  npcRoutine(flexElemsPosInit.npcActMovDir);
 
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
@@ -520,16 +526,17 @@ async function gameRoutine(timestamp) {
 
 // IN THE WORKS !
 async function npcRoutine() {
-  let dir = "left";
-  dir =
-    flexElemsPosInit.npcPosX < 500
+  flexElemsPosInit.npcActMovDir =
+    flexElemsPosInit.npcPosX < 900
       ? "right"
-      : flexElemsPosInit.npcPosX > 1250
+      : flexElemsPosInit.npcPosX > 1050
       ? "left"
-      : dir;
+      : flexElemsPosInit.npcActMovDir;
 
-  flexElemsPosInit.npcPosX += dir === "right" ? 2 : 0;
-  flexElemsPosInit.npcPosX -= dir === "left" ? 2 : 0;
+  flexElemsPosInit.npcPosX +=
+    flexElemsPosInit.npcActMovDir === "right" ? 3.0 : 0;
+  flexElemsPosInit.npcPosX -=
+    flexElemsPosInit.npcActMovDir === "left" ? 3.0 : 0;
 }
 
 // ___________________________              ___________________________
@@ -801,7 +808,11 @@ function drawGameElements() {
     // npcSprite.onload = function () {
     //   drawNPC();
     // };
-    drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY);
+    drawNPC(
+      flexElemsPosInit.npcPosX,
+      flexElemsPosInit.npcPosY,
+      flexElemsPosInit.npcActMovDir
+    );
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -862,7 +873,11 @@ function drawGameElements() {
     // npcSprite.onload = function () {
     //   drawNPC();
     // };
-    drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY);
+    drawNPC(
+      flexElemsPosInit.npcPosX,
+      flexElemsPosInit.npcPosY,
+      flexElemsPosInit.npcActMovDir
+    );
     drawLabels();
     if (debugMode) {
       drawDebugLine();
@@ -2554,7 +2569,15 @@ function drawPlayer(xPos, yPos, direction) {
   ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }
 
-function drawNPC(xPos, Ypos) {
+function drawNPC(xPos, yPos, direction) {
+  ctx.save();
+
+  if (direction === "right") {
+    ctx.scale(-1, 1);
+    xPos =
+      -xPos - (gameElements.npcWidth + gameElements.npcXaxisMirroringOffset);
+  }
+
   ctx.drawImage(
     npcSprite,
     currentFrameNpc * 512,
@@ -2562,10 +2585,16 @@ function drawNPC(xPos, Ypos) {
     512,
     380,
     xPos,
-    Ypos,
+    yPos,
     gameElements.npcWidth,
     gameElements.npcHeight
   );
+
+  if (debugging.showNpcRange) {
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(xPos, yPos + gameElements.npcHeight / 2 - 5, 10, 10);
+  }
+  ctx.restore();
 }
 
 function createLabel(
