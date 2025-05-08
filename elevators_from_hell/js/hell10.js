@@ -123,6 +123,7 @@ const gameElements = {
   npcWidth: 100,
   npcMovement: "left",
   npcXaxisMirroringOffset: 70,
+  npcPressCallLiftBtn: 52,
 
   // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
@@ -173,6 +174,7 @@ const flexElemsPosInit = {
 
   npcPosX: gameCanvas.width / 1.65,
   npcPosY: gameElements.floor5_YPos - gameElements.npcHeight,
+  npcOnFloor: 5,
   npcActMovDir: "left",
 
   exitDoorPosY: gameCanvas.height * 0.8,
@@ -366,7 +368,7 @@ document.addEventListener("keydown", function (event) {
         lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
-      flexElemsPosInit.playerOnFloor !== 0 ? callElevatorBtnsCheck(2) : null;
+      flexElemsPosInit.playerOnFloor !== 0 ? playerCallLiftBtnsCheck(2) : null;
       callLiftBtnActCount =
         flexElemsPosInit.playerOnFloor !== 0 &&
         flexElemsPosInit.playerPosX >
@@ -387,7 +389,7 @@ document.addEventListener("keydown", function (event) {
         lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
-      flexElemsPosInit.playerOnFloor !== 6 ? callElevatorBtnsCheck(1) : null;
+      flexElemsPosInit.playerOnFloor !== 6 ? playerCallLiftBtnsCheck(1) : null;
       callLiftBtnActCount =
         flexElemsPosInit.playerOnFloor !== 6 &&
         flexElemsPosInit.playerPosX >
@@ -505,7 +507,7 @@ async function gameRoutine(timestamp) {
       ? "right"
       : flexElemsPosInit.playerLastDir;
 
-  npcRoutine(flexElemsPosInit.npcActMovDir);
+  npcRoutine();
 
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
@@ -526,8 +528,16 @@ async function gameRoutine(timestamp) {
 
 // IN THE WORKS !
 async function npcRoutine() {
+  npcCallLiftBtnsCheck();
+  gameElements.npcPressCallLiftBtn =
+    flexElemsPosInit.npcPosX <
+    gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
+      ? 52
+      : 52;
+
   flexElemsPosInit.npcActMovDir =
-    flexElemsPosInit.npcPosX < 900
+    flexElemsPosInit.npcPosX <
+    gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
       ? "right"
       : flexElemsPosInit.npcPosX > 1050
       ? "left"
@@ -569,10 +579,10 @@ function drawLabels() {
     createLabel(
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
-      "<ActCount> " +
-        exitBtnActCounter +
-        " <PlayerOnFloor> " +
-        flexElemsPosInit.playerOnFloor,
+      "<NPC X-Pos> " +
+        flexElemsPosInit.npcPosX +
+        " <callBtnsX-Pos> " +
+        Math.round(gameElements.callElevatorBtnsXpos),
       "63px Arial Black",
       "gold",
       "black",
@@ -717,7 +727,7 @@ function drawLabels() {
   }
 }
 
-function callElevatorBtnsCheck(value) {
+function playerCallLiftBtnsCheck(value) {
   const playerInteractPos = {
     callLiftBtns:
       flexElemsPosInit.playerPosX >
@@ -739,13 +749,35 @@ function callElevatorBtnsCheck(value) {
         ? callElevatorBtnsStatus[`floor${i}`] + value
         : value;
 
-    // callLiftBtnActCount = playerInteractPos.callLiftBtns;
-
     callElevatorBtnsStatus[`floor${i}`] =
       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
       flexElemsPosInit.playerOnFloor === i &&
       playerInteractPos.callLiftBtns
         ? value
+        : callElevatorBtnsStatus[`floor${i}`];
+  }
+}
+
+// IN THE WORKS !
+function npcCallLiftBtnsCheck() {
+  const npcInteractPos = {
+    callLiftBtns: flexElemsPosInit.npcPosX < gameElements.callElevatorBtnsXpos,
+    exitBtns: null,
+  };
+
+  for (let i = 0; i < 7; i++) {
+    // value =
+    //   flexElemsPosInit.playerOnFloor === i &&
+    //   callElevatorBtnsStatus[`floor${i}`] != value &&
+    //   callElevatorBtnsStatus[`floor${i}`] < 3
+    //     ? callElevatorBtnsStatus[`floor${i}`] + value
+    //     : value;
+
+    callElevatorBtnsStatus[`floor${i}`] =
+      callElevatorBtnsStatus[`floor${i}`] !== 3 &&
+      flexElemsPosInit.npcOnFloor === i &&
+      npcInteractPos.callLiftBtns
+        ? 2
         : callElevatorBtnsStatus[`floor${i}`];
   }
 }
