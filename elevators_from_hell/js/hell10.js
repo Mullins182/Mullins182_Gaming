@@ -169,6 +169,9 @@ const flexElemsPosInit = {
   playerOnLiftR: false,
   playerOnLiftL: false,
 
+  npcPosX: gameCanvas.width / 1.65,
+  npcPosY: gameElements.floor5_YPos - gameElements.npcHeight,
+
   exitDoorPosY: gameCanvas.height * 0.8,
 
   // Lifts
@@ -496,6 +499,8 @@ async function gameRoutine(timestamp) {
       ? "right"
       : flexElemsPosInit.playerLastDir;
 
+  npcRoutine();
+
   ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
   playerMovandColl();
@@ -513,8 +518,22 @@ async function gameRoutine(timestamp) {
   requestAnimationFrame(gameRoutine);
 }
 
+// IN THE WORKS !
+async function npcRoutine() {
+  let dir = "left";
+  dir =
+    flexElemsPosInit.npcPosX < 500
+      ? "right"
+      : flexElemsPosInit.npcPosX > 1250
+      ? "left"
+      : dir;
+
+  flexElemsPosInit.npcPosX += dir === "right" ? 2 : 0;
+  flexElemsPosInit.npcPosX -= dir === "left" ? 2 : 0;
+}
+
 // ___________________________              ___________________________
-// ___________________________              ___________________________
+// ___________________________   DRAWING    ___________________________
 // ___________________________              ___________________________
 
 function drawLabels() {
@@ -779,10 +798,10 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
-    npcSprite.onload = function () {
-      // Jetzt kann gezeichnet werden
-      drawNpcSecBot();
-    };
+    // npcSprite.onload = function () {
+    //   drawNPC();
+    // };
+    drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY);
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -795,7 +814,6 @@ function drawGameElements() {
         callElevatorBtnsStatus[`floor${i}`],
         i
       );
-
       drawExitButtons(
         gameCanvas.width / 1.94,
         gameElements[`floor${i}_YPos`] - 52,
@@ -841,6 +859,10 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
+    // npcSprite.onload = function () {
+    //   drawNPC();
+    // };
+    drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY);
     drawLabels();
     if (debugMode) {
       drawDebugLine();
@@ -2530,29 +2552,17 @@ function drawPlayer(xPos, yPos, direction) {
     gameElements.playerHeight
   );
   ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
-
-  ctx.drawImage(
-    npcSprite,
-    currentFrameNpc * 512,
-    0,
-    512,
-    380,
-    gameCanvas.width / 1.65,
-    gameElements.floor0_YPos - gameElements.npcHeight,
-    gameElements.npcWidth,
-    gameElements.npcHeight
-  );
 }
 
-function drawNpcSecBot() {
+function drawNPC(xPos, Ypos) {
   ctx.drawImage(
     npcSprite,
     currentFrameNpc * 512,
     0,
     512,
     380,
-    gameCanvas.width / 1.68,
-    gameElements.floor1_YPos - gameElements.npcHeight,
+    xPos,
+    Ypos,
     gameElements.npcWidth,
     gameElements.npcHeight
   );
