@@ -766,18 +766,17 @@ function npcCallLiftBtnsCheck() {
   };
 
   for (let i = 0; i < 7; i++) {
-    // value =
-    //   flexElemsPosInit.playerOnFloor === i &&
-    //   callElevatorBtnsStatus[`floor${i}`] != value &&
-    //   callElevatorBtnsStatus[`floor${i}`] < 3
-    //     ? callElevatorBtnsStatus[`floor${i}`] + value
-    //     : value;
-
     callElevatorBtnsStatus[`floor${i}`] =
       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
       flexElemsPosInit.npcOnFloor === i &&
-      npcInteractPos.callLiftBtns
+      npcInteractPos.callLiftBtns &&
+      flexElemsPosInit.playerOnFloor < flexElemsPosInit.npcOnFloor
         ? 2
+        : callElevatorBtnsStatus[`floor${i}`] !== 3 &&
+          flexElemsPosInit.npcOnFloor === i &&
+          npcInteractPos.callLiftBtns &&
+          flexElemsPosInit.playerOnFloor > flexElemsPosInit.npcOnFloor
+        ? 1
         : callElevatorBtnsStatus[`floor${i}`];
   }
 }
