@@ -17,7 +17,7 @@ export function npcButtonPress() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
     ? 52
-    : 52;
+    : null;
 }
 
 export function npcPosUpdate() {
@@ -27,7 +27,6 @@ export function npcPosUpdate() {
     return -3.5;
   } else {
     return 0.25;
-    console.log("Movement Statement Issue Detected !");
   }
 }
 

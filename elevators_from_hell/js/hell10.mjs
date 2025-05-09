@@ -7,6 +7,12 @@ import {
   npcPosUpdate,
 } from "./npcLogic.mjs";
 
+import {
+  changePlayerSprite,
+  player_spriteSheet,
+  playerSprite,
+} from "./playerLogic.mjs";
+
 const gameCanvas = document.getElementById("mainCanvas");
 const ctx = gameCanvas.getContext("2d");
 
@@ -27,10 +33,10 @@ const sounds = {
 };
 
 // Sprite-Variables
-let player_spriteSheet = {
-  idle: new Image(),
-  run: new Image(),
-};
+// let player_spriteSheet = {
+//   idle: new Image(),
+//   run: new Image(),
+// };
 
 let npc_spriteSheet = {
   idle: new Image(),
@@ -40,7 +46,7 @@ let npc_spriteSheet = {
 // Spritesheets Initializing
 player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
 player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
-let playerSprite = player_spriteSheet.idle;
+// export let playerSprite = player_spriteSheet.idle;
 
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
 npc_spriteSheet.move.src = "";
@@ -467,23 +473,9 @@ initialize();
 // ___________________________ GAME INI ___________________________
 function initialize() {
   html5: true;
-  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingEnabled = false;
   Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
   requestAnimationFrame(gameRoutine);
-}
-
-function changePlayerSprite(movement) {
-  if (movement === "left" || movement === "right") {
-    if (playerSprite === player_spriteSheet.run) {
-    } else {
-      playerSprite = player_spriteSheet.run;
-    }
-  } else {
-    if (playerSprite === player_spriteSheet.idle) {
-    } else {
-      playerSprite = player_spriteSheet.idle;
-    }
-  }
 }
 
 // ___________________________              ___________________________
@@ -538,7 +530,6 @@ async function npcRoutine() {
   npcCallLiftBtnsCheck();
   flexElemsPosInit.npcActMovDir = npcMovement();
   gameElements.npcPressCallLiftBtn = npcButtonPress();
-
   flexElemsPosInit.npcPosX += npcPosUpdate();
 }
 
@@ -780,12 +771,12 @@ function playerMovandColl() {
     playerPosUpdate(gameElements.playerMovement);
     isColliding = false;
   } else {
-    gameElements.playerMovement = "stop";
     isColliding = true;
     // Sichere Initialisierung der Idle-Animation
     currentFramePlayer = 0;
     totalFramesPlayer = 7;
-    playerSprite = player_spriteSheet.idle;
+    changePlayerSprite("stop");
+    gameElements.playerMovement = "stop";
     flexElemsPosInit.playerPosX =
       flexElemsPosInit.playerPosX < gameCanvas.width / 2
         ? flexElemsPosInit.playerPosX + 5
