@@ -1,5 +1,12 @@
 console.log("Hell10 has Started !");
 
+import {
+  npcButtonPress,
+  npcCallLiftBtnsCheck,
+  npcMovement,
+  npcPosUpdate,
+} from "./npcLogic.mjs";
+
 const gameCanvas = document.getElementById("mainCanvas");
 const ctx = gameCanvas.getContext("2d");
 
@@ -69,7 +76,7 @@ let animationIntervalNpc = 90; // Initial value while idling
 let isColliding = false;
 
 // Canvas-Element-Variables
-const gameElements = {
+export const gameElements = {
   floorsWidth: gameCanvas.width * 0.9,
   floorsHeight: 6,
   WallsHeight: gameCanvas.height * 0.89,
@@ -163,7 +170,7 @@ const gameElements = {
   shaftF0RposX_right: gameCanvas.width * 0.823,
 };
 
-const flexElemsPosInit = {
+export const flexElemsPosInit = {
   playerPosX: gameCanvas.width / 2,
   playerPosY: gameElements.floor0_YPos - gameElements.playerHeight,
   playerYposOffset: 20,
@@ -273,7 +280,7 @@ const exitButtonsStatus = {
   floor6: false,
 };
 
-const callElevatorBtnsStatus = {
+export const callElevatorBtnsStatus = {
   floor0: 0,
   floor1: 0,
   floor2: 0,
@@ -529,24 +536,10 @@ async function gameRoutine(timestamp) {
 // IN THE WORKS !
 async function npcRoutine() {
   npcCallLiftBtnsCheck();
-  gameElements.npcPressCallLiftBtn =
-    flexElemsPosInit.npcPosX <
-    gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
-      ? 52
-      : 52;
+  flexElemsPosInit.npcActMovDir = npcMovement();
+  gameElements.npcPressCallLiftBtn = npcButtonPress();
 
-  flexElemsPosInit.npcActMovDir =
-    flexElemsPosInit.npcPosX <
-    gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
-      ? "right"
-      : flexElemsPosInit.npcPosX > 1050
-      ? "left"
-      : flexElemsPosInit.npcActMovDir;
-
-  flexElemsPosInit.npcPosX +=
-    flexElemsPosInit.npcActMovDir === "right" ? 3.0 : 0;
-  flexElemsPosInit.npcPosX -=
-    flexElemsPosInit.npcActMovDir === "left" ? 3.0 : 0;
+  flexElemsPosInit.npcPosX += npcPosUpdate();
 }
 
 // ___________________________              ___________________________
@@ -754,29 +747,6 @@ function playerCallLiftBtnsCheck(value) {
       flexElemsPosInit.playerOnFloor === i &&
       playerInteractPos.callLiftBtns
         ? value
-        : callElevatorBtnsStatus[`floor${i}`];
-  }
-}
-
-// IN THE WORKS !
-function npcCallLiftBtnsCheck() {
-  const npcInteractPos = {
-    callLiftBtns: flexElemsPosInit.npcPosX < gameElements.callElevatorBtnsXpos,
-    exitBtns: null,
-  };
-
-  for (let i = 0; i < 7; i++) {
-    callElevatorBtnsStatus[`floor${i}`] =
-      callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-      flexElemsPosInit.npcOnFloor === i &&
-      npcInteractPos.callLiftBtns &&
-      flexElemsPosInit.playerOnFloor < flexElemsPosInit.npcOnFloor
-        ? 2
-        : callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-          flexElemsPosInit.npcOnFloor === i &&
-          npcInteractPos.callLiftBtns &&
-          flexElemsPosInit.playerOnFloor > flexElemsPosInit.npcOnFloor
-        ? 1
         : callElevatorBtnsStatus[`floor${i}`];
   }
 }
