@@ -555,7 +555,7 @@ function drawLabels() {
   );
 
   if (debugging.debugMode) {
-    let isOnLift =
+    let playerOnLift =
       flexElemsPosInit.playerOnLiftR || flexElemsPosInit.playerOnLiftL
         ? true
         : false;
