@@ -564,9 +564,11 @@ function drawLabels() {
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
       "<NPC X-Pos> " +
-        flexElemsPosInit.npcPosX +
+        (flexElemsPosInit.npcPosX < 1000 ? "  " : "") +
+        flexElemsPosInit.npcPosX.toFixed(0) +
         " <callBtnsX-Pos> " +
-        Math.round(gameElements.callElevatorBtnsXpos),
+        (gameElements.callElevatorBtnsXpos < 1000 ? "  " : "") +
+        gameElements.callElevatorBtnsXpos.toFixed(0),
       "63px Arial Black",
       "gold",
       "black",
