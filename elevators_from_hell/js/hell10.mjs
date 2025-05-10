@@ -2473,7 +2473,7 @@ function drawCallElevatorBtns(
   floor
 ) {
   // Plate
-  ctx.fillStyle = "#9d3a08";
+  ctx.fillStyle = "#363636";
   ctx.fillRect(platePosX, platePosY, 20, 35);
 
   if (floor === 0) {
@@ -2508,7 +2508,7 @@ function drawCallElevatorBtns(
 
 function drawExitButtons(platePosX, platePosY, btnPosX, btnPosY, btnActivated) {
   // Plate
-  ctx.fillStyle = "#9d3a08";
+  ctx.fillStyle = "#363636";
   ctx.fillRect(platePosX, platePosY, 17, 17);
 
   ctx.fillStyle = btnActivated ? "#d4ff00" : "#ff3e00";
