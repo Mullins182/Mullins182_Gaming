@@ -1,17 +1,17 @@
 console.log("Hell10 has Started !");
 
 import {
+  npc_spriteSheet,
+  changePlayerSprite,
+  player_spriteSheet,
+  playerSprite,
+} from "./spriteHandling.mjs";
+import {
   npcButtonPress,
   npcCallLiftBtnsCheck,
   npcMovement,
   npcPosUpdate,
 } from "./npcLogic.mjs";
-
-import {
-  changePlayerSprite,
-  player_spriteSheet,
-  playerSprite,
-} from "./playerLogic.mjs";
 
 const gameCanvas = document.getElementById("mainCanvas");
 const ctx = gameCanvas.getContext("2d");
@@ -41,19 +41,6 @@ let exitBtnSndCount = 0;
 let exitBtnActCounter = 0;
 let exitDoorMoving = false;
 let exitDoorStopped = true;
-
-let npc_spriteSheet = {
-  idle: new Image(),
-  move: new Image(),
-};
-
-// Spritesheets Initializing
-
-player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
-player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
-npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
-npc_spriteSheet.move.src = "";
-
 let npcSprite = npc_spriteSheet.idle;
 
 // Lift Cabins inner view
@@ -885,7 +872,7 @@ function automaticLiftControl() {
       randomNum2 = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
     }
 
-    console.log(randomNum, "|", randomNum2);
+    // console.log(randomNum, "|", randomNum2);
 
     flexElemsPosInit.liftL_calledToFloor =
       !flexElemsPosInit.liftL_isMoving && shaftLdoorsOpenCheck()
