@@ -1,5 +1,9 @@
 // import { player_spriteSheet } from "./playerLogic.mjs";
 
+// Lift Cabins inner view
+export const cabinView = new Image();
+cabinView.src = "./assets/img/liftCabins/cabinView4.png";
+
 // Spritesheets Initializing
 export let player_spriteSheet = {
   idle: new Image(),

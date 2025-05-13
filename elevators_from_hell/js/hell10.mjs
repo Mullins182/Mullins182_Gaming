@@ -1,6 +1,7 @@
 console.log("Hell10 has Started !");
 
 import {
+  cabinView,
   npc_spriteSheet,
   changePlayerSprite,
   player_spriteSheet,
@@ -43,11 +44,7 @@ let exitDoorMoving = false;
 let exitDoorStopped = true;
 let npcSprite = npc_spriteSheet.idle;
 
-// Lift Cabins inner view
-const cabinView = new Image();
-cabinView.src = "./assets/img/liftCabins/cabinView4.png";
-
-// Sprite-Variables
+// Sprite related Variables
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
 let currentFramePlayer = 0;
