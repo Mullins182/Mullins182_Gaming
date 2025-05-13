@@ -32,11 +32,15 @@ const sounds = {
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
 };
 
-// Sprite-Variables
-// let player_spriteSheet = {
-//   idle: new Image(),
-//   run: new Image(),
-// };
+// Sound-Variables
+let liftLFading = false;
+let liftRFading = false;
+let callLiftBtnSndCount = 0;
+let callLiftBtnActCount = 0;
+let exitBtnSndCount = 0;
+let exitBtnActCounter = 0;
+let exitDoorMoving = false;
+let exitDoorStopped = true;
 
 let npc_spriteSheet = {
   idle: new Image(),
@@ -55,16 +59,6 @@ let npcSprite = npc_spriteSheet.idle;
 // Lift Cabins inner view
 const cabinView = new Image();
 cabinView.src = "./assets/img/liftCabins/cabinView4.png";
-
-// Sound-Variables
-let liftLFading = false;
-let liftRFading = false;
-let callLiftBtnSndCount = 0;
-let callLiftBtnActCount = 0;
-let exitBtnSndCount = 0;
-let exitBtnActCounter = 0;
-let exitDoorMoving = false;
-let exitDoorStopped = true;
 
 // Sprite-Variables
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
