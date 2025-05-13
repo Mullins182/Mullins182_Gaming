@@ -48,12 +48,12 @@ let npc_spriteSheet = {
 };
 
 // Spritesheets Initializing
+
 player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
 player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
-// export let playerSprite = player_spriteSheet.idle;
-
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
 npc_spriteSheet.move.src = "";
+
 let npcSprite = npc_spriteSheet.idle;
 
 // Lift Cabins inner view
