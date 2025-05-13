@@ -10,17 +10,16 @@ export let player_spriteSheet = {
   run: new Image(),
 };
 
-export let npc_spriteSheet = {
+let npc_spriteSheet = {
   idle: new Image(),
-  move: new Image(),
 };
 
 export let playerSprite = player_spriteSheet.idle;
+export let npcSprite = npc_spriteSheet.idle;
 
 player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
 player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
-npc_spriteSheet.move.src = "";
 
 export function changePlayerSprite(movement) {
   if (movement === "left" || movement === "right") {

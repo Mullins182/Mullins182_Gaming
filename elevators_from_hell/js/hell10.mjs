@@ -2,10 +2,10 @@ console.log("Hell10 has Started !");
 
 import {
   cabinView,
-  npc_spriteSheet,
   changePlayerSprite,
-  player_spriteSheet,
   playerSprite,
+  npcSprite,
+  player_spriteSheet,
 } from "./spriteHandling.mjs";
 import {
   npcButtonPress,
@@ -42,7 +42,6 @@ let exitBtnSndCount = 0;
 let exitBtnActCounter = 0;
 let exitDoorMoving = false;
 let exitDoorStopped = true;
-let npcSprite = npc_spriteSheet.idle;
 
 // Sprite related Variables
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
