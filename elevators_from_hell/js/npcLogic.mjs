@@ -4,6 +4,14 @@ import {
   callElevatorBtnsStatus,
 } from "./hell10.mjs";
 
+// IN THE WORKS !
+export async function npcRoutine() {
+  npcCallLiftBtnsCheck();
+  flexElemsPosInit.npcActMovDir = npcMovement();
+  gameElements.npcPressCallLiftBtn = npcButtonPress();
+  flexElemsPosInit.npcPosX += npcPosUpdate();
+}
+
 export function npcMovement() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2

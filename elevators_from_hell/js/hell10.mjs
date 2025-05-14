@@ -12,12 +12,7 @@ import {
 
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
-import {
-  npcButtonPress,
-  npcCallLiftBtnsCheck,
-  npcMovement,
-  npcPosUpdate,
-} from "./npcLogic.mjs";
+import { npcRoutine } from "./npcLogic.mjs";
 
 import { drawLabels } from "./drawLabels.mjs";
 
@@ -517,14 +512,6 @@ function resumeGame() {
   gamePaused = !gamePaused ? null : false;
   playSounds(false);
   console.log("Game resumed !");
-}
-
-// IN THE WORKS !
-async function npcRoutine() {
-  npcCallLiftBtnsCheck();
-  flexElemsPosInit.npcActMovDir = npcMovement();
-  gameElements.npcPressCallLiftBtn = npcButtonPress();
-  flexElemsPosInit.npcPosX += npcPosUpdate();
 }
 
 function playerCallLiftBtnsCheck(value) {
