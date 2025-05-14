@@ -1,22 +1,43 @@
 import {
+  gameCanvas,
   flexElemsPosInit,
   gameElements,
   callElevatorBtnsStatus,
 } from "./hell10.mjs";
 
+let npcIdling = false;
+
 // IN THE WORKS !
-export async function npcRoutine() {
+export function npcRoutine() {
   npcCallLiftBtnsCheck();
-  flexElemsPosInit.npcActMovDir = npcMovement();
   gameElements.npcPressCallLiftBtn = npcButtonPress();
+  npcIdling = gameElements.npcPressCallLiftBtn == 52 ? true : false;
+
+  npcIdling
+    ? (flexElemsPosInit.npcActMovDir = npcIsIdling())
+    : (flexElemsPosInit.npcActMovDir = npcMovToCallBtn());
   flexElemsPosInit.npcPosX += npcPosUpdate();
+  console.log(
+    flexElemsPosInit.npcActMovDir,
+    gameElements.npcPressCallLiftBtn,
+    npcIdling
+  );
 }
 
-export function npcMovement() {
+export function npcMovToCallBtn() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
     ? "right"
-    : flexElemsPosInit.npcPosX > 1050
+    : flexElemsPosInit.npcPosX > 980
+    ? "left"
+    : flexElemsPosInit.npcActMovDir;
+}
+
+function npcIsIdling() {
+  npcIdling = true;
+  return flexElemsPosInit.npcPosX < gameCanvas.width / 1.8
+    ? "right"
+    : flexElemsPosInit.npcPosX > gameCanvas.width / 1.5
     ? "left"
     : flexElemsPosInit.npcActMovDir;
 }
@@ -25,7 +46,7 @@ export function npcButtonPress() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
     ? 52
-    : null;
+    : gameElements.npcPressCallLiftBtn;
 }
 
 export function npcPosUpdate() {
