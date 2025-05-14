@@ -9,6 +9,9 @@ import {
   npcSprite,
   player_spriteSheet,
 } from "./spriteHandling.mjs";
+
+import { playerMovandColl, isColliding } from "./playerLogic.mjs";
+
 import {
   npcButtonPress,
   npcCallLiftBtnsCheck,
@@ -17,7 +20,6 @@ import {
 } from "./npcLogic.mjs";
 
 import { drawLabels } from "./drawLabels.mjs";
-import { playerMovandColl } from "./playerLogic.mjs";
 
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
