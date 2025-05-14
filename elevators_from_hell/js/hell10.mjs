@@ -17,6 +17,7 @@ import {
 } from "./npcLogic.mjs";
 
 import { drawLabels } from "./drawLabels.mjs";
+import { playerMovandColl } from "./playerLogic.mjs";
 
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
@@ -37,13 +38,13 @@ const sounds = {
 // Sprite related Variables
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
-let currentFramePlayer = 0;
+export let currentFramePlayer = 0;
 let currentFrameNpc = 0;
-let totalFramesPlayer = 7; // Anzahl der Frames in Ihrem Spritesheet
+export let totalFramesPlayer = 7; // Anzahl der Frames in Ihrem Spritesheet
 let totalFramesNpc = 11; // Anzahl der Frames in Ihrem Spritesheet
-let lastTimePlayer = 0;
+export let lastTimePlayer = 0;
 let lastTimeNpc = 0;
-let animationIntervalPlayer = 125; // 250 Initial value while idling
+export let animationIntervalPlayer = 125; // 250 Initial value while idling
 let animationIntervalNpc = 90; // Initial value while idling
 
 // Sound-Variables
@@ -55,9 +56,6 @@ let exitBtnSndCount = 0;
 let exitBtnActCounter = 0;
 let exitDoorMoving = false;
 let exitDoorStopped = true;
-
-// Collision-Variables
-let isColliding = false;
 
 // Pause Game
 window.addEventListener("blur", pauseGame);
@@ -582,26 +580,6 @@ function exitBtnActCheck() {
   }
 }
 
-function playerMovandColl() {
-  if (!playerCollision() || playerCanLeave()) {
-    playerPosUpdate(gameElements.playerMovement);
-    isColliding = false;
-  } else {
-    isColliding = true;
-    // Sichere Initialisierung der Idle-Animation
-    currentFramePlayer = 0;
-    totalFramesPlayer = 7;
-    changePlayerSprite("stop");
-    gameElements.playerMovement = "stop";
-    flexElemsPosInit.playerPosX =
-      flexElemsPosInit.playerPosX < gameCanvas.width / 2
-        ? flexElemsPosInit.playerPosX + 5
-        : flexElemsPosInit.playerPosX - 5;
-    animationIntervalPlayer = 125; // Reset des Intervalls
-    lastTimePlayer = performance.now(); // Reset des Zeitstempels
-  }
-}
-
 function drawGameElements() {
   if (flexElemsPosInit.playerOnLiftL || flexElemsPosInit.playerOnLiftR) {
     drawLifts();
@@ -950,7 +928,7 @@ function exitDoor() {
 
 // ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
 
-function playerCanLeave() {
+export function playerCanLeave() {
   return flexElemsPosInit.exitDoorPosY < gameCanvas.height * 0.73 &&
     flexElemsPosInit.playerPosX < 500 &&
     flexElemsPosInit.playerOnFloor == 0
@@ -1022,7 +1000,7 @@ function playerOnLift(getOutOfLift) {
   }
 }
 
-function playerCollision() {
+export function playerCollision() {
   return flexElemsPosInit.playerPosX >=
     gameCanvas.width * 0.95 - gameElements.playerWidth / 1.85
     ? true
@@ -1284,7 +1262,7 @@ function shaftDoors() {
 
 // ___________________________ PLAYER-POS-UPDATES ___________________________
 
-function playerPosUpdate(moveDirection) {
+export function playerPosUpdate(moveDirection) {
   flexElemsPosInit.playerPosX =
     moveDirection === "left"
       ? (flexElemsPosInit.playerPosX -= gameElements.playerSpeed)
