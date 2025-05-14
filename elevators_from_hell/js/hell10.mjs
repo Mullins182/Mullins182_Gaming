@@ -455,7 +455,6 @@ initialize();
 
 // ___________________________ GAME INI ___________________________
 function initialize() {
-  html5: true;
   ctx.imageSmoothingEnabled = false;
   Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
   requestAnimationFrame(gameRoutine);
