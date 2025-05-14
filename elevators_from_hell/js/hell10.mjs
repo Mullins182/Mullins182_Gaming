@@ -1,4 +1,6 @@
 console.log("Hell10 has Started !");
+export const gameCanvas = document.getElementById("mainCanvas");
+export const ctx = gameCanvas.getContext("2d");
 
 import {
   cabinView,
@@ -16,9 +18,6 @@ import {
 
 import { drawLabels } from "./drawLabels.mjs";
 
-export const gameCanvas = document.getElementById("mainCanvas");
-export const ctx = gameCanvas.getContext("2d");
-
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
@@ -35,16 +34,6 @@ const sounds = {
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
 };
 
-// Sound-Variables
-let liftLFading = false;
-let liftRFading = false;
-let callLiftBtnSndCount = 0;
-let callLiftBtnActCount = 0;
-let exitBtnSndCount = 0;
-let exitBtnActCounter = 0;
-let exitDoorMoving = false;
-let exitDoorStopped = true;
-
 // Sprite related Variables
 const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
 const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
@@ -57,8 +46,23 @@ let lastTimeNpc = 0;
 let animationIntervalPlayer = 125; // 250 Initial value while idling
 let animationIntervalNpc = 90; // Initial value while idling
 
+// Sound-Variables
+let liftLFading = false;
+let liftRFading = false;
+let callLiftBtnSndCount = 0;
+let callLiftBtnActCount = 0;
+let exitBtnSndCount = 0;
+let exitBtnActCounter = 0;
+let exitDoorMoving = false;
+let exitDoorStopped = true;
+
 // Collision-Variables
 let isColliding = false;
+
+// Pause Game
+window.addEventListener("blur", pauseGame);
+window.addEventListener("focus", resumeGame);
+let gamePaused = false;
 
 // Canvas-Element-Variables
 export const gameElements = {
@@ -461,47 +465,59 @@ function initialize() {
 // ___________________________ GAME-ROUTINE ___________________________
 // ___________________________              ___________________________
 async function gameRoutine(timestamp) {
-  if (!lastTimePlayer) lastTimePlayer = timestamp;
-  if (!lastTimeNpc) lastTimeNpc = timestamp;
-  const elapsedPlayer = timestamp - lastTimePlayer;
-  const elapsedNpc = timestamp - lastTimeNpc;
+  if (!gamePaused) {
+    if (!lastTimePlayer) lastTimePlayer = timestamp;
+    if (!lastTimeNpc) lastTimeNpc = timestamp;
+    const elapsedPlayer = timestamp - lastTimePlayer;
+    const elapsedNpc = timestamp - lastTimeNpc;
 
-  if (elapsedPlayer > animationIntervalPlayer && !isColliding) {
-    lastTimePlayer = timestamp;
-    // Frame-Update
-    currentFramePlayer = ++currentFramePlayer % totalFramesPlayer;
+    if (elapsedPlayer > animationIntervalPlayer && !isColliding) {
+      lastTimePlayer = timestamp;
+      // Frame-Update
+      currentFramePlayer = ++currentFramePlayer % totalFramesPlayer;
+    }
+
+    if (elapsedNpc > animationIntervalNpc) {
+      lastTimeNpc = timestamp;
+      // Frame-Update
+      currentFrameNpc = ++currentFrameNpc % totalFramesNpc;
+    }
+
+    flexElemsPosInit.playerLastDir =
+      gameElements.playerMovement === "left"
+        ? "left"
+        : gameElements.playerMovement === "right"
+        ? "right"
+        : flexElemsPosInit.playerLastDir;
+
+    npcRoutine();
+
+    ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+    playerMovandColl();
+    playerIsOnFloor();
+    liftsPosUpdate();
+    shaftDoors();
+    exitDoor();
+    automaticLiftControl();
+    liftCalledCheck();
+    drawGameElements();
+    playSounds();
+    await new Promise((resolve) => setTimeout(resolve, 15));
   }
-
-  if (elapsedNpc > animationIntervalNpc) {
-    lastTimeNpc = timestamp;
-    // Frame-Update
-    currentFrameNpc = ++currentFrameNpc % totalFramesNpc;
-  }
-
-  flexElemsPosInit.playerLastDir =
-    gameElements.playerMovement === "left"
-      ? "left"
-      : gameElements.playerMovement === "right"
-      ? "right"
-      : flexElemsPosInit.playerLastDir;
-
-  npcRoutine();
-
-  ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-
-  playerMovandColl();
-  playerIsOnFloor();
-  liftsPosUpdate();
-  shaftDoors();
-  exitDoor();
-  automaticLiftControl();
-  liftCalledCheck();
-  drawGameElements();
-  playSounds();
-
-  await new Promise((resolve) => setTimeout(resolve, 15));
-
   requestAnimationFrame(gameRoutine);
+}
+
+function pauseGame() {
+  gamePaused = gamePaused ? null : true;
+  playSounds(true);
+  console.log("Game Paused !");
+}
+
+function resumeGame() {
+  gamePaused = !gamePaused ? null : false;
+  playSounds(false);
+  console.log("Game resumed !");
 }
 
 // IN THE WORKS !
@@ -734,7 +750,18 @@ async function fadeOutLift(sound, setFading, duration = 800) {
   });
 }
 
-async function playSounds() {
+async function playSounds(stopAll = false) {
+  if (stopAll) {
+    sounds.liftDoorsLcl.stop();
+    sounds.exitDoorSnd.stop();
+    sounds.liftDoorsRcl.stop();
+    sounds.liftDoorsLop.stop();
+    sounds.liftDoorsRop.stop();
+    sounds.liftSndL.stop();
+    sounds.liftSndR.stop();
+    sounds.runSnd.stop();
+    return;
+  }
   // LIFTS STEREO Panning
 
   // if (!liftLFading || !liftRFading) {
