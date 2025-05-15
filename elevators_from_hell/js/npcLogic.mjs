@@ -24,7 +24,7 @@ export function npcRoutine() {
   );
 }
 
-export function npcMovToCallBtn() {
+function npcMovToCallBtn() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
     ? "right"
@@ -42,14 +42,14 @@ function npcIsIdling() {
     : flexElemsPosInit.npcActMovDir;
 }
 
-export function npcButtonPress() {
+function npcButtonPress() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
     ? 52
     : gameElements.npcPressCallLiftBtn;
 }
 
-export function npcPosUpdate() {
+function npcPosUpdate() {
   if (flexElemsPosInit.npcActMovDir === "right") {
     return 3.5;
   } else if (flexElemsPosInit.npcActMovDir === "left") {
@@ -59,7 +59,7 @@ export function npcPosUpdate() {
   }
 }
 
-export function npcCallLiftBtnsCheck() {
+function npcCallLiftBtnsCheck() {
   const npcInteractPos = {
     callLiftBtns: flexElemsPosInit.npcPosX < gameElements.callElevatorBtnsXpos,
     exitBtns: null,
