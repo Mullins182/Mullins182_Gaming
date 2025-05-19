@@ -2,11 +2,7 @@ import {
   gameCanvas,
   playerPosUpdate,
   gameElements,
-  currentFramePlayer,
-  totalFramesPlayer,
   flexElemsPosInit,
-  animationIntervalPlayer,
-  lastTimePlayer,
   shaftLdoorsOpenCheck,
   shaftRdoorsOpenCheck,
 } from "./hell10.mjs";
@@ -21,17 +17,12 @@ export function playerMovandColl() {
     isColliding = false;
   } else {
     isColliding = true;
-    // Sichere Initialisierung der Idle-Animation
-    currentFramePlayer = 0;
-    totalFramesPlayer = 7;
     changePlayerSprite("stop");
     gameElements.playerMovement = "stop";
     flexElemsPosInit.playerPosX =
       flexElemsPosInit.playerPosX < gameCanvas.width / 2
         ? flexElemsPosInit.playerPosX + 5
         : flexElemsPosInit.playerPosX - 5;
-    animationIntervalPlayer = 125; // Reset des Intervalls
-    lastTimePlayer = performance.now(); // Reset des Zeitstempels
   }
 } // ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
 
