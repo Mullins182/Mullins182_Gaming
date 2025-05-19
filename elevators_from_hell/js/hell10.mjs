@@ -17,6 +17,9 @@ import { drawLabels } from "./drawLabels.mjs";
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
+export let playerOnFloor = 6;
+export let npcOnFloor = 0;
+
 // Sound-Initializing
 const sounds = {
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
@@ -124,7 +127,6 @@ export const gameElements = {
   playerMovement: "stop",
   npcHeight: 70,
   npcWidth: 100,
-  npcMovement: "l",
   npcXaxisMirroringOffset: 70,
   npcPressCallLiftBtn: 52,
 
@@ -167,18 +169,18 @@ export const gameElements = {
 };
 
 export const flexElemsPosInit = {
+  // Player/NPC PosInit
   playerPosX: gameCanvas.width / 2,
-  playerPosY: gameElements.floor0_YPos - gameElements.playerHeight,
+  playerPosY:
+    gameElements[`floor${playerOnFloor}_YPos`] - gameElements.playerHeight,
   playerYposOffset: 20,
   playerLastDir: "stop",
-  playerOnFloor: 0,
   playerOnLiftR: false,
   playerOnLiftL: false,
 
   npcPosX: gameCanvas.width / 1.65,
-  npcPosY: gameElements.floor5_YPos - gameElements.npcHeight,
-  npcOnFloor: 5,
-  npcActMovDir: "l",
+  npcPosY: gameElements[`floor${npcOnFloor}_YPos`] - gameElements.npcHeight,
+  npcActMovDir: "s",
 
   exitDoorPosY: gameCanvas.height * 0.8,
 
@@ -371,9 +373,9 @@ document.addEventListener("keydown", function (event) {
         lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
-      flexElemsPosInit.playerOnFloor !== 0 ? playerCallLiftBtnsCheck(2) : null;
+      playerOnFloor !== 0 ? playerCallLiftBtnsCheck(2) : null;
       callLiftBtnActCount =
-        flexElemsPosInit.playerOnFloor !== 0 &&
+        playerOnFloor !== 0 &&
         flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
         flexElemsPosInit.playerPosX <
@@ -392,9 +394,9 @@ document.addEventListener("keydown", function (event) {
         lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
-      flexElemsPosInit.playerOnFloor !== 6 ? playerCallLiftBtnsCheck(1) : null;
+      playerOnFloor !== 6 ? playerCallLiftBtnsCheck(1) : null;
       callLiftBtnActCount =
-        flexElemsPosInit.playerOnFloor !== 6 &&
+        playerOnFloor !== 6 &&
         flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
         flexElemsPosInit.playerPosX <
@@ -417,17 +419,17 @@ document.addEventListener("keydown", function (event) {
       break;
     case KEYS.SPECIAL_KEYS.CHANGE_PLAYER_YPOS:
       flexElemsPosInit.playerPosY =
-        flexElemsPosInit.playerOnFloor === 0
+        playerOnFloor === 0
           ? gameElements.floor1_YPos - gameElements.playerHeight
-          : flexElemsPosInit.playerOnFloor === 1
+          : playerOnFloor === 1
           ? gameElements.floor2_YPos - gameElements.playerHeight
-          : flexElemsPosInit.playerOnFloor === 2
+          : playerOnFloor === 2
           ? gameElements.floor3_YPos - gameElements.playerHeight
-          : flexElemsPosInit.playerOnFloor === 3
+          : playerOnFloor === 3
           ? gameElements.floor4_YPos - gameElements.playerHeight
-          : flexElemsPosInit.playerOnFloor === 4
+          : playerOnFloor === 4
           ? gameElements.floor5_YPos - gameElements.playerHeight
-          : flexElemsPosInit.playerOnFloor === 5
+          : playerOnFloor === 5
           ? gameElements.floor6_YPos - gameElements.playerHeight
           : gameElements.floor0_YPos - gameElements.playerHeight;
   }
@@ -497,7 +499,7 @@ async function gameRoutine(timestamp) {
         : flexElemsPosInit.playerLastDir;
 
     npcRoutine(
-      flexElemsPosInit.playerOnFloor,
+      playerOnFloor,
       flexElemsPosInit.liftR_isOnFloor,
       flexElemsPosInit.liftL_isOnFloor
     );
@@ -554,7 +556,7 @@ function playerCallLiftBtnsCheck(value) {
 
   for (let i = 0; i < 7; i++) {
     value =
-      flexElemsPosInit.playerOnFloor === i &&
+      playerOnFloor === i &&
       callElevatorBtnsStatus[`floor${i}`] != value &&
       callElevatorBtnsStatus[`floor${i}`] < 3
         ? callElevatorBtnsStatus[`floor${i}`] + value
@@ -562,7 +564,7 @@ function playerCallLiftBtnsCheck(value) {
 
     callElevatorBtnsStatus[`floor${i}`] =
       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-      flexElemsPosInit.playerOnFloor === i &&
+      playerOnFloor === i &&
       playerInteractPos.callLiftBtns
         ? value
         : callElevatorBtnsStatus[`floor${i}`];
@@ -585,7 +587,7 @@ function exitBtnActCheck() {
 
   for (let i = 0; i < 7; i++) {
     exitButtonsStatus[`floor${i}`] =
-      flexElemsPosInit.playerOnFloor === i && playerInteractPos.exitBtns
+      playerOnFloor === i && playerInteractPos.exitBtns
         ? exitButtonsStatus[`floor${i}`]
           ? false
           : true
@@ -1211,7 +1213,7 @@ export function playerPosUpdate(moveDirection) {
 }
 
 function playerIsOnFloor() {
-  flexElemsPosInit.playerOnFloor =
+  playerOnFloor =
     flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
     gameElements.floor1_YPos
       ? 0

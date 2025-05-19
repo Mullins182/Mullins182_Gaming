@@ -9,8 +9,10 @@ let npcIsIdling = false;
 
 // IN THE WORKS !
 export function npcRoutine(playerOnFloor, liftRonFloor, liftLonFloor) {
-  npcIsIdling = true;
-  flexElemsPosInit.npcActMovDir = npcIdling(npcIsIdling);
+  npcIsIdling = false;
+  flexElemsPosInit.npcActMovDir = npcIsIdling
+    ? npcIdling(npcIsIdling)
+    : flexElemsPosInit.npcActMovDir;
   flexElemsPosInit.npcPosX += npcPosUpdate();
 }
 
@@ -43,6 +45,8 @@ function npcPosUpdate() {
     return 3.5;
   } else if (flexElemsPosInit.npcActMovDir === "l") {
     return -3.5;
+  } else if (flexElemsPosInit.npcActMovDir === "s") {
+    return 0.0;
   } else {
     return 0.25;
   }

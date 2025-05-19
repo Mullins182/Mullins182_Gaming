@@ -35,9 +35,9 @@ export function drawLabels() {
       "<NPC X-Pos> " +
         (flexElemsPosInit.npcPosX < 1000 ? "  " : "") +
         flexElemsPosInit.npcPosX.toFixed(0) +
-        " <callBtnsX-Pos> " +
-        (gameElements.callElevatorBtnsXpos < 1000 ? "  " : "") +
-        gameElements.callElevatorBtnsXpos.toFixed(0),
+        " <NPC Y-Pos> " +
+        (flexElemsPosInit.npcPosY < 1000 ? "  " : "") +
+        flexElemsPosInit.npcPosY.toFixed(0),
       "63px Arial Black",
       "gold",
       "black",
