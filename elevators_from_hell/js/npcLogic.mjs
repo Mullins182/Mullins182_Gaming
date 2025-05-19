@@ -5,23 +5,13 @@ import {
   callElevatorBtnsStatus,
 } from "./hell10.mjs";
 
-let npcIdling = false;
+let npcIsIdling = false;
 
 // IN THE WORKS !
-export function npcRoutine() {
-  npcCallLiftBtnsCheck();
-  gameElements.npcPressCallLiftBtn = npcButtonPress();
-  npcIdling = gameElements.npcPressCallLiftBtn == 52 ? true : false;
-
-  npcIdling
-    ? (flexElemsPosInit.npcActMovDir = npcIsIdling())
-    : (flexElemsPosInit.npcActMovDir = npcMovToCallBtn());
+export function npcRoutine(playerOnFloor, liftRonFloor, liftLonFloor) {
+  npcIsIdling = true;
+  flexElemsPosInit.npcActMovDir = npcIdling(npcIsIdling);
   flexElemsPosInit.npcPosX += npcPosUpdate();
-  console.log(
-    flexElemsPosInit.npcActMovDir,
-    gameElements.npcPressCallLiftBtn,
-    npcIdling
-  );
 }
 
 function npcMovToCallBtn() {
@@ -33,16 +23,15 @@ function npcMovToCallBtn() {
     : flexElemsPosInit.npcActMovDir;
 }
 
-function npcIsIdling() {
-  npcIdling = true;
-  return flexElemsPosInit.npcPosX < gameCanvas.width / 1.8
+function npcIdling(npcIsIdling) {
+  return npcIsIdling && flexElemsPosInit.npcPosX < gameCanvas.width / 1.8
     ? "right"
-    : flexElemsPosInit.npcPosX > gameCanvas.width / 1.5
+    : npcIsIdling && flexElemsPosInit.npcPosX > gameCanvas.width / 1.5
     ? "left"
     : flexElemsPosInit.npcActMovDir;
 }
 
-function npcButtonPress() {
+function npcCallLift() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
     ? 52
@@ -59,24 +48,24 @@ function npcPosUpdate() {
   }
 }
 
-function npcCallLiftBtnsCheck() {
-  const npcInteractPos = {
-    callLiftBtns: flexElemsPosInit.npcPosX < gameElements.callElevatorBtnsXpos,
-    exitBtns: null,
-  };
+// function npcCallLiftBtnsCheck() {
+//   const npcInteractPos = {
+//     callLiftBtns: flexElemsPosInit.npcPosX < gameElements.callElevatorBtnsXpos,
+//     exitBtns: null,
+//   };
 
-  for (let i = 0; i < 7; i++) {
-    callElevatorBtnsStatus[`floor${i}`] =
-      callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-      flexElemsPosInit.npcOnFloor === i &&
-      npcInteractPos.callLiftBtns &&
-      flexElemsPosInit.playerOnFloor < flexElemsPosInit.npcOnFloor
-        ? 2
-        : callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-          flexElemsPosInit.npcOnFloor === i &&
-          npcInteractPos.callLiftBtns &&
-          flexElemsPosInit.playerOnFloor > flexElemsPosInit.npcOnFloor
-        ? 1
-        : callElevatorBtnsStatus[`floor${i}`];
-  }
-}
+//   for (let i = 0; i < 7; i++) {
+//     callElevatorBtnsStatus[`floor${i}`] =
+//       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
+//       flexElemsPosInit.npcOnFloor === i &&
+//       npcInteractPos.callLiftBtns &&
+//       flexElemsPosInit.playerOnFloor < flexElemsPosInit.npcOnFloor
+//         ? 2
+//         : callElevatorBtnsStatus[`floor${i}`] !== 3 &&
+//           flexElemsPosInit.npcOnFloor === i &&
+//           npcInteractPos.callLiftBtns &&
+//           flexElemsPosInit.playerOnFloor > flexElemsPosInit.npcOnFloor
+//         ? 1
+//         : callElevatorBtnsStatus[`floor${i}`];
+//   }
+// }

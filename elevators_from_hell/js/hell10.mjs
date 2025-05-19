@@ -496,7 +496,11 @@ async function gameRoutine(timestamp) {
         ? "right"
         : flexElemsPosInit.playerLastDir;
 
-    npcRoutine();
+    npcRoutine(
+      flexElemsPosInit.playerOnFloor,
+      flexElemsPosInit.liftR_isOnFloor,
+      flexElemsPosInit.liftL_isOnFloor
+    );
 
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
