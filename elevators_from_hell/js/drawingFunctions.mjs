@@ -825,7 +825,7 @@ export function drawPlayer(xPos, yPos, direction) {
 export function drawNPC(xPos, yPos, direction) {
   ctx.save();
 
-  if (direction === "right") {
+  if (direction === "r") {
     ctx.scale(-1, 1);
     xPos =
       -xPos - (gameElements.npcWidth + gameElements.npcXaxisMirroringOffset);

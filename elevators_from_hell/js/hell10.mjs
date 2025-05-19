@@ -124,7 +124,7 @@ export const gameElements = {
   playerMovement: "stop",
   npcHeight: 70,
   npcWidth: 100,
-  npcMovement: "left",
+  npcMovement: "l",
   npcXaxisMirroringOffset: 70,
   npcPressCallLiftBtn: 52,
 
@@ -178,7 +178,7 @@ export const flexElemsPosInit = {
   npcPosX: gameCanvas.width / 1.65,
   npcPosY: gameElements.floor5_YPos - gameElements.npcHeight,
   npcOnFloor: 5,
-  npcActMovDir: "left",
+  npcActMovDir: "l",
 
   exitDoorPosY: gameCanvas.height * 0.8,
 

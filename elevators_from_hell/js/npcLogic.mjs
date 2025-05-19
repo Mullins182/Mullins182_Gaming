@@ -17,17 +17,17 @@ export function npcRoutine(playerOnFloor, liftRonFloor, liftLonFloor) {
 function npcMovToCallBtn() {
   return flexElemsPosInit.npcPosX <
     gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
-    ? "right"
+    ? "r"
     : flexElemsPosInit.npcPosX > 980
-    ? "left"
+    ? "l"
     : flexElemsPosInit.npcActMovDir;
 }
 
 function npcIdling(npcIsIdling) {
   return npcIsIdling && flexElemsPosInit.npcPosX < gameCanvas.width / 1.8
-    ? "right"
+    ? "r"
     : npcIsIdling && flexElemsPosInit.npcPosX > gameCanvas.width / 1.5
-    ? "left"
+    ? "l"
     : flexElemsPosInit.npcActMovDir;
 }
 
@@ -39,9 +39,9 @@ function npcCallLift() {
 }
 
 function npcPosUpdate() {
-  if (flexElemsPosInit.npcActMovDir === "right") {
+  if (flexElemsPosInit.npcActMovDir === "r") {
     return 3.5;
-  } else if (flexElemsPosInit.npcActMovDir === "left") {
+  } else if (flexElemsPosInit.npcActMovDir === "l") {
     return -3.5;
   } else {
     return 0.25;
