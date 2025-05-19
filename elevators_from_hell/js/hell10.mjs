@@ -8,17 +8,35 @@ import {
   player_spriteSheet,
 } from "./spriteHandling.mjs";
 
+import {
+  drawLifts,
+  drawCeiling,
+  drawFloors,
+  drawWalls,
+  drawPlayer,
+  drawNPC,
+  drawLiftDoors,
+  drawShaftsElements,
+  drawCallElevatorBtns,
+  drawExitButtons,
+  drawDebugLine,
+} from "./drawingFunctions.mjs";
+
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
 import { npcRoutine } from "./npcLogic.mjs";
 
 import { drawLabels } from "./drawLabels.mjs";
 
+// Make gameCanvas responsive !
+
+// gameCanvas.width = window.innerWidth;
+// gameCanvas.height = window.innerHeight;
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
 export let playerOnFloor = 6;
-export let npcOnFloor = 0;
+export let npcOnFloor = 3;
 
 // Sound-Initializing
 const sounds = {
@@ -44,20 +62,6 @@ export let lastTimePlayer = 0;
 let lastTimeNpc = 0;
 export let animationIntervalPlayer = 125; // 250 Initial value while idling
 let animationIntervalNpc = 90; // Initial value while idling
-
-import {
-  drawLifts,
-  drawCeiling,
-  drawFloors,
-  drawWalls,
-  drawPlayer,
-  drawNPC,
-  drawLiftDoors,
-  drawShaftsElements,
-  drawCallElevatorBtns,
-  drawExitButtons,
-  drawDebugLine,
-} from "./drawingFunctions.mjs";
 
 // Sound-Variables
 let liftLFading = false;
