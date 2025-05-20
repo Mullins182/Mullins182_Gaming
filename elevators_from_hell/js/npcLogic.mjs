@@ -3,17 +3,20 @@ import {
   flexElemsPosInit,
   gameElements,
   callElevatorBtnsStatus,
+  playerOnFloor,
+  npcOnFloor,
 } from "./hell10.mjs";
 
 let npcIsIdling = false;
 
 // IN THE WORKS !
-export function npcRoutine(playerOnFloor, liftRonFloor, liftLonFloor) {
-  npcIsIdling = false;
-  flexElemsPosInit.npcActMovDir = npcIsIdling
-    ? npcIdling(npcIsIdling)
-    : flexElemsPosInit.npcActMovDir;
-  flexElemsPosInit.npcPosX += npcPosUpdate();
+export function npcRoutine(liftRonFloor, liftLonFloor) {
+  // npcIsIdling = true;
+  // flexElemsPosInit.npcActMovDir = npcIsIdling
+  //   ? npcIdlingMovement()
+  //   : flexElemsPosInit.npcActMovDir;
+  // flexElemsPosInit.npcPosX += npcPosUpdate();
+  npcMovesToPlayer();
 }
 
 function npcMovToCallBtn() {
@@ -25,10 +28,10 @@ function npcMovToCallBtn() {
     : flexElemsPosInit.npcActMovDir;
 }
 
-function npcIdling(npcIsIdling) {
-  return npcIsIdling && flexElemsPosInit.npcPosX < gameCanvas.width / 1.8
+function npcIdlingMovement() {
+  return flexElemsPosInit.npcPosX < gameCanvas.width / 1.8
     ? "r"
-    : npcIsIdling && flexElemsPosInit.npcPosX > gameCanvas.width / 1.5
+    : flexElemsPosInit.npcPosX > gameCanvas.width / 1.5
     ? "l"
     : flexElemsPosInit.npcActMovDir;
 }
@@ -41,6 +44,15 @@ function npcCallLift() {
 }
 
 function npcPosUpdate() {
+  // console.log(
+  //   "NPC Moving To: ",
+  //   flexElemsPosInit.npcActMovDir,
+  //   "NPC-PosX: ",
+  //   flexElemsPosInit.npcPosX,
+  //   "gameCanvas Width / 1.5: ",
+  //   gameCanvas.width / 1.5
+  // );
+
   if (flexElemsPosInit.npcActMovDir === "r") {
     return 3.5;
   } else if (flexElemsPosInit.npcActMovDir === "l") {
@@ -73,3 +85,18 @@ function npcPosUpdate() {
 //         : callElevatorBtnsStatus[`floor${i}`];
 //   }
 // }
+
+function npcMovesToPlayer() {
+  if (npcOnFloor !== playerOnFloor) {
+    if (playerOnFloor === 6) {
+      if (
+        flexElemsPosInit.liftR_isOnFloor !== npcOnFloor &&
+        flexElemsPosInit.liftL_isOnFloor !== npcOnFloor
+      ) {
+        flexElemsPosInit.npcActMovDir = npcMovToCallBtn();
+        flexElemsPosInit.npcPosX += npcPosUpdate();
+      }
+    }
+  } else {
+  }
+}
