@@ -820,6 +820,9 @@ export function drawPlayer(xPos, yPos, direction) {
     gameElements.playerWidth,
     gameElements.playerHeight
   );
+  // Lift L X-Pos middle debugging
+  // ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
+
   ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }
 export function drawNPC(xPos, yPos, direction) {

@@ -122,6 +122,8 @@ export const gameElements = {
   shaftDoorsRW_f5: 38.75,
   shaftDoorsLW_f6: 38.75,
   shaftDoorsRW_f6: 38.75,
+  liftRposXmid: gameCanvas.width * 0.8,
+  liftLposXmid: gameCanvas.width * 0.2,
   liftsWidth: 75,
   liftsHeight: 88,
   liftSpeed: 1.25,
@@ -185,6 +187,10 @@ export const flexElemsPosInit = {
   npcPosX: gameCanvas.width / 1.65,
   npcPosY: gameElements[`floor${npcOnFloor}_YPos`] - gameElements.npcHeight,
   npcActMovDir: "l",
+  npcOnLiftR: false,
+  npcOnLiftL: false,
+  npcOnXPosLiftR: false,
+  npcOnXPosLiftL: false,
 
   exitDoorPosY: gameCanvas.height * 0.8,
 
@@ -608,11 +614,13 @@ function drawGameElements() {
     // npcSprite.onload = function () {
     //   drawNPC();
     // };
-    drawNPC(
-      flexElemsPosInit.npcPosX,
-      flexElemsPosInit.npcPosY,
-      flexElemsPosInit.npcActMovDir
-    );
+    flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+      ? drawNPC(
+          flexElemsPosInit.npcPosX,
+          flexElemsPosInit.npcPosY,
+          flexElemsPosInit.npcActMovDir
+        )
+      : null;
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -634,6 +642,14 @@ function drawGameElements() {
       );
     }
 
+    !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
+      ? drawNPC(
+          flexElemsPosInit.npcPosX,
+          flexElemsPosInit.npcPosY,
+          flexElemsPosInit.npcActMovDir
+        )
+      : null;
+
     drawLabels();
 
     if (debugging.debugMode) {
@@ -644,6 +660,13 @@ function drawGameElements() {
     drawCeiling();
     drawFloors();
     drawWalls();
+    flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+      ? drawNPC(
+          flexElemsPosInit.npcPosX,
+          flexElemsPosInit.npcPosY,
+          flexElemsPosInit.npcActMovDir
+        )
+      : null;
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -673,11 +696,13 @@ function drawGameElements() {
     // npcSprite.onload = function () {
     //   drawNPC();
     // };
-    drawNPC(
-      flexElemsPosInit.npcPosX,
-      flexElemsPosInit.npcPosY,
-      flexElemsPosInit.npcActMovDir
-    );
+    !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
+      ? drawNPC(
+          flexElemsPosInit.npcPosX,
+          flexElemsPosInit.npcPosY,
+          flexElemsPosInit.npcActMovDir
+        )
+      : null;
     drawLabels();
     if (debugging.debugMode) {
       drawDebugLine();
