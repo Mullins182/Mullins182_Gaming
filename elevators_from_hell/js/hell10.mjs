@@ -36,7 +36,7 @@ gameCanvas.width = 1650;
 gameCanvas.height = 900;
 
 export let playerOnFloor = 6;
-let npcOnFloor = 3;
+export let npcOnFloor = 3;
 
 // Sound-Initializing
 const sounds = {
@@ -502,19 +502,11 @@ async function gameRoutine(timestamp) {
         ? "right"
         : flexElemsPosInit.playerLastDir;
 
-    npcRoutine(
-      playerOnFloor,
-      npcOnFloor,
-      flexElemsPosInit.liftR_isOnFloor,
-      flexElemsPosInit.liftL_isOnFloor,
-      flexElemsPosInit.npcActMovDir,
-      flexElemsPosInit.npcPosX
-    );
-
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
     playerMovandColl();
     playerIsOnFloor();
+    npcRoutine();
     liftsPosUpdate();
     shaftDoors();
     exitDoor();
