@@ -27,6 +27,8 @@ import {
   drawDebugLine,
 } from "./drawingFunctions.mjs";
 
+import { playSounds, soundState } from "./soundHandling.mjs";
+
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
 import { npcRoutine } from "./npcLogic.mjs";
@@ -35,19 +37,6 @@ import { drawLabels } from "./drawLabels.mjs";
 
 export let playerOnFloor = 6;
 export let npcOnFloor = 3;
-
-// Sound-Initializing
-const sounds = {
-  liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
-  liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
-  liftDoorsRop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
-  liftDoorsLop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
-  liftDoorsRcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
-  liftDoorsLcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
-  runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
-  btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
-  exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
-};
 
 // Sprite related Variables
 export const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
@@ -60,16 +49,6 @@ export let lastTimePlayer = 0;
 let lastTimeNpc = 0;
 export let animationIntervalPlayer = 125; // 250 Initial value while idling
 let animationIntervalNpc = 90; // Initial value while idling
-
-// Sound-Variables
-let liftLFading = false;
-let liftRFading = false;
-let callLiftBtnSndCount = 0;
-let callLiftBtnActCount = 0;
-let exitBtnSndCount = 0;
-let exitBtnActCounter = 0;
-let exitDoorMoving = false;
-let exitDoorStopped = true;
 
 // Pause Game
 window.addEventListener("blur", pauseGame);
@@ -382,14 +361,14 @@ document.addEventListener("keydown", function (event) {
         gameElements.playerMovement = "stop";
       }
       playerOnFloor !== 0 ? playerCallLiftBtnsCheck(2) : null;
-      callLiftBtnActCount =
+      soundState.callLiftBtnActCount =
         playerOnFloor !== 0 &&
         flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
         flexElemsPosInit.playerPosX <
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
-          ? ++callLiftBtnActCount
-          : callLiftBtnActCount;
+          ? ++soundState.callLiftBtnActCount
+          : soundState.callLiftBtnActCount;
 
       playerOnLift(true);
       break;
@@ -403,14 +382,14 @@ document.addEventListener("keydown", function (event) {
         gameElements.playerMovement = "stop";
       }
       playerOnFloor !== 6 ? playerCallLiftBtnsCheck(1) : null;
-      callLiftBtnActCount =
+      soundState.callLiftBtnActCount =
         playerOnFloor !== 6 &&
         flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
         flexElemsPosInit.playerPosX <
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25
-          ? ++callLiftBtnActCount
-          : callLiftBtnActCount;
+          ? ++soundState.callLiftBtnActCount
+          : soundState.callLiftBtnActCount;
       exitBtnActCheck();
       playerOnLift(false);
       break;
@@ -526,6 +505,9 @@ async function gameRoutine(timestamp) {
       animationIntervalPlayer = 125; // Reset des Intervalls
       lastTimePlayer = performance.now(); // Reset des Zeitstempels
     }
+    await new Promise((resolve) => setTimeout(resolve, 15));
+  } else {
+    playSounds(true);
     await new Promise((resolve) => setTimeout(resolve, 15));
   }
   requestAnimationFrame(gameRoutine);
@@ -751,196 +733,16 @@ function automaticLiftControl() {
   }
 }
 
-async function fadeOutLift(sound, setFading, duration = 800) {
-  if (!sound.playing() || setFading()) return;
-  setFading(true);
-  sound.fade(sound.volume(), 0, duration);
-  sound.once("fade", () => {
-    // Nur stoppen, wenn der Sound nicht zwischenzeitlich neu gestartet wurde
-    if (sound.volume() === 0 && sound.playing()) {
-      sound.stop();
-    }
-    setFading(false);
-  });
-}
-
-async function playSounds(stopAll = false) {
-  if (stopAll) {
-    sounds.liftDoorsLcl.stop();
-    sounds.exitDoorSnd.stop();
-    sounds.liftDoorsRcl.stop();
-    sounds.liftDoorsLop.stop();
-    sounds.liftDoorsRop.stop();
-    sounds.liftSndL.stop();
-    sounds.liftSndR.stop();
-    sounds.runSnd.stop();
-    return;
-  }
-  // LIFTS STEREO Panning
-
-  // if (!liftLFading || !liftRFading) {
-
-  //   if (moveableElems.liftL_isMoving && !moveableElems.liftR_isMoving) {
-  //     liftSndL.stereo(-0.65);
-  //     liftSndR.stereo(0);
-  //   } else if (moveableElems.liftR_isMoving && !moveableElems.liftL_isMoving) {
-  //     liftSndL.stereo(0);
-  //     liftSndR.stereo(0.65);
-  //   } else {
-  //     liftSndL.stereo(0);
-  //     liftSndR.stereo(0);
-  //   }
-  // }
-
-  // LIFT L
-  if (
-    flexElemsPosInit.liftL_calledToFloor != flexElemsPosInit.liftL_isOnFloor &&
-    !flexElemsPosInit.liftL_isMoving
-  ) {
-    if (!sounds.liftDoorsLcl.playing()) {
-      sounds.liftDoorsLcl.volume(0.45);
-      sounds.liftDoorsLcl.rate(0.78);
-      sounds.liftDoorsLcl.play();
-    }
-  }
-
-  if (flexElemsPosInit.liftL_isMoving) {
-    if (!sounds.liftSndL.playing()) {
-      liftLFading = false;
-      sounds.liftSndL.volume(0.55);
-      sounds.liftSndL.play();
-    }
-    liftLFading = false;
-    sounds.liftSndL.seek() > 3.0
-      ? sounds.liftSndL.seek(1.0)
-      : sounds.liftSndL.seek();
-  } else {
-    fadeOutLift(sounds.liftSndL, (v) => {
-      if (v !== undefined) liftLFading = v;
-      if (!sounds.liftDoorsLop.playing()) {
-        sounds.liftDoorsLop.volume(0.45);
-        sounds.liftDoorsLop.rate(1.65);
-        sounds.liftDoorsLop.play();
-      }
-      return liftLFading;
-    });
-  }
-
-  // LIFT R
-  if (
-    flexElemsPosInit.liftR_calledToFloor != flexElemsPosInit.liftR_isOnFloor &&
-    !flexElemsPosInit.liftR_isMoving
-  ) {
-    if (!sounds.liftDoorsRcl.playing()) {
-      sounds.liftDoorsRcl.volume(0.45);
-      sounds.liftDoorsRcl.rate(0.78);
-      sounds.liftDoorsRcl.play();
-    }
-  }
-
-  if (flexElemsPosInit.liftR_isMoving) {
-    if (!sounds.liftSndR.playing()) {
-      liftRFading = false;
-      sounds.liftSndR.volume(0.55);
-      sounds.liftSndR.play();
-    }
-    liftRFading = false;
-    sounds.liftSndR.seek() > 3.0
-      ? sounds.liftSndR.seek(1.0)
-      : sounds.liftSndR.seek();
-  } else {
-    fadeOutLift(sounds.liftSndR, (v) => {
-      if (v !== undefined) liftRFading = v;
-      if (!sounds.liftDoorsRop.playing()) {
-        sounds.liftDoorsRop.volume(0.45);
-        sounds.liftDoorsRop.rate(1.65);
-        sounds.liftDoorsRop.play();
-      }
-      return liftRFading;
-    });
-  }
-
-  // EXIT BUTTONS
-  if (exitBtnActCounter !== exitBtnSndCount) {
-    sounds.btnPress.play();
-    exitBtnSndCount = exitBtnActCounter;
-  }
-
-  // LIFT CALLING BUTTONS
-  if (callLiftBtnSndCount !== callLiftBtnActCount) {
-    sounds.btnPress.play();
-    callLiftBtnSndCount = callLiftBtnActCount;
-  }
-  // PLAYER MOVEMENT
-  if (playerSprite === player_spriteSheet.run) {
-    if (!sounds.runSnd.playing()) {
-      sounds.runSnd.rate(0.58);
-      sounds.runSnd.play();
-    }
-  } else {
-    sounds.runSnd.playing() ? sounds.runSnd.stop() : null;
-  }
-
-  // EXIT DOOR LOGIC
-  if (
-    gameElements.exitDoorUnlocked &&
-    flexElemsPosInit.exitDoorPosY >
-      gameCanvas.height - gameElements.exitDoorHeight * 1.55
-  ) {
-    if (!exitDoorMoving) {
-      exitDoorMoving = true;
-    }
-    if (exitDoorStopped) {
-      exitDoorStopped = false;
-    }
-  } else if (
-    !gameElements.exitDoorUnlocked &&
-    flexElemsPosInit.exitDoorPosY <
-      gameCanvas.height - gameElements.exitDoorHeight
-  ) {
-    if (!exitDoorMoving) {
-      exitDoorMoving = true;
-    }
-    if (exitDoorStopped) {
-      exitDoorStopped = false;
-    }
-  } else {
-    if (exitDoorMoving) {
-      exitDoorMoving = false;
-    }
-    if (!exitDoorStopped) {
-      exitDoorStopped = true;
-    }
-  }
-
-  // console.log(exitDoorMoving, exitDoorStopped, moveableElems.exitDoorUnlocked);
-
-  if (exitDoorMoving) {
-    if (!sounds.exitDoorSnd.playing()) {
-      sounds.exitDoorSnd.volume(0.6);
-      sounds.exitDoorSnd.play();
-    }
-    sounds.exitDoorSnd.seek() > 2.3
-      ? sounds.exitDoorSnd.seek(1.25)
-      : sounds.exitDoorSnd.seek();
-  } else {
-    if (exitDoorStopped) {
-      if (sounds.exitDoorSnd.playing()) {
-      } else {
-        sounds.exitDoorSnd.seek(5.0);
-      }
-    }
-  }
-}
-
 function exitDoor() {
-  exitBtnActCounter = 0;
+  let exitBtnActCounter = 0;
 
   for (let key in exitButtonsStatus) {
     exitBtnActCounter = exitButtonsStatus[key]
       ? ++exitBtnActCounter
       : exitBtnActCounter;
   }
+
+  soundState.exitBtnActCounter = exitBtnActCounter;
 
   gameElements.exitDoorUnlocked = exitBtnActCounter === 7 ? true : false;
 
