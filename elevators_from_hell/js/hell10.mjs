@@ -1226,13 +1226,11 @@ export function playerPosUpdate(moveDirection) {
       : gameCanvas.width / 2;
 
   flexElemsPosInit.playerPosY = flexElemsPosInit.playerOnLiftR
-    ? (flexElemsPosInit.playerPosY =
-        flexElemsPosInit.liftR_YPos +
-        (gameElements.liftsHeight - gameElements.playerHeight))
+    ? flexElemsPosInit.liftR_YPos +
+      (gameElements.liftsHeight - gameElements.playerHeight)
     : flexElemsPosInit.playerOnLiftL
-    ? (flexElemsPosInit.playerPosY =
-        flexElemsPosInit.liftL_YPos +
-        (gameElements.liftsHeight - gameElements.playerHeight))
+    ? flexElemsPosInit.liftL_YPos +
+      (gameElements.liftsHeight - gameElements.playerHeight)
     : flexElemsPosInit.playerPosY;
 }
 

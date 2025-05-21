@@ -17,6 +17,7 @@ export function npcRoutine() {
   elemPositionsUpdate();
   npcMovesToPlayer();
   npcCallLiftBtnsCheck();
+  flexElemsPosInit.npcPosY = npcPosYupdate();
 }
 
 function elemPositionsUpdate() {
@@ -69,7 +70,7 @@ function npcCallLift() {
     : gameElements.npcPressCallLiftBtn;
 }
 
-function npcPosUpdate() {
+function npcPosXupdate() {
   // console.log(
   //   "NPC Moving To: ",
   //   flexElemsPosInit.npcActMovDir,
@@ -88,6 +89,16 @@ function npcPosUpdate() {
   } else {
     return 0.25;
   }
+}
+
+function npcPosYupdate() {
+  return flexElemsPosInit.npcOnLiftR
+    ? flexElemsPosInit.liftR_YPos +
+        (gameElements.liftsHeight - gameElements.npcHeight)
+    : flexElemsPosInit.npcOnLiftL
+    ? flexElemsPosInit.liftL_YPos +
+      (gameElements.liftsHeight - gameElements.npcHeight)
+    : flexElemsPosInit.npcPosY;
 }
 
 function npcCallLiftBtnsCheck() {
@@ -116,16 +127,25 @@ function npcMovesToPlayer() {
   if (npcOnFloor !== playerOnFloor) {
     if (playerOnFloor === 6) {
       if (liftRonFloor !== npcOnFloor && liftLonFloor !== npcOnFloor) {
-        flexElemsPosInit.npcPosX += npcPosUpdate();
-        flexElemsPosInit.npcActMovDir = npcMovToCallBtn();
-        gameElements.npcPressCallLiftBtn = npcCallLift();
+        flexElemsPosInit.npcPosX += npcPosXupdate();
+        flexElemsPosInit.npcActMovDir =
+          flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+            ? flexElemsPosInit.npcActMovDir
+            : npcMovToCallBtn();
+        gameElements.npcPressCallLiftBtn =
+          flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+            ? gameElements.npcPressCallLiftBtn
+            : npcCallLift();
       }
       if (liftRonFloor === npcOnFloor) {
-        flexElemsPosInit.npcPosX += npcPosUpdate();
+        flexElemsPosInit.npcPosX += npcPosXupdate();
 
-        flexElemsPosInit.npcActMovDir = npcMoveToLiftR();
+        flexElemsPosInit.npcActMovDir =
+          flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+            ? flexElemsPosInit.npcActMovDir
+            : npcMoveToLiftR();
         npcEntersLiftR();
-        // console.log("ausgeführt!");
+        console.log(flexElemsPosInit.npcOnLiftR);
       }
     }
   } else {
