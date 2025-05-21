@@ -1,6 +1,11 @@
-console.log("Hell10 has Started !");
+console.log("Hell10 has started !");
 export const gameCanvas = document.getElementById("mainCanvas");
 export const ctx = gameCanvas.getContext("2d");
+gameCanvas.width = 1650;
+gameCanvas.height = 900;
+// Make gameCanvas eventually responsive !
+// gameCanvas.width = window.innerWidth;
+// gameCanvas.height = window.innerHeight;
 
 import {
   changePlayerSprite,
@@ -27,13 +32,6 @@ import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 import { npcRoutine } from "./npcLogic.mjs";
 
 import { drawLabels } from "./drawLabels.mjs";
-
-// Make gameCanvas responsive !
-
-// gameCanvas.width = window.innerWidth;
-// gameCanvas.height = window.innerHeight;
-gameCanvas.width = 1650;
-gameCanvas.height = 900;
 
 export let playerOnFloor = 6;
 export let npcOnFloor = 3;
