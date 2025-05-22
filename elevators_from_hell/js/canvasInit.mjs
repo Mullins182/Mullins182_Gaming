@@ -4,7 +4,9 @@ console.log("Module 'canvasInit.mjs' has started !");
 // gameCanvas.width = window.innerWidth;
 // gameCanvas.height = window.innerHeight;
 
-export const gameCanvas = document.getElementById("mainCanvas");
-export const ctx = gameCanvas.getContext("2d");
+const gameCanvas = document.getElementById("mainCanvas");
+const ctx = gameCanvas.getContext("2d");
 gameCanvas.width = 1650;
 gameCanvas.height = 900;
+
+export { gameCanvas, ctx };
