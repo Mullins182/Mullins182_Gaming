@@ -9,6 +9,7 @@ import {
   changePlayerSprite,
   playerSprite,
   player_spriteSheet,
+  spriteControl,
 } from "./spriteHandling.mjs";
 
 import {
@@ -36,18 +37,6 @@ import { gameCanvas, ctx } from "./canvasInit.mjs";
 
 export let playerOnFloor = 6;
 export let npcOnFloor = 3;
-
-// Sprite related Variables
-export const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
-export const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
-export let currentFramePlayer = 0;
-export let currentFrameNpc = 0;
-export let totalFramesPlayer = 7; // Anzahl der Frames in Ihrem Spritesheet
-let totalFramesNpc = 11; // Anzahl der Frames in Ihrem Spritesheet
-export let lastTimePlayer = 0;
-let lastTimeNpc = 0;
-export let animationIntervalPlayer = 125; // 250 Initial value while idling
-let animationIntervalNpc = 90; // Initial value while idling
 
 // Pause Game
 window.addEventListener("blur", pauseGame);
@@ -337,8 +326,8 @@ document.addEventListener("keydown", function (event) {
         break;
       }
       changePlayerSprite("left");
-      totalFramesPlayer = 10;
-      animationIntervalPlayer = 80;
+      spriteControl.totalFramesPlayer = 10;
+      spriteControl.animationIntervalPlayer = 80;
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
@@ -346,17 +335,17 @@ document.addEventListener("keydown", function (event) {
         break;
       }
       changePlayerSprite("right");
-      totalFramesPlayer = 10;
-      animationIntervalPlayer = 80;
+      spriteControl.totalFramesPlayer = 10;
+      spriteControl.animationIntervalPlayer = 80;
       gameElements.playerMovement = "right";
       break;
     case KEYS.DIRECTIONS.DOWN:
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
-        totalFramesPlayer = 7;
-        currentFramePlayer = 0;
-        animationIntervalPlayer = 125; // Reset des Intervalls
-        lastTimePlayer = performance.now(); // Reset des Zeitstempels
+        spriteControl.totalFramesPlayer = 7;
+        spriteControl.currentFramePlayer = 0;
+        spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
+        spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
       playerOnFloor !== 0 ? playerCallLiftBtnsCheck(2) : null;
@@ -374,10 +363,10 @@ document.addEventListener("keydown", function (event) {
     case KEYS.DIRECTIONS.UP:
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
-        totalFramesPlayer = 7;
-        currentFramePlayer = 0;
-        animationIntervalPlayer = 125; // Reset des Intervalls
-        lastTimePlayer = performance.now(); // Reset des Zeitstempels
+        spriteControl.totalFramesPlayer = 7;
+        spriteControl.currentFramePlayer = 0;
+        spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
+        spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
       playerOnFloor !== 6 ? playerCallLiftBtnsCheck(1) : null;
@@ -458,21 +447,23 @@ function initialize() {
 // ___________________________              ___________________________
 async function gameRoutine(timestamp) {
   if (!gamePaused) {
-    if (!lastTimePlayer) lastTimePlayer = timestamp;
-    if (!lastTimeNpc) lastTimeNpc = timestamp;
-    const elapsedPlayer = timestamp - lastTimePlayer;
-    const elapsedNpc = timestamp - lastTimeNpc;
+    if (!spriteControl.lastTimePlayer) spriteControl.lastTimePlayer = timestamp;
+    if (!spriteControl.lastTimeNpc) spriteControl.lastTimeNpc = timestamp;
+    const elapsedPlayer = timestamp - spriteControl.lastTimePlayer;
+    const elapsedNpc = timestamp - spriteControl.lastTimeNpc;
 
-    if (elapsedPlayer > animationIntervalPlayer && !isColliding) {
-      lastTimePlayer = timestamp;
+    if (elapsedPlayer > spriteControl.animationIntervalPlayer && !isColliding) {
+      spriteControl.lastTimePlayer = timestamp;
       // Frame-Update
-      currentFramePlayer = ++currentFramePlayer % totalFramesPlayer;
+      spriteControl.currentFramePlayer =
+        ++spriteControl.currentFramePlayer % spriteControl.totalFramesPlayer;
     }
 
-    if (elapsedNpc > animationIntervalNpc) {
-      lastTimeNpc = timestamp;
+    if (elapsedNpc > spriteControl.animationIntervalNpc) {
+      spriteControl.lastTimeNpc = timestamp;
       // Frame-Update
-      currentFrameNpc = ++currentFrameNpc % totalFramesNpc;
+      spriteControl.currentFrameNpc =
+        ++spriteControl.currentFrameNpc % spriteControl.totalFramesNpc;
     }
 
     flexElemsPosInit.playerLastDir =
@@ -497,10 +488,10 @@ async function gameRoutine(timestamp) {
 
     if (isColliding) {
       // Sichere Initialisierung der Idle-Animation
-      currentFramePlayer = 0;
-      totalFramesPlayer = 7;
-      animationIntervalPlayer = 125; // Reset des Intervalls
-      lastTimePlayer = performance.now(); // Reset des Zeitstempels
+      spriteControl.currentFramePlayer = 0;
+      spriteControl.totalFramesPlayer = 7;
+      spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
+      spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
     }
     await new Promise((resolve) => setTimeout(resolve, 15));
   } else {

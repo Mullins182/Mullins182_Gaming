@@ -1,14 +1,7 @@
 console.log("Module 'drawingFunctions.mjs' has started !");
 
-import {
-  gameElements,
-  flexElemsPosInit,
-  debugging,
-  currentFramePlayer,
-  spriteWidth,
-  spriteHeight,
-  currentFrameNpc,
-} from "./hell10.mjs";
+import { gameElements, flexElemsPosInit, debugging } from "./hell10.mjs";
+import { spriteControl } from "./spriteHandling.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
 import { cabinView, playerSprite, npcSprite } from "./spriteHandling.mjs";
 
@@ -812,10 +805,10 @@ export function drawPlayer(xPos, yPos, direction) {
 
   ctx.drawImage(
     playerSprite,
-    currentFramePlayer * spriteWidth,
+    spriteControl.currentFramePlayer * spriteControl.spriteWidth,
     0,
-    spriteWidth,
-    spriteHeight,
+    spriteControl.spriteWidth,
+    spriteControl.spriteHeight,
     xPos,
     yPos,
     gameElements.playerWidth,
@@ -837,7 +830,7 @@ export function drawNPC(xPos, yPos, direction) {
 
   ctx.drawImage(
     npcSprite,
-    currentFrameNpc * 512,
+    spriteControl.currentFrameNpc * 512,
     0,
     512,
     380,

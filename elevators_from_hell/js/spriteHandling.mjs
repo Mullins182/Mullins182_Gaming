@@ -21,6 +21,20 @@ player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
 player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
 
+// Sprite related Variables
+export let spriteControl = {
+  spriteWidth: 128, // Sprite-Frame
+  spriteHeight: 128, // Sprite-Frame
+  currentFramePlayer: 0,
+  currentFrameNpc: 0,
+  totalFramesPlayer: 7, // Frames amount of the SpriteSheet
+  totalFramesNpc: 11, // Frames amount of the SpriteSheet
+  lastTimePlayer: 0,
+  lastTimeNpc: 0,
+  animationIntervalPlayer: 125,
+  animationIntervalNpc: 90,
+};
+
 export function changePlayerSprite(movement) {
   if (movement === "left" || movement === "right") {
     playerSprite =
