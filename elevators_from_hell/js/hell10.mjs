@@ -1,5 +1,10 @@
 console.log("Module 'Hell10.mjs' has started !");
 
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM INITIALIZED !");
+  initialize();
+});
+
 import {
   changePlayerSprite,
   playerSprite,
@@ -440,8 +445,6 @@ function handleFloorSelection(floorNumber) {
     flexElemsPosInit.liftR_calledToFloor = floorNumber;
   }
 }
-
-initialize();
 
 // ___________________________ GAME INI ___________________________
 function initialize() {
