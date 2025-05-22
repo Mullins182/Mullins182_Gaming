@@ -1,11 +1,13 @@
+console.log("Module 'npcLogic.mjs' has started !");
+
 import {
-  gameCanvas,
   flexElemsPosInit,
   gameElements,
   callElevatorBtnsStatus,
   playerOnFloor,
   npcOnFloor,
 } from "./hell10.mjs";
+import { gameCanvas } from "./canvasInit.mjs";
 
 let npcIsIdling = false;
 let liftRonFloor;
@@ -145,7 +147,7 @@ function npcMovesToPlayer() {
             ? flexElemsPosInit.npcActMovDir
             : npcMoveToLiftR();
         npcEntersLiftR();
-        console.log(flexElemsPosInit.npcOnLiftR);
+        // console.log(flexElemsPosInit.npcOnLiftR);
       }
     }
   } else {

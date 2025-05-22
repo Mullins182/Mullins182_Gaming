@@ -1,5 +1,6 @@
+console.log("Module 'playerLogic.mjs' has started !");
+
 import {
-  gameCanvas,
   playerOnFloor,
   playerPosUpdate,
   gameElements,
@@ -7,6 +8,7 @@ import {
   shaftLdoorsOpenCheck,
   shaftRdoorsOpenCheck,
 } from "./hell10.mjs";
+import { gameCanvas } from "./canvasInit.mjs";
 import { changePlayerSprite } from "./spriteHandling.mjs";
 
 // Collision-Variables

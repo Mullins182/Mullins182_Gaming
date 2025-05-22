@@ -1,4 +1,4 @@
-// import { player_spriteSheet } from "./playerLogic.mjs";
+console.log("Module 'spriteHandling.mjs' has started !");
 
 // Lift Cabins inner view
 export const cabinView = new Image();

@@ -1,10 +1,7 @@
-import {
-  gameCanvas,
-  ctx,
-  gameElements,
-  debugging,
-  flexElemsPosInit,
-} from "./hell10.mjs";
+console.log("Module 'drawLabels.mjs' has started !");
+
+import { gameElements, debugging, flexElemsPosInit } from "./hell10.mjs";
+import { gameCanvas, ctx } from "./canvasInit.mjs";
 
 export function drawLabels() {
   // EXIT SIGN

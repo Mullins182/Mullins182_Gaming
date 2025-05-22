@@ -1,4 +1,7 @@
-import { gameCanvas, flexElemsPosInit, gameElements } from "./hell10.mjs";
+console.log("Module 'soundHandling.mjs' has started !");
+
+import { flexElemsPosInit, gameElements } from "./hell10.mjs";
+import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 
 // Sound-Initializing

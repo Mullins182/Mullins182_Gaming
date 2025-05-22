@@ -1,6 +1,6 @@
+console.log("Module 'drawingFunctions.mjs' has started !");
+
 import {
-  gameCanvas,
-  ctx,
   gameElements,
   flexElemsPosInit,
   debugging,
@@ -9,6 +9,7 @@ import {
   spriteHeight,
   currentFrameNpc,
 } from "./hell10.mjs";
+import { gameCanvas, ctx } from "./canvasInit.mjs";
 import { cabinView, playerSprite, npcSprite } from "./spriteHandling.mjs";
 
 // ___________________________              ___________________________
