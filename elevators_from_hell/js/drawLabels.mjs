@@ -1,6 +1,12 @@
 console.log("Module 'drawLabels.mjs' has started !");
 
-import { gameElements, debugging, flexElemsPosInit } from "./hell10.mjs";
+import {
+  gameElements,
+  playerOnFloor,
+  npcOnFloor,
+  debugging,
+  flexElemsPosInit,
+} from "./hell10.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
 
 export function drawLabels() {
@@ -35,7 +41,9 @@ export function drawLabels() {
         " <NPC Y-Pos> " +
         (flexElemsPosInit.npcPosY < 1000 ? "  " : "") +
         flexElemsPosInit.npcPosY.toFixed(0) +
-        flexElemsPosInit.npcOnLiftR,
+        flexElemsPosInit.npcOnLiftR +
+        playerOnFloor.floor +
+        npcOnFloor.floor,
       "63px Arial Black",
       "gold",
       "black",

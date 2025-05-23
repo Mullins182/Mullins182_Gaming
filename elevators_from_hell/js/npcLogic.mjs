@@ -20,6 +20,7 @@ export function npcRoutine() {
   elemPositionsUpdate();
   npcMovesToPlayer();
   flexElemsPosInit.npcPosY = npcPosYupdate();
+  npcIsOnFloorUpdate();
 }
 
 function elemPositionsUpdate() {
@@ -28,7 +29,7 @@ function elemPositionsUpdate() {
   npcPosX = flexElemsPosInit.npcPosX;
 }
 
-function npcMovToCallBtn() {
+function npcMoveToCallBtn() {
   return npcPosX < gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
     ? "r"
     : flexElemsPosInit.npcPosX > 980
@@ -53,7 +54,7 @@ function npcEntersLiftR() {
 }
 
 function npcUsesLiftR() {
-  flexElemsPosInit.liftR_calledToFloor = playerOnFloor;
+  flexElemsPosInit.liftR_calledToFloor = playerOnFloor.floor;
 }
 
 function npcLeavesLiftR() {
@@ -107,6 +108,16 @@ function npcPosYupdate() {
     : flexElemsPosInit.npcPosY;
 }
 
+function npcIsOnFloorUpdate() {
+  for (let i = 0; i < 7; ++i) {
+    npcOnFloor.floor =
+      flexElemsPosInit.npcPosY ===
+      gameElements[`floor${i}_YPos`] - gameElements.npcHeight
+        ? i
+        : npcOnFloor.floor;
+  }
+}
+
 function npcCallLiftBtnsCheck() {
   const npcInteractPos = {
     callLiftBtns: npcPosX < gameElements.callElevatorBtnsXpos,
@@ -116,35 +127,38 @@ function npcCallLiftBtnsCheck() {
   for (let i = 0; i < 7; i++) {
     callElevatorBtnsStatus[`floor${i}`] =
       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-      npcOnFloor === i &&
+      npcOnFloor.floor === i &&
       npcInteractPos.callLiftBtns &&
-      playerOnFloor < npcOnFloor
+      playerOnFloor.floor < npcOnFloor.floor
         ? 2
         : callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-          npcOnFloor === i &&
+          npcOnFloor.floor === i &&
           npcInteractPos.callLiftBtns &&
-          playerOnFloor > npcOnFloor
+          playerOnFloor.floor > npcOnFloor.floor
         ? 1
         : callElevatorBtnsStatus[`floor${i}`];
   }
 }
 
 function npcMovesToPlayer() {
-  if (npcOnFloor !== playerOnFloor) {
-    npcCallLiftBtnsCheck();
+  if (npcOnFloor.floor !== playerOnFloor.floor) {
+    npcOnFloor.floor !== playerOnFloor.floor ? npcCallLiftBtnsCheck() : null;
 
-    if (liftRonFloor !== npcOnFloor && liftLonFloor !== npcOnFloor) {
+    if (
+      liftRonFloor !== npcOnFloor.floor &&
+      liftLonFloor !== npcOnFloor.floor
+    ) {
       flexElemsPosInit.npcPosX += npcPosXupdate();
       flexElemsPosInit.npcActMovDir =
         flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
           ? flexElemsPosInit.npcActMovDir
-          : npcMovToCallBtn();
+          : npcMoveToCallBtn();
       gameElements.npcPressCallLiftBtn =
         flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
           ? gameElements.npcPressCallLiftBtn
           : npcCallLift();
     }
-    if (liftRonFloor === npcOnFloor) {
+    if (liftRonFloor === npcOnFloor.floor) {
       flexElemsPosInit.npcPosX += npcPosXupdate();
 
       flexElemsPosInit.npcActMovDir =
@@ -160,8 +174,9 @@ function npcMovesToPlayer() {
 
       // console.log(flexElemsPosInit.npcOnLiftR);
     }
-    if (liftRonFloor === playerOnFloor) {
-    }
   } else {
+    if (liftRonFloor === playerOnFloor.floor) {
+      shaftRdoorsOpenCheck() ? npcLeavesLiftR() : null;
+    }
   }
 }
