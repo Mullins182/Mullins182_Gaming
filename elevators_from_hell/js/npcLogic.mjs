@@ -4,6 +4,7 @@ import {
   flexElemsPosInit,
   gameElements,
   callElevatorBtnsStatus,
+  shaftRdoorsOpenCheck,
   playerOnFloor,
   npcOnFloor,
 } from "./hell10.mjs";
@@ -18,6 +19,7 @@ let npcPosX;
 export function npcRoutine() {
   elemPositionsUpdate();
   npcMovesToPlayer();
+  flexElemsPosInit.npcOnLiftR && shaftRdoorsOpenCheck() ? npcUsesLiftR() : null;
   npcCallLiftBtnsCheck();
   flexElemsPosInit.npcPosY = npcPosYupdate();
 }
@@ -50,6 +52,10 @@ function npcEntersLiftR() {
     : flexElemsPosInit.npcOnXPosLiftR
     ? true
     : false;
+}
+
+function npcUsesLiftR() {
+  flexElemsPosInit.liftR_calledToFloor = playerOnFloor;
 }
 
 function npcLeavesLiftR() {
