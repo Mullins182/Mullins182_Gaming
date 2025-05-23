@@ -19,8 +19,6 @@ let npcPosX;
 export function npcRoutine() {
   elemPositionsUpdate();
   npcMovesToPlayer();
-  flexElemsPosInit.npcOnLiftR && shaftRdoorsOpenCheck() ? npcUsesLiftR() : null;
-  npcCallLiftBtnsCheck();
   flexElemsPosInit.npcPosY = npcPosYupdate();
 }
 
@@ -133,6 +131,8 @@ function npcCallLiftBtnsCheck() {
 
 function npcMovesToPlayer() {
   if (npcOnFloor !== playerOnFloor) {
+    npcCallLiftBtnsCheck();
+
     if (playerOnFloor === 6) {
       if (liftRonFloor !== npcOnFloor && liftLonFloor !== npcOnFloor) {
         flexElemsPosInit.npcPosX += npcPosXupdate();
@@ -152,7 +152,13 @@ function npcMovesToPlayer() {
           flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
             ? flexElemsPosInit.npcActMovDir
             : npcMoveToLiftR();
-        npcEntersLiftR();
+
+        shaftRdoorsOpenCheck() ? npcEntersLiftR() : null;
+
+        flexElemsPosInit.npcOnLiftR && shaftRdoorsOpenCheck()
+          ? npcUsesLiftR()
+          : null;
+
         // console.log(flexElemsPosInit.npcOnLiftR);
       }
     }
