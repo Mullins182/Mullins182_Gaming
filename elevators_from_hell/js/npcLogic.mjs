@@ -178,5 +178,17 @@ function npcMovesToPlayer() {
     if (liftRonFloor === playerOnFloor.floor) {
       shaftRdoorsOpenCheck() ? npcLeavesLiftR() : null;
     }
+    if (!flexElemsPosInit.npcOnLiftR && !flexElemsPosInit.npcOnLiftL) {
+      flexElemsPosInit.npcPosX += npcPosXupdate();
+
+      if (
+        flexElemsPosInit.playerPosX + gameElements.playerWidth <
+        flexElemsPosInit.npcPosX
+      ) {
+        flexElemsPosInit.npcActMovDir = "l";
+      } else {
+        flexElemsPosInit.npcActMovDir = "s";
+      }
+    }
   }
 }
