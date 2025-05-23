@@ -133,34 +133,34 @@ function npcMovesToPlayer() {
   if (npcOnFloor !== playerOnFloor) {
     npcCallLiftBtnsCheck();
 
-    if (playerOnFloor === 6) {
-      if (liftRonFloor !== npcOnFloor && liftLonFloor !== npcOnFloor) {
-        flexElemsPosInit.npcPosX += npcPosXupdate();
-        flexElemsPosInit.npcActMovDir =
-          flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-            ? flexElemsPosInit.npcActMovDir
-            : npcMovToCallBtn();
-        gameElements.npcPressCallLiftBtn =
-          flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-            ? gameElements.npcPressCallLiftBtn
-            : npcCallLift();
-      }
-      if (liftRonFloor === npcOnFloor) {
-        flexElemsPosInit.npcPosX += npcPosXupdate();
+    if (liftRonFloor !== npcOnFloor && liftLonFloor !== npcOnFloor) {
+      flexElemsPosInit.npcPosX += npcPosXupdate();
+      flexElemsPosInit.npcActMovDir =
+        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+          ? flexElemsPosInit.npcActMovDir
+          : npcMovToCallBtn();
+      gameElements.npcPressCallLiftBtn =
+        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+          ? gameElements.npcPressCallLiftBtn
+          : npcCallLift();
+    }
+    if (liftRonFloor === npcOnFloor) {
+      flexElemsPosInit.npcPosX += npcPosXupdate();
 
-        flexElemsPosInit.npcActMovDir =
-          flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-            ? flexElemsPosInit.npcActMovDir
-            : npcMoveToLiftR();
+      flexElemsPosInit.npcActMovDir =
+        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
+          ? flexElemsPosInit.npcActMovDir
+          : npcMoveToLiftR();
 
-        shaftRdoorsOpenCheck() ? npcEntersLiftR() : null;
+      shaftRdoorsOpenCheck() ? npcEntersLiftR() : null;
 
-        flexElemsPosInit.npcOnLiftR && shaftRdoorsOpenCheck()
-          ? npcUsesLiftR()
-          : null;
+      flexElemsPosInit.npcOnLiftR && shaftRdoorsOpenCheck()
+        ? npcUsesLiftR()
+        : null;
 
-        // console.log(flexElemsPosInit.npcOnLiftR);
-      }
+      // console.log(flexElemsPosInit.npcOnLiftR);
+    }
+    if (liftRonFloor === playerOnFloor) {
     }
   } else {
   }
