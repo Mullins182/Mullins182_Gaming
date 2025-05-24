@@ -22,7 +22,7 @@ player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
 
 // Sprite related Variables
-export let spriteControl = {
+export const spriteControl = {
   spriteWidth: 128, // Sprite-Frame
   spriteHeight: 128, // Sprite-Frame
   currentFramePlayer: 0,

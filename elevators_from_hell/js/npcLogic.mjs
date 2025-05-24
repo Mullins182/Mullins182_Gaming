@@ -1,5 +1,8 @@
 console.log("Module 'npcLogic.mjs' has started !");
 
+import { gameCanvas } from "./canvasInit.mjs";
+import { spriteControl } from "./spriteHandling.mjs";
+
 import {
   flexElemsPosInit,
   gameElements,
@@ -8,7 +11,6 @@ import {
   playerOnFloor,
   npcOnFloor,
 } from "./hell10.mjs";
-import { gameCanvas } from "./canvasInit.mjs";
 
 let npcIsIdling = false;
 let liftRonFloor;
@@ -25,6 +27,7 @@ export function npcRoutine() {
   npcIsOnFloorUpdate();
   npcMovesToPlayer();
   flexElemsPosInit.npcPosY = npcPosYupdate();
+  npcAnimationInterval();
 }
 
 function elemStatusUpdate() {
@@ -39,6 +42,19 @@ function elemStatusUpdate() {
     playerOnFloor.floor !== npcOnFloor.floor
       ? false
       : true;
+}
+
+function npcAnimationInterval() {
+  spriteControl.animationIntervalNpc =
+    npcOnFloor.floor === playerOnFloor.floor &&
+    !(npcOnLiftL || npcOnLiftR) &&
+    spriteControl.animationIntervalNpc === 90
+      ? 35
+      : npcOnFloor.floor !== playerOnFloor.floor &&
+        spriteControl.animationIntervalNpc === 35
+      ? 90
+      : spriteControl.animationIntervalNpc;
+  console.log(spriteControl.animationIntervalNpc);
 }
 
 function npcMoveToCallBtn() {
@@ -98,9 +114,9 @@ function npcPosXupdate() {
   // );
 
   if (flexElemsPosInit.npcActMovDir === "r") {
-    return 3.5;
+    return gameElements.npcSpeed;
   } else if (flexElemsPosInit.npcActMovDir === "l") {
-    return -3.5;
+    return -gameElements.npcSpeed;
   } else if (flexElemsPosInit.npcActMovDir === "s") {
     return 0.0;
   } else {
@@ -151,7 +167,7 @@ function npcCallLiftBtnsCheck() {
 }
 
 function npcMovesToPlayer() {
-  console.log(playerCatched);
+  // console.log(playerCatched);
 
   if (npcOnFloor.floor !== playerOnFloor.floor) {
     npcOnFloor.floor !== playerOnFloor.floor ? npcCallLiftBtnsCheck() : null;

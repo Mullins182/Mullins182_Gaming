@@ -98,6 +98,7 @@ export const gameElements = {
   playerMovement: "stop",
   npcHeight: 70,
   npcWidth: 100,
+  npcSpeed: 5.75,
   npcXaxisMirroringOffset: 70,
   npcPressCallLiftBtn: null,
 
@@ -1252,11 +1253,13 @@ function liftCalledCheck() {
     flexElemsPosInit.liftR_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
       flexElemsPosInit.liftR_isOnFloor !== i &&
+      !flexElemsPosInit.liftR_isMoving &&
       Math.abs(i - flexElemsPosInit.liftR_isOnFloor) <
         Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
         ? i
         : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
           flexElemsPosInit.liftR_isOnFloor !== i &&
+          !flexElemsPosInit.liftR_isMoving &&
           Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
             Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
         ? i
@@ -1265,6 +1268,7 @@ function liftCalledCheck() {
     flexElemsPosInit.liftL_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
       flexElemsPosInit.liftL_isOnFloor !== i &&
+      !flexElemsPosInit.liftL_isMoving &&
       Math.abs(i - flexElemsPosInit.liftL_isOnFloor) <
         Math.abs(i - flexElemsPosInit.liftR_isOnFloor)
         ? i
