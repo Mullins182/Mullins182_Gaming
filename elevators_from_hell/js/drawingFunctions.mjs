@@ -842,7 +842,7 @@ export function drawNPC(xPos, yPos, direction) {
 
   if (debugging.showNpcRange) {
     ctx.fillStyle = "#00FF00";
-    ctx.fillRect(xPos - 70, yPos + (gameElements.npcHeight / 2 - 2.5), 5, 5);
+    ctx.fillRect(xPos, yPos + (gameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
 }
