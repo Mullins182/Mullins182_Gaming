@@ -1,10 +1,70 @@
 console.log("Module 'Hell10.mjs' has started !");
 
-let startButton = document.getElementById("startButton");
+const Howler = window.Howler;
+const Howl = window.Howl;
+const startButton = document.getElementById("startButton");
+let soundsLoaded = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
+
   createStartButton();
+
+  // --- Lade alle Sounds beim Start des Skripts ---
+  console.log("Starte das Laden der Sounds...");
+  // Deaktiviere den Button initial, bis alles geladen ist
+  if (startButton) {
+    startButton.disabled = true;
+    startButton.textContent = "loading...";
+  }
+
+  loadAllSounds()
+    .then(() => {
+      console.log("Alle Sounds wurden erfolgreich geladen!");
+      soundsLoaded = true;
+      if (startButton) {
+        startButton.disabled = false;
+        startButton.textContent = "Play Game";
+      }
+    })
+    .catch((error) => {
+      console.error("Es gab einen Fehler beim Laden der Sounds:", error);
+      alert(
+        "Fehler beim Laden der Spieldaten. Einige Sounds funktionieren möglicherweise nicht."
+      );
+      // Optional: Spiel trotzdem starten, aber mit Warnung, oder Button ganz deaktivieren
+      soundsLoaded = false; // Oder auf true setzen, wenn das Spiel auch ohne alle Sounds funktionieren soll
+      if (startButton) {
+        startButton.disabled = true;
+        startButton.textContent = "Sound Error :(";
+      }
+    });
+
+  // --- Der Button-Klick-Handler ---
+  if (startButton) {
+    startButton.addEventListener("click", function () {
+      if (!soundsLoaded) {
+        console.warn("Sounds are loading, please wait ...");
+        return; // Spielstart verhindern
+      }
+
+      // Starte den ersten Sound (z.B. Hintergrundmusik), um den AudioContext zu aktivieren
+      if (sounds.btnPress) {
+        sounds.btnPress.play();
+      }
+
+      // Blende den Button aus
+      this.style.display = "none";
+
+      // Starte die Haupt-Spiellogik
+      initialize();
+    });
+  } else {
+    console.warn("Start Button with ID 'startButton' not found !");
+    // Falls der Button nicht gefunden wird, direkt die Spiellogik starten,
+    // aber dann kann es sein, dass Sound nicht direkt funktioniert
+    // initialize();
+  }
 });
 
 import {
@@ -28,7 +88,12 @@ import {
   drawDebugLine,
 } from "./drawingFunctions.mjs";
 
-import { playSounds, soundState, sounds } from "./soundHandling.mjs";
+import {
+  playSounds,
+  soundState,
+  sounds,
+  loadAllSounds,
+} from "./soundHandling.mjs";
 
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
@@ -1340,11 +1405,11 @@ function createStartButton() {
   });
 
   // Korrigierter Event-Listener für Klick-Ereignis
-  startButton.addEventListener("click", function () {
-    document.body.removeChild(this); // 'this' bezieht sich auf den geklickten Button
-    sounds.btnPress.play();
-    initialize();
-  });
+  // startButton.addEventListener("click", function () {
+  //   document.body.removeChild(this); // 'this' bezieht sich auf den geklickten Button
+  //   sounds.btnPress.play();
+  //   initialize();
+  // });
 
   document.body.appendChild(startButton);
 }

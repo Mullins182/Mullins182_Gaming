@@ -4,6 +4,8 @@ import { flexElemsPosInit, gameElements } from "./hell10.mjs";
 import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 
+const Howl = window.Howl;
+
 // Sound-Initializing
 export const sounds = {
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
@@ -27,6 +29,28 @@ export const soundState = {
   exitDoorMoving: false,
   exitDoorStopped: true,
 };
+
+// Exportiere eine Funktion, die Promises für das Laden der Sounds zurückgibt
+export function loadAllSounds() {
+  const loadPromises = Object.values(sounds).map((sound) => {
+    return new Promise((resolve, reject) => {
+      // Wenn der Sound bereits geladen ist (z.B. aus Cache), sofort auflösen
+      if (sound.state() === "loaded") {
+        resolve();
+        return;
+      }
+
+      // Bei erfolgreichem Laden auflösen
+      sound.once("load", () => resolve());
+      // Bei Ladefehler ablehnen
+      sound.once("loaderror", (id, error) => {
+        console.error(`Fehler beim Laden von Sound (ID: ${id}):`, error);
+        reject(new Error(`Fehler beim Laden eines Sounds: ${error}`));
+      });
+    });
+  });
+  return Promise.all(loadPromises);
+}
 
 export async function playSounds(stopAll = false) {
   if (stopAll) {
