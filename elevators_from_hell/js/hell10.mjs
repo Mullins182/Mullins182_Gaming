@@ -1,8 +1,10 @@
 console.log("Module 'Hell10.mjs' has started !");
 
+let startButton = document.getElementById("startButton");
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
-  initialize();
+  createStartButton();
 });
 
 import {
@@ -26,7 +28,7 @@ import {
   drawDebugLine,
 } from "./drawingFunctions.mjs";
 
-import { playSounds, soundState } from "./soundHandling.mjs";
+import { playSounds, soundState, sounds } from "./soundHandling.mjs";
 
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
@@ -1291,6 +1293,60 @@ function shaftLdoorsClosed() {
 
 export function shaftLdoorsOpenCheck() {
   return Object.values(shaftLdoorsOpenStatus).some(Boolean);
+}
+
+function createStartButton() {
+  startButton.textContent = "Play Game";
+
+  // Breite und Höhe anpassen
+  startButton.style.width = "200px";
+  startButton.style.height = "50px";
+
+  // Hintergrund- und Textfarbe ändern
+  startButton.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
+  startButton.style.color = "darkgoldenrod";
+
+  // Schriftgröße und Schriftart anpassen
+  startButton.style.fontSize = "33px";
+  startButton.style.fontFamily = "Times New Roman, Arial";
+
+  // Border Radius
+  startButton.style.borderRadius = "10px";
+
+  // Border / Cursor
+  startButton.style.border = "2px solid goldenrod";
+  startButton.style.cursor = "pointer";
+
+  // Box-Shadow hinzufügen
+  startButton.style.boxShadow = "0 0 55px red";
+
+  // Übergänge für Hover-Effekt
+  startButton.style.transition =
+    "background-color 0.5s, color 0.5s, border 1.0s, box-shadow 0.5s";
+
+  // Hover-Effekt hinzufügen
+  startButton.addEventListener("mouseover", function () {
+    this.style.backgroundColor = "rgba(200, 200, 0, 1.0)";
+    this.style.color = "#000000";
+    this.style.border = "2px solid black";
+    this.style.boxShadow = "0 0 55px greenyellow";
+  });
+
+  startButton.addEventListener("mouseout", function () {
+    this.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
+    this.style.color = "darkgoldenrod";
+    this.style.border = "2px solid goldenrod";
+    this.style.boxShadow = "0 0 55px red";
+  });
+
+  // Korrigierter Event-Listener für Klick-Ereignis
+  startButton.addEventListener("click", function () {
+    document.body.removeChild(this); // 'this' bezieht sich auf den geklickten Button
+    sounds.btnPress.play();
+    initialize();
+  });
+
+  document.body.appendChild(startButton);
 }
 
 function createHomeButton(posX, posY) {

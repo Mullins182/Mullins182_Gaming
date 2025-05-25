@@ -5,7 +5,7 @@ import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 
 // Sound-Initializing
-const sounds = {
+export const sounds = {
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftDoorsRop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
