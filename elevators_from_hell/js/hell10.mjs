@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   createStartButton();
 
   // --- Lade alle Sounds beim Start des Skripts ---
-  console.log("Starte das Laden der Sounds...");
+  console.log("Loading Soundeffects...");
   // Deaktiviere den Button initial, bis alles geladen ist
   if (startButton) {
     startButton.disabled = true;
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadAllSounds()
     .then(() => {
-      console.log("Alle Sounds wurden erfolgreich geladen!");
+      console.log("All Soundeffects Successfully Loaded!");
       soundsLoaded = true;
       if (startButton) {
         startButton.disabled = false;
@@ -28,10 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
     .catch((error) => {
-      console.error("Es gab einen Fehler beim Laden der Sounds:", error);
-      alert(
-        "Fehler beim Laden der Spieldaten. Einige Sounds funktionieren möglicherweise nicht."
-      );
+      console.error("Error while loading soundeffects:", error);
       // Optional: Spiel trotzdem starten, aber mit Warnung, oder Button ganz deaktivieren
       soundsLoaded = false; // Oder auf true setzen, wenn das Spiel auch ohne alle Sounds funktionieren soll
       if (startButton) {
