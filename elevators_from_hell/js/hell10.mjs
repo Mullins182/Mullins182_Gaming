@@ -99,8 +99,9 @@ import { npcRoutine } from "./npcLogic.mjs";
 import { drawLabels } from "./drawLabels.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
 
-export let playerOnFloor = { floor: 6 };
-export let npcOnFloor = { floor: 3 };
+export let playerOnFloor = { floor: 0 };
+export let npcOnFloor = { floor: 5 };
+let randCallLiftR = Math.random() < 0.5;
 
 // Pause Game
 window.addEventListener("blur", pauseGame);
@@ -1307,6 +1308,8 @@ function liftsPosUpdate() {
 }
 // In THE WORKS !
 function liftCalledCheck() {
+  console.log(randCallLiftR);
+
   for (let i = 0; i < 7; ++i) {
     callElevatorBtnsStatus[`floor${i}`] =
       flexElemsPosInit.liftR_isOnFloor === i ||
@@ -1325,7 +1328,8 @@ function liftCalledCheck() {
           flexElemsPosInit.liftR_isOnFloor !== i &&
           !flexElemsPosInit.liftR_isMoving &&
           Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
-            Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
+            Math.abs(i - flexElemsPosInit.liftL_isOnFloor) &&
+          randCallLiftR
         ? i
         : flexElemsPosInit.liftR_calledToFloor;
 
@@ -1335,6 +1339,13 @@ function liftCalledCheck() {
       !flexElemsPosInit.liftL_isMoving &&
       Math.abs(i - flexElemsPosInit.liftL_isOnFloor) <
         Math.abs(i - flexElemsPosInit.liftR_isOnFloor)
+        ? i
+        : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
+          flexElemsPosInit.liftL_isOnFloor !== i &&
+          !flexElemsPosInit.liftL_isMoving &&
+          Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
+            Math.abs(i - flexElemsPosInit.liftL_isOnFloor) &&
+          !randCallLiftR
         ? i
         : flexElemsPosInit.liftL_calledToFloor;
   }
