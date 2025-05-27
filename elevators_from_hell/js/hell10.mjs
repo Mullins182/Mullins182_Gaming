@@ -94,7 +94,7 @@ import {
 
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
-import { npcRoutine } from "./npcLogic.mjs";
+import { npcRoutine, npcHeading } from "./npcLogic.mjs";
 
 import { drawLabels } from "./drawLabels.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
@@ -647,15 +647,10 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
-    // npcSprite.onload = function () {
-    //   drawNPC();
-    // };
-    flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+    flexElemsPosInit.npcOnLiftL
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "r")
+      : flexElemsPosInit.npcOnLiftR
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
       : null;
     drawLiftDoors();
     drawShaftsElements();
@@ -679,11 +674,7 @@ function drawGameElements() {
     }
 
     !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, npcHeading)
       : null;
 
     drawLabels();
@@ -696,12 +687,10 @@ function drawGameElements() {
     drawCeiling();
     drawFloors();
     drawWalls();
-    flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+    flexElemsPosInit.npcOnLiftL
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "r")
+      : flexElemsPosInit.npcOnLiftR
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
       : null;
     drawLiftDoors();
     drawShaftsElements();
@@ -729,15 +718,8 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
-    // npcSprite.onload = function () {
-    //   drawNPC();
-    // };
     !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, npcHeading)
       : null;
     drawLabels();
     if (debugging.debugMode) {

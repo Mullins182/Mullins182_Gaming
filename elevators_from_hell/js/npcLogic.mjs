@@ -20,7 +20,8 @@ let npcPosX;
 let playerPosX;
 let npcOnLiftR;
 let npcOnLiftL;
-let playerCatched = false;
+export let npcHeading = "l";
+export let playerCatched = false;
 
 // IN THE WORKS !
 export function npcRoutine() {
@@ -29,7 +30,7 @@ export function npcRoutine() {
   npcMovesToPlayer();
   flexElemsPosInit.npcPosY = npcPosYupdate();
   npcAnimationInterval();
-  console.log("NPC On LIFT L: " + npcOnLiftL);
+  console.log("NPC HEADING: " + npcHeading);
 }
 
 function elemStatusUpdate() {
@@ -39,6 +40,12 @@ function elemStatusUpdate() {
   liftLonFloor = flexElemsPosInit.liftL_isOnFloor;
   npcOnLiftR = flexElemsPosInit.npcOnLiftR;
   npcOnLiftL = flexElemsPosInit.npcOnLiftL;
+  npcHeading =
+    flexElemsPosInit.npcActMovDir === "l"
+      ? "l"
+      : flexElemsPosInit.npcActMovDir === "r"
+      ? "r"
+      : npcHeading;
   playerCatched =
     playerPosX + (gameElements.playerWidth + 15) < npcPosX ||
     playerPosX - (gameElements.playerWidth - 15) > npcPosX ||
@@ -207,7 +214,6 @@ function npcMovesToPlayer() {
           : npcMoveToCallBtn();
       // gameElements.npcPressCallLiftBtn =
       //   npcOnLiftL || npcOnLiftR ? 0 : npcCallLift();
-      console.log("FUNKTIONSAUFRUF !");
     }
     if (liftRonFloor === npcOnFloor.floor) {
       flexElemsPosInit.npcPosX += npcPosXupdate();

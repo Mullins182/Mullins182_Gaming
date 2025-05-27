@@ -815,7 +815,8 @@ export function drawPlayer(xPos, yPos, direction) {
     gameElements.playerHeight
   );
   // Lift L X-Pos middle debugging
-  // ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
+  ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
+  ctx.fillRect(gameElements.liftLposXmid, gameElements.floor0_YPos, 10, 10);
 
   ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
 }
