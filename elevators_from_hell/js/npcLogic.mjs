@@ -48,7 +48,7 @@ function elemStatusUpdate() {
       : npcHeading;
   playerCatched =
     playerPosX + (gameElements.playerWidth + 15) < npcPosX ||
-    playerPosX - (gameElements.playerWidth - 15) > npcPosX ||
+    playerPosX - gameElements.playerWidth * 1.5 > npcPosX ||
     playerOnFloor.floor !== npcOnFloor.floor
       ? false
       : true;
