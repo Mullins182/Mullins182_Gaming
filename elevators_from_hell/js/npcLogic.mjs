@@ -247,7 +247,11 @@ function npcMovesToPlayer() {
 
       if (!playerCatched) {
         flexElemsPosInit.npcActMovDir =
-          playerPosX > npcPosX ? "r" : playerPosX < npcPosX ? "l" : "s";
+          playerPosX > npcPosX
+            ? "r"
+            : playerPosX < npcPosX
+            ? "l"
+            : flexElemsPosInit.npcActMovDir;
       } else {
         flexElemsPosInit.npcActMovDir = "s";
       }
