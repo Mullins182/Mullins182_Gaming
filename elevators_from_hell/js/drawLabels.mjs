@@ -41,8 +41,8 @@ export function drawLabels() {
         " <NPC Y-Pos> " +
         (flexElemsPosInit.npcPosY < 1000 ? "  " : "") +
         flexElemsPosInit.npcPosY.toFixed(0) +
-        flexElemsPosInit.npcOnLiftR +
-        playerOnFloor.floor +
+        (flexElemsPosInit.npcOnLiftR || flexElemsPosInit.npcOnLiftL) +
+        flexElemsPosInit.npcActMovDir +
         npcOnFloor.floor,
       "63px Arial Black",
       "gold",
