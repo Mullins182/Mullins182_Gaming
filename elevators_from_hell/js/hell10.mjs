@@ -494,10 +494,10 @@ function handleFloorSelection(floorNumber) {
 
   if (isLeftLiftMoving || isRightLiftMoving) return;
 
-  if (flexElemsPosInit.playerOnLiftL) {
+  if (flexElemsPosInit.playerOnLiftL && shaftLdoorsOpenCheck()) {
     debugging.floorLevelSelected = getFloorLevel(floorNumber);
     flexElemsPosInit.liftL_calledToFloor = floorNumber;
-  } else if (flexElemsPosInit.playerOnLiftR) {
+  } else if (flexElemsPosInit.playerOnLiftR && shaftRdoorsOpenCheck()) {
     debugging.floorLevelSelected = getFloorLevel(floorNumber);
     flexElemsPosInit.liftR_calledToFloor = floorNumber;
   }
@@ -1290,7 +1290,7 @@ function liftsPosUpdate() {
 }
 // In THE WORKS !
 function liftCalledCheck() {
-  console.log(randCallLiftR);
+  // console.log(randCallLiftR);
 
   for (let i = 0; i < 7; ++i) {
     callElevatorBtnsStatus[`floor${i}`] =
@@ -1303,12 +1303,14 @@ function liftCalledCheck() {
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
       flexElemsPosInit.liftR_isOnFloor !== i &&
       !flexElemsPosInit.liftR_isMoving &&
+      shaftRdoorsOpenCheck() &&
       Math.abs(i - flexElemsPosInit.liftR_isOnFloor) <
         Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
         ? i
         : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
           flexElemsPosInit.liftR_isOnFloor !== i &&
           !flexElemsPosInit.liftR_isMoving &&
+          shaftRdoorsOpenCheck() &&
           Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
             Math.abs(i - flexElemsPosInit.liftL_isOnFloor) &&
           randCallLiftR
@@ -1319,12 +1321,14 @@ function liftCalledCheck() {
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
       flexElemsPosInit.liftL_isOnFloor !== i &&
       !flexElemsPosInit.liftL_isMoving &&
+      shaftLdoorsOpenCheck() &&
       Math.abs(i - flexElemsPosInit.liftL_isOnFloor) <
         Math.abs(i - flexElemsPosInit.liftR_isOnFloor)
         ? i
         : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
           flexElemsPosInit.liftL_isOnFloor !== i &&
           !flexElemsPosInit.liftL_isMoving &&
+          shaftLdoorsOpenCheck() &&
           Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
             Math.abs(i - flexElemsPosInit.liftL_isOnFloor) &&
           !randCallLiftR
