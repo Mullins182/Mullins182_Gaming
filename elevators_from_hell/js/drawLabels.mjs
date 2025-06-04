@@ -40,10 +40,7 @@ export function drawLabels() {
         flexElemsPosInit.npcPosX.toFixed(0) +
         " <NPC Y-Pos> " +
         (flexElemsPosInit.npcPosY < 1000 ? "  " : "") +
-        flexElemsPosInit.npcPosY.toFixed(0) +
-        (flexElemsPosInit.npcOnLiftR || flexElemsPosInit.npcOnLiftL) +
-        flexElemsPosInit.npcActMovDir +
-        npcOnFloor.floor,
+        flexElemsPosInit.npcPosY.toFixed(0),
       "63px Arial Black",
       "gold",
       "black",
