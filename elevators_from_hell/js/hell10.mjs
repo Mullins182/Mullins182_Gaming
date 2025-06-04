@@ -8,6 +8,7 @@ let soundsLoaded = false;
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
 
+  drawTitleScreen();
   createStartButton();
 
   // --- Lade alle Sounds beim Start des Skripts ---
@@ -83,6 +84,7 @@ import {
   drawCallElevatorBtns,
   drawExitButtons,
   drawDebugLine,
+  drawTitleScreen,
 } from "./drawingFunctions.mjs";
 
 import {
@@ -311,7 +313,7 @@ const floorLevels = {
     gameElements.liftsHeight,
 };
 
-const exitButtonsStatus = {
+export const exitButtonsStatus = {
   floor0: false,
   floor1: false,
   floor2: false,

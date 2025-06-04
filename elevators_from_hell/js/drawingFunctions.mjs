@@ -1,13 +1,26 @@
 console.log("Module 'drawingFunctions.mjs' has started !");
 
-import { gameElements, flexElemsPosInit, debugging } from "./hell10.mjs";
+import {
+  gameElements,
+  flexElemsPosInit,
+  debugging,
+  exitButtonsStatus,
+  callElevatorBtnsStatus,
+} from "./hell10.mjs";
+import {
+  cabinView,
+  playerSprite,
+  npcSprite,
+  changePlayerSprite,
+} from "./spriteHandling.mjs";
 import { spriteControl } from "./spriteHandling.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
-import { cabinView, playerSprite, npcSprite } from "./spriteHandling.mjs";
+import { drawLabels } from "./drawLabels.mjs";
 
 // ___________________________              ___________________________
 // ___________________________   DRAWING    ___________________________
 // ___________________________              ___________________________
+
 export function drawLifts() {
   // ctx.fillStyle = "#f4ff51";
   // ctx.fillRect(
@@ -795,7 +808,7 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
   ctx.fill(); // Optional: Dreieck ausfüllen
 }
 export function drawPlayer(xPos, yPos, direction) {
-  ctx.save(); // Speichern des aktuellen Kontextzustands
+  ctx.save();
 
   if (direction === "left") {
     // Spiegeln für Bewegung nach links
@@ -818,7 +831,7 @@ export function drawPlayer(xPos, yPos, direction) {
   // ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
   // ctx.fillRect(gameElements.liftLposXmid, gameElements.floor0_YPos, 10, 10);
 
-  ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
+  ctx.restore();
 }
 export function drawNPC(xPos, yPos, direction) {
   ctx.save();
@@ -846,4 +859,45 @@ export function drawNPC(xPos, yPos, direction) {
     ctx.fillRect(xPos, yPos + (gameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
+}
+
+export function drawTitleScreen() {
+  // Frame-Update
+  // spriteControl.currentFramePlayer = 5;
+  changePlayerSprite("stop");
+  drawLifts();
+  drawCeiling();
+  drawFloors();
+  drawWalls();
+  flexElemsPosInit.npcOnLiftL
+    ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "r")
+    : flexElemsPosInit.npcOnLiftR
+    ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
+    : null;
+  drawLiftDoors();
+  drawShaftsElements();
+  for (let i = 0; i < 7; i++) {
+    drawCallElevatorBtns(
+      gameCanvas.width / 2,
+      gameElements[`floor${i}_YPos`] - 63,
+      gameElements.callElevatorBtnsXpos,
+      gameElements[`floor${i}_YPos`] - 55,
+      gameElements[`floor${i}_YPos`] - 43,
+      callElevatorBtnsStatus[`floor${i}`],
+      i
+    );
+
+    drawExitButtons(
+      gameCanvas.width / 1.94,
+      gameElements[`floor${i}_YPos`] - 52,
+      gameElements.exitBtnsXpos,
+      gameElements[`floor${i}_YPos`] - 43,
+      exitButtonsStatus[`floor${i}`] ? true : false
+    );
+  }
+  drawPlayer(500, 500, "l");
+  !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
+    ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
+    : null;
+  drawLabels();
 }
