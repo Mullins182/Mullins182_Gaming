@@ -369,6 +369,7 @@ const FLOOR_LEVELS = {
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
   debugMode: false,
+  showDebugLine: false,
   showNpcRange: true,
   floorLevelSelected: floorLevels.floor0_YPos,
   automaticElevator: false,
@@ -679,7 +680,7 @@ function drawGameElements() {
 
     drawLabels();
 
-    if (debugging.debugMode) {
+    if (debugging.showDebugLine) {
       drawDebugLine();
     }
   } else {
@@ -722,7 +723,7 @@ function drawGameElements() {
       ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, npcHeading)
       : null;
     drawLabels();
-    if (debugging.debugMode) {
+    if (debugging.showDebugLine) {
       drawDebugLine();
     }
   }
