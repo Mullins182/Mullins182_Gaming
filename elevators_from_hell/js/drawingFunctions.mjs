@@ -8,6 +8,7 @@ import {
   callElevatorBtnsStatus,
 } from "./hell10.mjs";
 import {
+  title_screen,
   cabinView,
   playerSprite,
   npcSprite,
@@ -20,6 +21,14 @@ import { drawLabels } from "./drawLabels.mjs";
 // ___________________________              ___________________________
 // ___________________________   DRAWING    ___________________________
 // ___________________________              ___________________________
+
+export function drawTitleScreen() {
+  ctx.drawImage(
+    title_screen,
+    window.innerWidth / 2 - title_screen.width / 1.6,
+    0
+  );
+}
 
 export function drawLifts() {
   // ctx.fillStyle = "#f4ff51";
@@ -674,16 +683,14 @@ export function drawWalls() {
 export function drawFloors() {
   // Starting with floor 0 =>
   ctx.fillStyle = "#373737";
-  gameElements.floorsWidth += 500;
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
+    0,
     gameElements.floor0_YPos,
-    gameElements.floorsWidth,
+    gameCanvas.width,
     gameElements.floorsHeight
   );
 
   ctx.fillStyle = "#171717";
-  gameElements.floorsWidth -= 500;
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
@@ -859,45 +866,4 @@ export function drawNPC(xPos, yPos, direction) {
     ctx.fillRect(xPos, yPos + (gameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
-}
-
-export function drawTitleScreen() {
-  // Frame-Update
-  // spriteControl.currentFramePlayer = 5;
-  changePlayerSprite("stop");
-  drawLifts();
-  drawCeiling();
-  drawFloors();
-  drawWalls();
-  flexElemsPosInit.npcOnLiftL
-    ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "r")
-    : flexElemsPosInit.npcOnLiftR
-    ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
-    : null;
-  drawLiftDoors();
-  drawShaftsElements();
-  for (let i = 0; i < 7; i++) {
-    drawCallElevatorBtns(
-      gameCanvas.width / 2,
-      gameElements[`floor${i}_YPos`] - 63,
-      gameElements.callElevatorBtnsXpos,
-      gameElements[`floor${i}_YPos`] - 55,
-      gameElements[`floor${i}_YPos`] - 43,
-      callElevatorBtnsStatus[`floor${i}`],
-      i
-    );
-
-    drawExitButtons(
-      gameCanvas.width / 1.94,
-      gameElements[`floor${i}_YPos`] - 52,
-      gameElements.exitBtnsXpos,
-      gameElements[`floor${i}_YPos`] - 43,
-      exitButtonsStatus[`floor${i}`] ? true : false
-    );
-  }
-  drawPlayer(500, 500, "l");
-  !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
-    ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
-    : null;
-  drawLabels();
 }

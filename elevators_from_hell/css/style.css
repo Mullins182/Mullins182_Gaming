@@ -2,27 +2,27 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  /* overflow: hidden; */
   background-color: #000;
 }
 body {
   display: flex;
   justify-content: center;
   align-items: top;
-  min-height: 100vh; /* Macht den Body mindestens so hoch wie das Viewport */
-  max-width: 100vw;
+  max-height: 98vh; /* Macht den Body mindestens so hoch wie das Viewport */
+  max-width: 98vw;
   background-color: #000; /* Beispiel-Hintergrund */
-  overflow: hidden; /* Verhindert Scrollbalken, falls Canvas größer ist */
+  overflow:hidden;
 }
 #gameWrapper {
   position: relative; /* WICHTIG: Erlaubt absolute Positionierung der Kinder */
-  width: 1750px; /* Gleiche Breite wie Canvas */
-  height: 900px; /* Gleiche Höhe wie Canvas */
-  /* border: 1px solid #cccccc;*/
+  width: 95%;
+  /* width: 1750px;/*
+  /* height: 900px;*/
+  /* border: 1px solid #cccccc; */
 }
 #startButton {
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
-  top: 50%; /* Startet bei 50% von oben */
+  top: 95%; /* Startet bei 50% von oben */
   left: 50%; /* Startet bei 50% von links */
   transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
 

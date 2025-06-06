@@ -10,9 +10,11 @@ export let player_spriteSheet = {
   run: new Image(),
 };
 
-let npc_spriteSheet = {
+export let npc_spriteSheet = {
   idle: new Image(),
 };
+
+export let title_screen = new Image();
 
 export let playerSprite = player_spriteSheet.idle;
 export let npcSprite = npc_spriteSheet.idle;
@@ -20,6 +22,7 @@ export let npcSprite = npc_spriteSheet.idle;
 player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
 player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
+title_screen.src = "./assets/img/efh_title3.png";
 
 // Sprite related Variables
 export const spriteControl = {

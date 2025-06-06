@@ -8,8 +8,7 @@ let soundsLoaded = false;
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
 
-  drawTitleScreen();
-  createStartButton();
+  initialize();
 
   // --- Lade alle Sounds beim Start des Skripts ---
   console.log("Loading Soundeffects...");
@@ -55,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
       this.style.display = "none";
 
       // Starte die Haupt-Spiellogik
-      initialize();
+      requestAnimationFrame(gameRoutine);
     });
   } else {
     console.warn("Start Button with ID 'startButton' not found !");
@@ -70,6 +69,7 @@ import {
   playerSprite,
   player_spriteSheet,
   spriteControl,
+  title_screen,
 } from "./spriteHandling.mjs";
 
 import {
@@ -509,8 +509,11 @@ function handleFloorSelection(floorNumber) {
 // ___________________________ GAME INI ___________________________
 function initialize() {
   ctx.imageSmoothingEnabled = false;
-  Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
-  requestAnimationFrame(gameRoutine);
+  Howler.autoUnlock = true; // ➕ Für iOS notwendig
+  title_screen.onload = function () {
+    drawTitleScreen();
+  };
+  createStartButton();
 }
 
 // ___________________________              ___________________________
