@@ -15,7 +15,7 @@ export const sounds = {
   liftDoorsLop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
   liftDoorsRcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
   liftDoorsLcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
-  npcAttack: new Howl({ src: ["./assets/sounds/npcAttack.mp3"] }),
+  npcAttack: new Howl({ src: ["./assets/sounds/npcAttack.wav"] }),
   runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
   btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
