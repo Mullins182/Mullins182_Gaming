@@ -369,7 +369,7 @@ const FLOOR_LEVELS = {
 export const debugging = {
   debugMode: false,
   showDebugLine: false,
-  showNpcRange: true,
+  showNpcRange: false,
   floorLevelSelected: floorLevels.floor0_YPos,
   automaticElevator: false,
 };

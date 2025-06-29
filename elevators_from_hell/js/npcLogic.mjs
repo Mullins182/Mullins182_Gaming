@@ -25,6 +25,7 @@ export let playerCatched = false;
 
 // IN THE WORKS !
 export function npcRoutine() {
+  npcSpritesheetConfig();
   elemStatusUpdate();
   npcAnimationInterval();
   npcIsOnFloorUpdate();
@@ -47,11 +48,25 @@ function elemStatusUpdate() {
       ? "r"
       : npcHeading;
   playerCatched =
-    playerPosX + (gameElements.playerWidth + 15) < npcPosX ||
-    playerPosX - gameElements.playerWidth * 1.5 > npcPosX ||
+    playerPosX + gameElements.playerWidth * 0.6 < npcPosX ||
+    playerPosX - gameElements.playerWidth > npcPosX ||
     playerOnFloor.floor !== npcOnFloor.floor
       ? false
       : true;
+}
+
+function npcSpritesheetConfig() {
+  if (!playerCatched) {
+    spriteControl.totalFramesNpc =
+      spriteControl.totalFramesNpc !== 11 ? 11 : spriteControl.totalFramesNpc;
+  } else {
+    spriteControl.totalFramesNpc =
+      spriteControl.totalFramesNpc !== 3 ? 3 : spriteControl.totalFramesNpc;
+    spriteControl.animationIntervalNpc =
+      spriteControl.animationIntervalNpc !== 75
+        ? 75
+        : spriteControl.animationIntervalNpc;
+  }
 }
 
 function npcAnimationInterval() {

@@ -1,5 +1,9 @@
 console.log("Module 'drawingFunctions.mjs' has started !");
 
+import { gameCanvas, ctx } from "./canvasInit.mjs";
+import { drawLabels } from "./drawLabels.mjs";
+import { playerCatched } from "./npcLogic.mjs";
+
 import {
   gameElements,
   flexElemsPosInit,
@@ -8,34 +12,18 @@ import {
   callElevatorBtnsStatus,
 } from "./hell10.mjs";
 import {
+  spriteControl,
   cabinView,
   playerSprite,
   npcSprite,
   changePlayerSprite,
 } from "./spriteHandling.mjs";
-import { spriteControl } from "./spriteHandling.mjs";
-import { gameCanvas, ctx } from "./canvasInit.mjs";
-import { drawLabels } from "./drawLabels.mjs";
 
 // ___________________________              ___________________________
 // ___________________________   DRAWING    ___________________________
 // ___________________________              ___________________________
 
-// export async function drawTitleScreen() {
-//   const imageXpos = (window.innerWidth - title_screen.width) / 2;
-//   title_screen.onload = function () {
-//     ctx.drawImage(title_screen, imageXpos, 0);
-//   };
-// }
-
 export function drawLifts() {
-  // ctx.fillStyle = "#f4ff51";
-  // ctx.fillRect(
-  //   gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
-  //   moveableElems.liftL_YPos,
-  //   gameElements.liftsWidth,
-  //   gameElements.liftsHeight
-  // );
   ctx.drawImage(
     cabinView,
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
@@ -50,13 +38,6 @@ export function drawLifts() {
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
-
-  // ctx.fillRect(
-  //   gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-  //   moveableElems.liftR_YPos,
-  //   gameElements.liftsWidth,
-  //   gameElements.liftsHeight
-  // );
 }
 export function drawLiftDoors() {
   ctx.fillStyle = "#700";
@@ -847,17 +828,31 @@ export function drawNPC(xPos, yPos, direction) {
       -xPos - (gameElements.npcWidth + gameElements.npcXaxisMirroringOffset);
   }
 
-  ctx.drawImage(
-    npcSprite,
-    spriteControl.currentFrameNpc * 512,
-    0,
-    512,
-    380,
-    xPos,
-    yPos,
-    gameElements.npcWidth,
-    gameElements.npcHeight
-  );
+  if (!playerCatched) {
+    ctx.drawImage(
+      npcSprite,
+      spriteControl.currentFrameNpc * 512,
+      0,
+      512,
+      380,
+      xPos,
+      yPos,
+      gameElements.npcWidth,
+      gameElements.npcHeight
+    );
+  } else {
+    ctx.drawImage(
+      npcSprite,
+      (spriteControl.currentFrameNpc + 11) * 512,
+      0,
+      512,
+      380,
+      xPos,
+      yPos,
+      gameElements.npcWidth,
+      gameElements.npcHeight
+    );
+  }
 
   if (debugging.showNpcRange) {
     ctx.fillStyle = "#00FF00";
