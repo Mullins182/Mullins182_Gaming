@@ -1,5 +1,42 @@
 console.log("Module 'Hell10.mjs' has started !");
 
+import {
+  changePlayerSprite,
+  playerSprite,
+  player_spriteSheet,
+  spriteControl,
+  title_screen,
+} from "./spriteHandling.mjs";
+
+import {
+  drawLifts,
+  drawCeiling,
+  drawFloors,
+  drawWalls,
+  drawPlayer,
+  drawNPC,
+  drawLiftDoors,
+  drawShaftsElements,
+  drawCallElevatorBtns,
+  drawExitButtons,
+  drawDebugLine,
+  drawTitleScreen,
+} from "./drawingFunctions.mjs";
+
+import {
+  playSounds,
+  soundState,
+  sounds,
+  loadAllSounds,
+} from "./soundHandling.mjs";
+
+import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
+
+import { npcRoutine, npcHeading } from "./npcLogic.mjs";
+
+import { drawLabels } from "./drawLabels.mjs";
+import { gameCanvas, ctx } from "./canvasInit.mjs";
+
 const startButton = document.getElementById("startButton");
 let soundsLoaded = false;
 
@@ -61,43 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // initialize();
   }
 });
-
-import {
-  changePlayerSprite,
-  playerSprite,
-  player_spriteSheet,
-  spriteControl,
-  title_screen,
-} from "./spriteHandling.mjs";
-
-import {
-  drawLifts,
-  drawCeiling,
-  drawFloors,
-  drawWalls,
-  drawPlayer,
-  drawNPC,
-  drawLiftDoors,
-  drawShaftsElements,
-  drawCallElevatorBtns,
-  drawExitButtons,
-  drawDebugLine,
-  drawTitleScreen,
-} from "./drawingFunctions.mjs";
-
-import {
-  playSounds,
-  soundState,
-  sounds,
-  loadAllSounds,
-} from "./soundHandling.mjs";
-
-import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
-
-import { npcRoutine, npcHeading } from "./npcLogic.mjs";
-
-import { drawLabels } from "./drawLabels.mjs";
-import { gameCanvas, ctx } from "./canvasInit.mjs";
 
 export let playerOnFloor = { floor: 0 };
 export let npcOnFloor = { floor: 5 };
