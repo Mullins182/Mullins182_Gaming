@@ -19,7 +19,6 @@ import {
   drawCallElevatorBtns,
   drawExitButtons,
   drawDebugLine,
-  drawTitleScreen,
 } from "./drawingFunctions.mjs";
 
 import {
@@ -86,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Blende den Button aus
       this.style.display = "none";
+      gameCanvas.style.opacity = 1;
 
       // Starte die Haupt-Spiellogik
       requestAnimationFrame(gameRoutine);
@@ -507,10 +507,6 @@ function handleFloorSelection(floorNumber) {
 async function initialize() {
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
-  // title_screen.onload = function () {
-  //   drawTitleScreen();
-  // };
-  drawTitleScreen();
   createStartButton();
 }
 

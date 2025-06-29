@@ -8,7 +8,6 @@ import {
   callElevatorBtnsStatus,
 } from "./hell10.mjs";
 import {
-  title_screen,
   cabinView,
   playerSprite,
   npcSprite,
@@ -22,12 +21,12 @@ import { drawLabels } from "./drawLabels.mjs";
 // ___________________________   DRAWING    ___________________________
 // ___________________________              ___________________________
 
-export async function drawTitleScreen() {
-  const imageXpos = (window.innerWidth - title_screen.width) / 2;
-  title_screen.onload = function () {
-    ctx.drawImage(title_screen, imageXpos, 0);
-  };
-}
+// export async function drawTitleScreen() {
+//   const imageXpos = (window.innerWidth - title_screen.width) / 2;
+//   title_screen.onload = function () {
+//     ctx.drawImage(title_screen, imageXpos, 0);
+//   };
+// }
 
 export function drawLifts() {
   // ctx.fillStyle = "#f4ff51";

@@ -11,14 +11,19 @@ body {
   max-height: 98vh; /* Macht den Body mindestens so hoch wie das Viewport */
   max-width: 98vw;
   background-color: #000; /* Beispiel-Hintergrund */
-  overflow:hidden;
+  overflow: hidden;
 }
 #gameWrapper {
   position: relative; /* WICHTIG: Erlaubt absolute Positionierung der Kinder */
   width: 95%;
+  /* height: 100%; */
+  background-image: url("../assets/img/efh_title3.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* border: 2px solid greenyellow; */
   /* width: 1750px;/*
   /* height: 900px;*/
-  /* border: 1px solid #cccccc; */
 }
 #startButton {
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
@@ -42,6 +47,8 @@ body {
   background-color: #000;
   width: 100%; /* Macht Canvas so breit wie der Wrapper */
   height: 100%; /* Macht Canvas so hoch wie der Wrapper */
+  opacity: 0%;
+
   /* background-image: url("images/wallpaper.png");
   background-position: 95px 100px;
   background-size: 90%;
