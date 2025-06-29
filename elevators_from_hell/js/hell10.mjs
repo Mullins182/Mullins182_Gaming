@@ -505,7 +505,7 @@ function handleFloorSelection(floorNumber) {
 }
 
 // ___________________________ GAME INI ___________________________
-function initialize() {
+async function initialize() {
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   // title_screen.onload = function () {

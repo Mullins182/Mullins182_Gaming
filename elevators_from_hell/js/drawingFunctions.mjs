@@ -22,7 +22,7 @@ import { drawLabels } from "./drawLabels.mjs";
 // ___________________________   DRAWING    ___________________________
 // ___________________________              ___________________________
 
-export function drawTitleScreen() {
+export async function drawTitleScreen() {
   const imageXpos = (window.innerWidth - title_screen.width) / 2;
   title_screen.onload = function () {
     ctx.drawImage(title_screen, imageXpos, 0);
