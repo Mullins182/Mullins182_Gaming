@@ -1,7 +1,5 @@
 console.log("Module 'Hell10.mjs' has started !");
 
-const Howler = window.Howler;
-const Howl = window.Howl;
 const startButton = document.getElementById("startButton");
 let soundsLoaded = false;
 
@@ -510,9 +508,10 @@ function handleFloorSelection(floorNumber) {
 function initialize() {
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
-  title_screen.onload = function () {
-    drawTitleScreen();
-  };
+  // title_screen.onload = function () {
+  //   drawTitleScreen();
+  // };
+  drawTitleScreen();
   createStartButton();
 }
 

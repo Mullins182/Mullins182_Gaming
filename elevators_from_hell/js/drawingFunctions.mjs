@@ -24,7 +24,9 @@ import { drawLabels } from "./drawLabels.mjs";
 
 export function drawTitleScreen() {
   const imageXpos = (window.innerWidth - title_screen.width) / 2;
-  ctx.drawImage(title_screen, imageXpos, 0);
+  title_screen.onload = function () {
+    ctx.drawImage(title_screen, imageXpos, 0);
+  };
 }
 
 export function drawLifts() {
