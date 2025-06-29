@@ -5,7 +5,6 @@ import {
   playerSprite,
   player_spriteSheet,
   spriteControl,
-  title_screen,
 } from "./spriteHandling.mjs";
 
 import {
