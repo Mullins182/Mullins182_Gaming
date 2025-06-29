@@ -23,11 +23,8 @@ import { drawLabels } from "./drawLabels.mjs";
 // ___________________________              ___________________________
 
 export function drawTitleScreen() {
-  ctx.drawImage(
-    title_screen,
-    window.innerWidth / 2 - title_screen.width / 1.6,
-    0
-  );
+  const imageXpos = (window.innerWidth - title_screen.width) / 2;
+  ctx.drawImage(title_screen, imageXpos, 0);
 }
 
 export function drawLifts() {
