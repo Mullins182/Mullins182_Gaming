@@ -27,8 +27,8 @@ body {
 }
 #startButton {
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
-  top: 95%; /* Startet bei 50% von oben */
-  left: 50%; /* Startet bei 50% von links */
+  top: 50%; /* Startet bei 50% von oben */
+  left: 15%; /* Startet bei 50% von links */
   transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
 
   /* padding: 20px 40px;
@@ -41,6 +41,12 @@ body {
   z-index: 10; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease; */
+}
+#optionsButton {
+  position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
+  top: 60%; /* Startet bei 50% von oben */
+  left: 15%; /* Startet bei 50% von links */
+  transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
 }
 #mainCanvas {
   display: block; /* Entfernt eventuelle Leerräume unter dem Canvas */

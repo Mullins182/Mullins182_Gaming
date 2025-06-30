@@ -36,6 +36,7 @@ import { drawLabels } from "./drawLabels.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
 
 const startButton = document.getElementById("startButton");
+const optionsButton = document.getElementById("optionsButton");
 let soundsLoaded = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -85,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Blende den Button aus
       this.style.display = "none";
+      optionsButton.style.display = "none";
       gameCanvas.style.opacity = 1;
 
       // Starte die Haupt-Spiellogik
@@ -510,7 +512,8 @@ function handleFloorSelection(floorNumber) {
 async function initialize() {
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
-  createStartButton();
+  createStartButton(startButton);
+  createStartButton(optionsButton);
 }
 
 // ___________________________              ___________________________
@@ -1357,44 +1360,49 @@ export function shaftLdoorsOpenCheck() {
   return Object.values(shaftLdoorsOpenStatus).some(Boolean);
 }
 
-function createStartButton() {
-  startButton.textContent = "Play Game";
+function createStartButton(btnId) {
+  btnId.textContent =
+    btnId === "startButton"
+      ? "Play Game"
+      : btnId === "optionsButton"
+      ? "Options"
+      : "???";
 
   // Breite und Höhe anpassen
-  startButton.style.width = "200px";
-  startButton.style.height = "50px";
+  btnId.style.width = "200px";
+  btnId.style.height = "50px";
 
   // Hintergrund- und Textfarbe ändern
-  startButton.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
-  startButton.style.color = "darkgoldenrod";
+  btnId.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
+  btnId.style.color = "darkgoldenrod";
 
   // Schriftgröße und Schriftart anpassen
-  startButton.style.fontSize = "33px";
-  startButton.style.fontFamily = "Times New Roman, Arial";
+  btnId.style.fontSize = "33px";
+  btnId.style.fontFamily = "Times New Roman, Arial";
 
   // Border Radius
-  startButton.style.borderRadius = "10px";
+  btnId.style.borderRadius = "10px";
 
   // Border / Cursor
-  startButton.style.border = "2px solid goldenrod";
-  startButton.style.cursor = "pointer";
+  btnId.style.border = "2px solid goldenrod";
+  btnId.style.cursor = "pointer";
 
   // Box-Shadow hinzufügen
-  startButton.style.boxShadow = "0 0 55px red";
+  btnId.style.boxShadow = "0 0 55px red";
 
   // Übergänge für Hover-Effekt
-  startButton.style.transition =
+  btnId.style.transition =
     "background-color 0.5s, color 0.5s, border 1.0s, box-shadow 0.5s";
 
   // Hover-Effekt hinzufügen
-  startButton.addEventListener("mouseover", function () {
+  btnId.addEventListener("mouseover", function () {
     this.style.backgroundColor = "rgba(200, 200, 0, 1.0)";
     this.style.color = "#000000";
     this.style.border = "2px solid black";
     this.style.boxShadow = "0 0 55px greenyellow";
   });
 
-  startButton.addEventListener("mouseout", function () {
+  btnId.addEventListener("mouseout", function () {
     this.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
     this.style.color = "darkgoldenrod";
     this.style.border = "2px solid goldenrod";
@@ -1408,7 +1416,7 @@ function createStartButton() {
   //   initialize();
   // });
 
-  document.body.appendChild(startButton);
+  document.body.appendChild(btnId);
 }
 
 function createHomeButton(posX, posY) {
