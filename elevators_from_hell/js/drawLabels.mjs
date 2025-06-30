@@ -1,6 +1,13 @@
 console.log("Module 'drawLabels.mjs' has started !");
 
-import { gameElements, debugging, flexElemsPosInit } from "./hell10.mjs";
+import {
+  gameVersion,
+  gameElements,
+  playerOnFloor,
+  npcOnFloor,
+  debugging,
+  flexElemsPosInit,
+} from "./hell10.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
 
 export function drawLabels() {
@@ -58,6 +65,20 @@ export function drawLabels() {
       17,
       "strokeText",
       "goldenrod",
+      2
+    );
+    createLabel(
+      gameCanvas.width / 1.3,
+      gameCanvas.height * 0.085,
+      gameVersion,
+      "15px Arial Black",
+      "darkgoldenrod",
+      "black",
+      3,
+      8,
+      17,
+      "fillText",
+      "darkgoldenrod",
       2
     );
   }

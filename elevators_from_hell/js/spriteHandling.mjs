@@ -10,7 +10,7 @@ export let player_spriteSheet = {
   run: new Image(),
 };
 
-let npc_spriteSheet = {
+export let npc_spriteSheet = {
   idle: new Image(),
 };
 
@@ -19,7 +19,21 @@ export let npcSprite = npc_spriteSheet.idle;
 
 player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
 player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
-npc_spriteSheet.idle.src = "./assets/sprites/securityBot/idle/Idle.png";
+npc_spriteSheet.idle.src = "./assets/sprites/securityBot/active.png";
+
+// Sprite related Variables
+export const spriteControl = {
+  spriteWidth: 128, // Sprite-Frame
+  spriteHeight: 128, // Sprite-Frame
+  currentFramePlayer: 0,
+  currentFrameNpc: 0,
+  totalFramesPlayer: 7, // Frames amount of the SpriteSheet
+  totalFramesNpc: 11, // Frames amount of the SpriteSheet
+  lastTimePlayer: 0,
+  lastTimeNpc: 0,
+  animationIntervalPlayer: 125,
+  animationIntervalNpc: 90,
+};
 
 export function changePlayerSprite(movement) {
   if (movement === "left" || movement === "right") {

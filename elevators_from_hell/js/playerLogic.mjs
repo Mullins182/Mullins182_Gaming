@@ -32,7 +32,7 @@ export function playerMovandColl() {
 export function playerCanLeave() {
   return flexElemsPosInit.exitDoorPosY < gameCanvas.height * 0.73 &&
     flexElemsPosInit.playerPosX < 500 &&
-    playerOnFloor == 0
+    playerOnFloor.floor == 0
     ? true
     : false;
 }
@@ -51,13 +51,13 @@ export function playerOnLift(getOutOfLift) {
     }
   } else {
     if (
-      (playerOnFloor === 0 && flexElemsPosInit.liftL_isOnFloor === 0) ||
-      (playerOnFloor === 1 && flexElemsPosInit.liftL_isOnFloor === 1) ||
-      (playerOnFloor === 2 && flexElemsPosInit.liftL_isOnFloor === 2) ||
-      (playerOnFloor === 3 && flexElemsPosInit.liftL_isOnFloor === 3) ||
-      (playerOnFloor === 4 && flexElemsPosInit.liftL_isOnFloor === 4) ||
-      (playerOnFloor === 5 && flexElemsPosInit.liftL_isOnFloor === 5) ||
-      (playerOnFloor === 6 && flexElemsPosInit.liftL_isOnFloor === 6)
+      (playerOnFloor.floor === 0 && flexElemsPosInit.liftL_isOnFloor === 0) ||
+      (playerOnFloor.floor === 1 && flexElemsPosInit.liftL_isOnFloor === 1) ||
+      (playerOnFloor.floor === 2 && flexElemsPosInit.liftL_isOnFloor === 2) ||
+      (playerOnFloor.floor === 3 && flexElemsPosInit.liftL_isOnFloor === 3) ||
+      (playerOnFloor.floor === 4 && flexElemsPosInit.liftL_isOnFloor === 4) ||
+      (playerOnFloor.floor === 5 && flexElemsPosInit.liftL_isOnFloor === 5) ||
+      (playerOnFloor.floor === 6 && flexElemsPosInit.liftL_isOnFloor === 6)
     ) {
       if (
         flexElemsPosInit.playerPosX > gameCanvas.width * 0.16 &&
@@ -67,13 +67,13 @@ export function playerOnLift(getOutOfLift) {
       }
     }
     if (
-      (playerOnFloor === 0 && flexElemsPosInit.liftR_isOnFloor === 0) ||
-      (playerOnFloor === 1 && flexElemsPosInit.liftR_isOnFloor === 1) ||
-      (playerOnFloor === 2 && flexElemsPosInit.liftR_isOnFloor === 2) ||
-      (playerOnFloor === 3 && flexElemsPosInit.liftR_isOnFloor === 3) ||
-      (playerOnFloor === 4 && flexElemsPosInit.liftR_isOnFloor === 4) ||
-      (playerOnFloor === 5 && flexElemsPosInit.liftR_isOnFloor === 5) ||
-      (playerOnFloor === 6 && flexElemsPosInit.liftR_isOnFloor === 6)
+      (playerOnFloor.floor === 0 && flexElemsPosInit.liftR_isOnFloor === 0) ||
+      (playerOnFloor.floor === 1 && flexElemsPosInit.liftR_isOnFloor === 1) ||
+      (playerOnFloor.floor === 2 && flexElemsPosInit.liftR_isOnFloor === 2) ||
+      (playerOnFloor.floor === 3 && flexElemsPosInit.liftR_isOnFloor === 3) ||
+      (playerOnFloor.floor === 4 && flexElemsPosInit.liftR_isOnFloor === 4) ||
+      (playerOnFloor.floor === 5 && flexElemsPosInit.liftR_isOnFloor === 5) ||
+      (playerOnFloor.floor === 6 && flexElemsPosInit.liftR_isOnFloor === 6)
     ) {
       if (
         flexElemsPosInit.playerPosX > gameCanvas.width * 0.76 &&

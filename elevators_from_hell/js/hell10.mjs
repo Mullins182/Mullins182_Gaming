@@ -1,14 +1,10 @@
 console.log("Module 'Hell10.mjs' has started !");
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM INITIALIZED !");
-  initialize();
-});
-
 import {
   changePlayerSprite,
   playerSprite,
   player_spriteSheet,
+  spriteControl,
 } from "./spriteHandling.mjs";
 
 import {
@@ -25,29 +21,88 @@ import {
   drawDebugLine,
 } from "./drawingFunctions.mjs";
 
-import { playSounds, soundState } from "./soundHandling.mjs";
+import {
+  playSounds,
+  soundState,
+  sounds,
+  loadAllSounds,
+} from "./soundHandling.mjs";
 
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
-import { npcRoutine } from "./npcLogic.mjs";
+import { npcRoutine, npcHeading } from "./npcLogic.mjs";
 
 import { drawLabels } from "./drawLabels.mjs";
 import { gameCanvas, ctx } from "./canvasInit.mjs";
 
-export let playerOnFloor = 6;
-export let npcOnFloor = 3;
+const startButton = document.getElementById("startButton");
+const optionsButton = document.getElementById("optionsButton");
+let soundsLoaded = false;
 
-// Sprite related Variables
-export const spriteWidth = 128; // Breite eines einzelnen Sprite-Frames
-export const spriteHeight = 128; // Höhe eines einzelnen Sprite-Frames
-export let currentFramePlayer = 0;
-export let currentFrameNpc = 0;
-export let totalFramesPlayer = 7; // Anzahl der Frames in Ihrem Spritesheet
-let totalFramesNpc = 11; // Anzahl der Frames in Ihrem Spritesheet
-export let lastTimePlayer = 0;
-let lastTimeNpc = 0;
-export let animationIntervalPlayer = 125; // 250 Initial value while idling
-let animationIntervalNpc = 90; // Initial value while idling
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM INITIALIZED !");
+
+  initialize();
+
+  // --- Lade alle Sounds beim Start des Skripts ---
+  console.log("Loading Soundeffects...");
+  // Deaktiviere den Button initial, bis alles geladen ist
+  if (startButton) {
+    startButton.disabled = true;
+    startButton.textContent = "loading...";
+  }
+
+  loadAllSounds()
+    .then(() => {
+      console.log("All Soundeffects Successfully Loaded!");
+      soundsLoaded = true;
+      if (startButton) {
+        startButton.disabled = false;
+        startButton.textContent = "Play Game";
+      }
+    })
+    .catch((error) => {
+      console.error("Error while loading soundeffects:", error);
+      // Optional: Spiel trotzdem starten, aber mit Warnung, oder Button ganz deaktivieren
+      soundsLoaded = false; // Oder auf true setzen, wenn das Spiel auch ohne alle Sounds funktionieren soll
+      if (startButton) {
+        startButton.disabled = true;
+        startButton.textContent = "Sound Error :(";
+      }
+    });
+
+  // --- Der Button-Klick-Handler ---
+  if (startButton) {
+    startButton.addEventListener("click", function () {
+      if (!soundsLoaded) {
+        console.warn("Sounds are loading, please wait ...");
+        return; // Spielstart verhindern
+      }
+
+      // Starte den ersten Sound (z.B. Hintergrundmusik), um den AudioContext zu aktivieren
+      if (sounds.btnPress) {
+        sounds.btnPress.play();
+      }
+
+      // Blende den Button aus
+      this.style.display = "none";
+      optionsButton.style.display = "none";
+      gameCanvas.style.opacity = 1;
+
+      // Starte die Haupt-Spiellogik
+      requestAnimationFrame(gameRoutine);
+    });
+  } else {
+    console.warn("Start Button with ID 'startButton' not found !");
+    // Falls der Button nicht gefunden wird, direkt die Spiellogik starten,
+    // aber dann kann es sein, dass Sound nicht direkt funktioniert
+    // initialize();
+  }
+});
+
+export let playerOnFloor = { floor: 0 };
+export let npcOnFloor = { floor: 5 };
+let randCallLiftR = Math.random() < 0.5;
 
 // Pause Game
 window.addEventListener("blur", pauseGame);
@@ -109,6 +164,7 @@ export const gameElements = {
   playerMovement: "stop",
   npcHeight: 70,
   npcWidth: 100,
+  npcSpeed: 5.75,
   npcXaxisMirroringOffset: 70,
   npcPressCallLiftBtn: null,
 
@@ -154,15 +210,17 @@ export const flexElemsPosInit = {
   // Player/NPC PosInit
   playerPosX: gameCanvas.width / 2,
   playerPosY:
-    gameElements[`floor${playerOnFloor}_YPos`] - gameElements.playerHeight,
+    gameElements[`floor${playerOnFloor.floor}_YPos`] -
+    gameElements.playerHeight,
   playerYposOffset: 20,
   playerLastDir: "stop",
   playerOnLiftR: false,
   playerOnLiftL: false,
 
   npcPosX: gameCanvas.width / 1.65,
-  npcPosY: gameElements[`floor${npcOnFloor}_YPos`] - gameElements.npcHeight,
-  npcActMovDir: "l",
+  npcPosY:
+    gameElements[`floor${npcOnFloor.floor}_YPos`] - gameElements.npcHeight,
+  npcActMovDir: "s",
   npcOnLiftR: false,
   npcOnLiftL: false,
   npcOnXPosLiftR: false,
@@ -254,7 +312,7 @@ const floorLevels = {
     gameElements.liftsHeight,
 };
 
-const exitButtonsStatus = {
+export const exitButtonsStatus = {
   floor0: false,
   floor1: false,
   floor2: false,
@@ -309,10 +367,14 @@ const FLOOR_LEVELS = {
   floor6_YPos: floorLevels.floor6_YPos,
 };
 
+// ___________________________ GAME-VERSION ___________________________
+export const gameVersion = "v0.9";
+
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
   debugMode: false,
-  showNpcRange: true,
+  showDebugLine: false,
+  showNpcRange: false,
   floorLevelSelected: floorLevels.floor0_YPos,
   automaticElevator: false,
 };
@@ -337,8 +399,8 @@ document.addEventListener("keydown", function (event) {
         break;
       }
       changePlayerSprite("left");
-      totalFramesPlayer = 10;
-      animationIntervalPlayer = 80;
+      spriteControl.totalFramesPlayer = 10;
+      spriteControl.animationIntervalPlayer = 80;
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
@@ -346,22 +408,22 @@ document.addEventListener("keydown", function (event) {
         break;
       }
       changePlayerSprite("right");
-      totalFramesPlayer = 10;
-      animationIntervalPlayer = 80;
+      spriteControl.totalFramesPlayer = 10;
+      spriteControl.animationIntervalPlayer = 80;
       gameElements.playerMovement = "right";
       break;
     case KEYS.DIRECTIONS.DOWN:
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
-        totalFramesPlayer = 7;
-        currentFramePlayer = 0;
-        animationIntervalPlayer = 125; // Reset des Intervalls
-        lastTimePlayer = performance.now(); // Reset des Zeitstempels
+        spriteControl.totalFramesPlayer = 7;
+        spriteControl.currentFramePlayer = 0;
+        spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
+        spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
-      playerOnFloor !== 0 ? playerCallLiftBtnsCheck(2) : null;
+      playerOnFloor.floor !== 0 ? playerCallLiftBtnsCheck(2) : null;
       soundState.callLiftBtnActCount =
-        playerOnFloor !== 0 &&
+        playerOnFloor.floor !== 0 &&
         flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
         flexElemsPosInit.playerPosX <
@@ -374,15 +436,15 @@ document.addEventListener("keydown", function (event) {
     case KEYS.DIRECTIONS.UP:
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
-        totalFramesPlayer = 7;
-        currentFramePlayer = 0;
-        animationIntervalPlayer = 125; // Reset des Intervalls
-        lastTimePlayer = performance.now(); // Reset des Zeitstempels
+        spriteControl.totalFramesPlayer = 7;
+        spriteControl.currentFramePlayer = 0;
+        spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
+        spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
         gameElements.playerMovement = "stop";
       }
-      playerOnFloor !== 6 ? playerCallLiftBtnsCheck(1) : null;
+      playerOnFloor.floor !== 6 ? playerCallLiftBtnsCheck(1) : null;
       soundState.callLiftBtnActCount =
-        playerOnFloor !== 6 &&
+        playerOnFloor.floor !== 6 &&
         flexElemsPosInit.playerPosX >
           gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
         flexElemsPosInit.playerPosX <
@@ -405,17 +467,17 @@ document.addEventListener("keydown", function (event) {
       break;
     case KEYS.SPECIAL_KEYS.CHANGE_PLAYER_YPOS:
       flexElemsPosInit.playerPosY =
-        playerOnFloor === 0
+        playerOnFloor.floor === 0
           ? gameElements.floor1_YPos - gameElements.playerHeight
-          : playerOnFloor === 1
+          : playerOnFloor.floor === 1
           ? gameElements.floor2_YPos - gameElements.playerHeight
-          : playerOnFloor === 2
+          : playerOnFloor.floor === 2
           ? gameElements.floor3_YPos - gameElements.playerHeight
-          : playerOnFloor === 3
+          : playerOnFloor.floor === 3
           ? gameElements.floor4_YPos - gameElements.playerHeight
-          : playerOnFloor === 4
+          : playerOnFloor.floor === 4
           ? gameElements.floor5_YPos - gameElements.playerHeight
-          : playerOnFloor === 5
+          : playerOnFloor.floor === 5
           ? gameElements.floor6_YPos - gameElements.playerHeight
           : gameElements.floor0_YPos - gameElements.playerHeight;
   }
@@ -437,20 +499,21 @@ function handleFloorSelection(floorNumber) {
 
   if (isLeftLiftMoving || isRightLiftMoving) return;
 
-  if (flexElemsPosInit.playerOnLiftL) {
+  if (flexElemsPosInit.playerOnLiftL && shaftLdoorsOpenCheck()) {
     debugging.floorLevelSelected = getFloorLevel(floorNumber);
     flexElemsPosInit.liftL_calledToFloor = floorNumber;
-  } else if (flexElemsPosInit.playerOnLiftR) {
+  } else if (flexElemsPosInit.playerOnLiftR && shaftRdoorsOpenCheck()) {
     debugging.floorLevelSelected = getFloorLevel(floorNumber);
     flexElemsPosInit.liftR_calledToFloor = floorNumber;
   }
 }
 
 // ___________________________ GAME INI ___________________________
-function initialize() {
-  ctx.imageSmoothingEnabled = false;
-  Howler.autoUnlock = true; // ➕ Für iOS notwendig[3]
-  requestAnimationFrame(gameRoutine);
+async function initialize() {
+  ctx.imageSmoothingEnabled = true;
+  // Howler.autoUnlock = true; // ➕ Für iOS notwendig
+  createButton(startButton);
+  createButton(optionsButton);
 }
 
 // ___________________________              ___________________________
@@ -458,21 +521,23 @@ function initialize() {
 // ___________________________              ___________________________
 async function gameRoutine(timestamp) {
   if (!gamePaused) {
-    if (!lastTimePlayer) lastTimePlayer = timestamp;
-    if (!lastTimeNpc) lastTimeNpc = timestamp;
-    const elapsedPlayer = timestamp - lastTimePlayer;
-    const elapsedNpc = timestamp - lastTimeNpc;
+    if (!spriteControl.lastTimePlayer) spriteControl.lastTimePlayer = timestamp;
+    if (!spriteControl.lastTimeNpc) spriteControl.lastTimeNpc = timestamp;
+    const elapsedPlayer = timestamp - spriteControl.lastTimePlayer;
+    const elapsedNpc = timestamp - spriteControl.lastTimeNpc;
 
-    if (elapsedPlayer > animationIntervalPlayer && !isColliding) {
-      lastTimePlayer = timestamp;
+    if (elapsedPlayer > spriteControl.animationIntervalPlayer && !isColliding) {
+      spriteControl.lastTimePlayer = timestamp;
       // Frame-Update
-      currentFramePlayer = ++currentFramePlayer % totalFramesPlayer;
+      spriteControl.currentFramePlayer =
+        ++spriteControl.currentFramePlayer % spriteControl.totalFramesPlayer;
     }
 
-    if (elapsedNpc > animationIntervalNpc) {
-      lastTimeNpc = timestamp;
+    if (elapsedNpc > spriteControl.animationIntervalNpc) {
+      spriteControl.lastTimeNpc = timestamp;
       // Frame-Update
-      currentFrameNpc = ++currentFrameNpc % totalFramesNpc;
+      spriteControl.currentFrameNpc =
+        ++spriteControl.currentFrameNpc % spriteControl.totalFramesNpc;
     }
 
     flexElemsPosInit.playerLastDir =
@@ -497,10 +562,10 @@ async function gameRoutine(timestamp) {
 
     if (isColliding) {
       // Sichere Initialisierung der Idle-Animation
-      currentFramePlayer = 0;
-      totalFramesPlayer = 7;
-      animationIntervalPlayer = 125; // Reset des Intervalls
-      lastTimePlayer = performance.now(); // Reset des Zeitstempels
+      spriteControl.currentFramePlayer = 0;
+      spriteControl.totalFramesPlayer = 7;
+      spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
+      spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
     }
     await new Promise((resolve) => setTimeout(resolve, 15));
   } else {
@@ -538,7 +603,7 @@ function playerCallLiftBtnsCheck(value) {
 
   for (let i = 0; i < 7; i++) {
     value =
-      playerOnFloor === i &&
+      playerOnFloor.floor === i &&
       callElevatorBtnsStatus[`floor${i}`] != value &&
       callElevatorBtnsStatus[`floor${i}`] < 3
         ? callElevatorBtnsStatus[`floor${i}`] + value
@@ -546,7 +611,7 @@ function playerCallLiftBtnsCheck(value) {
 
     callElevatorBtnsStatus[`floor${i}`] =
       callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-      playerOnFloor === i &&
+      playerOnFloor.floor === i &&
       playerInteractPos.callLiftBtns
         ? value
         : callElevatorBtnsStatus[`floor${i}`];
@@ -569,7 +634,7 @@ function exitBtnActCheck() {
 
   for (let i = 0; i < 7; i++) {
     exitButtonsStatus[`floor${i}`] =
-      playerOnFloor === i && playerInteractPos.exitBtns
+      playerOnFloor.floor === i && playerInteractPos.exitBtns
         ? exitButtonsStatus[`floor${i}`]
           ? false
           : true
@@ -588,15 +653,10 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
-    // npcSprite.onload = function () {
-    //   drawNPC();
-    // };
-    flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+    flexElemsPosInit.npcOnLiftL
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "r")
+      : flexElemsPosInit.npcOnLiftR
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
       : null;
     drawLiftDoors();
     drawShaftsElements();
@@ -620,16 +680,12 @@ function drawGameElements() {
     }
 
     !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, npcHeading)
       : null;
 
     drawLabels();
 
-    if (debugging.debugMode) {
+    if (debugging.showDebugLine) {
       drawDebugLine();
     }
   } else {
@@ -637,12 +693,10 @@ function drawGameElements() {
     drawCeiling();
     drawFloors();
     drawWalls();
-    flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+    flexElemsPosInit.npcOnLiftL
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "r")
+      : flexElemsPosInit.npcOnLiftR
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, "l")
       : null;
     drawLiftDoors();
     drawShaftsElements();
@@ -670,18 +724,11 @@ function drawGameElements() {
       flexElemsPosInit.playerPosY,
       flexElemsPosInit.playerLastDir
     );
-    // npcSprite.onload = function () {
-    //   drawNPC();
-    // };
     !flexElemsPosInit.npcOnLiftL && !flexElemsPosInit.npcOnLiftR
-      ? drawNPC(
-          flexElemsPosInit.npcPosX,
-          flexElemsPosInit.npcPosY,
-          flexElemsPosInit.npcActMovDir
-        )
+      ? drawNPC(flexElemsPosInit.npcPosX, flexElemsPosInit.npcPosY, npcHeading)
       : null;
     drawLabels();
-    if (debugging.debugMode) {
+    if (debugging.showDebugLine) {
       drawDebugLine();
     }
   }
@@ -1032,7 +1079,7 @@ export function playerPosUpdate(moveDirection) {
 }
 
 function playerIsOnFloor() {
-  playerOnFloor =
+  playerOnFloor.floor =
     flexElemsPosInit.playerPosY + flexElemsPosInit.playerYposOffset >
     gameElements.floor1_YPos
       ? 0
@@ -1249,6 +1296,8 @@ function liftsPosUpdate() {
 }
 // In THE WORKS !
 function liftCalledCheck() {
+  // console.log(randCallLiftR);
+
   for (let i = 0; i < 7; ++i) {
     callElevatorBtnsStatus[`floor${i}`] =
       flexElemsPosInit.liftR_isOnFloor === i ||
@@ -1259,21 +1308,36 @@ function liftCalledCheck() {
     flexElemsPosInit.liftR_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
       flexElemsPosInit.liftR_isOnFloor !== i &&
+      !flexElemsPosInit.liftR_isMoving &&
+      shaftRdoorsOpenCheck() &&
       Math.abs(i - flexElemsPosInit.liftR_isOnFloor) <
         Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
         ? i
         : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
           flexElemsPosInit.liftR_isOnFloor !== i &&
+          !flexElemsPosInit.liftR_isMoving &&
+          shaftRdoorsOpenCheck() &&
           Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
-            Math.abs(i - flexElemsPosInit.liftL_isOnFloor)
+            Math.abs(i - flexElemsPosInit.liftL_isOnFloor) &&
+          randCallLiftR
         ? i
         : flexElemsPosInit.liftR_calledToFloor;
 
     flexElemsPosInit.liftL_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
       flexElemsPosInit.liftL_isOnFloor !== i &&
+      !flexElemsPosInit.liftL_isMoving &&
+      shaftLdoorsOpenCheck() &&
       Math.abs(i - flexElemsPosInit.liftL_isOnFloor) <
         Math.abs(i - flexElemsPosInit.liftR_isOnFloor)
+        ? i
+        : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
+          flexElemsPosInit.liftL_isOnFloor !== i &&
+          !flexElemsPosInit.liftL_isMoving &&
+          shaftLdoorsOpenCheck() &&
+          Math.abs(i - flexElemsPosInit.liftR_isOnFloor) ===
+            Math.abs(i - flexElemsPosInit.liftL_isOnFloor) &&
+          !randCallLiftR
         ? i
         : flexElemsPosInit.liftL_calledToFloor;
   }
@@ -1294,6 +1358,65 @@ function shaftLdoorsClosed() {
 
 export function shaftLdoorsOpenCheck() {
   return Object.values(shaftLdoorsOpenStatus).some(Boolean);
+}
+
+function createButton(btn) {
+  btn.textContent =
+    btn === startButton
+      ? "Play Game"
+      : btn === optionsButton
+      ? "Options"
+      : "???";
+
+  // Breite und Höhe anpassen
+  btn.style.width = "200px";
+  btn.style.height = "50px";
+
+  // Hintergrund- und Textfarbe ändern
+  btn.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
+  btn.style.color = "darkgoldenrod";
+
+  // Schriftgröße und Schriftart anpassen
+  btn.style.fontSize = "33px";
+  btn.style.fontFamily = "Times New Roman, Arial";
+
+  // Border Radius
+  btn.style.borderRadius = "10px";
+
+  // Border / Cursor
+  btn.style.border = "2px solid goldenrod";
+  btn.style.cursor = "pointer";
+
+  // Box-Shadow hinzufügen
+  btn.style.boxShadow = "0 0 55px red";
+
+  // Übergänge für Hover-Effekt
+  btn.style.transition =
+    "background-color 0.5s, color 0.5s, border 1.0s, box-shadow 0.5s";
+
+  // Hover-Effekt hinzufügen
+  btn.addEventListener("mouseover", function () {
+    this.style.backgroundColor = "rgba(200, 200, 0, 1.0)";
+    this.style.color = "#000000";
+    this.style.border = "2px solid black";
+    this.style.boxShadow = "0 0 55px greenyellow";
+  });
+
+  btn.addEventListener("mouseout", function () {
+    this.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
+    this.style.color = "darkgoldenrod";
+    this.style.border = "2px solid goldenrod";
+    this.style.boxShadow = "0 0 55px red";
+  });
+
+  // Korrigierter Event-Listener für Klick-Ereignis
+  // startButton.addEventListener("click", function () {
+  //   document.body.removeChild(this); // 'this' bezieht sich auf den geklickten Button
+  //   sounds.btnPress.play();
+  //   initialize();
+  // });
+
+  document.body.appendChild(btn);
 }
 
 function createHomeButton(posX, posY) {

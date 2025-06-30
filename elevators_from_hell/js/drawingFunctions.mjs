@@ -1,28 +1,29 @@
 console.log("Module 'drawingFunctions.mjs' has started !");
 
+import { gameCanvas, ctx } from "./canvasInit.mjs";
+import { drawLabels } from "./drawLabels.mjs";
+import { playerCatched } from "./npcLogic.mjs";
+
 import {
   gameElements,
   flexElemsPosInit,
   debugging,
-  currentFramePlayer,
-  spriteWidth,
-  spriteHeight,
-  currentFrameNpc,
+  exitButtonsStatus,
+  callElevatorBtnsStatus,
 } from "./hell10.mjs";
-import { gameCanvas, ctx } from "./canvasInit.mjs";
-import { cabinView, playerSprite, npcSprite } from "./spriteHandling.mjs";
+import {
+  spriteControl,
+  cabinView,
+  playerSprite,
+  npcSprite,
+  changePlayerSprite,
+} from "./spriteHandling.mjs";
 
 // ___________________________              ___________________________
 // ___________________________   DRAWING    ___________________________
 // ___________________________              ___________________________
+
 export function drawLifts() {
-  // ctx.fillStyle = "#f4ff51";
-  // ctx.fillRect(
-  //   gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
-  //   moveableElems.liftL_YPos,
-  //   gameElements.liftsWidth,
-  //   gameElements.liftsHeight
-  // );
   ctx.drawImage(
     cabinView,
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
@@ -37,13 +38,6 @@ export function drawLifts() {
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
-
-  // ctx.fillRect(
-  //   gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-  //   moveableElems.liftR_YPos,
-  //   gameElements.liftsWidth,
-  //   gameElements.liftsHeight
-  // );
 }
 export function drawLiftDoors() {
   ctx.fillStyle = "#700";
@@ -668,16 +662,14 @@ export function drawWalls() {
 export function drawFloors() {
   // Starting with floor 0 =>
   ctx.fillStyle = "#373737";
-  gameElements.floorsWidth += 500;
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
+    0,
     gameElements.floor0_YPos,
-    gameElements.floorsWidth,
+    gameCanvas.width,
     gameElements.floorsHeight
   );
 
   ctx.fillStyle = "#171717";
-  gameElements.floorsWidth -= 500;
 
   ctx.fillRect(
     gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
@@ -802,7 +794,7 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
   ctx.fill(); // Optional: Dreieck ausfüllen
 }
 export function drawPlayer(xPos, yPos, direction) {
-  ctx.save(); // Speichern des aktuellen Kontextzustands
+  ctx.save();
 
   if (direction === "left") {
     // Spiegeln für Bewegung nach links
@@ -812,19 +804,20 @@ export function drawPlayer(xPos, yPos, direction) {
 
   ctx.drawImage(
     playerSprite,
-    currentFramePlayer * spriteWidth,
+    spriteControl.currentFramePlayer * spriteControl.spriteWidth,
     0,
-    spriteWidth,
-    spriteHeight,
+    spriteControl.spriteWidth,
+    spriteControl.spriteHeight,
     xPos,
     yPos,
     gameElements.playerWidth,
     gameElements.playerHeight
   );
-  // Lift L X-Pos middle debugging
+  // Lift L & R X-Pos middle rect show up
   // ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
+  // ctx.fillRect(gameElements.liftLposXmid, gameElements.floor0_YPos, 10, 10);
 
-  ctx.restore(); // Wiederherstellen des ursprünglichen Kontextzustands
+  ctx.restore();
 }
 export function drawNPC(xPos, yPos, direction) {
   ctx.save();
@@ -835,21 +828,35 @@ export function drawNPC(xPos, yPos, direction) {
       -xPos - (gameElements.npcWidth + gameElements.npcXaxisMirroringOffset);
   }
 
-  ctx.drawImage(
-    npcSprite,
-    currentFrameNpc * 512,
-    0,
-    512,
-    380,
-    xPos,
-    yPos,
-    gameElements.npcWidth,
-    gameElements.npcHeight
-  );
+  if (!playerCatched) {
+    ctx.drawImage(
+      npcSprite,
+      spriteControl.currentFrameNpc * 512,
+      0,
+      512,
+      380,
+      xPos,
+      yPos,
+      gameElements.npcWidth,
+      gameElements.npcHeight
+    );
+  } else {
+    ctx.drawImage(
+      npcSprite,
+      (spriteControl.currentFrameNpc + 11) * 512,
+      0,
+      512,
+      380,
+      xPos,
+      yPos,
+      gameElements.npcWidth,
+      gameElements.npcHeight
+    );
+  }
 
   if (debugging.showNpcRange) {
     ctx.fillStyle = "#00FF00";
-    ctx.fillRect(xPos, yPos + (gameElements.npcHeight / 2 - 2.5), 5, 5);
+    ctx.fillRect(xPos, yPos + (gameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
 }

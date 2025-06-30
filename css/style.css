@@ -5,7 +5,7 @@
 }
 body {
   /* background: rgb(255, 196, 136); */
-  background-image: url("http://bblunk.bplaced.net/pictures/earth_bg.jpg");
+  background-image: url("../pictures/earth_bg.webp");
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;

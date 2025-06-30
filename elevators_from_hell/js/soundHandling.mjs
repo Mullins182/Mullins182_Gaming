@@ -3,15 +3,19 @@ console.log("Module 'soundHandling.mjs' has started !");
 import { flexElemsPosInit, gameElements } from "./hell10.mjs";
 import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
+import { playerCatched } from "./npcLogic.mjs";
+
+const Howl = window.Howl;
 
 // Sound-Initializing
-const sounds = {
+export const sounds = {
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftDoorsRop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
   liftDoorsLop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
   liftDoorsRcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
   liftDoorsLcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
+  npcAttack: new Howl({ src: ["./assets/sounds/npcAttack.wav"] }),
   runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
   btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
@@ -28,6 +32,28 @@ export const soundState = {
   exitDoorStopped: true,
 };
 
+// Exportiere eine Funktion, die Promises für das Laden der Sounds zurückgibt
+export function loadAllSounds() {
+  const loadPromises = Object.values(sounds).map((sound) => {
+    return new Promise((resolve, reject) => {
+      // Wenn der Sound bereits geladen ist (z.B. aus Cache), sofort auflösen
+      if (sound.state() === "loaded") {
+        resolve();
+        return;
+      }
+
+      // Bei erfolgreichem Laden auflösen
+      sound.once("load", () => resolve());
+      // Bei Ladefehler ablehnen
+      sound.once("loaderror", (id, error) => {
+        console.error(`Fehler beim Laden von Sound (ID: ${id}):`, error);
+        reject(new Error(`Fehler beim Laden eines Sounds: ${error}`));
+      });
+    });
+  });
+  return Promise.all(loadPromises);
+}
+
 export async function playSounds(stopAll = false) {
   if (stopAll) {
     sounds.liftDoorsLcl.stop();
@@ -37,6 +63,7 @@ export async function playSounds(stopAll = false) {
     sounds.liftDoorsRop.stop();
     sounds.liftSndL.stop();
     sounds.liftSndR.stop();
+    sounds.npcAttack.stop();
     sounds.runSnd.stop();
     return;
   }
@@ -55,6 +82,18 @@ export async function playSounds(stopAll = false) {
   // }
 
   // LIFT L
+
+  if (playerCatched) {
+    if (!sounds.npcAttack.playing()) {
+      sounds.npcAttack.rate(1.47);
+      sounds.npcAttack.seek(0.6);
+      // sounds.npcAttack.seek() < 1.5 ? 1.5 : sounds.npcAttack.seek();
+      sounds.npcAttack.play();
+    } else {
+      sounds.npcAttack.seek() > 2.3 ? sounds.npcAttack.stop() : null;
+    }
+  }
+
   if (
     flexElemsPosInit.liftL_calledToFloor != flexElemsPosInit.liftL_isOnFloor &&
     !flexElemsPosInit.liftL_isMoving
