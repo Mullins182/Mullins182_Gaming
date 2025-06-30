@@ -365,6 +365,9 @@ const FLOOR_LEVELS = {
   floor6_YPos: floorLevels.floor6_YPos,
 };
 
+// ___________________________ GAME-VERSION ___________________________
+export const gameVersion = "v0.9";
+
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
   debugMode: false,

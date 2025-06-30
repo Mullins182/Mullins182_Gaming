@@ -1,6 +1,7 @@
 console.log("Module 'drawLabels.mjs' has started !");
 
 import {
+  gameVersion,
   gameElements,
   playerOnFloor,
   npcOnFloor,
@@ -64,6 +65,20 @@ export function drawLabels() {
       17,
       "strokeText",
       "goldenrod",
+      2
+    );
+    createLabel(
+      gameCanvas.width / 1.3,
+      gameCanvas.height * 0.085,
+      gameVersion,
+      "15px Arial Black",
+      "darkgoldenrod",
+      "black",
+      3,
+      8,
+      17,
+      "fillText",
+      "darkgoldenrod",
       2
     );
   }
