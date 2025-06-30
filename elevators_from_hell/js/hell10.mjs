@@ -512,8 +512,8 @@ function handleFloorSelection(floorNumber) {
 async function initialize() {
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
-  createStartButton(startButton);
-  createStartButton(optionsButton);
+  createButton(startButton);
+  createButton(optionsButton);
 }
 
 // ___________________________              ___________________________
@@ -1360,49 +1360,49 @@ export function shaftLdoorsOpenCheck() {
   return Object.values(shaftLdoorsOpenStatus).some(Boolean);
 }
 
-function createStartButton(btnId) {
-  btnId.textContent =
-    btnId === "startButton"
+function createButton(btn) {
+  btn.textContent =
+    btn === startButton
       ? "Play Game"
-      : btnId === "optionsButton"
+      : btn === optionsButton
       ? "Options"
       : "???";
 
   // Breite und Höhe anpassen
-  btnId.style.width = "200px";
-  btnId.style.height = "50px";
+  btn.style.width = "200px";
+  btn.style.height = "50px";
 
   // Hintergrund- und Textfarbe ändern
-  btnId.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
-  btnId.style.color = "darkgoldenrod";
+  btn.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
+  btn.style.color = "darkgoldenrod";
 
   // Schriftgröße und Schriftart anpassen
-  btnId.style.fontSize = "33px";
-  btnId.style.fontFamily = "Times New Roman, Arial";
+  btn.style.fontSize = "33px";
+  btn.style.fontFamily = "Times New Roman, Arial";
 
   // Border Radius
-  btnId.style.borderRadius = "10px";
+  btn.style.borderRadius = "10px";
 
   // Border / Cursor
-  btnId.style.border = "2px solid goldenrod";
-  btnId.style.cursor = "pointer";
+  btn.style.border = "2px solid goldenrod";
+  btn.style.cursor = "pointer";
 
   // Box-Shadow hinzufügen
-  btnId.style.boxShadow = "0 0 55px red";
+  btn.style.boxShadow = "0 0 55px red";
 
   // Übergänge für Hover-Effekt
-  btnId.style.transition =
+  btn.style.transition =
     "background-color 0.5s, color 0.5s, border 1.0s, box-shadow 0.5s";
 
   // Hover-Effekt hinzufügen
-  btnId.addEventListener("mouseover", function () {
+  btn.addEventListener("mouseover", function () {
     this.style.backgroundColor = "rgba(200, 200, 0, 1.0)";
     this.style.color = "#000000";
     this.style.border = "2px solid black";
     this.style.boxShadow = "0 0 55px greenyellow";
   });
 
-  btnId.addEventListener("mouseout", function () {
+  btn.addEventListener("mouseout", function () {
     this.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
     this.style.color = "darkgoldenrod";
     this.style.border = "2px solid goldenrod";
@@ -1416,7 +1416,7 @@ function createStartButton(btnId) {
   //   initialize();
   // });
 
-  document.body.appendChild(btnId);
+  document.body.appendChild(btn);
 }
 
 function createHomeButton(posX, posY) {
