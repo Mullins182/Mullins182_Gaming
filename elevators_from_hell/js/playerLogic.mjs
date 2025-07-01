@@ -17,6 +17,7 @@ import { playerCatched } from "./npcLogic.mjs";
 
 // Collision-Variables
 export let isColliding = false;
+export let playerEscaped = false;
 
 export function playerCollisionCheck() {
   if (!playerCollision() || playerCanLeave()) {
@@ -47,8 +48,6 @@ function playerCanLeave() {
     ? true
     : false;
 }
-// ___________________________ PLAYER HAS LEFT BUILDING CHECK ___________________________
-
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 export function playerOnLift(getOutOfLift) {
   if (getOutOfLift) {
@@ -117,6 +116,18 @@ export function playerCatchedCheck() {
     gameElements.playerMovement = "stop";
     wrapper.style.backgroundSize = "0%";
     wrapper.style.backgroundColor = "#FF0000";
+    gameCanvas.style.opacity = 0.85;
+    returnBtn.style.display =
+      returnBtn.style.display !== "inline" ? "inline" : returnBtn.style.display;
+  }
+}
+// ___________________________ PLAYER HAS LEFT BUILDING CHECK ___________________________
+export function playerEscapedCheck() {
+  if (flexElemsPosInit.playerPosX < -100) {
+    playerEscaped = playerEscaped ? playerEscaped : true;
+    gameElements.playerMovement = "stop";
+    wrapper.style.backgroundSize = "0%";
+    wrapper.style.backgroundColor = "#33FF00";
     gameCanvas.style.opacity = 0.85;
     returnBtn.style.display =
       returnBtn.style.display !== "inline" ? "inline" : returnBtn.style.display;

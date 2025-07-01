@@ -39,13 +39,15 @@ import {
   exitBtnActCheck,
   isColliding,
   playerOnLift,
+  playerEscapedCheck,
 } from "./playerLogic.mjs";
 
 import { npcRoutine, npcHeading, playerCatched } from "./npcLogic.mjs";
 
-const startButton = document.getElementById("startButton");
-const optionsButton = document.getElementById("optionsButton");
+export const startButton = document.getElementById("startButton");
+export const optionsButton = document.getElementById("optionsButton");
 export const returnBtn = document.getElementById("returnButton");
+export const creditsButton = document.getElementById("creditsButton");
 let soundsLoaded = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -59,6 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (startButton) {
     startButton.disabled = true;
     startButton.textContent = "loading...";
+  }
+
+  if (creditsButton) {
+    creditsButton.textContent = "Credits";
   }
 
   loadAllSounds()
@@ -96,7 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Blende den Button aus
       this.style.display = "none";
       optionsButton.style.display = "none";
-      gameCanvas.style.opacity = 1;
+
+      gameCanvas.style.display = "block";
 
       // Starte die Haupt-Spiellogik
       requestAnimationFrame(gameRoutine);
@@ -387,7 +394,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v0.9";
+export const gameVersion = "v1.0";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -548,6 +555,7 @@ async function initialize() {
   createButton(startButton);
   createButton(optionsButton);
   createButton(returnBtn);
+  createButton(creditsButton);
 }
 
 // ___________________________              ___________________________
@@ -585,6 +593,7 @@ async function gameRoutine(timestamp) {
 
     playerCatchedCheck();
     playerCollisionCheck();
+    playerEscapedCheck();
     playerIsOnFloor();
     npcRoutine();
     liftsPosUpdate();
@@ -1341,7 +1350,7 @@ function createButton(btn) {
       ? "Options"
       : btn === returnBtn
       ? "Goto Mainmenu"
-      : "???";
+      : btn.textContent;
 
   // Breite und Höhe anpassen
   btn.style.width = btn === returnBtn ? "300px" : "200px";

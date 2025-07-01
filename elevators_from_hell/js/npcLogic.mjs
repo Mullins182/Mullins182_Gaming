@@ -2,6 +2,7 @@ console.log("Module 'npcLogic.mjs' has started !");
 
 import { gameCanvas } from "./canvasInit.mjs";
 import { spriteControl } from "./spriteHandling.mjs";
+import { playerEscaped } from "./playerLogic.mjs";
 
 import {
   flexElemsPosInit,
@@ -28,6 +29,9 @@ export function npcRoutine() {
   elemStatusUpdate();
   npcAnimationConfig();
   npcIsOnFloorUpdate();
+  if (playerEscaped) {
+    return;
+  }
   npcMovesToPlayer();
   // console.log("NPC HEADING: " + npcHeading);
 }

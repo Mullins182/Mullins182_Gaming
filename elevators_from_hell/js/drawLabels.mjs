@@ -5,13 +5,12 @@ import { gameCanvas, ctx } from "./canvasInit.mjs";
 import {
   gameVersion,
   gameElements,
-  playerOnFloor,
-  npcOnFloor,
   debugging,
   flexElemsPosInit,
 } from "./hell10.mjs";
 
 import { playerCatched } from "./npcLogic.mjs";
+import { playerEscaped } from "./playerLogic.mjs";
 
 export function drawLabels() {
   // EXIT SIGN
@@ -68,6 +67,21 @@ export function drawLabels() {
       17,
       "strokeText",
       "red",
+      2
+    );
+  } else if (playerEscaped) {
+    createLabel(
+      gameCanvas.width / 2,
+      gameCanvas.height * 0.07,
+      "YOU ESCAPED THE BUILDING ... CONGRATS :)",
+      "63px Arial Black",
+      "greenyellow",
+      "black",
+      3,
+      8,
+      17,
+      "strokeText",
+      "greenyellow",
       2
     );
   } else {
