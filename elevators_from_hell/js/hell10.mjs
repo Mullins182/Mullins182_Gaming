@@ -32,7 +32,11 @@ import {
   loadAllSounds,
 } from "./soundHandling.mjs";
 
-import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
+import {
+  playerCollisionCheck,
+  isColliding,
+  playerOnLift,
+} from "./playerLogic.mjs";
 
 import { npcRoutine, npcHeading, playerCatched } from "./npcLogic.mjs";
 
@@ -576,7 +580,8 @@ async function gameRoutine(timestamp) {
 
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-    playerMovandColl();
+    playerCatchedCheck();
+    playerCollisionCheck();
     playerIsOnFloor();
     npcRoutine();
     liftsPosUpdate();
@@ -587,25 +592,6 @@ async function gameRoutine(timestamp) {
     drawGameElements();
     playSounds();
 
-    if (isColliding) {
-      // Sichere Initialisierung der Idle-Animation
-      spriteControl.currentFramePlayer = 0;
-      spriteControl.totalFramesPlayer = 7;
-      spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
-      spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
-    }
-
-    if (playerCatched) {
-      // drawGameOverImg();
-      // wrapper.style.backgroundImage = "./assets/img/defeat.webp";
-      wrapper.style.backgroundSize = "0%";
-      wrapper.style.backgroundColor = "#FF0000";
-      gameCanvas.style.opacity = 0.85;
-      returnBtn.style.display =
-        returnBtn.style.display !== "inline"
-          ? "inline"
-          : returnBtn.style.display;
-    }
     await new Promise((resolve) => setTimeout(resolve, 15));
   } else {
     playSounds(true);
@@ -624,6 +610,18 @@ function resumeGame() {
   gamePaused = !gamePaused ? null : false;
   playSounds(false);
   console.log("Game resumed !");
+}
+
+function playerCatchedCheck() {
+  if (playerCatched) {
+    // drawGameOverImg();
+    // wrapper.style.backgroundImage = "./assets/img/defeat.webp";
+    wrapper.style.backgroundSize = "0%";
+    wrapper.style.backgroundColor = "#FF0000";
+    gameCanvas.style.opacity = 0.85;
+    returnBtn.style.display =
+      returnBtn.style.display !== "inline" ? "inline" : returnBtn.style.display;
+  }
 }
 
 function playerCallLiftBtnsCheck(value) {

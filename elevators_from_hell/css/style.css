@@ -50,7 +50,7 @@ body {
 }
 #returnButton {
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
-  top: 75%; /* Startet bei 50% von oben */
+  top: 62%; /* Startet bei 50% von oben */
   left: 50%; /* Startet bei 50% von links */
   transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
 }
