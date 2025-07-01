@@ -32,7 +32,7 @@ export const spriteControl = {
   lastTimePlayer: 0,
   lastTimeNpc: 0,
   animationIntervalPlayer: 125,
-  animationIntervalNpc: 90,
+  animationIntervalNpc: 40,
 };
 
 export function changePlayerSprite(movement) {

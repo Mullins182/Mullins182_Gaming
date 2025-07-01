@@ -81,19 +81,19 @@ export async function playSounds(stopAll = false) {
   //   }
   // }
 
-  // LIFT L
-
+  // NPC-Attack
   if (playerCatched) {
+    sounds.npcAttack.rate() !== 2.3 ? sounds.npcAttack.rate(2.3) : null;
+
     if (!sounds.npcAttack.playing()) {
-      sounds.npcAttack.rate(1.47);
-      sounds.npcAttack.seek(0.6);
-      // sounds.npcAttack.seek() < 1.5 ? 1.5 : sounds.npcAttack.seek();
+      sounds.npcAttack.seek(1.0);
       sounds.npcAttack.play();
     } else {
-      sounds.npcAttack.seek() > 2.3 ? sounds.npcAttack.stop() : null;
+      sounds.npcAttack.seek() > 1.5 ? sounds.npcAttack.seek(1.0) : null;
     }
   }
 
+  // LIFT L
   if (
     flexElemsPosInit.liftL_calledToFloor != flexElemsPosInit.liftL_isOnFloor &&
     !flexElemsPosInit.liftL_isMoving

@@ -25,9 +25,8 @@ export let playerCatched = false;
 
 // IN THE WORKS !
 export function npcRoutine() {
-  npcSpritesheetConfig();
   elemStatusUpdate();
-  npcAnimationInterval();
+  npcAnimationConfig();
   npcIsOnFloorUpdate();
   npcMovesToPlayer();
   // console.log("NPC HEADING: " + npcHeading);
@@ -55,7 +54,7 @@ function elemStatusUpdate() {
       : true;
 }
 
-function npcSpritesheetConfig() {
+function npcAnimationConfig() {
   if (!playerCatched) {
     spriteControl.totalFramesNpc =
       spriteControl.totalFramesNpc !== 11 ? 11 : spriteControl.totalFramesNpc;
@@ -67,19 +66,17 @@ function npcSpritesheetConfig() {
         ? 75
         : spriteControl.animationIntervalNpc;
   }
-}
 
-function npcAnimationInterval() {
   spriteControl.animationIntervalNpc =
     npcOnFloor.floor === playerOnFloor.floor &&
     !(npcOnLiftL || npcOnLiftR) &&
-    spriteControl.animationIntervalNpc === 90
-      ? 35
+    spriteControl.animationIntervalNpc === 40
+      ? 20
       : npcOnFloor.floor !== playerOnFloor.floor &&
-        spriteControl.animationIntervalNpc === 35
-      ? 90
+        spriteControl.animationIntervalNpc === 20
+      ? 40
       : spriteControl.animationIntervalNpc;
-  console.log(spriteControl.animationIntervalNpc);
+  // console.log(spriteControl.animationIntervalNpc);
 }
 
 function npcMoveToCallBtn() {
