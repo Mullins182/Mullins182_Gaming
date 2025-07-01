@@ -37,8 +37,8 @@ export function playerCollisionCheck() {
 } // ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
 
 export function playerCanLeave() {
-  return flexElemsPosInit.exitDoorPosY < gameCanvas.clientHeight * 0.73 &&
-    flexElemsPosInit.playerPosX < gameCanvas.clientWidth / 2 &&
+  return flexElemsPosInit.exitDoorPosY < gameCanvas.height * 0.72 &&
+    flexElemsPosInit.playerPosX < gameCanvas.width / 2 &&
     playerOnFloor.floor === 0
     ? true
     : false;

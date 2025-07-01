@@ -616,6 +616,7 @@ function playerCatchedCheck() {
   if (playerCatched) {
     // drawGameOverImg();
     // wrapper.style.backgroundImage = "./assets/img/defeat.webp";
+    gameElements.playerMovement = "stop";
     wrapper.style.backgroundSize = "0%";
     wrapper.style.backgroundColor = "#FF0000";
     gameCanvas.style.opacity = 0.85;
