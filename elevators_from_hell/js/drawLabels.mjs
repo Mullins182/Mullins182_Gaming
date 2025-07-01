@@ -1,5 +1,7 @@
 console.log("Module 'drawLabels.mjs' has started !");
 
+import { gameCanvas, ctx } from "./canvasInit.mjs";
+
 import {
   gameVersion,
   gameElements,
@@ -8,7 +10,8 @@ import {
   debugging,
   flexElemsPosInit,
 } from "./hell10.mjs";
-import { gameCanvas, ctx } from "./canvasInit.mjs";
+
+import { playerCatched } from "./npcLogic.mjs";
 
 export function drawLabels() {
   // EXIT SIGN
@@ -51,6 +54,21 @@ export function drawLabels() {
       "strokeText",
       "gold",
       3
+    );
+  } else if (playerCatched) {
+    createLabel(
+      gameCanvas.width / 2,
+      gameCanvas.height * 0.07,
+      "YOU GOT TOASTED !!!",
+      "63px Arial Black",
+      "red",
+      "black",
+      3,
+      8,
+      17,
+      "strokeText",
+      "red",
+      2
     );
   } else {
     createLabel(

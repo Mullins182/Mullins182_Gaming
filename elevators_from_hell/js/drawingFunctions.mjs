@@ -14,6 +14,7 @@ import {
 import {
   spriteControl,
   cabinView,
+  defeatImg,
   playerSprite,
   npcSprite,
   changePlayerSprite,
@@ -859,4 +860,8 @@ export function drawNPC(xPos, yPos, direction) {
     ctx.fillRect(xPos, yPos + (gameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
+}
+
+export function drawGameOverImg() {
+  ctx.drawImage(defeatImg, 0, 0, 350, 300);
 }

@@ -1,5 +1,8 @@
 console.log("Module 'Hell10.mjs' has started !");
 
+import { drawLabels } from "./drawLabels.mjs";
+import { gameCanvas, ctx, wrapper } from "./canvasInit.mjs";
+
 import {
   changePlayerSprite,
   playerSprite,
@@ -19,6 +22,7 @@ import {
   drawCallElevatorBtns,
   drawExitButtons,
   drawDebugLine,
+  drawGameOverImg,
 } from "./drawingFunctions.mjs";
 
 import {
@@ -30,13 +34,11 @@ import {
 
 import { playerMovandColl, isColliding, playerOnLift } from "./playerLogic.mjs";
 
-import { npcRoutine, npcHeading } from "./npcLogic.mjs";
-
-import { drawLabels } from "./drawLabels.mjs";
-import { gameCanvas, ctx } from "./canvasInit.mjs";
+import { npcRoutine, npcHeading, playerCatched } from "./npcLogic.mjs";
 
 const startButton = document.getElementById("startButton");
 const optionsButton = document.getElementById("optionsButton");
+const returnBtn = document.getElementById("returnButton");
 let soundsLoaded = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -76,8 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
     startButton.addEventListener("click", function () {
       if (!soundsLoaded) {
         console.warn("Sounds are loading, please wait ...");
-        return; // Spielstart verhindern
-      }
+        return;
+      } // Spielstart verhindern
 
       // Starte den ersten Sound (z.B. Hintergrundmusik), um den AudioContext zu aktivieren
       if (sounds.btnPress) {
@@ -99,6 +101,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // initialize();
   }
 });
+
+if (optionsButton) {
+  optionsButton.addEventListener("click", function () {});
+}
+if (returnBtn) {
+  returnBtn.style.display = "none";
+  returnBtn.addEventListener("click", function () {
+    location.reload();
+  });
+}
 
 export let playerOnFloor = { floor: 0 };
 export let npcOnFloor = { floor: 5 };
@@ -395,7 +407,11 @@ document.addEventListener("keydown", function (event) {
   // Player Movement
   switch (event.key) {
     case KEYS.DIRECTIONS.LEFT:
-      if (flexElemsPosInit.playerOnLiftL || flexElemsPosInit.playerOnLiftR) {
+      if (
+        flexElemsPosInit.playerOnLiftL ||
+        flexElemsPosInit.playerOnLiftR ||
+        playerCatched
+      ) {
         break;
       }
       changePlayerSprite("left");
@@ -404,7 +420,11 @@ document.addEventListener("keydown", function (event) {
       gameElements.playerMovement = "left";
       break;
     case KEYS.DIRECTIONS.RIGHT:
-      if (flexElemsPosInit.playerOnLiftL || flexElemsPosInit.playerOnLiftR) {
+      if (
+        flexElemsPosInit.playerOnLiftL ||
+        flexElemsPosInit.playerOnLiftR ||
+        playerCatched
+      ) {
         break;
       }
       changePlayerSprite("right");
@@ -413,6 +433,9 @@ document.addEventListener("keydown", function (event) {
       gameElements.playerMovement = "right";
       break;
     case KEYS.DIRECTIONS.DOWN:
+      if (playerCatched) {
+        break;
+      }
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
         spriteControl.totalFramesPlayer = 7;
@@ -434,6 +457,9 @@ document.addEventListener("keydown", function (event) {
       playerOnLift(true);
       break;
     case KEYS.DIRECTIONS.UP:
+      if (playerCatched) {
+        break;
+      }
       if (playerSprite !== player_spriteSheet.idle) {
         changePlayerSprite("stop");
         spriteControl.totalFramesPlayer = 7;
@@ -514,6 +540,7 @@ async function initialize() {
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
   createButton(optionsButton);
+  createButton(returnBtn);
 }
 
 // ___________________________              ___________________________
@@ -566,6 +593,18 @@ async function gameRoutine(timestamp) {
       spriteControl.totalFramesPlayer = 7;
       spriteControl.animationIntervalPlayer = 125; // Reset des Intervalls
       spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
+    }
+
+    if (playerCatched) {
+      // drawGameOverImg();
+      // wrapper.style.backgroundImage = "./assets/img/defeat.webp";
+      wrapper.style.backgroundSize = "0%";
+      wrapper.style.backgroundColor = "#FF0000";
+      gameCanvas.style.opacity = 0.85;
+      returnBtn.style.display =
+        returnBtn.style.display !== "inline"
+          ? "inline"
+          : returnBtn.style.display;
     }
     await new Promise((resolve) => setTimeout(resolve, 15));
   } else {
@@ -1366,10 +1405,12 @@ function createButton(btn) {
       ? "Play Game"
       : btn === optionsButton
       ? "Options"
+      : btn === returnBtn
+      ? "Goto Mainmenu"
       : "???";
 
   // Breite und Höhe anpassen
-  btn.style.width = "200px";
+  btn.style.width = btn === returnBtn ? "300px" : "200px";
   btn.style.height = "50px";
 
   // Hintergrund- und Textfarbe ändern

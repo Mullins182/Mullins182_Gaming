@@ -48,6 +48,12 @@ body {
   left: 15%; /* Startet bei 50% von links */
   transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
 }
+#returnButton {
+  position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
+  top: 75%; /* Startet bei 50% von oben */
+  left: 50%; /* Startet bei 50% von links */
+  transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
+}
 #mainCanvas {
   display: block; /* Entfernt eventuelle Leerräume unter dem Canvas */
   background-color: #000;
