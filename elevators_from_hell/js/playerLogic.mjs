@@ -7,6 +7,8 @@ import {
   flexElemsPosInit,
   shaftLdoorsOpenCheck,
   shaftRdoorsOpenCheck,
+  callElevatorBtnsStatus,
+  exitButtonsStatus,
   returnBtn,
 } from "./hell10.mjs";
 import { gameCanvas, wrapper } from "./canvasInit.mjs";
@@ -36,8 +38,8 @@ export function playerCollisionCheck() {
         ? flexElemsPosInit.playerPosX + 5
         : flexElemsPosInit.playerPosX - 5;
   }
-} // ___________________________ PLAYER CAN LEAVE BUILDING-CHECK ___________________________
-
+}
+// ___________________________ PLAYER CAN LEAVE BUILDING CHECK ___________________________
 function playerCanLeave() {
   return flexElemsPosInit.exitDoorPosY < gameCanvas.height * 0.72 &&
     flexElemsPosInit.playerPosX < gameCanvas.width / 2 &&
@@ -45,6 +47,8 @@ function playerCanLeave() {
     ? true
     : false;
 }
+// ___________________________ PLAYER HAS LEFT BUILDING CHECK ___________________________
+
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 export function playerOnLift(getOutOfLift) {
   if (getOutOfLift) {
@@ -93,7 +97,7 @@ export function playerOnLift(getOutOfLift) {
     }
   }
 }
-
+// ___________________________ PLAYER COLLISION-CHECK ___________________________
 export function playerCollision() {
   return flexElemsPosInit.playerPosX >=
     gameCanvas.width * 0.95 - gameElements.playerWidth / 1.85
@@ -105,7 +109,7 @@ export function playerCollision() {
     ? true
     : false;
 }
-
+// ___________________________ PLAYER CATCHED-CHECK ___________________________
 export function playerCatchedCheck() {
   if (playerCatched) {
     // drawGameOverImg();
