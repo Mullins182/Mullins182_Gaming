@@ -255,7 +255,7 @@ function npcMovesToPlayer() {
       shaftLdoorsOpenCheck() ? npcLeavesLift() : null;
     }
     if (!npcOnLiftR && !npcOnLiftL) {
-      console.log("PposX -> " + playerPosX + "NposX -> " + npcPosX);
+      // console.log("PposX -> " + playerPosX + "NposX -> " + npcPosX);
 
       if (!playerCatched) {
         flexElemsPosInit.npcActMovDir =

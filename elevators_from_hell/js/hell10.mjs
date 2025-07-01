@@ -34,6 +34,9 @@ import {
 
 import {
   playerCollisionCheck,
+  playerCatchedCheck,
+  playerCallLiftBtnsCheck,
+  exitBtnActCheck,
   isColliding,
   playerOnLift,
 } from "./playerLogic.mjs";
@@ -42,7 +45,7 @@ import { npcRoutine, npcHeading, playerCatched } from "./npcLogic.mjs";
 
 const startButton = document.getElementById("startButton");
 const optionsButton = document.getElementById("optionsButton");
-const returnBtn = document.getElementById("returnButton");
+export const returnBtn = document.getElementById("returnButton");
 let soundsLoaded = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -610,74 +613,6 @@ function resumeGame() {
   gamePaused = !gamePaused ? null : false;
   playSounds(false);
   console.log("Game resumed !");
-}
-
-function playerCatchedCheck() {
-  if (playerCatched) {
-    // drawGameOverImg();
-    // wrapper.style.backgroundImage = "./assets/img/defeat.webp";
-    gameElements.playerMovement = "stop";
-    wrapper.style.backgroundSize = "0%";
-    wrapper.style.backgroundColor = "#FF0000";
-    gameCanvas.style.opacity = 0.85;
-    returnBtn.style.display =
-      returnBtn.style.display !== "inline" ? "inline" : returnBtn.style.display;
-  }
-}
-
-function playerCallLiftBtnsCheck(value) {
-  const playerInteractPos = {
-    callLiftBtns:
-      flexElemsPosInit.playerPosX >
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
-      flexElemsPosInit.playerPosX <
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
-    exitBtns:
-      flexElemsPosInit.playerPosX >
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
-      flexElemsPosInit.playerPosX <
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
-  };
-
-  for (let i = 0; i < 7; i++) {
-    value =
-      playerOnFloor.floor === i &&
-      callElevatorBtnsStatus[`floor${i}`] != value &&
-      callElevatorBtnsStatus[`floor${i}`] < 3
-        ? callElevatorBtnsStatus[`floor${i}`] + value
-        : value;
-
-    callElevatorBtnsStatus[`floor${i}`] =
-      callElevatorBtnsStatus[`floor${i}`] !== 3 &&
-      playerOnFloor.floor === i &&
-      playerInteractPos.callLiftBtns
-        ? value
-        : callElevatorBtnsStatus[`floor${i}`];
-  }
-}
-
-function exitBtnActCheck() {
-  const playerInteractPos = {
-    callLiftBtns:
-      flexElemsPosInit.playerPosX >
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
-      flexElemsPosInit.playerPosX <
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
-    exitBtns:
-      flexElemsPosInit.playerPosX >
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
-      flexElemsPosInit.playerPosX <
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
-  };
-
-  for (let i = 0; i < 7; i++) {
-    exitButtonsStatus[`floor${i}`] =
-      playerOnFloor.floor === i && playerInteractPos.exitBtns
-        ? exitButtonsStatus[`floor${i}`]
-          ? false
-          : true
-        : exitButtonsStatus[`floor${i}`];
-  }
 }
 
 function drawGameElements() {
