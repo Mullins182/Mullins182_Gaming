@@ -83,13 +83,13 @@ export async function playSounds(stopAll = false) {
 
   // NPC-Attack
   if (playerCatched) {
-    sounds.npcAttack.rate() !== 2.3 ? sounds.npcAttack.rate(2.3) : null;
+    sounds.npcAttack.rate() !== 2.63 ? sounds.npcAttack.rate(2.63) : null;
 
     if (!sounds.npcAttack.playing()) {
-      sounds.npcAttack.seek(1.0);
+      sounds.npcAttack.seek(1.35);
       sounds.npcAttack.play();
     } else {
-      sounds.npcAttack.seek() > 1.5 ? sounds.npcAttack.seek(1.0) : null;
+      sounds.npcAttack.seek() > 1.55 ? sounds.npcAttack.seek(1.35) : null;
     }
   }
 
