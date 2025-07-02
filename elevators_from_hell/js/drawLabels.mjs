@@ -4,7 +4,7 @@ import { gameCanvas, ctx } from "./canvasInit.mjs";
 
 import {
   gameVersion,
-  gameElements,
+  staticGameElements,
   debugging,
   moveableElems,
 } from "./hell10.mjs";
@@ -20,12 +20,12 @@ export function drawLabels() {
     "EXIT",
     "33px Arial Black",
     "gold",
-    gameElements.exitSignShadowColor,
+    staticGameElements.exitSignShadowColor,
     2,
     7,
     20,
     "strokeText",
-    gameElements.exitSignColor,
+    staticGameElements.exitSignColor,
     1.6
   );
 
@@ -117,27 +117,27 @@ export function drawLabels() {
     createLabel(
       gameCanvas.width * 0.37,
       i === 0
-        ? gameElements.floor0_YPos - 75
+        ? staticGameElements.floor0_YPos - 75
         : i === 1
-        ? gameElements.floor1_YPos - 75
+        ? staticGameElements.floor1_YPos - 75
         : i === 2
-        ? gameElements.floor2_YPos - 75
+        ? staticGameElements.floor2_YPos - 75
         : i === 3
-        ? gameElements.floor3_YPos - 75
+        ? staticGameElements.floor3_YPos - 75
         : i === 4
-        ? gameElements.floor4_YPos - 75
+        ? staticGameElements.floor4_YPos - 75
         : i === 5
-        ? gameElements.floor5_YPos - 75
-        : gameElements.floor6_YPos - 75,
+        ? staticGameElements.floor5_YPos - 75
+        : staticGameElements.floor6_YPos - 75,
       "Floor " + i,
       "25px Arial Black",
       "black",
-      gameElements.floorNumbersShadowColor,
+      staticGameElements.floorNumbersShadowColor,
       2.25,
       6,
       6,
       "strokeText",
-      gameElements.floorNumbersColor,
+      staticGameElements.floorNumbersColor,
       1.15
     );
   }
@@ -158,18 +158,18 @@ export function drawLabels() {
         ? gameCanvas.width * 0.18 + 53
         : gameCanvas.width * 0.18 + 63,
       i === 0
-        ? gameElements.floor0_YPos - 100
+        ? staticGameElements.floor0_YPos - 100
         : i === 1
-        ? gameElements.floor1_YPos - 100
+        ? staticGameElements.floor1_YPos - 100
         : i === 2
-        ? gameElements.floor2_YPos - 100
+        ? staticGameElements.floor2_YPos - 100
         : i === 3
-        ? gameElements.floor3_YPos - 100
+        ? staticGameElements.floor3_YPos - 100
         : i === 4
-        ? gameElements.floor4_YPos - 100
+        ? staticGameElements.floor4_YPos - 100
         : i === 5
-        ? gameElements.floor5_YPos - 100
-        : gameElements.floor6_YPos - 95,
+        ? staticGameElements.floor5_YPos - 100
+        : staticGameElements.floor6_YPos - 95,
 
       moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
       "14px Arial Black",
@@ -200,18 +200,18 @@ export function drawLabels() {
         ? gameCanvas.width * 0.78 + 53
         : gameCanvas.width * 0.78 + 63,
       i === 0
-        ? gameElements.floor0_YPos - 100
+        ? staticGameElements.floor0_YPos - 100
         : i === 1
-        ? gameElements.floor1_YPos - 100
+        ? staticGameElements.floor1_YPos - 100
         : i === 2
-        ? gameElements.floor2_YPos - 100
+        ? staticGameElements.floor2_YPos - 100
         : i === 3
-        ? gameElements.floor3_YPos - 100
+        ? staticGameElements.floor3_YPos - 100
         : i === 4
-        ? gameElements.floor4_YPos - 100
+        ? staticGameElements.floor4_YPos - 100
         : i === 5
-        ? gameElements.floor5_YPos - 100
-        : gameElements.floor6_YPos - 95,
+        ? staticGameElements.floor5_YPos - 100
+        : staticGameElements.floor6_YPos - 95,
       moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
       "14px Arial Black",
       "orange",

@@ -5,7 +5,7 @@ import { drawLabels } from "./drawLabels.mjs";
 import { playerCatched } from "./npcLogic.mjs";
 
 import {
-  gameElements,
+  staticGameElements,
   moveableElems,
   debugging,
   exitButtonsStatus,
@@ -27,17 +27,17 @@ import {
 export function drawLifts() {
   ctx.drawImage(
     cabinView,
-    gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.2 - staticGameElements.liftsWidth / 2,
     moveableElems.liftL_YPos,
-    gameElements.liftsWidth,
-    gameElements.liftsHeight
+    staticGameElements.liftsWidth,
+    staticGameElements.liftsHeight
   );
   ctx.drawImage(
     cabinView,
-    gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.8 - staticGameElements.liftsWidth / 2,
     moveableElems.liftR_YPos,
-    gameElements.liftsWidth,
-    gameElements.liftsHeight
+    staticGameElements.liftsWidth,
+    staticGameElements.liftsHeight
   );
 }
 export function drawLiftDoors() {
@@ -45,296 +45,296 @@ export function drawLiftDoors() {
 
   // Floor 0 | left
   ctx.fillRect(
-    gameCanvas.width * 0.199 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.199 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 1.0 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f0,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f0,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.201 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsLW_f0,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsLW_f0,
     gameCanvas.height * 1.0 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f0,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f0,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 0 | right
   ctx.fillRect(
-    gameCanvas.width * 0.799 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.799 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 1.0 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f0,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f0,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.801 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsRW_f0,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f0,
     gameCanvas.height * 1.0 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f0,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f0,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 1 | left
   ctx.fillRect(
-    gameCanvas.width * 0.199 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.199 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.875 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f1,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f1,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.201 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsLW_f1,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsLW_f1,
     gameCanvas.height * 0.875 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f1,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f1,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 1 | right
   ctx.fillRect(
-    gameCanvas.width * 0.799 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.799 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.875 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f1,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f1,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.801 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsRW_f1,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f1,
     gameCanvas.height * 0.875 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f1,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f1,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 2 | left
   ctx.fillRect(
-    gameCanvas.width * 0.199 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.199 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.75 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f2,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f2,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.201 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsLW_f2,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsLW_f2,
     gameCanvas.height * 0.75 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f2,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f2,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 2 | right
   ctx.fillRect(
-    gameCanvas.width * 0.799 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.799 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.75 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f2,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f2,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.801 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsRW_f2,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f2,
     gameCanvas.height * 0.75 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f2,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f2,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 3 | left
   ctx.fillRect(
-    gameCanvas.width * 0.199 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.199 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.625 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f3,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f3,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.201 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsLW_f3,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsLW_f3,
     gameCanvas.height * 0.625 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f3,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f3,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 3 | right
   ctx.fillRect(
-    gameCanvas.width * 0.799 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.799 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.625 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f3,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f3,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.801 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsRW_f3,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f3,
     gameCanvas.height * 0.625 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f3,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f3,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 4 | left
   ctx.fillRect(
-    gameCanvas.width * 0.199 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.199 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.5 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f4,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f4,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.201 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsLW_f4,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsLW_f4,
     gameCanvas.height * 0.5 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f4,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f4,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 4 | right
   ctx.fillRect(
-    gameCanvas.width * 0.799 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.799 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.5 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f4,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f4,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.801 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsRW_f4,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f4,
     gameCanvas.height * 0.5 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f4,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f4,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 5 | left
   ctx.fillRect(
-    gameCanvas.width * 0.199 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.199 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.375 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f5,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f5,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.201 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsLW_f5,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsLW_f5,
     gameCanvas.height * 0.375 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f5,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f5,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 5 | right
   ctx.fillRect(
-    gameCanvas.width * 0.799 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.799 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.375 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f5,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f5,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.801 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsRW_f5,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f5,
     gameCanvas.height * 0.375 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f5,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f5,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 6 | left
   ctx.fillRect(
-    gameCanvas.width * 0.199 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.199 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.25 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f6,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f6,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.201 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsLW_f6,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsLW_f6,
     gameCanvas.height * 0.25 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsLW_f6,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsLW_f6,
+    staticGameElements.shaftDoorsHeight
   );
 
   // Floor 6 | right
   ctx.fillRect(
-    gameCanvas.width * 0.799 - gameElements.liftsWidth / 2,
+    gameCanvas.width * 0.799 - staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.25 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f6,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f6,
+    staticGameElements.shaftDoorsHeight
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.801 +
-      gameElements.liftsWidth / 2 -
-      gameElements.shaftDoorsRW_f6,
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f6,
     gameCanvas.height * 0.25 -
-      gameElements.shaftDoorsHeight -
-      gameElements.floorsHeight,
-    gameElements.shaftDoorsRW_f6,
-    gameElements.shaftDoorsHeight
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    staticGameElements.shaftDoorsRW_f6,
+    staticGameElements.shaftDoorsHeight
   );
 }
 // __________________________________________________ DEBUGGING - CODE __________________________________________________
@@ -347,292 +347,292 @@ export function drawShaftsElements() {
   ctx.fillStyle = "#060606";
   // Floor 0
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_left,
-    gameElements.shaftTopF0PosY_left,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_left,
+    staticGameElements.shaftTopF0PosY_left,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_right,
-    gameElements.shaftTopF0PosY_right,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_right,
+    staticGameElements.shaftTopF0PosY_right,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   //Floor 1
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_left,
-    gameElements.shaftTopF1PosY_left,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_left,
+    staticGameElements.shaftTopF1PosY_left,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_right,
-    gameElements.shaftTopF1PosY_right,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_right,
+    staticGameElements.shaftTopF1PosY_right,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   // Floor 2
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_left,
-    gameElements.shaftTopF2PosY_left,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_left,
+    staticGameElements.shaftTopF2PosY_left,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_right,
-    gameElements.shaftTopF2PosY_right,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_right,
+    staticGameElements.shaftTopF2PosY_right,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
 
   // Floor 3
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_left,
-    gameElements.shaftTopF3PosY_left,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_left,
+    staticGameElements.shaftTopF3PosY_left,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_right,
-    gameElements.shaftTopF3PosY_right,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_right,
+    staticGameElements.shaftTopF3PosY_right,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
 
   // Floor 4
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_left,
-    gameElements.shaftTopF4PosY_left,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_left,
+    staticGameElements.shaftTopF4PosY_left,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_right,
-    gameElements.shaftTopF4PosY_right,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_right,
+    staticGameElements.shaftTopF4PosY_right,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
 
   // Floor 5
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_left,
-    gameElements.shaftTopF5PosY_left,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_left,
+    staticGameElements.shaftTopF5PosY_left,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_right,
-    gameElements.shaftTopF5PosY_right,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_right,
+    staticGameElements.shaftTopF5PosY_right,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
 
   // Floor 6
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_left,
-    gameElements.shaftTopF6PosY_left,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_left,
+    staticGameElements.shaftTopF6PosY_left,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
   ctx.fillRect(
-    gameElements.shaftTopF0PosX_right,
-    gameElements.shaftTopF6PosY_right,
-    gameElements.shaftsWidth,
-    gameElements.shaftsHeight
+    staticGameElements.shaftTopF0PosX_right,
+    staticGameElements.shaftTopF6PosY_right,
+    staticGameElements.shaftsWidth,
+    staticGameElements.shaftsHeight
   );
 
   // ____________________________ SHAFT SIDE ELEMENTS ____________________________
   ctx.fillStyle = "#222222";
   // Floor 0 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_left,
-    gameElements.shaftF0posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_left,
+    staticGameElements.shaftF0posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_left,
-    gameElements.shaftF0posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_left,
+    staticGameElements.shaftF0posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 0 RIGHT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_right,
-    gameElements.shaftF0posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_right,
+    staticGameElements.shaftF0posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_right,
-    gameElements.shaftF0posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_right,
+    staticGameElements.shaftF0posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 1 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_left,
-    gameElements.shaftF1posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_left,
+    staticGameElements.shaftF1posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_left,
-    gameElements.shaftF1posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_left,
+    staticGameElements.shaftF1posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 1 RIGHT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_right,
-    gameElements.shaftF1posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_right,
+    staticGameElements.shaftF1posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_right,
-    gameElements.shaftF1posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_right,
+    staticGameElements.shaftF1posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 2 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_left,
-    gameElements.shaftF2posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_left,
+    staticGameElements.shaftF2posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_left,
-    gameElements.shaftF2posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_left,
+    staticGameElements.shaftF2posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 2 RIGHT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_right,
-    gameElements.shaftF2posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_right,
+    staticGameElements.shaftF2posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_right,
-    gameElements.shaftF2posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_right,
+    staticGameElements.shaftF2posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 3 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_left,
-    gameElements.shaftF3posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_left,
+    staticGameElements.shaftF3posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_left,
-    gameElements.shaftF3posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_left,
+    staticGameElements.shaftF3posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 3 RIGHT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_right,
-    gameElements.shaftF3posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_right,
+    staticGameElements.shaftF3posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_right,
-    gameElements.shaftF3posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_right,
+    staticGameElements.shaftF3posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 4 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_left,
-    gameElements.shaftF4posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_left,
+    staticGameElements.shaftF4posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_left,
-    gameElements.shaftF4posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_left,
+    staticGameElements.shaftF4posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 4 RIGHT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_right,
-    gameElements.shaftF4posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_right,
+    staticGameElements.shaftF4posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_right,
-    gameElements.shaftF4posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_right,
+    staticGameElements.shaftF4posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 5 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_left,
-    gameElements.shaftF5posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_left,
+    staticGameElements.shaftF5posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_left,
-    gameElements.shaftF5posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_left,
+    staticGameElements.shaftF5posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 5 RIGHT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_right,
-    gameElements.shaftF5posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_right,
+    staticGameElements.shaftF5posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_right,
-    gameElements.shaftF5posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_right,
+    staticGameElements.shaftF5posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 6 LEFT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_left,
-    gameElements.shaftF6posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_left,
+    staticGameElements.shaftF6posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_left,
-    gameElements.shaftF6posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_left,
+    staticGameElements.shaftF6posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
   // Floor 6 RIGHT | Left Elem, then Right Elem
   ctx.fillRect(
-    gameElements.shaftF0LposX_right,
-    gameElements.shaftF6posY,
-    gameElements.shaftsLWidth,
-    gameElements.shaftsLHeight
+    staticGameElements.shaftF0LposX_right,
+    staticGameElements.shaftF6posY,
+    staticGameElements.shaftsLWidth,
+    staticGameElements.shaftsLHeight
   );
   ctx.fillRect(
-    gameElements.shaftF0RposX_right,
-    gameElements.shaftF6posY,
-    gameElements.shaftsRWidth,
-    gameElements.shaftsRHeight
+    staticGameElements.shaftF0RposX_right,
+    staticGameElements.shaftF6posY,
+    staticGameElements.shaftsRWidth,
+    staticGameElements.shaftsRHeight
   );
 }
 export function drawCeiling() {
   ctx.fillStyle = "#373737";
   ctx.fillRect(
-    gameCanvas.width * 0.505 - gameElements.ceilingWidth / 2,
+    gameCanvas.width * 0.505 - staticGameElements.ceilingWidth / 2,
     gameCanvas.height * 0.105,
-    gameElements.ceilingWidth,
-    gameElements.ceilingHeight
+    staticGameElements.ceilingWidth,
+    staticGameElements.ceilingHeight
   );
 }
 export function drawWalls() {
@@ -641,23 +641,23 @@ export function drawWalls() {
   ctx.fillRect(
     gameCanvas.width * 0.051,
     moveableElems.exitDoorPosY,
-    gameElements.wallsWidth - 5,
-    gameElements.exitDoorHeight
+    staticGameElements.wallsWidth - 5,
+    staticGameElements.exitDoorHeight
   );
   // ____________________
   ctx.fillStyle = "#373737";
   ctx.fillRect(
     gameCanvas.width * 0.05,
     gameCanvas.height * 0.12,
-    gameElements.wallsWidth,
-    gameElements.WallsHeight - 130
+    staticGameElements.wallsWidth,
+    staticGameElements.WallsHeight - 130
   );
 
   ctx.fillRect(
     gameCanvas.width * 0.95,
     gameCanvas.height * 0.12,
-    gameElements.wallsWidth,
-    gameElements.WallsHeight
+    staticGameElements.wallsWidth,
+    staticGameElements.WallsHeight
   );
 }
 export function drawFloors() {
@@ -665,53 +665,53 @@ export function drawFloors() {
   ctx.fillStyle = "#373737";
   ctx.fillRect(
     0,
-    gameElements.floor0_YPos,
+    staticGameElements.floor0_YPos,
     gameCanvas.width,
-    gameElements.floorsHeight
+    staticGameElements.floorsHeight
   );
 
   ctx.fillStyle = "#171717";
 
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameElements.floor1_YPos,
-    gameElements.floorsWidth,
-    gameElements.floorsHeight
+    gameCanvas.width * 0.5 - staticGameElements.floorsWidth / 2,
+    staticGameElements.floor1_YPos,
+    staticGameElements.floorsWidth,
+    staticGameElements.floorsHeight
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameElements.floor2_YPos,
-    gameElements.floorsWidth,
-    gameElements.floorsHeight
+    gameCanvas.width * 0.5 - staticGameElements.floorsWidth / 2,
+    staticGameElements.floor2_YPos,
+    staticGameElements.floorsWidth,
+    staticGameElements.floorsHeight
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameElements.floor3_YPos,
-    gameElements.floorsWidth,
-    gameElements.floorsHeight
+    gameCanvas.width * 0.5 - staticGameElements.floorsWidth / 2,
+    staticGameElements.floor3_YPos,
+    staticGameElements.floorsWidth,
+    staticGameElements.floorsHeight
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameElements.floor4_YPos,
-    gameElements.floorsWidth,
-    gameElements.floorsHeight
+    gameCanvas.width * 0.5 - staticGameElements.floorsWidth / 2,
+    staticGameElements.floor4_YPos,
+    staticGameElements.floorsWidth,
+    staticGameElements.floorsHeight
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameElements.floor5_YPos,
-    gameElements.floorsWidth,
-    gameElements.floorsHeight
+    gameCanvas.width * 0.5 - staticGameElements.floorsWidth / 2,
+    staticGameElements.floor5_YPos,
+    staticGameElements.floorsWidth,
+    staticGameElements.floorsHeight
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.5 - gameElements.floorsWidth / 2,
-    gameElements.floor6_YPos,
-    gameElements.floorsWidth,
-    gameElements.floorsHeight
+    gameCanvas.width * 0.5 - staticGameElements.floorsWidth / 2,
+    staticGameElements.floor6_YPos,
+    staticGameElements.floorsWidth,
+    staticGameElements.floorsHeight
   );
 }
 export function drawCallElevatorBtns(
@@ -800,7 +800,7 @@ export function drawPlayer(xPos, yPos, direction) {
   if (direction === "left") {
     // Spiegeln für Bewegung nach links
     ctx.scale(-1, 1);
-    xPos = -xPos - gameElements.playerWidth; // Anpassen der X-Position für gespiegelte Zeichnung
+    xPos = -xPos - staticGameElements.playerWidth; // Anpassen der X-Position für gespiegelte Zeichnung
   }
 
   ctx.drawImage(
@@ -811,8 +811,8 @@ export function drawPlayer(xPos, yPos, direction) {
     spriteControl.spriteHeight,
     xPos,
     yPos,
-    gameElements.playerWidth,
-    gameElements.playerHeight
+    staticGameElements.playerWidth,
+    staticGameElements.playerHeight
   );
   // Lift L & R X-Pos middle rect show up
   // ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
@@ -826,7 +826,9 @@ export function drawNPC(xPos, yPos, direction) {
   if (direction === "r") {
     ctx.scale(-1, 1);
     xPos =
-      -xPos - (gameElements.npcWidth + gameElements.npcXaxisMirroringOffset);
+      -xPos -
+      (staticGameElements.npcWidth +
+        staticGameElements.npcXaxisMirroringOffset);
   }
 
   if (!playerCatched) {
@@ -838,8 +840,8 @@ export function drawNPC(xPos, yPos, direction) {
       380,
       xPos,
       yPos,
-      gameElements.npcWidth,
-      gameElements.npcHeight
+      staticGameElements.npcWidth,
+      staticGameElements.npcHeight
     );
   } else {
     ctx.drawImage(
@@ -850,14 +852,14 @@ export function drawNPC(xPos, yPos, direction) {
       380,
       xPos,
       yPos,
-      gameElements.npcWidth,
-      gameElements.npcHeight
+      staticGameElements.npcWidth,
+      staticGameElements.npcHeight
     );
   }
 
   if (debugging.showNpcRange) {
     ctx.fillStyle = "#00FF00";
-    ctx.fillRect(xPos, yPos + (gameElements.npcHeight / 2 - 5), 5, 5);
+    ctx.fillRect(xPos, yPos + (staticGameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
 }

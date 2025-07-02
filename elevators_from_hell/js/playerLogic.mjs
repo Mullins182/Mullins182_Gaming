@@ -3,7 +3,7 @@ console.log("Module 'playerLogic.mjs' has started !");
 import {
   playerOnFloor,
   playerPosUpdate,
-  gameElements,
+  staticGameElements,
   moveableElems,
   shaftLdoorsOpenCheck,
   shaftRdoorsOpenCheck,
@@ -21,7 +21,7 @@ export let playerEscaped = false;
 
 export function playerCollisionCheck() {
   if (!playerCollision() || playerCanLeave()) {
-    playerPosUpdate(gameElements.playerMovement);
+    playerPosUpdate(staticGameElements.playerMovement);
     isColliding = false;
   } else {
     isColliding = true;
@@ -33,7 +33,7 @@ export function playerCollisionCheck() {
     spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
 
     changePlayerSprite("stop");
-    gameElements.playerMovement = "stop";
+    staticGameElements.playerMovement = "stop";
     moveableElems.playerPosX =
       moveableElems.playerPosX < gameCanvas.width / 2
         ? moveableElems.playerPosX + 5
@@ -99,12 +99,12 @@ export function playerOnLift(getOutOfLift) {
 // ___________________________ PLAYER COLLISION-CHECK ___________________________
 export function playerCollision() {
   return moveableElems.playerPosX >=
-    gameCanvas.width * 0.95 - gameElements.playerWidth / 1.85
+    gameCanvas.width * 0.95 - staticGameElements.playerWidth / 1.85
     ? true
     : moveableElems.playerPosX <=
       gameCanvas.width * 0.05 +
-        gameElements.wallsWidth -
-        gameElements.playerWidth / 2.25
+        staticGameElements.wallsWidth -
+        staticGameElements.playerWidth / 2.25
     ? true
     : false;
 }
@@ -113,7 +113,7 @@ export function playerCatchedCheck() {
   if (playerCatched) {
     // drawGameOverImg();
     // wrapper.style.backgroundImage = "./assets/img/defeat.webp";
-    gameElements.playerMovement = "stop";
+    staticGameElements.playerMovement = "stop";
     wrapper.style.backgroundSize = "0%";
     wrapper.style.backgroundColor = "#FF0000";
     gameCanvas.style.opacity = 0.85;
@@ -125,7 +125,7 @@ export function playerCatchedCheck() {
 export function playerEscapedCheck() {
   if (moveableElems.playerPosX < -100) {
     playerEscaped = playerEscaped ? playerEscaped : true;
-    gameElements.playerMovement = "stop";
+    staticGameElements.playerMovement = "stop";
     wrapper.style.backgroundSize = "0%";
     wrapper.style.backgroundColor = "#33FF00";
     gameCanvas.style.opacity = 0.85;
@@ -138,14 +138,20 @@ export function playerCallLiftBtnsCheck(value) {
   const playerInteractPos = {
     callLiftBtns:
       moveableElems.playerPosX >
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
+        staticGameElements.callElevatorBtnsXpos -
+          staticGameElements.playerWidth / 1.5 &&
       moveableElems.playerPosX <
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
+        staticGameElements.callElevatorBtnsXpos -
+          staticGameElements.playerWidth / 2 +
+          25,
     exitBtns:
       moveableElems.playerPosX >
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
+        staticGameElements.exitBtnsXpos -
+          staticGameElements.playerWidth / 1.5 &&
       moveableElems.playerPosX <
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
+        staticGameElements.exitBtnsXpos -
+          staticGameElements.playerWidth / 2 +
+          25,
   };
 
   for (let i = 0; i < 7; i++) {
@@ -169,14 +175,20 @@ export function exitBtnActCheck() {
   const playerInteractPos = {
     callLiftBtns:
       moveableElems.playerPosX >
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 1.5 &&
+        staticGameElements.callElevatorBtnsXpos -
+          staticGameElements.playerWidth / 1.5 &&
       moveableElems.playerPosX <
-        gameElements.callElevatorBtnsXpos - gameElements.playerWidth / 2 + 25,
+        staticGameElements.callElevatorBtnsXpos -
+          staticGameElements.playerWidth / 2 +
+          25,
     exitBtns:
       moveableElems.playerPosX >
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 1.5 &&
+        staticGameElements.exitBtnsXpos -
+          staticGameElements.playerWidth / 1.5 &&
       moveableElems.playerPosX <
-        gameElements.exitBtnsXpos - gameElements.playerWidth / 2 + 25,
+        staticGameElements.exitBtnsXpos -
+          staticGameElements.playerWidth / 2 +
+          25,
   };
 
   for (let i = 0; i < 7; i++) {

@@ -6,7 +6,7 @@ import { playerEscaped } from "./playerLogic.mjs";
 
 import {
   moveableElems,
-  gameElements,
+  staticGameElements,
   callElevatorBtnsStatus,
   shaftRdoorsOpenCheck,
   shaftLdoorsOpenCheck,
@@ -58,8 +58,8 @@ function elemStatusUpdate() {
       ? "r"
       : npcHeading;
   playerCatched =
-    playerPosX + gameElements.playerWidth * 0.6 < npcPosX ||
-    playerPosX - gameElements.playerWidth > npcPosX ||
+    playerPosX + staticGameElements.playerWidth * 0.6 < npcPosX ||
+    playerPosX - staticGameElements.playerWidth > npcPosX ||
     playerOnFloor.floor !== npcOnFloor.floor ||
     (moveableElems.playerOnLiftL && !shaftLdoorsOpenCheck()) ||
     (moveableElems.playerOnLiftR && !shaftRdoorsOpenCheck())
@@ -93,7 +93,8 @@ function npcAnimationLogic() {
 }
 
 function npcMoveToCallBtn() {
-  return npcPosX < gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
+  return npcPosX <
+    staticGameElements.exitBtnsXpos - staticGameElements.npcWidth / 1.2
     ? "r"
     : npcPosX > 980
     ? "l"
@@ -102,7 +103,7 @@ function npcMoveToCallBtn() {
 
 function npcMoveToLiftR() {
   moveableElems.npcOnXPosLiftR =
-    npcPosX < gameElements.liftRposXmid - gameElements.npcWidth + 10
+    npcPosX < staticGameElements.liftRposXmid - staticGameElements.npcWidth + 10
       ? false
       : true;
   return moveableElems.npcOnXPosLiftR ? "s" : "r";
@@ -110,7 +111,7 @@ function npcMoveToLiftR() {
 
 function npcMoveToLiftL() {
   moveableElems.npcOnXPosLiftL =
-    npcPosX > gameElements.liftLposXmid - gameElements.npcWidth + 20
+    npcPosX > staticGameElements.liftLposXmid - staticGameElements.npcWidth + 20
       ? false
       : true;
   return moveableElems.npcOnXPosLiftL ? "s" : "l";
@@ -146,7 +147,7 @@ function npcLeavesLift() {
 }
 
 function npcIdlingMovement() {
-  npcPosX > npcIdlePathTo ? (npcPosX -= gameElements.npcSpeed) : null;
+  npcPosX > npcIdlePathTo ? (npcPosX -= staticGameElements.npcSpeed) : null;
   // return npcPosX < gameCanvas.width / 1.8
   //   ? "r"
   //   : npcPosX > gameCanvas.width / 1.5
@@ -155,16 +156,16 @@ function npcIdlingMovement() {
 }
 
 function npcCallLift() {
-  return npcPosX < gameElements.callElevatorBtnsXpos
+  return npcPosX < staticGameElements.callElevatorBtnsXpos
     ? 52
-    : gameElements.npcPressCallLiftBtn;
+    : staticGameElements.npcPressCallLiftBtn;
 }
 
 function npcPosXupdate() {
   if (moveableElems.npcActMovDir === "r") {
-    return gameElements.npcSpeed;
+    return staticGameElements.npcSpeed;
   } else if (moveableElems.npcActMovDir === "l") {
-    return -gameElements.npcSpeed;
+    return -staticGameElements.npcSpeed;
   } else if (moveableElems.npcActMovDir === "s") {
     return 0.0;
   } else {
@@ -175,10 +176,10 @@ function npcPosXupdate() {
 function npcPosYupdate() {
   return moveableElems.npcOnLiftR
     ? moveableElems.liftR_YPos +
-        (gameElements.liftsHeight - gameElements.npcHeight)
+        (staticGameElements.liftsHeight - staticGameElements.npcHeight)
     : moveableElems.npcOnLiftL
     ? moveableElems.liftL_YPos +
-      (gameElements.liftsHeight - gameElements.npcHeight)
+      (staticGameElements.liftsHeight - staticGameElements.npcHeight)
     : moveableElems.npcPosY;
 }
 
@@ -186,7 +187,7 @@ function npcIsOnFloorUpdate() {
   for (let i = 0; i < 7; ++i) {
     npcOnFloor.floor =
       moveableElems.npcPosY ===
-      gameElements[`floor${i}_YPos`] - gameElements.npcHeight
+      staticGameElements[`floor${i}_YPos`] - staticGameElements.npcHeight
         ? i
         : npcOnFloor.floor;
   }
@@ -194,7 +195,7 @@ function npcIsOnFloorUpdate() {
 
 function npcCallLiftBtnsCheck() {
   const npcInteractPos = {
-    callLiftBtns: npcPosX < gameElements.callElevatorBtnsXpos,
+    callLiftBtns: npcPosX < staticGameElements.callElevatorBtnsXpos,
     exitBtns: null,
   };
 

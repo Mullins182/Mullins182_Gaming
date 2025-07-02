@@ -1,6 +1,6 @@
 console.log("Module 'soundHandling.mjs' has started !");
 
-import { moveableElems, gameElements } from "./hell10.mjs";
+import { moveableElems, staticGameElements } from "./hell10.mjs";
 import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 import { playerCatched } from "./npcLogic.mjs";
@@ -184,9 +184,9 @@ export async function playSounds(stopAll = false) {
 
   // EXIT DOOR LOGIC
   if (
-    gameElements.exitDoorUnlocked &&
+    staticGameElements.exitDoorUnlocked &&
     moveableElems.exitDoorPosY >
-      gameCanvas.height - gameElements.exitDoorHeight * 1.55
+      gameCanvas.height - staticGameElements.exitDoorHeight * 1.55
   ) {
     if (!soundState.exitDoorMoving) {
       soundState.exitDoorMoving = true;
@@ -195,8 +195,9 @@ export async function playSounds(stopAll = false) {
       soundState.exitDoorStopped = false;
     }
   } else if (
-    !gameElements.exitDoorUnlocked &&
-    moveableElems.exitDoorPosY < gameCanvas.height - gameElements.exitDoorHeight
+    !staticGameElements.exitDoorUnlocked &&
+    moveableElems.exitDoorPosY <
+      gameCanvas.height - staticGameElements.exitDoorHeight
   ) {
     if (!soundState.exitDoorMoving) {
       soundState.exitDoorMoving = true;
