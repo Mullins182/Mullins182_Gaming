@@ -69,6 +69,7 @@ async function runCredits() {
     startButton.style.opacity = 1;
     optionsButton.style.opacity = 1;
     returnBtn.style.opacity = 1;
+    textPosY = 0;
   }
 }
 

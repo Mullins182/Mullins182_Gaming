@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Blende den Button aus
       this.style.display = "none";
       optionsButton.style.display = "none";
+      creditsButton.style.display = "none";
 
       gameCanvas.style.display = "block";
 
