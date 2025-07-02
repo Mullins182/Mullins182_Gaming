@@ -37,6 +37,7 @@ export function npcRoutine() {
 }
 
 function elemStatusUpdate() {
+  npcOnLiftL || npcOnLiftR ? (flexElemsPosInit.npcActMovDir = "s") : null;
   playerPosX = flexElemsPosInit.playerPosX;
   npcPosX = flexElemsPosInit.npcPosX;
   flexElemsPosInit.npcPosY = npcPosYupdate();
@@ -53,7 +54,9 @@ function elemStatusUpdate() {
   playerCatched =
     playerPosX + gameElements.playerWidth * 0.6 < npcPosX ||
     playerPosX - gameElements.playerWidth > npcPosX ||
-    playerOnFloor.floor !== npcOnFloor.floor
+    playerOnFloor.floor !== npcOnFloor.floor ||
+    (flexElemsPosInit.playerOnLiftL && !shaftLdoorsOpenCheck()) ||
+    (flexElemsPosInit.playerOnLiftR && !shaftRdoorsOpenCheck())
       ? false
       : true;
 }
@@ -101,7 +104,7 @@ function npcMoveToLiftR() {
 
 function npcMoveToLiftL() {
   flexElemsPosInit.npcOnXPosLiftL =
-    npcPosX > gameElements.liftLposXmid - gameElements.npcWidth + 25
+    npcPosX > gameElements.liftLposXmid - gameElements.npcWidth + 20
       ? false
       : true;
   return flexElemsPosInit.npcOnXPosLiftL ? "s" : "l";
@@ -151,15 +154,6 @@ function npcCallLift() {
 }
 
 function npcPosXupdate() {
-  // console.log(
-  //   "NPC Moving To: ",
-  //   flexElemsPosInit.npcActMovDir,
-  //   "NPC-PosX: ",
-  //   flexElemsPosInit.npcPosX,
-  //   "gameCanvas Width / 1.5: ",
-  //   gameCanvas.width / 1.5
-  // );
-
   if (flexElemsPosInit.npcActMovDir === "r") {
     return gameElements.npcSpeed;
   } else if (flexElemsPosInit.npcActMovDir === "l") {
@@ -223,29 +217,20 @@ function npcMovesToPlayer() {
       liftRonFloor !== npcOnFloor.floor &&
       liftLonFloor !== npcOnFloor.floor
     ) {
-      flexElemsPosInit.npcActMovDir =
-        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-          ? flexElemsPosInit.npcActMovDir
-          : npcMoveToCallBtn();
+      flexElemsPosInit.npcActMovDir = npcMoveToCallBtn();
       flexElemsPosInit.npcPosX += npcPosXupdate();
       // gameElements.npcPressCallLiftBtn =
       //   npcOnLiftL || npcOnLiftR ? 0 : npcCallLift();
     }
     if (liftRonFloor === npcOnFloor.floor) {
-      flexElemsPosInit.npcActMovDir =
-        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-          ? flexElemsPosInit.npcActMovDir
-          : npcMoveToLiftR();
+      npcMoveToLiftR();
 
       shaftRdoorsOpenCheck() ? npcEntersLiftR() : null;
 
       npcOnLiftR && shaftRdoorsOpenCheck() ? npcUsesLiftR() : null;
       flexElemsPosInit.npcPosX += npcPosXupdate();
     } else if (liftLonFloor === npcOnFloor.floor) {
-      flexElemsPosInit.npcActMovDir =
-        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-          ? flexElemsPosInit.npcActMovDir
-          : npcMoveToLiftL();
+      npcMoveToLiftL();
 
       shaftLdoorsOpenCheck() ? npcEntersLiftL() : null;
 
