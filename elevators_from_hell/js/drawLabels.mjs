@@ -1,14 +1,16 @@
 console.log("Module 'drawLabels.mjs' has started !");
 
+import { gameCanvas, ctx } from "./canvasInit.mjs";
+
 import {
   gameVersion,
-  gameElements,
-  playerOnFloor,
-  npcOnFloor,
+  staticGameElements,
   debugging,
-  flexElemsPosInit,
+  moveableElems,
 } from "./hell10.mjs";
-import { gameCanvas, ctx } from "./canvasInit.mjs";
+
+import { playerCatched } from "./npcLogic.mjs";
+import { playerEscaped } from "./playerLogic.mjs";
 
 export function drawLabels() {
   // EXIT SIGN
@@ -18,30 +20,28 @@ export function drawLabels() {
     "EXIT",
     "33px Arial Black",
     "gold",
-    gameElements.exitSignShadowColor,
+    staticGameElements.exitSignShadowColor,
     2,
     7,
     20,
     "strokeText",
-    gameElements.exitSignColor,
+    staticGameElements.exitSignColor,
     1.6
   );
 
   if (debugging.debugMode) {
     let playerOnLift =
-      flexElemsPosInit.playerOnLiftR || flexElemsPosInit.playerOnLiftL
-        ? true
-        : false;
+      moveableElems.playerOnLiftR || moveableElems.playerOnLiftL ? true : false;
 
     createLabel(
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
       "<NPC X-Pos> " +
-        (flexElemsPosInit.npcPosX < 1000 ? "  " : "") +
-        flexElemsPosInit.npcPosX.toFixed(0) +
+        (moveableElems.npcPosX < 1000 ? "  " : "") +
+        moveableElems.npcPosX.toFixed(0) +
         " <NPC Y-Pos> " +
-        (flexElemsPosInit.npcPosY < 1000 ? "  " : "") +
-        flexElemsPosInit.npcPosY.toFixed(0),
+        (moveableElems.npcPosY < 1000 ? "  " : "") +
+        moveableElems.npcPosY.toFixed(0),
       "63px Arial Black",
       "gold",
       "black",
@@ -51,6 +51,36 @@ export function drawLabels() {
       "strokeText",
       "gold",
       3
+    );
+  } else if (playerCatched) {
+    createLabel(
+      gameCanvas.width / 2,
+      gameCanvas.height * 0.07,
+      "YOU GOT TOASTED !!!",
+      "63px Arial Black",
+      "red",
+      "black",
+      3,
+      8,
+      17,
+      "strokeText",
+      "red",
+      2
+    );
+  } else if (playerEscaped) {
+    createLabel(
+      gameCanvas.width / 2,
+      gameCanvas.height * 0.07,
+      "YOU ESCAPED THE BUILDING ... CONGRATS :)",
+      "63px Arial Black",
+      "greenyellow",
+      "black",
+      3,
+      8,
+      17,
+      "strokeText",
+      "greenyellow",
+      2
     );
   } else {
     createLabel(
@@ -87,63 +117,61 @@ export function drawLabels() {
     createLabel(
       gameCanvas.width * 0.37,
       i === 0
-        ? gameElements.floor0_YPos - 75
+        ? staticGameElements.floor0_YPos - 75
         : i === 1
-        ? gameElements.floor1_YPos - 75
+        ? staticGameElements.floor1_YPos - 75
         : i === 2
-        ? gameElements.floor2_YPos - 75
+        ? staticGameElements.floor2_YPos - 75
         : i === 3
-        ? gameElements.floor3_YPos - 75
+        ? staticGameElements.floor3_YPos - 75
         : i === 4
-        ? gameElements.floor4_YPos - 75
+        ? staticGameElements.floor4_YPos - 75
         : i === 5
-        ? gameElements.floor5_YPos - 75
-        : gameElements.floor6_YPos - 75,
+        ? staticGameElements.floor5_YPos - 75
+        : staticGameElements.floor6_YPos - 75,
       "Floor " + i,
       "25px Arial Black",
       "black",
-      gameElements.floorNumbersShadowColor,
+      staticGameElements.floorNumbersShadowColor,
       2.25,
       6,
       6,
       "strokeText",
-      gameElements.floorNumbersColor,
+      staticGameElements.floorNumbersColor,
       1.15
     );
   }
   // Left Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      flexElemsPosInit.liftL_isOnFloor === 0
+      moveableElems.liftL_isOnFloor === 0
         ? gameCanvas.width * 0.18
-        : flexElemsPosInit.liftL_isOnFloor === 1
+        : moveableElems.liftL_isOnFloor === 1
         ? gameCanvas.width * 0.18 + 13
-        : flexElemsPosInit.liftL_isOnFloor === 2
+        : moveableElems.liftL_isOnFloor === 2
         ? gameCanvas.width * 0.18 + 23
-        : flexElemsPosInit.liftL_isOnFloor === 3
+        : moveableElems.liftL_isOnFloor === 3
         ? gameCanvas.width * 0.18 + 33
-        : flexElemsPosInit.liftL_isOnFloor === 4
+        : moveableElems.liftL_isOnFloor === 4
         ? gameCanvas.width * 0.18 + 43
-        : flexElemsPosInit.liftL_isOnFloor === 5
+        : moveableElems.liftL_isOnFloor === 5
         ? gameCanvas.width * 0.18 + 53
         : gameCanvas.width * 0.18 + 63,
       i === 0
-        ? gameElements.floor0_YPos - 100
+        ? staticGameElements.floor0_YPos - 100
         : i === 1
-        ? gameElements.floor1_YPos - 100
+        ? staticGameElements.floor1_YPos - 100
         : i === 2
-        ? gameElements.floor2_YPos - 100
+        ? staticGameElements.floor2_YPos - 100
         : i === 3
-        ? gameElements.floor3_YPos - 100
+        ? staticGameElements.floor3_YPos - 100
         : i === 4
-        ? gameElements.floor4_YPos - 100
+        ? staticGameElements.floor4_YPos - 100
         : i === 5
-        ? gameElements.floor5_YPos - 100
-        : gameElements.floor6_YPos - 95,
+        ? staticGameElements.floor5_YPos - 100
+        : staticGameElements.floor6_YPos - 95,
 
-      flexElemsPosInit.liftL_isOnFloor == 0
-        ? "E"
-        : flexElemsPosInit.liftL_isOnFloor,
+      moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
       "14px Arial Black",
       "orange",
       "transparent",
@@ -158,35 +186,33 @@ export function drawLabels() {
   // Right Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      flexElemsPosInit.liftR_isOnFloor === 0
+      moveableElems.liftR_isOnFloor === 0
         ? gameCanvas.width * 0.78
-        : flexElemsPosInit.liftR_isOnFloor === 1
+        : moveableElems.liftR_isOnFloor === 1
         ? gameCanvas.width * 0.78 + 13
-        : flexElemsPosInit.liftR_isOnFloor === 2
+        : moveableElems.liftR_isOnFloor === 2
         ? gameCanvas.width * 0.78 + 23
-        : flexElemsPosInit.liftR_isOnFloor === 3
+        : moveableElems.liftR_isOnFloor === 3
         ? gameCanvas.width * 0.78 + 33
-        : flexElemsPosInit.liftR_isOnFloor === 4
+        : moveableElems.liftR_isOnFloor === 4
         ? gameCanvas.width * 0.78 + 43
-        : flexElemsPosInit.liftR_isOnFloor === 5
+        : moveableElems.liftR_isOnFloor === 5
         ? gameCanvas.width * 0.78 + 53
         : gameCanvas.width * 0.78 + 63,
       i === 0
-        ? gameElements.floor0_YPos - 100
+        ? staticGameElements.floor0_YPos - 100
         : i === 1
-        ? gameElements.floor1_YPos - 100
+        ? staticGameElements.floor1_YPos - 100
         : i === 2
-        ? gameElements.floor2_YPos - 100
+        ? staticGameElements.floor2_YPos - 100
         : i === 3
-        ? gameElements.floor3_YPos - 100
+        ? staticGameElements.floor3_YPos - 100
         : i === 4
-        ? gameElements.floor4_YPos - 100
+        ? staticGameElements.floor4_YPos - 100
         : i === 5
-        ? gameElements.floor5_YPos - 100
-        : gameElements.floor6_YPos - 95,
-      flexElemsPosInit.liftR_isOnFloor == 0
-        ? "E"
-        : flexElemsPosInit.liftR_isOnFloor,
+        ? staticGameElements.floor5_YPos - 100
+        : staticGameElements.floor6_YPos - 95,
+      moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
       "14px Arial Black",
       "orange",
       "transparent",

@@ -2,10 +2,11 @@ console.log("Module 'npcLogic.mjs' has started !");
 
 import { gameCanvas } from "./canvasInit.mjs";
 import { spriteControl } from "./spriteHandling.mjs";
+import { playerEscaped } from "./playerLogic.mjs";
 
 import {
-  flexElemsPosInit,
-  gameElements,
+  moveableElems,
+  staticGameElements,
   callElevatorBtnsStatus,
   shaftRdoorsOpenCheck,
   shaftLdoorsOpenCheck,
@@ -14,6 +15,8 @@ import {
 } from "./hell10.mjs";
 
 let npcIsIdling = false;
+// let npcPosSnapshot = ? flexElemsPosInit.npcPosSnapshot : null;
+// let npcIdlePathTo = npcPosSnapshot - 100;
 let liftRonFloor;
 let liftLonFloor;
 let npcPosX;
@@ -25,36 +28,46 @@ export let playerCatched = false;
 
 // IN THE WORKS !
 export function npcRoutine() {
+  npcIsIdling && npcPosSnapshot === 0
+    ? (moveableElems.npcPosSnapshot = npcPosX)
+    : null;
+  npcIsIdling ? npcIdlingMovement() : null;
   elemStatusUpdate();
-  npcAnimationConfig();
+  npcAnimationLogic();
   npcIsOnFloorUpdate();
+  if (playerEscaped) {
+    return;
+  }
   npcMovesToPlayer();
   // console.log("NPC HEADING: " + npcHeading);
 }
 
 function elemStatusUpdate() {
-  playerPosX = flexElemsPosInit.playerPosX;
-  npcPosX = flexElemsPosInit.npcPosX;
-  flexElemsPosInit.npcPosY = npcPosYupdate();
-  liftRonFloor = flexElemsPosInit.liftR_isOnFloor;
-  liftLonFloor = flexElemsPosInit.liftL_isOnFloor;
-  npcOnLiftR = flexElemsPosInit.npcOnLiftR;
-  npcOnLiftL = flexElemsPosInit.npcOnLiftL;
+  npcOnLiftL || npcOnLiftR ? (moveableElems.npcActMovDir = "s") : null;
+  playerPosX = moveableElems.playerPosX;
+  npcPosX = moveableElems.npcPosX;
+  moveableElems.npcPosY = npcPosYupdate();
+  liftRonFloor = moveableElems.liftR_isOnFloor;
+  liftLonFloor = moveableElems.liftL_isOnFloor;
+  npcOnLiftR = moveableElems.npcOnLiftR;
+  npcOnLiftL = moveableElems.npcOnLiftL;
   npcHeading =
-    flexElemsPosInit.npcActMovDir === "l"
+    moveableElems.npcActMovDir === "l"
       ? "l"
-      : flexElemsPosInit.npcActMovDir === "r"
+      : moveableElems.npcActMovDir === "r"
       ? "r"
       : npcHeading;
   playerCatched =
-    playerPosX + gameElements.playerWidth * 0.6 < npcPosX ||
-    playerPosX - gameElements.playerWidth > npcPosX ||
-    playerOnFloor.floor !== npcOnFloor.floor
+    playerPosX + staticGameElements.playerWidth * 0.6 < npcPosX ||
+    playerPosX - staticGameElements.playerWidth > npcPosX ||
+    playerOnFloor.floor !== npcOnFloor.floor ||
+    (moveableElems.playerOnLiftL && !shaftLdoorsOpenCheck()) ||
+    (moveableElems.playerOnLiftR && !shaftRdoorsOpenCheck())
       ? false
       : true;
 }
 
-function npcAnimationConfig() {
+function npcAnimationLogic() {
   if (!playerCatched) {
     spriteControl.totalFramesNpc =
       spriteControl.totalFramesNpc !== 11 ? 11 : spriteControl.totalFramesNpc;
@@ -80,87 +93,80 @@ function npcAnimationConfig() {
 }
 
 function npcMoveToCallBtn() {
-  return npcPosX < gameElements.exitBtnsXpos - gameElements.npcWidth / 1.2
+  return npcPosX <
+    staticGameElements.exitBtnsXpos - staticGameElements.npcWidth / 1.2
     ? "r"
     : npcPosX > 980
     ? "l"
-    : flexElemsPosInit.npcActMovDir;
+    : moveableElems.npcActMovDir;
 }
 
 function npcMoveToLiftR() {
-  flexElemsPosInit.npcOnXPosLiftR =
-    npcPosX < gameElements.liftRposXmid - gameElements.npcWidth + 10
+  moveableElems.npcOnXPosLiftR =
+    npcPosX < staticGameElements.liftRposXmid - staticGameElements.npcWidth + 10
       ? false
       : true;
-  return flexElemsPosInit.npcOnXPosLiftR ? "s" : "r";
+  return moveableElems.npcOnXPosLiftR ? "s" : "r";
 }
 
 function npcMoveToLiftL() {
-  flexElemsPosInit.npcOnXPosLiftL =
-    npcPosX > gameElements.liftLposXmid - gameElements.npcWidth + 25
+  moveableElems.npcOnXPosLiftL =
+    npcPosX > staticGameElements.liftLposXmid - staticGameElements.npcWidth + 20
       ? false
       : true;
-  return flexElemsPosInit.npcOnXPosLiftL ? "s" : "l";
+  return moveableElems.npcOnXPosLiftL ? "s" : "l";
 }
 
 function npcEntersLiftR() {
-  flexElemsPosInit.npcOnLiftR = npcOnLiftR
+  moveableElems.npcOnLiftR = npcOnLiftR
     ? npcOnLiftR
-    : flexElemsPosInit.npcOnXPosLiftR
+    : moveableElems.npcOnXPosLiftR
     ? true
     : false;
 }
 
 function npcEntersLiftL() {
-  flexElemsPosInit.npcOnLiftL = npcOnLiftL
+  moveableElems.npcOnLiftL = npcOnLiftL
     ? npcOnLiftL
-    : flexElemsPosInit.npcOnXPosLiftL
+    : moveableElems.npcOnXPosLiftL
     ? true
     : false;
 }
 
 function npcUsesLiftR() {
-  flexElemsPosInit.liftR_calledToFloor = playerOnFloor.floor;
+  moveableElems.liftR_calledToFloor = playerOnFloor.floor;
 }
 
 function npcUsesLiftL() {
-  flexElemsPosInit.liftL_calledToFloor = playerOnFloor.floor;
+  moveableElems.liftL_calledToFloor = playerOnFloor.floor;
 }
 
 function npcLeavesLift() {
-  flexElemsPosInit.npcOnLiftR = npcOnLiftR ? false : npcOnLiftR;
-  flexElemsPosInit.npcOnLiftL = npcOnLiftL ? false : npcOnLiftL;
+  moveableElems.npcOnLiftR = npcOnLiftR ? false : npcOnLiftR;
+  moveableElems.npcOnLiftL = npcOnLiftL ? false : npcOnLiftL;
 }
 
 function npcIdlingMovement() {
-  return npcPosX < gameCanvas.width / 1.8
-    ? "r"
-    : npcPosX > gameCanvas.width / 1.5
-    ? "l"
-    : flexElemsPosInit.npcActMovDir;
+  npcPosX > npcIdlePathTo ? (npcPosX -= staticGameElements.npcSpeed) : null;
+  // return npcPosX < gameCanvas.width / 1.8
+  //   ? "r"
+  //   : npcPosX > gameCanvas.width / 1.5
+  //   ? "l"
+  //   : flexElemsPosInit.npcActMovDir;
 }
 
 function npcCallLift() {
-  return npcPosX < gameElements.callElevatorBtnsXpos
+  return npcPosX < staticGameElements.callElevatorBtnsXpos
     ? 52
-    : gameElements.npcPressCallLiftBtn;
+    : staticGameElements.npcPressCallLiftBtn;
 }
 
 function npcPosXupdate() {
-  // console.log(
-  //   "NPC Moving To: ",
-  //   flexElemsPosInit.npcActMovDir,
-  //   "NPC-PosX: ",
-  //   flexElemsPosInit.npcPosX,
-  //   "gameCanvas Width / 1.5: ",
-  //   gameCanvas.width / 1.5
-  // );
-
-  if (flexElemsPosInit.npcActMovDir === "r") {
-    return gameElements.npcSpeed;
-  } else if (flexElemsPosInit.npcActMovDir === "l") {
-    return -gameElements.npcSpeed;
-  } else if (flexElemsPosInit.npcActMovDir === "s") {
+  if (moveableElems.npcActMovDir === "r") {
+    return staticGameElements.npcSpeed;
+  } else if (moveableElems.npcActMovDir === "l") {
+    return -staticGameElements.npcSpeed;
+  } else if (moveableElems.npcActMovDir === "s") {
     return 0.0;
   } else {
     return 0.25;
@@ -168,20 +174,20 @@ function npcPosXupdate() {
 }
 
 function npcPosYupdate() {
-  return flexElemsPosInit.npcOnLiftR
-    ? flexElemsPosInit.liftR_YPos +
-        (gameElements.liftsHeight - gameElements.npcHeight)
-    : flexElemsPosInit.npcOnLiftL
-    ? flexElemsPosInit.liftL_YPos +
-      (gameElements.liftsHeight - gameElements.npcHeight)
-    : flexElemsPosInit.npcPosY;
+  return moveableElems.npcOnLiftR
+    ? moveableElems.liftR_YPos +
+        (staticGameElements.liftsHeight - staticGameElements.npcHeight)
+    : moveableElems.npcOnLiftL
+    ? moveableElems.liftL_YPos +
+      (staticGameElements.liftsHeight - staticGameElements.npcHeight)
+    : moveableElems.npcPosY;
 }
 
 function npcIsOnFloorUpdate() {
   for (let i = 0; i < 7; ++i) {
     npcOnFloor.floor =
-      flexElemsPosInit.npcPosY ===
-      gameElements[`floor${i}_YPos`] - gameElements.npcHeight
+      moveableElems.npcPosY ===
+      staticGameElements[`floor${i}_YPos`] - staticGameElements.npcHeight
         ? i
         : npcOnFloor.floor;
   }
@@ -189,7 +195,7 @@ function npcIsOnFloorUpdate() {
 
 function npcCallLiftBtnsCheck() {
   const npcInteractPos = {
-    callLiftBtns: npcPosX < gameElements.callElevatorBtnsXpos,
+    callLiftBtns: npcPosX < staticGameElements.callElevatorBtnsXpos,
     exitBtns: null,
   };
 
@@ -219,34 +225,23 @@ function npcMovesToPlayer() {
       liftRonFloor !== npcOnFloor.floor &&
       liftLonFloor !== npcOnFloor.floor
     ) {
-      flexElemsPosInit.npcActMovDir =
-        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-          ? flexElemsPosInit.npcActMovDir
-          : npcMoveToCallBtn();
-      flexElemsPosInit.npcPosX += npcPosXupdate();
-      // gameElements.npcPressCallLiftBtn =
-      //   npcOnLiftL || npcOnLiftR ? 0 : npcCallLift();
+      moveableElems.npcActMovDir = npcMoveToCallBtn();
+      moveableElems.npcPosX += npcPosXupdate();
     }
     if (liftRonFloor === npcOnFloor.floor) {
-      flexElemsPosInit.npcActMovDir =
-        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-          ? flexElemsPosInit.npcActMovDir
-          : npcMoveToLiftR();
+      moveableElems.npcActMovDir = npcMoveToLiftR();
 
       shaftRdoorsOpenCheck() ? npcEntersLiftR() : null;
 
       npcOnLiftR && shaftRdoorsOpenCheck() ? npcUsesLiftR() : null;
-      flexElemsPosInit.npcPosX += npcPosXupdate();
+      moveableElems.npcPosX += npcPosXupdate();
     } else if (liftLonFloor === npcOnFloor.floor) {
-      flexElemsPosInit.npcActMovDir =
-        flexElemsPosInit.npcOnLiftL || flexElemsPosInit.npcOnLiftR
-          ? flexElemsPosInit.npcActMovDir
-          : npcMoveToLiftL();
+      moveableElems.npcActMovDir = npcMoveToLiftL();
 
       shaftLdoorsOpenCheck() ? npcEntersLiftL() : null;
 
       npcOnLiftL && shaftLdoorsOpenCheck() ? npcUsesLiftL() : null;
-      flexElemsPosInit.npcPosX += npcPosXupdate();
+      moveableElems.npcPosX += npcPosXupdate();
     }
   } else {
     if (liftRonFloor === playerOnFloor.floor && npcOnLiftR) {
@@ -255,19 +250,19 @@ function npcMovesToPlayer() {
       shaftLdoorsOpenCheck() ? npcLeavesLift() : null;
     }
     if (!npcOnLiftR && !npcOnLiftL) {
-      console.log("PposX -> " + playerPosX + "NposX -> " + npcPosX);
+      // console.log("PposX -> " + playerPosX + "NposX -> " + npcPosX);
 
       if (!playerCatched) {
-        flexElemsPosInit.npcActMovDir =
-          playerPosX > npcPosX
+        moveableElems.npcActMovDir =
+          playerPosX > npcPosX && playerPosX - npcPosX > 10
             ? "r"
-            : playerPosX < npcPosX
+            : playerPosX < npcPosX && npcPosX - playerPosX > 10
             ? "l"
-            : flexElemsPosInit.npcActMovDir;
+            : "s";
       } else {
-        flexElemsPosInit.npcActMovDir = "s";
+        moveableElems.npcActMovDir = "s";
       }
-      flexElemsPosInit.npcPosX += npcPosXupdate();
+      moveableElems.npcPosX += npcPosXupdate();
     }
   }
 }
