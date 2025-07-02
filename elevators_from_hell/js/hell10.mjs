@@ -248,6 +248,7 @@ export const flexElemsPosInit = {
   npcPosY:
     gameElements[`floor${npcOnFloor.floor}_YPos`] - gameElements.npcHeight,
   npcActMovDir: "s",
+  npcPosSnapshot: 0,
   npcOnLiftR: false,
   npcOnLiftL: false,
   npcOnXPosLiftR: false,

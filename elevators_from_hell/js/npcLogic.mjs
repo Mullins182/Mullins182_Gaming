@@ -15,6 +15,8 @@ import {
 } from "./hell10.mjs";
 
 let npcIsIdling = false;
+// let npcPosSnapshot = ? flexElemsPosInit.npcPosSnapshot : null;
+// let npcIdlePathTo = npcPosSnapshot - 100;
 let liftRonFloor;
 let liftLonFloor;
 let npcPosX;
@@ -26,6 +28,10 @@ export let playerCatched = false;
 
 // IN THE WORKS !
 export function npcRoutine() {
+  npcIsIdling && npcPosSnapshot === 0
+    ? (flexElemsPosInit.npcPosSnapshot = npcPosX)
+    : null;
+  npcIsIdling ? npcIdlingMovement() : null;
   elemStatusUpdate();
   npcAnimationLogic();
   npcIsOnFloorUpdate();
@@ -140,11 +146,12 @@ function npcLeavesLift() {
 }
 
 function npcIdlingMovement() {
-  return npcPosX < gameCanvas.width / 1.8
-    ? "r"
-    : npcPosX > gameCanvas.width / 1.5
-    ? "l"
-    : flexElemsPosInit.npcActMovDir;
+  npcPosX > npcIdlePathTo ? (npcPosX -= gameElements.npcSpeed) : null;
+  // return npcPosX < gameCanvas.width / 1.8
+  //   ? "r"
+  //   : npcPosX > gameCanvas.width / 1.5
+  //   ? "l"
+  //   : flexElemsPosInit.npcActMovDir;
 }
 
 function npcCallLift() {
@@ -219,18 +226,16 @@ function npcMovesToPlayer() {
     ) {
       flexElemsPosInit.npcActMovDir = npcMoveToCallBtn();
       flexElemsPosInit.npcPosX += npcPosXupdate();
-      // gameElements.npcPressCallLiftBtn =
-      //   npcOnLiftL || npcOnLiftR ? 0 : npcCallLift();
     }
     if (liftRonFloor === npcOnFloor.floor) {
-      npcMoveToLiftR();
+      flexElemsPosInit.npcActMovDir = npcMoveToLiftR();
 
       shaftRdoorsOpenCheck() ? npcEntersLiftR() : null;
 
       npcOnLiftR && shaftRdoorsOpenCheck() ? npcUsesLiftR() : null;
       flexElemsPosInit.npcPosX += npcPosXupdate();
     } else if (liftLonFloor === npcOnFloor.floor) {
-      npcMoveToLiftL();
+      flexElemsPosInit.npcActMovDir = npcMoveToLiftL();
 
       shaftLdoorsOpenCheck() ? npcEntersLiftL() : null;
 
@@ -248,11 +253,11 @@ function npcMovesToPlayer() {
 
       if (!playerCatched) {
         flexElemsPosInit.npcActMovDir =
-          playerPosX > npcPosX
+          playerPosX > npcPosX && playerPosX - npcPosX > 10
             ? "r"
-            : playerPosX < npcPosX
+            : playerPosX < npcPosX && npcPosX - playerPosX > 10
             ? "l"
-            : flexElemsPosInit.npcActMovDir;
+            : "s";
       } else {
         flexElemsPosInit.npcActMovDir = "s";
       }
