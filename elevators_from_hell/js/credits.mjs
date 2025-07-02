@@ -20,6 +20,8 @@ creditsButton.addEventListener("click", function () {
 const credit = [
   "----------- CREDITS -----------",
   "",
+  "I wish to thank the following . . .",
+  "",
   "Pixabay.com",
   "For Providing the Soundeffects for the Game",
   "",
@@ -32,7 +34,7 @@ const credit = [
   "The author of the original, 1992 released MS-DOS Game",
   "",
   "And very Special Thanks go out to YOU!",
-  "for playing my Game ;)",
+  "for playing the Game ;)",
 ];
 
 let textPosY = 0;
@@ -61,7 +63,7 @@ async function runCredits() {
 
   ++textPosY;
   await new Promise((resolve) => setTimeout(resolve, 30));
-  if (textPosY < 2400) {
+  if (textPosY < 2550) {
     requestAnimationFrame(runCredits);
   } else {
     credits.style.opacity = 0;
