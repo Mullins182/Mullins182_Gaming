@@ -27,7 +27,7 @@ export let playerCatched = false;
 // IN THE WORKS !
 export function npcRoutine() {
   elemStatusUpdate();
-  npcAnimationConfig();
+  npcAnimationLogic();
   npcIsOnFloorUpdate();
   if (playerEscaped) {
     return;
@@ -58,7 +58,7 @@ function elemStatusUpdate() {
       : true;
 }
 
-function npcAnimationConfig() {
+function npcAnimationLogic() {
   if (!playerCatched) {
     spriteControl.totalFramesNpc =
       spriteControl.totalFramesNpc !== 11 ? 11 : spriteControl.totalFramesNpc;
