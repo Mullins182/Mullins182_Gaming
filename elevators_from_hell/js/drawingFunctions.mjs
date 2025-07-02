@@ -6,7 +6,7 @@ import { playerCatched } from "./npcLogic.mjs";
 
 import {
   gameElements,
-  flexElemsPosInit,
+  moveableElems,
   debugging,
   exitButtonsStatus,
   callElevatorBtnsStatus,
@@ -28,14 +28,14 @@ export function drawLifts() {
   ctx.drawImage(
     cabinView,
     gameCanvas.width * 0.2 - gameElements.liftsWidth / 2,
-    flexElemsPosInit.liftL_YPos,
+    moveableElems.liftL_YPos,
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
   ctx.drawImage(
     cabinView,
     gameCanvas.width * 0.8 - gameElements.liftsWidth / 2,
-    flexElemsPosInit.liftR_YPos,
+    moveableElems.liftR_YPos,
     gameElements.liftsWidth,
     gameElements.liftsHeight
   );
@@ -640,7 +640,7 @@ export function drawWalls() {
   ctx.fillStyle = "#700";
   ctx.fillRect(
     gameCanvas.width * 0.051,
-    flexElemsPosInit.exitDoorPosY,
+    moveableElems.exitDoorPosY,
     gameElements.wallsWidth - 5,
     gameElements.exitDoorHeight
   );

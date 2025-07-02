@@ -6,7 +6,7 @@ import {
   gameVersion,
   gameElements,
   debugging,
-  flexElemsPosInit,
+  moveableElems,
 } from "./hell10.mjs";
 
 import { playerCatched } from "./npcLogic.mjs";
@@ -31,19 +31,17 @@ export function drawLabels() {
 
   if (debugging.debugMode) {
     let playerOnLift =
-      flexElemsPosInit.playerOnLiftR || flexElemsPosInit.playerOnLiftL
-        ? true
-        : false;
+      moveableElems.playerOnLiftR || moveableElems.playerOnLiftL ? true : false;
 
     createLabel(
       gameCanvas.width / 2,
       gameCanvas.height * 0.07,
       "<NPC X-Pos> " +
-        (flexElemsPosInit.npcPosX < 1000 ? "  " : "") +
-        flexElemsPosInit.npcPosX.toFixed(0) +
+        (moveableElems.npcPosX < 1000 ? "  " : "") +
+        moveableElems.npcPosX.toFixed(0) +
         " <NPC Y-Pos> " +
-        (flexElemsPosInit.npcPosY < 1000 ? "  " : "") +
-        flexElemsPosInit.npcPosY.toFixed(0),
+        (moveableElems.npcPosY < 1000 ? "  " : "") +
+        moveableElems.npcPosY.toFixed(0),
       "63px Arial Black",
       "gold",
       "black",
@@ -146,17 +144,17 @@ export function drawLabels() {
   // Left Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      flexElemsPosInit.liftL_isOnFloor === 0
+      moveableElems.liftL_isOnFloor === 0
         ? gameCanvas.width * 0.18
-        : flexElemsPosInit.liftL_isOnFloor === 1
+        : moveableElems.liftL_isOnFloor === 1
         ? gameCanvas.width * 0.18 + 13
-        : flexElemsPosInit.liftL_isOnFloor === 2
+        : moveableElems.liftL_isOnFloor === 2
         ? gameCanvas.width * 0.18 + 23
-        : flexElemsPosInit.liftL_isOnFloor === 3
+        : moveableElems.liftL_isOnFloor === 3
         ? gameCanvas.width * 0.18 + 33
-        : flexElemsPosInit.liftL_isOnFloor === 4
+        : moveableElems.liftL_isOnFloor === 4
         ? gameCanvas.width * 0.18 + 43
-        : flexElemsPosInit.liftL_isOnFloor === 5
+        : moveableElems.liftL_isOnFloor === 5
         ? gameCanvas.width * 0.18 + 53
         : gameCanvas.width * 0.18 + 63,
       i === 0
@@ -173,9 +171,7 @@ export function drawLabels() {
         ? gameElements.floor5_YPos - 100
         : gameElements.floor6_YPos - 95,
 
-      flexElemsPosInit.liftL_isOnFloor == 0
-        ? "E"
-        : flexElemsPosInit.liftL_isOnFloor,
+      moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
       "14px Arial Black",
       "orange",
       "transparent",
@@ -190,17 +186,17 @@ export function drawLabels() {
   // Right Shaft Lift Position Display
   for (let i = 0; i < 7; i++) {
     createLabel(
-      flexElemsPosInit.liftR_isOnFloor === 0
+      moveableElems.liftR_isOnFloor === 0
         ? gameCanvas.width * 0.78
-        : flexElemsPosInit.liftR_isOnFloor === 1
+        : moveableElems.liftR_isOnFloor === 1
         ? gameCanvas.width * 0.78 + 13
-        : flexElemsPosInit.liftR_isOnFloor === 2
+        : moveableElems.liftR_isOnFloor === 2
         ? gameCanvas.width * 0.78 + 23
-        : flexElemsPosInit.liftR_isOnFloor === 3
+        : moveableElems.liftR_isOnFloor === 3
         ? gameCanvas.width * 0.78 + 33
-        : flexElemsPosInit.liftR_isOnFloor === 4
+        : moveableElems.liftR_isOnFloor === 4
         ? gameCanvas.width * 0.78 + 43
-        : flexElemsPosInit.liftR_isOnFloor === 5
+        : moveableElems.liftR_isOnFloor === 5
         ? gameCanvas.width * 0.78 + 53
         : gameCanvas.width * 0.78 + 63,
       i === 0
@@ -216,9 +212,7 @@ export function drawLabels() {
         : i === 5
         ? gameElements.floor5_YPos - 100
         : gameElements.floor6_YPos - 95,
-      flexElemsPosInit.liftR_isOnFloor == 0
-        ? "E"
-        : flexElemsPosInit.liftR_isOnFloor,
+      moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
       "14px Arial Black",
       "orange",
       "transparent",

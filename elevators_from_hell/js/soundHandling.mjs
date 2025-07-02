@@ -1,6 +1,6 @@
 console.log("Module 'soundHandling.mjs' has started !");
 
-import { flexElemsPosInit, gameElements } from "./hell10.mjs";
+import { moveableElems, gameElements } from "./hell10.mjs";
 import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 import { playerCatched } from "./npcLogic.mjs";
@@ -95,8 +95,8 @@ export async function playSounds(stopAll = false) {
 
   // LIFT L
   if (
-    flexElemsPosInit.liftL_calledToFloor != flexElemsPosInit.liftL_isOnFloor &&
-    !flexElemsPosInit.liftL_isMoving
+    moveableElems.liftL_calledToFloor != moveableElems.liftL_isOnFloor &&
+    !moveableElems.liftL_isMoving
   ) {
     if (!sounds.liftDoorsLcl.playing()) {
       sounds.liftDoorsLcl.volume(0.45);
@@ -105,7 +105,7 @@ export async function playSounds(stopAll = false) {
     }
   }
 
-  if (flexElemsPosInit.liftL_isMoving) {
+  if (moveableElems.liftL_isMoving) {
     if (!sounds.liftSndL.playing()) {
       soundState.liftLFading = false;
       sounds.liftSndL.volume(0.55);
@@ -129,8 +129,8 @@ export async function playSounds(stopAll = false) {
 
   // LIFT R
   if (
-    flexElemsPosInit.liftR_calledToFloor != flexElemsPosInit.liftR_isOnFloor &&
-    !flexElemsPosInit.liftR_isMoving
+    moveableElems.liftR_calledToFloor != moveableElems.liftR_isOnFloor &&
+    !moveableElems.liftR_isMoving
   ) {
     if (!sounds.liftDoorsRcl.playing()) {
       sounds.liftDoorsRcl.volume(0.45);
@@ -139,7 +139,7 @@ export async function playSounds(stopAll = false) {
     }
   }
 
-  if (flexElemsPosInit.liftR_isMoving) {
+  if (moveableElems.liftR_isMoving) {
     if (!sounds.liftSndR.playing()) {
       soundState.liftRFading = false;
       sounds.liftSndR.volume(0.55);
@@ -185,7 +185,7 @@ export async function playSounds(stopAll = false) {
   // EXIT DOOR LOGIC
   if (
     gameElements.exitDoorUnlocked &&
-    flexElemsPosInit.exitDoorPosY >
+    moveableElems.exitDoorPosY >
       gameCanvas.height - gameElements.exitDoorHeight * 1.55
   ) {
     if (!soundState.exitDoorMoving) {
@@ -196,8 +196,7 @@ export async function playSounds(stopAll = false) {
     }
   } else if (
     !gameElements.exitDoorUnlocked &&
-    flexElemsPosInit.exitDoorPosY <
-      gameCanvas.height - gameElements.exitDoorHeight
+    moveableElems.exitDoorPosY < gameCanvas.height - gameElements.exitDoorHeight
   ) {
     if (!soundState.exitDoorMoving) {
       soundState.exitDoorMoving = true;
