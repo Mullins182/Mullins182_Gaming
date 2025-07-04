@@ -398,7 +398,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.0";
+export const gameVersion = "v1.1";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -504,32 +504,32 @@ document.addEventListener("keydown", function (event) {
       exitBtnActCheck();
       playerOnLift(false);
       break;
-    case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_ELEVATOR:
-      debugging.automaticElevator = !debugging.automaticElevator;
-      break;
-    case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
-      debugging.debugMode = !debugging.debugMode;
-      break;
-    case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
-      for (let key in exitButtonsStatus) {
-        exitButtonsStatus[key] = !exitButtonsStatus[key];
-      }
-      break;
-    case KEYS.SPECIAL_KEYS.CHANGE_PLAYER_YPOS:
-      moveableElems.playerPosY =
-        playerOnFloor.floor === 0
-          ? staticGameElements.floor1_YPos - staticGameElements.playerHeight
-          : playerOnFloor.floor === 1
-          ? staticGameElements.floor2_YPos - staticGameElements.playerHeight
-          : playerOnFloor.floor === 2
-          ? staticGameElements.floor3_YPos - staticGameElements.playerHeight
-          : playerOnFloor.floor === 3
-          ? staticGameElements.floor4_YPos - staticGameElements.playerHeight
-          : playerOnFloor.floor === 4
-          ? staticGameElements.floor5_YPos - staticGameElements.playerHeight
-          : playerOnFloor.floor === 5
-          ? staticGameElements.floor6_YPos - staticGameElements.playerHeight
-          : staticGameElements.floor0_YPos - staticGameElements.playerHeight;
+    // case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_ELEVATOR:
+    //   debugging.automaticElevator = !debugging.automaticElevator;
+    //   break;
+    // case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
+    //   debugging.debugMode = !debugging.debugMode;
+    //   break;
+    // case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
+    //   for (let key in exitButtonsStatus) {
+    //     exitButtonsStatus[key] = !exitButtonsStatus[key];
+    //   }
+    //   break;
+    // case KEYS.SPECIAL_KEYS.CHANGE_PLAYER_YPOS:
+    //   moveableElems.playerPosY =
+    //     playerOnFloor.floor === 0
+    //       ? staticGameElements.floor1_YPos - staticGameElements.playerHeight
+    //       : playerOnFloor.floor === 1
+    //       ? staticGameElements.floor2_YPos - staticGameElements.playerHeight
+    //       : playerOnFloor.floor === 2
+    //       ? staticGameElements.floor3_YPos - staticGameElements.playerHeight
+    //       : playerOnFloor.floor === 3
+    //       ? staticGameElements.floor4_YPos - staticGameElements.playerHeight
+    //       : playerOnFloor.floor === 4
+    //       ? staticGameElements.floor5_YPos - staticGameElements.playerHeight
+    //       : playerOnFloor.floor === 5
+    //       ? staticGameElements.floor6_YPos - staticGameElements.playerHeight
+    //       : staticGameElements.floor0_YPos - staticGameElements.playerHeight;
   }
 });
 
