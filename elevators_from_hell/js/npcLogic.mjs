@@ -254,7 +254,7 @@ function npcMovesToPlayer() {
 
       if (!playerCatched) {
         moveableElems.npcActMovDir =
-          playerPosX > npcPosX && playerPosX - npcPosX > 10
+          playerPosX > npcPosX && playerPosX - npcPosX > 35
             ? "r"
             : playerPosX < npcPosX && npcPosX - playerPosX > 10
             ? "l"
