@@ -9,12 +9,29 @@ import {
 } from "./hell10.mjs";
 
 creditsButton.addEventListener("click", function () {
+  // Hide the buttons and show the credits
+  // deltaY < 0  Mouse wheel up
+  // deltaY > 0  Mouse wheel down
+  creditsButton.style.visibility = "hidden";
+  startButton.style.visibility = "hidden";
+  optionsButton.style.visibility = "hidden";
+  returnBtn.style.visibility = "hidden";
+
   credits.style.opacity = 0.8;
-  creditsButton.style.opacity = 0.05;
-  startButton.style.opacity = 0.05;
-  optionsButton.style.opacity = 0.05;
-  returnBtn.style.opacity = 0.05;
+
+  creditsButton.style.opacity = 0;
+  startButton.style.opacity = 0;
+  optionsButton.style.opacity = 0;
+  returnBtn.style.opacity = 0;
   requestAnimationFrame(runCredits);
+});
+
+window.addEventListener("wheel", function (event) {
+  event.deltaY < 0 && crawlSpeed < 7
+    ? (crawlSpeed += 0.03)
+    : event.deltaY > 0 && crawlSpeed >= 1
+    ? (crawlSpeed -= 0.03)
+    : null;
 });
 
 const credit = [
@@ -37,12 +54,20 @@ const credit = [
   "for playing the Game ;)",
 ];
 
-let textPosY = 0;
+const wheelInstr = new Image();
+wheelInstr.src = "./assets/img/creditsCrawl.png";
+
+let crawlSpeed = 0.5; // Speed of the credits crawl
+let textPosY = 0; // Initial position of the text
 
 async function runCredits() {
   cctx.clearRect(0, 0, credits.width, credits.height);
 
   //   console.log(textPosY);
+
+  cctx.globalAlpha = 0.5;
+  cctx.drawImage(wheelInstr, 50, credits.height / 15, 120, 200);
+  cctx.globalAlpha = 1.0;
 
   for (let i = 0; i < credit.length; i++) {
     createLabel(
@@ -61,8 +86,7 @@ async function runCredits() {
     );
   }
 
-  ++textPosY;
-  await new Promise((resolve) => setTimeout(resolve, 30));
+  textPosY += crawlSpeed;
   if (textPosY < 2550) {
     requestAnimationFrame(runCredits);
   } else {
@@ -72,6 +96,10 @@ async function runCredits() {
     optionsButton.style.opacity = 1;
     returnBtn.style.opacity = 1;
     textPosY = 0;
+    creditsButton.style.visibility = "visible";
+    startButton.style.visibility = "visible";
+    optionsButton.style.visibility = "visible";
+    returnBtn.style.visibility = "visible";
   }
 }
 

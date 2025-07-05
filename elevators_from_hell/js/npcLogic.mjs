@@ -28,7 +28,7 @@ export let playerCatched = false;
 
 // IN THE WORKS !
 export function npcRoutine() {
-  npcIsIdling && npcPosSnapshot === 0
+  npcIsIdling && moveableElems.npcPosSnapshot === 0
     ? (moveableElems.npcPosSnapshot = npcPosX)
     : null;
   npcIsIdling ? npcIdlingMovement() : null;
@@ -162,15 +162,15 @@ function npcCallLift() {
 }
 
 function npcPosXupdate() {
-  if (moveableElems.npcActMovDir === "r") {
-    return staticGameElements.npcSpeed;
-  } else if (moveableElems.npcActMovDir === "l") {
-    return -staticGameElements.npcSpeed;
-  } else if (moveableElems.npcActMovDir === "s") {
-    return 0.0;
-  } else {
-    return 0.25;
-  }
+  npcOnLiftL || npcOnLiftR ? (moveableElems.npcActMovDir = "s") : null;
+
+  return moveableElems.npcActMovDir === "r"
+    ? staticGameElements.npcSpeed
+    : moveableElems.npcActMovDir === "l"
+    ? -staticGameElements.npcSpeed
+    : moveableElems.npcActMovDir === "s"
+    ? 0.0
+    : 0.25;
 }
 
 function npcPosYupdate() {
