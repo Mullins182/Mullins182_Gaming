@@ -29,7 +29,7 @@ creditsButton.addEventListener("click", function () {
 window.addEventListener("wheel", function (event) {
   event.deltaY < 0 && crawlSpeed < 7
     ? (crawlSpeed += 0.03)
-    : event.deltaY > 0 && crawlSpeed >= 1
+    : event.deltaY > 0 && crawlSpeed >= 0.5
     ? (crawlSpeed -= 0.03)
     : null;
 });
@@ -47,6 +47,10 @@ const credit = [
   "",
   "Abed Sebahi",
   "For being 'mr.zero' aka 'my_very_best_beta_tester :D",
+  "",
+  "Arne Juergensen",
+  "For speeding up the credits crawl &",
+  "giving me inspirations for the Game ;D",
   "",
   "The author of the original, 1992 released MS-DOS Game",
   "",
@@ -87,7 +91,7 @@ async function runCredits() {
   }
 
   textPosY += crawlSpeed;
-  if (textPosY < 2550) {
+  if (textPosY < 3000) {
     requestAnimationFrame(runCredits);
   } else {
     credits.style.opacity = 0;

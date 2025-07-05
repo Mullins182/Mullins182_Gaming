@@ -398,7 +398,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.2";
+export const gameVersion = "v1.3";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
