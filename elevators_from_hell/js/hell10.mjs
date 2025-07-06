@@ -52,10 +52,6 @@ let menuMusic = new Howl({
   autoplay: false,
 });
 
-menuMusic.on("load", () => {
-  wrapper.style.opacity = "1.0";
-});
-
 export const startButton = document.getElementById("startButton");
 export const optionsButton = document.getElementById("optionsButton");
 export const returnBtn = document.getElementById("returnButton");
@@ -66,6 +62,30 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
 
   initialize();
+
+  menuMusic.on("load", () => {
+    console.log("menuMusic loaded!");
+    wrapper.style.opacity = "1.0";
+
+    loadAllSounds()
+      .then(() => {
+        console.log("All Soundeffects Successfully Loaded!");
+        soundsLoaded = true;
+        if (startButton) {
+          startButton.disabled = false;
+          startButton.textContent = "Play Game";
+        }
+      })
+      .catch((error) => {
+        console.error("Error while loading soundeffects:", error);
+        // Optional: Spiel trotzdem starten, aber mit Warnung, oder Button ganz deaktivieren
+        soundsLoaded = false; // Oder auf true setzen, wenn das Spiel auch ohne alle Sounds funktionieren soll
+        if (startButton) {
+          startButton.disabled = true;
+          startButton.textContent = "Sound Error :(";
+        }
+      });
+  });
 
   // --- Lade alle Sounds beim Start des Skripts ---
   console.log("Loading Soundeffects...");
@@ -78,25 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (creditsButton) {
     creditsButton.textContent = "Credits";
   }
-
-  loadAllSounds()
-    .then(() => {
-      console.log("All Soundeffects Successfully Loaded!");
-      soundsLoaded = true;
-      if (startButton) {
-        startButton.disabled = false;
-        startButton.textContent = "Play Game";
-      }
-    })
-    .catch((error) => {
-      console.error("Error while loading soundeffects:", error);
-      // Optional: Spiel trotzdem starten, aber mit Warnung, oder Button ganz deaktivieren
-      soundsLoaded = false; // Oder auf true setzen, wenn das Spiel auch ohne alle Sounds funktionieren soll
-      if (startButton) {
-        startButton.disabled = true;
-        startButton.textContent = "Sound Error :(";
-      }
-    });
 
   // --- Der Button-Klick-Handler ---
   if (startButton) {
