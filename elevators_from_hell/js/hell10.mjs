@@ -49,7 +49,11 @@ let menuMusic = new Howl({
   src: ["./assets/music/the-thing-battle-in-dow.mp3"],
   loop: true,
   volume: 1.0,
-  autoplay: true,
+  autoplay: false,
+});
+
+menuMusic.on("load", () => {
+  wrapper.style.opacity = "1";
 });
 
 export const startButton = document.getElementById("startButton");
@@ -389,6 +393,7 @@ const KEYS = {
     DOWN: "ArrowDown",
   },
   SPECIAL_KEYS: {
+    playMusic: " ",
     TOGGLE_AUTO_ELEVATOR: "r",
     TOGGLE_DEBUG_MODE: "d",
     CHANGE_PLAYER_YPOS: "t",
@@ -407,7 +412,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.1.6";
+export const gameVersion = "v1.1.7";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -433,6 +438,10 @@ document.addEventListener("keydown", function (event) {
 
   // Player Movement
   switch (event.key) {
+    case KEYS.SPECIAL_KEYS.playMusic:
+      wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
+      menuMusic.play();
+      break;
     case KEYS.DIRECTIONS.LEFT:
       if (
         moveableElems.playerOnLiftL ||
