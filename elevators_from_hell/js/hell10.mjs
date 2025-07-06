@@ -44,6 +44,14 @@ import {
 
 import { npcRoutine, npcHeading, playerCatched } from "./npcLogic.mjs";
 
+const Howl = window.Howl;
+let menuMusic = new Howl({
+  src: ["./assets/music/the-thing-battle-in-dow.mp3"],
+  loop: true,
+  volume: 1.0,
+  autoplay: false,
+});
+
 export const startButton = document.getElementById("startButton");
 export const optionsButton = document.getElementById("optionsButton");
 export const returnBtn = document.getElementById("returnButton");
@@ -399,7 +407,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.4";
+export const gameVersion = "v1.1.5";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -561,6 +569,10 @@ function handleFloorSelection(floorNumber) {
 
 // ___________________________ GAME INI ___________________________
 async function initialize() {
+  menuMusic.on("load", () => {
+    menuMusic.play();
+  });
+
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
@@ -574,6 +586,7 @@ async function initialize() {
 // ___________________________              ___________________________
 async function gameRoutine(timestamp) {
   gameRunning = !gameRunning ? true : gameRunning;
+  !menuMusic.playing() ? null : menuMusic.stop();
 
   if (!gamePaused) {
     if (!spriteControl.lastTimePlayer) spriteControl.lastTimePlayer = timestamp;
@@ -630,12 +643,14 @@ async function gameRoutine(timestamp) {
 function pauseGame() {
   gamePaused = true;
   playSounds(true);
+  menuMusic.pause();
   console.log("Game Paused !");
 }
 
 function resumeGame() {
   gamePaused = false;
   playSounds();
+  menuMusic.playing() ? null : menuMusic.play();
   console.log("Game resumed !");
 }
 

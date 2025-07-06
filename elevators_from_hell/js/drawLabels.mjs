@@ -98,7 +98,7 @@ export function drawLabels() {
       2
     );
     createLabel(
-      gameCanvas.width / 1.3,
+      gameCanvas.width / 1.29,
       gameCanvas.height * 0.085,
       gameVersion,
       "15px Arial Black",
