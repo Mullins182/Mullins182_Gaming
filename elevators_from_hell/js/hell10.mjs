@@ -65,7 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   menuMusic.on("load", () => {
     console.log("menuMusic loaded!");
-    wrapper.style.opacity = "1.0";
+
+    wrapper.style.backgroundImage = "url(assets/img/spacebar_to_start.webp)";
+    wrapper.style.opacity = 0.4;
 
     loadAllSounds()
       .then(() => {
@@ -131,7 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 if (optionsButton) {
-  optionsButton.addEventListener("click", function () {});
+  optionsButton.addEventListener("click", function () {
+    return;
+  });
 }
 if (returnBtn) {
   returnBtn.style.display = "none";
@@ -413,7 +417,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.1.7";
+export const gameVersion = "v1.1.8";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -437,12 +441,22 @@ document.addEventListener("keydown", function (event) {
     return;
   }
 
-  // Player Movement
   switch (event.key) {
     case KEYS.SPECIAL_KEYS.playMusic:
+      wrapper.style.transition = "opacity 5s ease-in-out";
       wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
+      wrapper.style.opacity = 1.0;
       menuMusic.play();
+      startButton.style.visibility = "visible";
+      optionsButton.style.visibility = "visible";
+      creditsButton.style.visibility = "visible";
+      startButton.style.opacity = 1;
+      optionsButton.style.opacity = 1;
+      creditsButton.style.opacity = 1;
+
       break;
+
+    // Player Movement
     case KEYS.DIRECTIONS.LEFT:
       if (
         moveableElems.playerOnLiftL ||
@@ -579,6 +593,7 @@ function handleFloorSelection(floorNumber) {
 
 // ___________________________ GAME INI ___________________________
 async function initialize() {
+  wrapper.style.transition = "none";
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);

@@ -17,19 +17,20 @@ body {
   position: relative; /* WICHTIG: Erlaubt absolute Positionierung der Kinder */
   width: 95%;
   /* height: 100%; */
-  background-image: url("../assets/img/spacebar_to_start.webp");
+  background-image: url("../assets/img/loading.webp");
   /* background-image: url("../assets/img/efh_title.webp"); */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 15%;
+  opacity: 100%;
   /* border: 2px solid greenyellow; */
   /* width: 1750px;/*
   /* height: 900px;*/
-  transition: all 5s ease-in-out;
+  transition: opacity, 5s ease-in-out;
 }
 #startButton {
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
   top: 50%; /* Startet bei 50% von oben */
   left: 15%; /* Startet bei 50% von links */
@@ -48,7 +49,8 @@ body {
   transition: background-color 0.3s ease; */
 }
 #optionsButton {
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
   top: 60%; /* Startet bei 50% von oben */
   left: 15%; /* Startet bei 50% von links */
@@ -56,7 +58,8 @@ body {
   transition: all 5s ease-in-out;
 }
 #returnButton {
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
   top: 62%; /* Startet bei 50% von oben */
   left: 50%; /* Startet bei 50% von links */
@@ -64,7 +67,8 @@ body {
   transition: all 5s ease-in-out;
 }
 #creditsButton {
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
   position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
   top: 70%; /* Startet bei 50% von oben */
   left: 15%; /* Startet bei 50% von links */
