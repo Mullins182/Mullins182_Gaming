@@ -23,7 +23,7 @@ creditsButton.addEventListener("click", function () {
   startButton.style.opacity = 0;
   optionsButton.style.opacity = 0;
   returnBtn.style.opacity = 0;
-  requestAnimationFrame(runCredits);
+  requestAnimationFrame(crawler);
 });
 
 window.addEventListener("wheel", function (event) {
@@ -64,7 +64,7 @@ wheelInstr.src = "./assets/img/creditsCrawl.png";
 let crawlSpeed = 0.5; // Speed of the credits crawl
 let textPosY = 0; // Initial position of the text
 
-async function runCredits() {
+async function crawler() {
   cctx.clearRect(0, 0, credits.width, credits.height);
 
   //   console.log(textPosY);
@@ -92,7 +92,7 @@ async function runCredits() {
 
   textPosY += crawlSpeed;
   if (textPosY < 3000) {
-    requestAnimationFrame(runCredits);
+    requestAnimationFrame(crawler);
   } else {
     credits.style.opacity = 0;
     creditsButton.style.opacity = 1;
