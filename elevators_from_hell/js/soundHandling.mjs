@@ -9,7 +9,11 @@ const Howl = window.Howl;
 
 // Sound-Initializing
 export const sounds = {
-  bgMusic: new Howl({ src: ["./assets/sounds/bgMusic.wav"], loop: true }),
+  bgSound: new Howl({
+    src: ["./assets/sounds/bgMusic.wav"],
+    loop: true,
+    volume: 0.45,
+  }),
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftDoorsRop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
@@ -66,7 +70,7 @@ export async function playSounds(stopAll = false) {
     sounds.liftSndR.stop();
     sounds.npcAttack.stop();
     sounds.runSnd.stop();
-    sounds.bgMusic.stop();
+    sounds.bgSound.stop();
     return;
   }
   // LIFTS STEREO Panning
@@ -84,7 +88,7 @@ export async function playSounds(stopAll = false) {
   // }
 
   // Background-Music
-  !sounds.bgMusic.playing() && gameRunning ? sounds.bgMusic.play() : null;
+  !sounds.bgSound.playing() && gameRunning ? sounds.bgSound.play() : null;
 
   // NPC-Attack
   if (playerCatched) {
