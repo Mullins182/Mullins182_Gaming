@@ -46,7 +46,7 @@ import { npcRoutine, npcHeading, playerCatched } from "./npcLogic.mjs";
 
 const Howl = window.Howl;
 let menuMusic = new Howl({
-  src: ["./assets/music/the-thing-battle-in-dow.mp3"],
+  src: ["assets/music/the-thing-battle-in-dow.mp3"],
   loop: true,
   volume: 1.0,
   autoplay: false,
