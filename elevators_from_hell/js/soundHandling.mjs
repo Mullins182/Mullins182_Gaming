@@ -1,6 +1,6 @@
 console.log("Module 'soundHandling.mjs' has started !");
 
-import { moveableElems, staticGameElements } from "./hell10.mjs";
+import { moveableElems, staticGameElements, gameRunning } from "./hell10.mjs";
 import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 import { playerCatched } from "./npcLogic.mjs";
@@ -9,13 +9,22 @@ const Howl = window.Howl;
 
 // Sound-Initializing
 export const sounds = {
+  bgSound: new Howl({
+    src: ["./assets/sounds/bgMusic.wav"],
+    loop: true,
+    volume: 0.45,
+  }),
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftDoorsRop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
   liftDoorsLop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
   liftDoorsRcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
   liftDoorsLcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
-  npcAttack: new Howl({ src: ["./assets/sounds/npcAttack.wav"] }),
+  npcAttack: new Howl({
+    src: ["./assets/sounds/npcAttack.wav"],
+    loop: true,
+    volume: 1.0,
+  }),
   runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
   btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
@@ -65,6 +74,7 @@ export async function playSounds(stopAll = false) {
     sounds.liftSndR.stop();
     sounds.npcAttack.stop();
     sounds.runSnd.stop();
+    sounds.bgSound.stop();
     return;
   }
   // LIFTS STEREO Panning
@@ -81,16 +91,14 @@ export async function playSounds(stopAll = false) {
   //   }
   // }
 
+  // Background-Music
+  !sounds.bgSound.playing() && gameRunning ? sounds.bgSound.play() : null;
+
   // NPC-Attack
   if (playerCatched) {
-    sounds.npcAttack.rate() !== 2.63 ? sounds.npcAttack.rate(2.63) : null;
+    sounds.npcAttack.rate() !== 1.25 ? sounds.npcAttack.rate(1.25) : null;
 
-    if (!sounds.npcAttack.playing()) {
-      sounds.npcAttack.seek(1.35);
-      sounds.npcAttack.play();
-    } else {
-      sounds.npcAttack.seek() > 1.55 ? sounds.npcAttack.seek(1.35) : null;
-    }
+    !sounds.npcAttack.playing() ? sounds.npcAttack.play() : null;
   }
 
   // LIFT L
