@@ -49,7 +49,7 @@ let menuMusic = new Howl({
   src: ["./assets/music/the-thing-battle-in-dow.mp3"],
   loop: true,
   volume: 1.0,
-  autoplay: false,
+  autoplay: true,
 });
 
 export const startButton = document.getElementById("startButton");
@@ -407,7 +407,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.1.5";
+export const gameVersion = "v1.1.6";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -569,10 +569,6 @@ function handleFloorSelection(floorNumber) {
 
 // ___________________________ GAME INI ___________________________
 async function initialize() {
-  menuMusic.on("load", () => {
-    menuMusic.play();
-  });
-
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
