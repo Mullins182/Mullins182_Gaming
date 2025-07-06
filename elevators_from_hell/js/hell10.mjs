@@ -127,6 +127,7 @@ if (returnBtn) {
   });
 }
 
+export let gameRunning = false;
 export let playerOnFloor = { floor: 0 };
 export let npcOnFloor = { floor: 5 };
 let randCallLiftR = Math.random() < 0.5;
@@ -398,7 +399,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.3";
+export const gameVersion = "v1.4";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -572,6 +573,8 @@ async function initialize() {
 // ___________________________ GAME-ROUTINE ___________________________
 // ___________________________              ___________________________
 async function gameRoutine(timestamp) {
+  gameRunning = !gameRunning ? true : gameRunning;
+
   if (!gamePaused) {
     if (!spriteControl.lastTimePlayer) spriteControl.lastTimePlayer = timestamp;
     if (!spriteControl.lastTimeNpc) spriteControl.lastTimeNpc = timestamp;
@@ -617,20 +620,22 @@ async function gameRoutine(timestamp) {
     await new Promise((resolve) => setTimeout(resolve, 15));
   } else {
     playSounds(true);
-    await new Promise((resolve) => setTimeout(resolve, 15));
+    gameRunning = gameRunning ? false : gameRunning;
+
+    // await new Promise((resolve) => setTimeout(resolve, 15));
   }
   requestAnimationFrame(gameRoutine);
 }
 
 function pauseGame() {
-  gamePaused = gamePaused ? null : true;
+  gamePaused = true;
   playSounds(true);
   console.log("Game Paused !");
 }
 
 function resumeGame() {
-  gamePaused = !gamePaused ? null : false;
-  playSounds(false);
+  gamePaused = false;
+  playSounds();
   console.log("Game resumed !");
 }
 

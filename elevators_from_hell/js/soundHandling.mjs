@@ -1,6 +1,6 @@
 console.log("Module 'soundHandling.mjs' has started !");
 
-import { moveableElems, staticGameElements } from "./hell10.mjs";
+import { moveableElems, staticGameElements, gameRunning } from "./hell10.mjs";
 import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 import { playerCatched } from "./npcLogic.mjs";
@@ -9,6 +9,7 @@ const Howl = window.Howl;
 
 // Sound-Initializing
 export const sounds = {
+  bgMusic: new Howl({ src: ["./assets/sounds/bgMusic.wav"], loop: true }),
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftDoorsRop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
@@ -65,6 +66,7 @@ export async function playSounds(stopAll = false) {
     sounds.liftSndR.stop();
     sounds.npcAttack.stop();
     sounds.runSnd.stop();
+    sounds.bgMusic.stop();
     return;
   }
   // LIFTS STEREO Panning
@@ -80,6 +82,9 @@ export async function playSounds(stopAll = false) {
   //     liftSndR.stereo(0);
   //   }
   // }
+
+  // Background-Music
+  !sounds.bgMusic.playing() && gameRunning ? sounds.bgMusic.play() : null;
 
   // NPC-Attack
   if (playerCatched) {
