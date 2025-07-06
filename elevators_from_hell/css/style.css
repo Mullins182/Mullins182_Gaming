@@ -17,7 +17,7 @@ body {
   position: relative; /* WICHTIG: Erlaubt absolute Positionierung der Kinder */
   width: 95%;
   /* height: 100%; */
-  background-image: url("../assets/img/spacebar_to_start.png");
+  background-image: url("../assets/img/spacebar_to_start.webp");
   /* background-image: url("../assets/img/efh_title.webp"); */
   background-size: contain;
   background-repeat: no-repeat;
@@ -26,6 +26,7 @@ body {
   /* border: 2px solid greenyellow; */
   /* width: 1750px;/*
   /* height: 900px;*/
+  transition: all 5s ease-in-out;
 }
 #startButton {
   opacity: 1;

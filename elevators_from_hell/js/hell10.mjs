@@ -53,7 +53,7 @@ let menuMusic = new Howl({
 });
 
 menuMusic.on("load", () => {
-  wrapper.style.opacity = "1";
+  wrapper.style.opacity = "1.0";
 });
 
 export const startButton = document.getElementById("startButton");
