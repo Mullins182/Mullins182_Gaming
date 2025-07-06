@@ -20,7 +20,11 @@ export const sounds = {
   liftDoorsLop: new Howl({ src: ["./assets/sounds/openLiftDoors.wav"] }),
   liftDoorsRcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
   liftDoorsLcl: new Howl({ src: ["./assets/sounds/closeLiftDoors.wav"] }),
-  npcAttack: new Howl({ src: ["./assets/sounds/npcAttack.wav"], loop: true }),
+  npcAttack: new Howl({
+    src: ["./assets/sounds/npcAttack.wav"],
+    loop: true,
+    volume: 1.0,
+  }),
   runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
   btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
@@ -92,7 +96,7 @@ export async function playSounds(stopAll = false) {
 
   // NPC-Attack
   if (playerCatched) {
-    sounds.npcAttack.rate() !== 1.92 ? sounds.npcAttack.rate(1.92) : null;
+    sounds.npcAttack.rate() !== 1.25 ? sounds.npcAttack.rate(1.25) : null;
 
     !sounds.npcAttack.playing() ? sounds.npcAttack.play() : null;
   }
