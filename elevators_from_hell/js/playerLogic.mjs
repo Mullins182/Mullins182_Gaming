@@ -119,6 +119,8 @@ export function playerCatchedCheck() {
     gameCanvas.style.opacity = 0.85;
     returnBtn.style.display =
       returnBtn.style.display !== "inline" ? "inline" : returnBtn.style.display;
+    returnBtn.style.opacity = 1;
+    returnBtn.style.visibility = "visible";
   }
 }
 // ___________________________ PLAYER HAS LEFT BUILDING CHECK ___________________________
@@ -131,6 +133,8 @@ export function playerEscapedCheck() {
     gameCanvas.style.opacity = 0.85;
     returnBtn.style.display =
       returnBtn.style.display !== "inline" ? "inline" : returnBtn.style.display;
+    returnBtn.style.opacity = 1;
+    returnBtn.style.visibility = "visible";
   }
 }
 
