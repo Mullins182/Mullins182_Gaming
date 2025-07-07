@@ -398,11 +398,11 @@ const KEYS = {
     DOWN: "ArrowDown",
   },
   SPECIAL_KEYS: {
-    playMusic: " ",
+    ACT_MUSIC: " ",
     TOGGLE_AUTO_ELEVATOR: "r",
     TOGGLE_DEBUG_MODE: "d",
     CHANGE_PLAYER_YPOS: "t",
-    TOGGLE_EXIT_DOOR: "Escape",
+    TOGGLE_EXIT_DOOR: "-",
   },
 };
 
@@ -417,7 +417,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.1.9";
+export const gameVersion = "v1.2.0";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -442,7 +442,7 @@ document.addEventListener("keydown", function (event) {
   }
 
   switch (event.key) {
-    case KEYS.SPECIAL_KEYS.playMusic:
+    case KEYS.SPECIAL_KEYS.ACT_MUSIC:
       wrapper.style.transition = "opacity 5s ease-in-out";
       wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
       wrapper.style.opacity = 1.0;
@@ -537,16 +537,19 @@ document.addEventListener("keydown", function (event) {
       exitBtnActCheck();
       playerOnLift(false);
       break;
+    case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
+      if (event.ctrlKey) {
+        // <--- Nur wenn Strg gehalten wird
+        for (let key in exitButtonsStatus) {
+          exitButtonsStatus[key] = !exitButtonsStatus[key];
+        }
+      }
+      break;
     // case KEYS.SPECIAL_KEYS.TOGGLE_AUTO_ELEVATOR:
     //   debugging.automaticElevator = !debugging.automaticElevator;
     //   break;
     // case KEYS.SPECIAL_KEYS.TOGGLE_DEBUG_MODE:
     //   debugging.debugMode = !debugging.debugMode;
-    //   break;
-    // case KEYS.SPECIAL_KEYS.TOGGLE_EXIT_DOOR:
-    //   for (let key in exitButtonsStatus) {
-    //     exitButtonsStatus[key] = !exitButtonsStatus[key];
-    //   }
     //   break;
     // case KEYS.SPECIAL_KEYS.CHANGE_PLAYER_YPOS:
     //   moveableElems.playerPosY =
@@ -651,7 +654,7 @@ async function gameRoutine(timestamp) {
     drawGameElements();
     playSounds();
 
-    await new Promise((resolve) => setTimeout(resolve, 15));
+    // await new Promise((resolve) => setTimeout(resolve, 16.66)); // 60 FPS
   } else {
     playSounds(true);
     gameRunning = gameRunning ? false : gameRunning;
