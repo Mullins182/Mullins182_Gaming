@@ -1,8 +1,8 @@
 console.log("Module 'npcLogic.mjs' has started !");
 
-import { gameCanvas } from "./canvasInit.mjs";
 import { spriteControl } from "./spriteHandling.mjs";
 import { playerEscaped } from "./playerLogic.mjs";
+import { sounds } from "./soundHandling.mjs";
 
 import {
   moveableElems,
@@ -23,11 +23,13 @@ let npcPosX;
 let playerPosX;
 let npcOnLiftR;
 let npcOnLiftL;
+let detectSndRdy = true;
 export let npcHeading = "r";
 export let playerCatched = false;
 
 // IN THE WORKS !
 export function npcRoutine() {
+  playerDetectedCheck();
   npcIsIdling && moveableElems.npcPosSnapshot === 0
     ? (moveableElems.npcPosSnapshot = npcPosX)
     : null;
@@ -42,8 +44,20 @@ export function npcRoutine() {
   // console.log("NPC HEADING: " + npcHeading);
 }
 
+function playerDetectedCheck() {
+  if (
+    playerOnFloor.floor === npcOnFloor.floor &&
+    detectSndRdy &&
+    !(npcOnLiftL || npcOnLiftR)
+  ) {
+    sounds.playerDetected.play();
+    detectSndRdy = false;
+  }
+}
+
 function elemStatusUpdate() {
   npcOnLiftL || npcOnLiftR ? (moveableElems.npcActMovDir = "s") : null;
+  detectSndRdy = npcOnFloor.floor !== playerOnFloor.floor ? true : detectSndRdy;
   playerPosX = moveableElems.playerPosX;
   npcPosX = moveableElems.npcPosX;
   moveableElems.npcPosY = npcPosYupdate();

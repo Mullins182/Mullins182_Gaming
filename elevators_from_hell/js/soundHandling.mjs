@@ -25,6 +25,10 @@ export const sounds = {
     loop: true,
     volume: 1.0,
   }),
+  playerDetected: new Howl({
+    src: ["./assets/sounds/detected.wav"],
+    volume: 1.15,
+  }),
   runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
   btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
   exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
