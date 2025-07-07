@@ -31,7 +31,11 @@ export const sounds = {
   }),
   runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
   btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
-  exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
+  exitDoorSnd: new Howl({
+    src: ["./assets/sounds/exitDoorSnd.wav"],
+    volume: 0.5,
+    rate: 0.65,
+  }),
 };
 
 export const soundState = {
@@ -228,7 +232,6 @@ export async function playSounds(stopAll = false) {
 
   if (soundState.exitDoorMoving) {
     if (!sounds.exitDoorSnd.playing()) {
-      sounds.exitDoorSnd.volume(0.6);
       sounds.exitDoorSnd.play();
     }
     sounds.exitDoorSnd.seek() > 2.3

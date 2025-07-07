@@ -403,7 +403,7 @@ const KEYS = {
     TOGGLE_AUTO_ELEVATOR: "r",
     TOGGLE_DEBUG_MODE: "d",
     CHANGE_PLAYER_YPOS: "t",
-    TOGGLE_EXIT_DOOR: "-",
+    TOGGLE_EXIT_DOOR: ".",
   },
 };
 
@@ -418,7 +418,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.2.0";
+export const gameVersion = "v1.2.1";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -585,7 +585,7 @@ function handleFloorSelection(floorNumber) {
   const isRightLiftMoving =
     moveableElems.playerOnLiftR && moveableElems.liftR_isMoving;
 
-  if (isLeftLiftMoving || isRightLiftMoving) return;
+  if (isLeftLiftMoving || isRightLiftMoving || playerCatched) return;
 
   if (moveableElems.playerOnLiftL && shaftLdoorsOpenCheck()) {
     debugging.floorLevelSelected = getFloorLevel(floorNumber);
