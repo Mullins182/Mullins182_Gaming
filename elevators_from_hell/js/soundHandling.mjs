@@ -10,9 +10,9 @@ const Howl = window.Howl;
 // Sound-Initializing
 export const sounds = {
   bgSound: new Howl({
-    src: ["./assets/sounds/bgMusic.wav"],
+    src: ["./assets/sounds/heartbeat.wav"],
     loop: true,
-    volume: 0.45,
+    volume: 0.35,
   }),
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
