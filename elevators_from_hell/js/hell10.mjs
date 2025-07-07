@@ -651,7 +651,7 @@ async function gameRoutine(timestamp) {
     drawGameElements();
     playSounds();
 
-    await new Promise((resolve) => setTimeout(resolve, 15));
+    // await new Promise((resolve) => setTimeout(resolve, 16.66)); // 60 FPS
   } else {
     playSounds(true);
     gameRunning = gameRunning ? false : gameRunning;
