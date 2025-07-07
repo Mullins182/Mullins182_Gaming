@@ -144,6 +144,7 @@ if (returnBtn) {
   });
 }
 
+let soundsAct = false;
 export let gameRunning = false;
 export let playerOnFloor = { floor: 0 };
 export let npcOnFloor = { floor: 5 };
@@ -398,7 +399,7 @@ const KEYS = {
     DOWN: "ArrowDown",
   },
   SPECIAL_KEYS: {
-    ACT_MUSIC: " ",
+    ACT_SOUNDS: " ",
     TOGGLE_AUTO_ELEVATOR: "r",
     TOGGLE_DEBUG_MODE: "d",
     CHANGE_PLAYER_YPOS: "t",
@@ -442,11 +443,12 @@ document.addEventListener("keydown", function (event) {
   }
 
   switch (event.key) {
-    case KEYS.SPECIAL_KEYS.ACT_MUSIC:
+    case KEYS.SPECIAL_KEYS.ACT_SOUNDS:
       wrapper.style.transition = "opacity 5s ease-in-out";
       wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
       wrapper.style.opacity = 1.0;
       menuMusic.play();
+      soundsAct = true;
       startButton.style.visibility = "visible";
       optionsButton.style.visibility = "visible";
       creditsButton.style.visibility = "visible";
@@ -674,7 +676,7 @@ function pauseGame() {
 function resumeGame() {
   gamePaused = false;
   playSounds();
-  menuMusic.playing() ? null : menuMusic.play();
+  menuMusic.playing() || !soundsAct ? null : menuMusic.play();
   console.log("Game resumed !");
 }
 
