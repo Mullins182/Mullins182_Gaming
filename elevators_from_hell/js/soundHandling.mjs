@@ -10,9 +10,9 @@ const Howl = window.Howl;
 // Sound-Initializing
 export const sounds = {
   bgSound: new Howl({
-    src: ["./assets/sounds/bgMusic.wav"],
+    src: ["./assets/sounds/heartbeat.wav"],
     loop: true,
-    volume: 0.45,
+    volume: 0.35,
   }),
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
@@ -25,9 +25,17 @@ export const sounds = {
     loop: true,
     volume: 1.0,
   }),
+  playerDetected: new Howl({
+    src: ["./assets/sounds/detected.wav"],
+    volume: 1.15,
+  }),
   runSnd: new Howl({ src: ["./assets/sounds/running.wav"] }),
   btnPress: new Howl({ src: ["./assets/sounds/buttonPressed.wav"] }),
-  exitDoorSnd: new Howl({ src: ["./assets/sounds/exitDoorSnd.wav"] }),
+  exitDoorSnd: new Howl({
+    src: ["./assets/sounds/exitDoorSnd.wav"],
+    volume: 0.5,
+    rate: 0.65,
+  }),
 };
 
 export const soundState = {
@@ -224,7 +232,6 @@ export async function playSounds(stopAll = false) {
 
   if (soundState.exitDoorMoving) {
     if (!sounds.exitDoorSnd.playing()) {
-      sounds.exitDoorSnd.volume(0.6);
       sounds.exitDoorSnd.play();
     }
     sounds.exitDoorSnd.seek() > 2.3
