@@ -15,8 +15,8 @@ createHomeButton("50%", "92%");
 createLabel(
   gameCanvas.width / 2,
   gameCanvas.height * 0.08,
-  "HIER ENTSTEHT ETWAS WUNDERBARES :)",
-  "63px Arial Black",
+  "SMTH MAGNIFICENT IS IN DEVELOPMENT HERE :)",
+  "53px Arial Black",
   "gold",
   "black",
   3,
