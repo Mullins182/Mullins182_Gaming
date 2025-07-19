@@ -1,17 +1,19 @@
 * {
   padding: 0;
   margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 body {
   display: flex;
   flex-direction: column;
   background-color: black;
-  background-image: url("background.jpg");
+  background-image: url("./background.webp");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  color: rgb(255, 176, 57);
+  color: rgba(255, 239, 15, 0.472);
   align-items: center;
   align-content: center;
   justify-content: center;
