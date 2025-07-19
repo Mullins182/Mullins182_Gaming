@@ -7,6 +7,7 @@
       src="https://www.googletagmanager.com/gtag/js?id=G-9DRP4E1WH4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
+
       function gtag() {
         dataLayer.push(arguments);
       }
@@ -17,13 +18,21 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flappy Bird Game created by Mullins182</title>
+    <title>ELEVATORS FROM HELL</title>
     <link rel="stylesheet" href="css/style.css" />
-    <!-- 'defer' muss im Script-Tag angegeben werden, damit das Script Headseitig ausgeführt werden kann ! -->
-    <!-- <script src="flappy_bird.js" defer></script> -->
   </head>
+
   <body>
-    <canvas id="flappyCanvas" width="1920" height="1080"></canvas>
-    <script src="flappy_bird.js"></script>
+    <div id="gameWrapper">
+      <canvas id="mainCanvas"></canvas>
+      <canvas id="creditsCanvas"></canvas>
+      <button id="startButton"></button>
+      <button id="optionsButton"></button>
+      <button id="returnButton"></button>
+      <button id="creditsButton"></button>
+    </div>
+    <script src="./js/howler.min.js"></script>
+    <script src="./js/credits.mjs" type="module"></script>
+    <script src="./js/hell10.mjs" type="module"></script>
   </body>
 </html>
