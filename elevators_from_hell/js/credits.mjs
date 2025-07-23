@@ -59,7 +59,7 @@ const credit = [
 ];
 
 const wheelInstr = new Image();
-wheelInstr.src = "./assets/img/creditsCrawl.png";
+wheelInstr.src = "./assets/img/creditsCrawl.webp";
 
 let crawlSpeed = 0.5; // Speed of the credits crawl
 let textPosY = 0; // Initial position of the text
@@ -70,7 +70,7 @@ async function crawler() {
   //   console.log(textPosY);
 
   cctx.globalAlpha = 0.5;
-  cctx.drawImage(wheelInstr, 50, credits.height / 15, 120, 200);
+  cctx.drawImage(wheelInstr, 0, credits.height / 15, 350, 250);
   cctx.globalAlpha = 1.0;
 
   for (let i = 0; i < credit.length; i++) {
