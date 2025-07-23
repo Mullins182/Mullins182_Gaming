@@ -441,8 +441,8 @@ document.addEventListener("click", function (event) {
     ? (() => {
         wrapper.style.transition = "all 6s ease-in-out";
         wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
-        wrapper.style.backgroundSize = "contain";
         wrapper.style.backgroundPosition = "center";
+        wrapper.style.backgroundSize = "contain";
         wrapper.style.opacity = 1.0;
         menuMusic.play();
         soundsAct = true;
