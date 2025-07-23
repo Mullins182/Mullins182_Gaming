@@ -6,7 +6,7 @@
 }
 #mainCanvas {
   background-color: darkred;
-  background-image: url(images/InTheWorks.png);
+  background-image: url(/img/InTheWorks.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 40vw;
