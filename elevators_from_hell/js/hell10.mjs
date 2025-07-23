@@ -54,8 +54,10 @@ let menuMusic = new Howl({
 
 export const startButton = document.getElementById("startButton");
 export const optionsButton = document.getElementById("optionsButton");
+export const Instructions = document.getElementById("instructButton");
 export const returnBtn = document.getElementById("returnButton");
 export const creditsButton = document.getElementById("creditsButton");
+export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -66,8 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
   menuMusic.on("load", () => {
     console.log("menuMusic loaded!");
 
-    wrapper.style.backgroundImage = "url(assets/img/spacebar_to_start.webp)";
-    wrapper.style.opacity = 0.4;
+    wrapper.style.backgroundImage = "url(assets/img/click_to_start.webp)";
+    wrapper.style.backgroundSize = "25%";
+    wrapper.style.opacity = 0.8;
 
     loadAllSounds()
       .then(() => {
@@ -418,7 +421,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.2.1";
+export const gameVersion = "v1.2.2";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -428,6 +431,30 @@ export const debugging = {
   floorLevelSelected: floorLevels.floor0_YPos,
   automaticElevator: false,
 };
+
+// ___________________________ MOUSECLICK-Event-Listener ___________________________
+document.addEventListener("click", function (event) {
+  // Log mouse click position
+  console.log(`Mausklick bei: (${event.clientX}, ${event.clientY})`);
+
+  !soundsAct
+    ? (() => {
+        wrapper.style.transition = "all 6s ease-in-out";
+        wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
+        wrapper.style.backgroundSize = "contain";
+        wrapper.style.backgroundPosition = "center";
+        wrapper.style.opacity = 1.0;
+        menuMusic.play();
+        soundsAct = true;
+        startButton.style.visibility = "visible";
+        optionsButton.style.visibility = "visible";
+        creditsButton.style.visibility = "visible";
+        startButton.style.opacity = 1;
+        optionsButton.style.opacity = 1;
+        creditsButton.style.opacity = 1;
+      })()
+    : null;
+});
 
 // ___________________________ Keyboard-Event-Listener ___________________________
 
@@ -443,20 +470,20 @@ document.addEventListener("keydown", function (event) {
   }
 
   switch (event.key) {
-    case KEYS.SPECIAL_KEYS.ACT_SOUNDS:
-      wrapper.style.transition = "opacity 5s ease-in-out";
-      wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
-      wrapper.style.opacity = 1.0;
-      menuMusic.play();
-      soundsAct = true;
-      startButton.style.visibility = "visible";
-      optionsButton.style.visibility = "visible";
-      creditsButton.style.visibility = "visible";
-      startButton.style.opacity = 1;
-      optionsButton.style.opacity = 1;
-      creditsButton.style.opacity = 1;
+    // case KEYS.SPECIAL_KEYS.ACT_SOUNDS:
+    //   wrapper.style.transition = "opacity 5s ease-in-out";
+    //   wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
+    //   wrapper.style.opacity = 1.0;
+    //   menuMusic.play();
+    //   soundsAct = true;
+    //   startButton.style.visibility = "visible";
+    //   optionsButton.style.visibility = "visible";
+    //   creditsButton.style.visibility = "visible";
+    //   startButton.style.opacity = 1;
+    //   optionsButton.style.opacity = 1;
+    //   creditsButton.style.opacity = 1;
 
-      break;
+    //   break;
 
     // Player Movement
     case KEYS.DIRECTIONS.LEFT:
