@@ -54,7 +54,7 @@ let menuMusic = new Howl({
 
 export const startButton = document.getElementById("startButton");
 export const optionsButton = document.getElementById("optionsButton");
-export const Instructions = document.getElementById("instructButton");
+export const instructButton = document.getElementById("instrButton");
 export const returnBtn = document.getElementById("returnButton");
 export const creditsButton = document.getElementById("creditsButton");
 export const homeButton = document.getElementById("homeButton");
@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Blende den Button aus
       this.style.display = "none";
+      instructButton.style.display = "none";
       optionsButton.style.display = "none";
       creditsButton.style.display = "none";
 
@@ -447,9 +448,11 @@ document.addEventListener("click", function (event) {
         menuMusic.play();
         soundsAct = true;
         startButton.style.visibility = "visible";
+        instructButton.style.visibility = "visible";
         optionsButton.style.visibility = "visible";
         creditsButton.style.visibility = "visible";
         startButton.style.opacity = 1;
+        instructButton.style.opacity = 1;
         optionsButton.style.opacity = 1;
         creditsButton.style.opacity = 1;
       })()
@@ -629,6 +632,7 @@ async function initialize() {
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
+  createButton(instructButton);
   createButton(optionsButton);
   createButton(returnBtn);
   createButton(creditsButton);

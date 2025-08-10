@@ -28,52 +28,33 @@ body {
   /* height: 900px;*/
   transition: opacity, 5s ease-in-out;
 }
-#startButton {
-  opacity: 0;
+.buttons {
   visibility: hidden;
-  position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
-  top: 50%; /* Startet bei 50% von oben */
-  left: 15%; /* Startet bei 50% von links */
-  transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
+  opacity: 0;
+  position: absolute; /* Positioniert die Buttons relativ zum #gameWrapper */
+  transform: translate(-50%, -50%); /* ZENTRIERT die Buttons exakt */
+  font-size: 5px;
+  padding: 3px;
+  align-items: center;
+  top: 50%;
+  left: 15%;
   transition: all 5s ease-in-out;
-
-  /* padding: 20px 40px;
-  font-size: 24px;
-  background-color: limegreen;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 10; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease; */
+}
+#startButton {
+  top: 40%;
+}
+#instrButton {
+  top: 50%;
 }
 #optionsButton {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
-  top: 60%; /* Startet bei 50% von oben */
-  left: 15%; /* Startet bei 50% von links */
-  transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
-  transition: all 5s ease-in-out;
-}
-#returnButton {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
-  top: 62%; /* Startet bei 50% von oben */
-  left: 50%; /* Startet bei 50% von links */
-  transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
-  transition: all 5s ease-in-out;
+  top: 60%;
 }
 #creditsButton {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute; /* Positioniert den Button relativ zum #gameWrapper */
-  top: 70%; /* Startet bei 50% von oben */
-  left: 15%; /* Startet bei 50% von links */
-  transform: translate(-50%, -50%); /* ZENTRIERT den Button exakt */
-  transition: all 5s ease-in-out;
+  top: 70%;
+}
+#returnButton {
+  top: 62%;
+  left: 50%;
 }
 #mainCanvas {
   display: none; /* Entfernt eventuelle Leerräume unter dem Canvas */
@@ -81,14 +62,16 @@ body {
   width: 100%; /* Macht Canvas so breit wie der Wrapper */
   height: 100%; /* Macht Canvas so hoch wie der Wrapper */
   opacity: 100%;
+  z-index: 5; /* Stellt sicher, dass das Canvas über anderen Elementen liegt */
 
   /* background-image: url("images/wallpaper.png");
   background-position: 95px 100px;
   background-size: 90%;
   background-repeat: no-repeat; */
 }
-#creditsCanvas {
+#canvas2 {
   display: block; /* Entfernt eventuelle Leerräume unter dem Canvas */
+  z-index: 1; /* Stellt sicher, dass das Canvas unter dem Haupt-Canvas liegt */
   background-color: #000;
   width: 100%;
   height: 100%;
