@@ -1,7 +1,7 @@
 console.log("Module 'instructions.mjs' has started !");
 
 import { canvas2, cctx } from "./canvasInit.mjs";
-import { playerSprite, spriteControl } from "./spriteHandling.mjs";
+import { playerSprite, spriteControl, cabinView } from "./spriteHandling.mjs";
 import {
   creditsButton,
   startButton,
@@ -87,7 +87,9 @@ function drawInstructions(now) {
     lastFrameTime = now;
   }
   drawPlayerSprite(playerFrame);
-  drawButton(playerFrame);
+  drawButton(playerFrame, canvas2.width / 8, 240);
+  drawLiftCabin(canvas2.width / 1.1, 240);
+  drawShaftDoors(canvas2.width / 1.1, 290, 20);
 
   !exit && requestAnimationFrame(drawInstructions);
 }
@@ -107,17 +109,51 @@ function drawPlayerSprite(playerFrame) {
   playerFrame++;
 }
 
-function drawButton(playerFrame) {
-  playerFrame < 4 ? (btnActive = !btnActive) : null;
+function drawButton(playerFrame, posX, posY) {
+  playerFrame < 5 ? (btnActive = false) : (btnActive = true);
   // Plate
   cctx.fillStyle = "#363636";
-  cctx.fillRect(canvas2.width / 8, 250, 17, 17);
+  cctx.fillRect(posX, posY, 17, 17);
 
   cctx.fillStyle = btnActive ? "#d4ff00" : "#ff3e00";
   cctx.beginPath();
 
   // Draw Circle -> (posX, posY, radius, startangle, endangle)
-  cctx.arc(canvas2.width / 8 + 9, 258, 4, 0, 2 * Math.PI);
+  cctx.arc(posX + 9, posY + 8, 4, 0, 2 * Math.PI);
   cctx.stroke();
   cctx.fill();
+}
+
+function drawLiftCabin(posX, posY) {
+  cctx.drawImage(
+    cabinView,
+    posX - staticGameElements.liftsWidth / 2,
+    posY - staticGameElements.liftsHeight / 2,
+    staticGameElements.liftsWidth,
+    staticGameElements.liftsHeight
+  );
+}
+
+function drawShaftDoors(posX, posY, doorwidth) {
+  cctx.fillStyle = "#700";
+
+  cctx.fillRect(
+    posX - staticGameElements.liftsWidth / 2,
+    posY -
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    doorwidth,
+    staticGameElements.shaftDoorsHeight
+  );
+
+  cctx.fillRect(
+    posX +
+      staticGameElements.liftsWidth / 2 -
+      staticGameElements.shaftDoorsRW_f0 / 2,
+    posY -
+      staticGameElements.shaftDoorsHeight -
+      staticGameElements.floorsHeight,
+    doorwidth,
+    staticGameElements.shaftDoorsHeight
+  );
 }
