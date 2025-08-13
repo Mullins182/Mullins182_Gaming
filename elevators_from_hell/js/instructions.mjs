@@ -15,13 +15,14 @@ let exit = false;
 let btnActive = 0; // Green-Draw of Btns -> 0 = none, 1 = up, 2 = down, 3 = both
 let playerFrame = 0;
 let lastFrameTime = 0;
-const frameDelay = 220; // Zeit in ms zwischen den Frames
+const frameDelay = 200; // Zeit in ms zwischen den Frames
 
 const instructions = [
   "----------- INSTRUCTIONS -----------",
   "Use the left/right arrow keys to run left/right",
   "Use the up/down arrow keys to activate/deactivate buttons, and to enter/leave an elevator",
-  "Avoid obstacles and reach the top floor safely!",
+  "When you are in an elevator, press the num keys 0-6 to select a floor",
+  "The Security Bot is hunting you, so be quick!",
   "Good luck!",
 ];
 
@@ -78,6 +79,9 @@ function drawInstructions(now) {
   cctx.fillText(instructions[0], canvas2.width / 2, 50);
   cctx.fillText(instructions[1], canvas2.width / 2, 170);
   cctx.fillText(instructions[2], canvas2.width / 2, 250);
+  cctx.fillText(instructions[3], canvas2.width / 2, 330);
+  cctx.fillText(instructions[4], canvas2.width / 2, 410);
+  cctx.fillText(instructions[5], canvas2.width / 2, 490);
 
   // Sprite nur alle frameDelay ms animieren
   if (!lastFrameTime) lastFrameTime = now;
