@@ -12,10 +12,10 @@ import {
 } from "./hell10.mjs";
 
 let exit = false;
-let btnActive = false;
+let btnActive = 0; // Green-Draw of Btns -> 0 = none, 1 = up, 2 = down, 3 = both
 let playerFrame = 0;
 let lastFrameTime = 0;
-const frameDelay = 120; // Zeit in ms zwischen den Frames
+const frameDelay = 220; // Zeit in ms zwischen den Frames
 
 const instructions = [
   "----------- INSTRUCTIONS -----------",
@@ -85,9 +85,12 @@ function drawInstructions(now) {
     playerFrame++;
     if (playerFrame >= spriteControl.totalFramesPlayer) playerFrame = 0;
     lastFrameTime = now;
+    btnActive++;
+    btnActive = btnActive === 3 ? 0 : btnActive;
   }
+
   drawPlayerSprite(playerFrame);
-  drawButton(playerFrame, canvas2.width / 8, 240);
+  drawButton(canvas2.width / 9, 240);
   drawLiftCabin(canvas2.width / 1.1, 240);
   drawShaftDoors(canvas2.width / 1.1, 290, 20);
 
@@ -106,20 +109,60 @@ function drawPlayerSprite(playerFrame) {
     staticGameElements.playerWidth,
     staticGameElements.playerHeight
   );
-  playerFrame++;
 }
 
-function drawButton(playerFrame, posX, posY) {
-  playerFrame < 5 ? (btnActive = false) : (btnActive = true);
+function drawTriangle(posX, posY, width, fillColor, dir) {
+  if (dir == "down") {
+    cctx.beginPath();
+    cctx.moveTo(posX, posY); // Erster Eckpunkt
+    cctx.lineTo(posX + width, posY); // Zweiter Eckpunkt
+    cctx.lineTo(posX + width / 2, posY + width / 1.5); // Dritter Eckpunkt
+    cctx.closePath(); // Pfad schließen (zurück zum Startpunkt)
+  }
+  if (dir == "up") {
+    cctx.beginPath();
+    cctx.moveTo(posX + width / 2, posY); // Erster Eckpunkt
+    cctx.lineTo(posX, posY + width / 1.5); // Zweiter Eckpunkt
+    cctx.lineTo(posX + width, posY + width / 1.5); // Dritter Eckpunkt
+    cctx.closePath(); // Pfad schließen (zurück zum Startpunkt)
+  }
+  cctx.stroke(); // Linien zeichnen
+  cctx.fillStyle = fillColor;
+  cctx.fill(); // Optional: Dreieck ausfüllen
+}
+
+function drawButton(posX, posY) {
+  // Call Lift Buttons
+
   // Plate
   cctx.fillStyle = "#363636";
-  cctx.fillRect(posX, posY, 17, 17);
+  cctx.fillRect(posX, posY - 17, 20, 35);
+
+  // Upper Button
+  btnActive === 1
+    ? drawTriangle(posX + 3, posY - 10, 15, "lime", "up")
+    : drawTriangle(posX + 3, posY - 10, 15, "darkred", "up");
+  // Lower Button
+  btnActive === 2
+    ? drawTriangle(posX + 3, posY + 2.5, 15, "lime", "down")
+    : drawTriangle(posX + 3, posY + 2.5, 15, "darkred", "down");
+  // Both Buttons
+  if (btnActive === 3) {
+    drawTriangle(posX + 3, posY, 15, "lime", "up");
+    drawTriangle(posX + 3, posY, 15, "lime", "down");
+  }
+
+  // Exit Button
+
+  // Plate
+  cctx.fillStyle = "#363636";
+  cctx.fillRect(posX - 25, posY, 17, 17);
 
   cctx.fillStyle = btnActive ? "#d4ff00" : "#ff3e00";
   cctx.beginPath();
 
   // Draw Circle -> (posX, posY, radius, startangle, endangle)
-  cctx.arc(posX + 9, posY + 8, 4, 0, 2 * Math.PI);
+  cctx.arc(posX - 25 + 9, posY + 8, 4, 0, 2 * Math.PI);
   cctx.stroke();
   cctx.fill();
 }
