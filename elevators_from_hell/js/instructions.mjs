@@ -17,15 +17,6 @@ let playerFrame = 0;
 let lastFrameTime = 0;
 const frameDelay = 200; // Zeit in ms zwischen den Frames
 
-const instructions = [
-  "----------- INSTRUCTIONS -----------",
-  "Use the left/right arrow keys to run left/right",
-  "Use the up/down arrow keys to activate/deactivate buttons, and to enter/leave an elevator",
-  "When you are in an elevator, press the num keys 0-6 to select a floor",
-  "The Security Bot is hunting you, so be quick!",
-  "Good luck!",
-];
-
 instructButton.addEventListener("click", function () {
   // Hide the buttons and show the instructions
   creditsButton.style.visibility = "hidden";
@@ -71,6 +62,21 @@ canvas2.addEventListener("click", function () {
   }
 });
 
+function tC(color) {
+  switch (color) {
+    case "w":
+      cctx.fillStyle = "white";
+      break;
+    case "r":
+      cctx.fillStyle = "orangered";
+      break;
+
+    default:
+      cctx.fillStyle = "white";
+      break;
+  }
+}
+
 function drawInstructions(now) {
   cctx.clearRect(0, 0, canvas2.width, canvas2.height);
   cctx.fillStyle = "white";
@@ -78,12 +84,22 @@ function drawInstructions(now) {
   cctx.textAlign = "center";
   cctx.textBaseline = "middle";
 
-  cctx.fillText(instructions[0], canvas2.width / 2, 50);
-  cctx.fillText(instructions[1], canvas2.width / 2, 170);
-  cctx.fillText(instructions[2], canvas2.width / 2, 250);
-  cctx.fillText(instructions[3], canvas2.width / 2, 330);
-  cctx.fillText(instructions[4], canvas2.width / 2, 410);
-  cctx.fillText(instructions[5], canvas2.width / 2, 490);
+  const instructions = [
+    ["----------- INSTRUCTIONS -----------"],
+    ["Use the left/right arrow keys to run left/right"],
+    [
+      "Use the up/down arrow keys to activate/deactivate buttons and to enter/leave an elevator",
+    ],
+    ["When you are in an elevator, press the num keys 0-6 to select a floor"],
+    ["The Security Bot is hunting you, so be quick!"],
+    ["Good luck!"],
+  ];
+
+  // Draw the instructions text
+  for (let i = 0; i < instructions.length; i++) {
+    const gaps = [50, 170, 250, 330, 410, 490];
+    cctx.fillText(instructions[i], canvas2.width / 2, gaps[i]);
+  }
 
   // Sprite nur alle frameDelay ms animieren
   if (!lastFrameTime) lastFrameTime = now;
