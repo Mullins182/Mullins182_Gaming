@@ -114,7 +114,9 @@ function drawInstructions(now) {
   drawPlayerSprite(playerFrame);
   drawButton(canvas2.width / 9, 240);
   drawLiftCabin(canvas2.width / 1.1, 240);
+  drawLiftCabin(canvas2.width / 5.5, 340);
   drawShaftDoors(canvas2.width / 1.1, 290, 20);
+  drawShaftDoors(canvas2.width / 5.5, 390, 20);
 
   !exit && requestAnimationFrame(drawInstructions);
 }
