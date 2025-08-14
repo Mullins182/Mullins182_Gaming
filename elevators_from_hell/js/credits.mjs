@@ -1,9 +1,10 @@
 console.log("Module 'credits.mjs' has started !");
 
-import { credits, cctx } from "./canvasInit.mjs";
+import { canvas2, cctx } from "./canvasInit.mjs";
 import {
   creditsButton,
   startButton,
+  instructButton,
   optionsButton,
   returnBtn,
 } from "./hell10.mjs";
@@ -14,13 +15,15 @@ creditsButton.addEventListener("click", function () {
   // deltaY > 0  Mouse wheel down
   creditsButton.style.visibility = "hidden";
   startButton.style.visibility = "hidden";
+  instructButton.style.visibility = "hidden";
   optionsButton.style.visibility = "hidden";
   returnBtn.style.visibility = "hidden";
 
-  credits.style.opacity = 0.8;
+  canvas2.style.opacity = 0.8;
 
   creditsButton.style.opacity = 0;
   startButton.style.opacity = 0;
+  instructButton.style.opacity = 0;
   optionsButton.style.opacity = 0;
   returnBtn.style.opacity = 0;
   requestAnimationFrame(crawler);
@@ -65,18 +68,18 @@ let crawlSpeed = 0.5; // Speed of the credits crawl
 let textPosY = 0; // Initial position of the text
 
 async function crawler() {
-  cctx.clearRect(0, 0, credits.width, credits.height);
+  cctx.clearRect(0, 0, canvas2.width, canvas2.height);
 
   //   console.log(textPosY);
 
   cctx.globalAlpha = 0.5;
-  cctx.drawImage(wheelInstr, 0, credits.height / 15, 350, 250);
+  cctx.drawImage(wheelInstr, 0, canvas2.height / 15, 300, 200);
   cctx.globalAlpha = 1.0;
 
   for (let i = 0; i < credit.length; i++) {
     createLabel(
-      credits.width / 2,
-      credits.height - textPosY + i * 100,
+      canvas2.width / 2,
+      canvas2.height - textPosY + i * 100,
       credit[i],
       "50px Arial Black",
       "goldenrod",
@@ -94,14 +97,16 @@ async function crawler() {
   if (textPosY < 3000) {
     requestAnimationFrame(crawler);
   } else {
-    credits.style.opacity = 0;
+    canvas2.style.opacity = 0;
     creditsButton.style.opacity = 1;
     startButton.style.opacity = 1;
+    instructButton.style.opacity = 1;
     optionsButton.style.opacity = 1;
     returnBtn.style.opacity = 1;
     textPosY = 0;
     creditsButton.style.visibility = "visible";
     startButton.style.visibility = "visible";
+    instructButton.style.visibility = "visible";
     optionsButton.style.visibility = "visible";
     returnBtn.style.visibility = "visible";
   }
