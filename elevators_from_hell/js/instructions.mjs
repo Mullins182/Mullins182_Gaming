@@ -1,7 +1,12 @@
 console.log("Module 'instructions.mjs' has started !");
 
 import { canvas2, cctx } from "./canvasInit.mjs";
-import { playerSprite, spriteControl, cabinView } from "./spriteHandling.mjs";
+import {
+  playerSprite,
+  npcSprite,
+  spriteControl,
+  cabinView,
+} from "./spriteHandling.mjs";
 import {
   creditsButton,
   startButton,
@@ -14,6 +19,7 @@ import {
 let exit = false;
 let btnActive = 0; // Green-Draw of Btns -> 0 = none, 1 = up, 2 = down, 3 = both
 let playerFrame = 0;
+let npcFrame = 0;
 let lastFrameTime = 0;
 const frameDelay = 200; // Zeit in ms zwischen den Frames
 
@@ -105,7 +111,9 @@ function drawInstructions(now) {
   if (!lastFrameTime) lastFrameTime = now;
   if (now - lastFrameTime > frameDelay) {
     playerFrame++;
+    npcFrame += 2;
     if (playerFrame >= spriteControl.totalFramesPlayer) playerFrame = 0;
+    if (npcFrame >= spriteControl.totalFramesNpc) npcFrame = 0;
     lastFrameTime = now;
     btnActive++;
     btnActive = btnActive === 3 ? 0 : btnActive;
@@ -117,6 +125,7 @@ function drawInstructions(now) {
   drawLiftCabin(canvas2.width / 5.5, 340);
   drawShaftDoors(canvas2.width / 1.1, 290, 20);
   drawShaftDoors(canvas2.width / 5.5, 390, 20);
+  drawNPCsprite(npcFrame);
 
   !exit && requestAnimationFrame(drawInstructions);
 }
@@ -132,6 +141,20 @@ function drawPlayerSprite(playerFrame) {
     80,
     staticGameElements.playerWidth,
     staticGameElements.playerHeight
+  );
+}
+
+function drawNPCsprite(npcFrame) {
+  cctx.drawImage(
+    npcSprite,
+    npcFrame * 512,
+    0,
+    512,
+    380,
+    canvas2.width / 4.4,
+    425,
+    staticGameElements.npcWidth,
+    staticGameElements.npcHeight
   );
 }
 
