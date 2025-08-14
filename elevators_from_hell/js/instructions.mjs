@@ -92,18 +92,22 @@ function drawInstructions(now) {
 
   const instructions = [
     ["----------- INSTRUCTIONS -----------"],
+
     ["Use the left/right arrow keys to run left/right"],
     [
       "Use the up/down arrow keys to activate/deactivate buttons and to enter/leave an elevator",
     ],
     ["When you are in an elevator, press the num keys 0-6 to select a floor"],
     ["The Security Bot is hunting you, so be quick!"],
+    [
+      "You WIN if you activate all seven buttons on each floor and escape through the exit door",
+    ],
     ["Good luck!"],
   ];
 
   // Draw the instructions text
   for (let i = 0; i < instructions.length; i++) {
-    const gaps = [50, 170, 250, 330, 410, 490];
+    const gaps = [50, 170, 250, 330, 410, 490, 570];
     cctx.fillText(instructions[i], canvas2.width / 2, gaps[i]);
   }
 
@@ -152,7 +156,7 @@ function drawNPCsprite(npcFrame) {
     512,
     380,
     canvas2.width / 4.4,
-    425,
+    380,
     staticGameElements.npcWidth,
     staticGameElements.npcHeight
   );
