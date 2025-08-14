@@ -45,28 +45,30 @@ instructButton.addEventListener("click", function () {
   returnBtn.style.opacity = 0;
 
   lastFrameTime = 0; // Reset beim Öffnen
+  exit = false; // Reset exit state
+
   requestAnimationFrame(drawInstructions);
+});
 
-  canvas2.addEventListener("click", function () {
-    if (canvas2.style.opacity === "0.9") {
-      exit = true;
-      creditsButton.style.visibility = "visible";
-      startButton.style.visibility = "visible";
-      instructButton.style.visibility = "visible";
-      optionsButton.style.visibility = "visible";
-      returnBtn.style.visibility = "visible";
+canvas2.addEventListener("click", function () {
+  if (canvas2.style.opacity === "0.9") {
+    exit = true; // Set exit state
+    creditsButton.style.visibility = "visible";
+    startButton.style.visibility = "visible";
+    instructButton.style.visibility = "visible";
+    optionsButton.style.visibility = "visible";
+    returnBtn.style.visibility = "visible";
 
-      canvas2.style.opacity = 0;
-      canvas2.style.zIndex = 1; // Reset z-index
-      //   cctx.globalAlpha = 1.0;
+    canvas2.style.opacity = 0;
+    canvas2.style.zIndex = 1; // Reset z-index
+    //   cctx.globalAlpha = 1.0;
 
-      creditsButton.style.opacity = 1;
-      startButton.style.opacity = 1;
-      instructButton.style.opacity = 1;
-      optionsButton.style.opacity = 1;
-      returnBtn.style.opacity = 1;
-    }
-  });
+    creditsButton.style.opacity = 1;
+    startButton.style.opacity = 1;
+    instructButton.style.opacity = 1;
+    optionsButton.style.opacity = 1;
+    returnBtn.style.opacity = 1;
+  }
 });
 
 function drawInstructions(now) {
