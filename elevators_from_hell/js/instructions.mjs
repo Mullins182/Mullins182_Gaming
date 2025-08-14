@@ -91,7 +91,7 @@ function drawInstructions(now) {
   cctx.textBaseline = "middle";
 
   const instructions = [
-    ["----------- INSTRUCTIONS -----------"],
+    ["----------- INSTRUCTIONS ( Left-Click them to Exit) -----------"],
 
     ["Use the left/right arrow keys to run left/right"],
     [
@@ -102,7 +102,7 @@ function drawInstructions(now) {
     [
       "You WIN if you activate all seven buttons on each floor and escape through the exit door",
     ],
-    ["Good luck!"],
+    ["GOOD LUCK !!!"],
   ];
 
   // Draw the instructions text
