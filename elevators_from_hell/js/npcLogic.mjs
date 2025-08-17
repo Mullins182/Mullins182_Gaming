@@ -12,7 +12,7 @@ import {
   shaftLdoorsOpenCheck,
   playerOnFloor,
   npcOnFloor,
-} from "./hell10.mjs?v=v1.2.9";
+} from "./hell10.mjs";
 
 let npcIsIdling = false;
 // let npcPosSnapshot = ? flexElemsPosInit.npcPosSnapshot : null;

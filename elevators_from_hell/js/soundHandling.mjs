@@ -1,10 +1,6 @@
 console.log("Module 'soundHandling.mjs' has started !");
 
-import {
-  moveableElems,
-  staticGameElements,
-  gameRunning,
-} from "./hell10.mjs?v=v1.2.9";
+import { moveableElems, staticGameElements, gameRunning } from "./hell10.mjs";
 import { gameCanvas } from "./canvasInit.mjs";
 import { playerSprite, player_spriteSheet } from "./spriteHandling.mjs";
 import { playerCatched } from "./npcLogic.mjs";

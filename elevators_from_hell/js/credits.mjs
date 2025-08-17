@@ -7,7 +7,7 @@ import {
   instructButton,
   optionsButton,
   returnBtn,
-} from "./hell10.mjs?v=v1.2.9";
+} from "./hell10.mjs";
 
 creditsButton.addEventListener("click", function () {
   // Hide the buttons and show the credits

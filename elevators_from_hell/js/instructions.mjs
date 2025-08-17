@@ -14,7 +14,7 @@ import {
   optionsButton,
   returnBtn,
   staticGameElements,
-} from "./hell10.mjs?v=v1.2.9";
+} from "./hell10.mjs";
 
 let exit = false;
 let btnActive = 0; // Green-Draw of Btns -> 0 = none, 1 = up, 2 = down, 3 = both
