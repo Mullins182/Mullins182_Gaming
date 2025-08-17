@@ -7,6 +7,7 @@ import { playerCatched } from "./npcLogic.mjs";
 import {
   staticGameElements,
   moveableElems,
+  playerOnFloor,
   debugging,
   exitButtonsStatus,
   callElevatorBtnsStatus,
@@ -18,6 +19,7 @@ import {
   npcSprite,
   changePlayerSprite,
 } from "./spriteHandling.mjs";
+import { playerOnLift } from "./playerLogic.mjs";
 
 // ___________________________              ___________________________
 // ___________________________   DRAWING    ___________________________
@@ -820,7 +822,7 @@ export function drawFloorSelectKeys(position) {
     gameCanvas.height * 0.08,
     "Select Floor",
     "25px Arial Black",
-    "gold",
+    "goldenrod",
     staticGameElements.floorNumbersShadowColor,
     0,
     0,
@@ -831,8 +833,17 @@ export function drawFloorSelectKeys(position) {
   );
 
   // Draw Circle -> (posX, posY, radius, startangle, endangle)
-  ctx.fillStyle = "#00a5f0";
   circleYPositions.forEach((y, i) => {
+    ctx.fillStyle =
+      (moveableElems.playerOnLiftL &&
+        moveableElems.liftL_calledToFloor === i &&
+        (i !== playerOnFloor.floor || moveableElems.liftL_isMoving)) ||
+      (moveableElems.playerOnLiftR &&
+        moveableElems.liftR_calledToFloor === i &&
+        (i !== playerOnFloor.floor || moveableElems.liftR_isMoving))
+        ? "#449100ff"
+        : "#720000ff";
+
     ctx.beginPath();
     ctx.arc(
       position === "right" ? gameCanvas.width * 0.98 : gameCanvas.width * 0.03,
@@ -844,14 +855,14 @@ export function drawFloorSelectKeys(position) {
     ctx.fill();
   });
   // Draw numbers in circles
-  ctx.fillStyle = "#111";
+  // ctx.fillStyle = "#565656";
   labelYPositions.forEach((y, i) => {
     createLabel(
       position === "right" ? gameCanvas.width * 0.98 : gameCanvas.width * 0.03,
       y,
       i, // Zahl in den Kreis
       "25px Arial Black",
-      "black",
+      "greenyellow",
       staticGameElements.floorNumbersShadowColor,
       0,
       0,
