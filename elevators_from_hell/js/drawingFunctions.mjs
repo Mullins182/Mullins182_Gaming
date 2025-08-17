@@ -794,54 +794,76 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
   ctx.fill(); // Optional: Dreieck ausfüllen
 }
 export function drawFloorSelectKeys(position) {
-  ctx.fillStyle = "#00a5f0";
+  // Y-Positionen für die Kreise vorbereiten
+  const circleYPositions = [
+    gameCanvas.height * 0.935, // Floor 0
+    gameCanvas.height * 0.811, // Floor 1
+    gameCanvas.height * 0.685, // Floor 2
+    gameCanvas.height * 0.558, // Floor 3
+    gameCanvas.height * 0.435, // Floor 4
+    gameCanvas.height * 0.31, // Floor 5
+    gameCanvas.height * 0.185, // Floor 6
+  ];
+  // Y-Positionen für die Labels vorbereiten
+  const labelYPositions = [
+    staticGameElements.floor0_YPos - 50,
+    staticGameElements.floor1_YPos - 50,
+    staticGameElements.floor2_YPos - 50,
+    staticGameElements.floor3_YPos - 50,
+    staticGameElements.floor4_YPos - 50,
+    staticGameElements.floor5_YPos - 50,
+    staticGameElements.floor6_YPos - 50,
+  ];
+  // Draw Floor Selection Label
+  createLabel(
+    position === "right" ? gameCanvas.width * 0.93 : gameCanvas.width * 0.08,
+    gameCanvas.height * 0.08,
+    "Select Floor",
+    "25px Arial Black",
+    "gold",
+    staticGameElements.floorNumbersShadowColor,
+    0,
+    0,
+    0,
+    "fillText",
+    staticGameElements.floorNumbersColor,
+    1.15
+  );
+
   // Draw Circle -> (posX, posY, radius, startangle, endangle)
-  if (position === "left") {
-    ctx.arc(gameCanvas.width / 8, gameCanvas.height / 5, 23, 0, 2 * Math.PI);
-    // ctx.stroke();
-    ctx.fill();
-  } else if (position === "right") {
+  ctx.fillStyle = "#00a5f0";
+  circleYPositions.forEach((y, i) => {
+    ctx.beginPath();
     ctx.arc(
-      gameCanvas.width * 0.9,
-      gameCanvas.height / 5.35,
+      position === "right" ? gameCanvas.width * 0.98 : gameCanvas.width * 0.03,
+      y,
       23,
       0,
       2 * Math.PI
     );
-    // ctx.stroke();
     ctx.fill();
-    ctx.fillStyle = "#111";
-    for (let i = 0; i < 7; i++) {
-      createLabel(
-        gameCanvas.width * 0.9,
-        i === 0
-          ? staticGameElements.floor0_YPos - 75
-          : i === 1
-          ? staticGameElements.floor1_YPos - 75
-          : i === 2
-          ? staticGameElements.floor2_YPos - 75
-          : i === 3
-          ? staticGameElements.floor3_YPos - 75
-          : i === 4
-          ? staticGameElements.floor4_YPos - 75
-          : i === 5
-          ? staticGameElements.floor5_YPos - 75
-          : staticGameElements.floor6_YPos - 50,
-        i,
-        "25px Arial Black",
-        "black",
-        staticGameElements.floorNumbersShadowColor,
-        0,
-        0,
-        0,
-        "fillText",
-        staticGameElements.floorNumbersColor,
-        1.15
-      );
-    }
-  }
+  });
+  // Draw numbers in circles
+  ctx.fillStyle = "#111";
+  labelYPositions.forEach((y, i) => {
+    createLabel(
+      position === "right" ? gameCanvas.width * 0.98 : gameCanvas.width * 0.03,
+      y,
+      i, // Zahl in den Kreis
+      "25px Arial Black",
+      "black",
+      staticGameElements.floorNumbersShadowColor,
+      0,
+      0,
+      0,
+      "fillText",
+      staticGameElements.floorNumbersColor,
+      1.15
+    );
+  });
   // console.log("drawFloorSelectKeys() called with position:", position);
 }
+
 export function drawPlayer(xPos, yPos, direction) {
   ctx.save();
 
