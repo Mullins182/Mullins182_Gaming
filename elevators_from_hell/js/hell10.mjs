@@ -35,6 +35,7 @@ import {
 import {
   playerCollisionCheck,
   playerCatchedCheck,
+  playerEnteredLift,
   playerCallLiftBtnsCheck,
   exitBtnActCheck,
   isColliding,
@@ -422,7 +423,7 @@ const FLOOR_LEVELS = {
 };
 
 // ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.2.3";
+export const gameVersion = "v1.2.9";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
@@ -677,6 +678,7 @@ async function gameRoutine(timestamp) {
     playerCatchedCheck();
     playerCollisionCheck();
     playerEscapedCheck();
+    playerEnteredLift();
     playerIsOnFloor();
     npcRoutine();
     liftsPosUpdate();
