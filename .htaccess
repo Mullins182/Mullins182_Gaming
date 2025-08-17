@@ -1,0 +1,42 @@
+# Aktiviert Ablaufsteuerung (mod_expires) für weitere Kontrolle, falls verfügbar
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # HTML-Dateien immer frisch laden (kein Cache)
+  <FilesMatch "\.(html|htm)$">
+    ExpiresByType text/html "access"
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # JS-Module (.mjs) immer frisch laden, kein Cache
+  <FilesMatch "\.(css|js|mjs)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # CSS- und JS-Dateien (nicht-Module) 1 Monat cachen
+  # <FilesMatch "\.(css|js)$">
+  # ExpiresDefault "access plus 1 month"
+  # Header set Cache-Control "public, max-age=2592000"
+  # </FilesMatch>
+
+  # Bilder ein Jahr cachen
+  <FilesMatch "\.(jpg|jpeg|png|gif|svg|webp)$">
+    ExpiresDefault "access plus 1 year"
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+</IfModule>
+
+# Falls mod_expires nicht aktiv ist, zumindest Cache-Control für .mjs setzen
+<IfModule !mod_expires.c>
+  <IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|mjs)$">
+      Header set Cache-Control "no-cache, no-store, must-revalidate"
+      Header set Pragma "no-cache"
+      Header set Expires "0"
+    </FilesMatch>
+  </IfModule>
+</IfModule>

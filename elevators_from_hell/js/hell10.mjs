@@ -61,6 +61,9 @@ export const creditsButton = document.getElementById("creditsButton");
 export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
+// ___________________________ GAME-VERSION ___________________________
+export let gameVersion = "v1.3.0";
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
 
@@ -421,9 +424,6 @@ const FLOOR_LEVELS = {
   floor5_YPos: floorLevels.floor5_YPos,
   floor6_YPos: floorLevels.floor6_YPos,
 };
-
-// ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.2.9";
 
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
