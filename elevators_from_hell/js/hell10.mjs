@@ -35,6 +35,7 @@ import {
 import {
   playerCollisionCheck,
   playerCatchedCheck,
+  playerEnteredLift,
   playerCallLiftBtnsCheck,
   exitBtnActCheck,
   isColliding,
@@ -677,6 +678,7 @@ async function gameRoutine(timestamp) {
     playerCatchedCheck();
     playerCollisionCheck();
     playerEscapedCheck();
+    playerEnteredLift();
     playerIsOnFloor();
     npcRoutine();
     liftsPosUpdate();

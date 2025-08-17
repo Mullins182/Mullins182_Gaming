@@ -4,9 +4,6 @@ console.log("Module 'spriteHandling.mjs' has started !");
 export const cabinView = new Image();
 cabinView.src = "./assets/img/liftCabins/cabinView4.png";
 
-export const defeatImg = new Image();
-defeatImg.src = "./assets/img/defeat.webp";
-
 // Spritesheets Initializing
 export let player_spriteSheet = {
   idle: new Image(),

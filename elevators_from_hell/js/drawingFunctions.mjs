@@ -1,7 +1,7 @@
 console.log("Module 'drawingFunctions.mjs' has started !");
 
 import { gameCanvas, ctx } from "./canvasInit.mjs";
-import { drawLabels } from "./drawLabels.mjs";
+import { createLabel } from "./drawLabels.mjs";
 import { playerCatched } from "./npcLogic.mjs";
 
 import {
@@ -14,7 +14,6 @@ import {
 import {
   spriteControl,
   cabinView,
-  defeatImg,
   playerSprite,
   npcSprite,
   changePlayerSprite,
@@ -793,6 +792,55 @@ function drawTriangle(posX, posY, width, fillColor, dir) {
   ctx.stroke(); // Linien zeichnen
   ctx.fillStyle = fillColor;
   ctx.fill(); // Optional: Dreieck ausfüllen
+}
+export function drawFloorSelectKeys(position) {
+  ctx.fillStyle = "#00a5f0";
+  // Draw Circle -> (posX, posY, radius, startangle, endangle)
+  if (position === "left") {
+    ctx.arc(gameCanvas.width / 8, gameCanvas.height / 5, 23, 0, 2 * Math.PI);
+    // ctx.stroke();
+    ctx.fill();
+  } else if (position === "right") {
+    ctx.arc(
+      gameCanvas.width * 0.9,
+      gameCanvas.height / 5.35,
+      23,
+      0,
+      2 * Math.PI
+    );
+    // ctx.stroke();
+    ctx.fill();
+    ctx.fillStyle = "#111";
+    for (let i = 0; i < 7; i++) {
+      createLabel(
+        gameCanvas.width * 0.9,
+        i === 0
+          ? staticGameElements.floor0_YPos - 75
+          : i === 1
+          ? staticGameElements.floor1_YPos - 75
+          : i === 2
+          ? staticGameElements.floor2_YPos - 75
+          : i === 3
+          ? staticGameElements.floor3_YPos - 75
+          : i === 4
+          ? staticGameElements.floor4_YPos - 75
+          : i === 5
+          ? staticGameElements.floor5_YPos - 75
+          : staticGameElements.floor6_YPos - 50,
+        i,
+        "25px Arial Black",
+        "black",
+        staticGameElements.floorNumbersShadowColor,
+        0,
+        0,
+        0,
+        "fillText",
+        staticGameElements.floorNumbersColor,
+        1.15
+      );
+    }
+  }
+  // console.log("drawFloorSelectKeys() called with position:", position);
 }
 export function drawPlayer(xPos, yPos, direction) {
   ctx.save();

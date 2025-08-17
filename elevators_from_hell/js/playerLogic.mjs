@@ -13,6 +13,7 @@ import {
 } from "./hell10.mjs";
 import { gameCanvas, wrapper } from "./canvasInit.mjs";
 import { changePlayerSprite, spriteControl } from "./spriteHandling.mjs";
+import { drawFloorSelectKeys } from "./drawingFunctions.mjs";
 import { playerCatched } from "./npcLogic.mjs";
 
 // Collision-Variables
@@ -47,6 +48,11 @@ function playerCanLeave() {
     playerOnFloor.floor === 0
     ? true
     : false;
+}
+// ___________________________ PLAYER ENTERED LIFT OPERATIONS ___________________________
+export function playerEnteredLift() {
+  moveableElems.playerOnLiftL ? drawFloorSelectKeys("left") : null;
+  moveableElems.playerOnLiftR ? drawFloorSelectKeys("right") : null;
 }
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 export function playerOnLift(getOutOfLift) {
