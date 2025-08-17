@@ -52,9 +52,7 @@ function playerCanLeave() {
 // ___________________________ PLAYER ENTERED LIFT OPERATIONS ___________________________
 export function playerEnteredLift() {
   moveableElems.playerOnLiftL ? drawFloorSelectKeys("left") : null;
-  moveableElems.playerOnLiftR
-    ? drawFloorSelectKeys("right")
-    : drawFloorSelectKeys("left");
+  moveableElems.playerOnLiftR ? drawFloorSelectKeys("right") : null;
 }
 // ___________________________ PLAYER ON LIFT-CHECK ___________________________
 export function playerOnLift(getOutOfLift) {
