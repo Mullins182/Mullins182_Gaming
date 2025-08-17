@@ -11,7 +11,7 @@ import {
   debugging,
   exitButtonsStatus,
   callElevatorBtnsStatus,
-} from "./hell10.mjs";
+} from "./hell10.mjs?v=v1.2.9";
 import {
   spriteControl,
   cabinView,

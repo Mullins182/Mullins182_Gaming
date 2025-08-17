@@ -61,6 +61,9 @@ export const creditsButton = document.getElementById("creditsButton");
 export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
+// ___________________________ GAME-VERSION ___________________________
+export let gameVersion = "v0.0.0";
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
 
@@ -422,9 +425,6 @@ const FLOOR_LEVELS = {
   floor6_YPos: floorLevels.floor6_YPos,
 };
 
-// ___________________________ GAME-VERSION ___________________________
-export const gameVersion = "v1.2.9";
-
 // ___________________________ DEBUGGING ___________________________
 export const debugging = {
   debugMode: false,
@@ -629,6 +629,21 @@ function handleFloorSelection(floorNumber) {
 
 // ___________________________ GAME INI ___________________________
 async function initialize() {
+  // Alle Script-Tags holen
+  const scripts = document.getElementsByTagName("script");
+
+  // Nach deinem Script mit 'hell10.mjs' suchen
+  for (let i = 0; i < scripts.length; i++) {
+    const src = scripts[i].src;
+    if (src.includes("hell10.mjs")) {
+      // URL Objekt erstellen, damit du Suchparameter leicht abfragen kannst
+      const url = new URL(src);
+      gameVersion = url.searchParams.get("v");
+      console.log("Version von hell10.mjs:", gameVersion);
+      break;
+    }
+  }
+
   wrapper.style.transition = "none";
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig

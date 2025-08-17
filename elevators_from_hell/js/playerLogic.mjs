@@ -10,7 +10,7 @@ import {
   callElevatorBtnsStatus,
   exitButtonsStatus,
   returnBtn,
-} from "./hell10.mjs";
+} from "./hell10.mjs?v=v1.2.9";
 import { gameCanvas, wrapper } from "./canvasInit.mjs";
 import { changePlayerSprite, spriteControl } from "./spriteHandling.mjs";
 import { drawFloorSelectKeys } from "./drawingFunctions.mjs";

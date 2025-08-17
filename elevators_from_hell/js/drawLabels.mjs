@@ -7,7 +7,7 @@ import {
   staticGameElements,
   debugging,
   moveableElems,
-} from "./hell10.mjs";
+} from "./hell10.mjs?v=v1.2.9";
 
 import { playerCatched } from "./npcLogic.mjs";
 import { playerEscaped } from "./playerLogic.mjs";
