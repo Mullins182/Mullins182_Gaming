@@ -91,8 +91,11 @@ function drawInstructions(now) {
   cctx.textBaseline = "middle";
 
   const instructions = [
-    ["----------- INSTRUCTIONS ( Left-Click them to Exit) -----------"],
-
+    ["----------- INSTRUCTIONS -----------"],
+    ["(Left-Click them to Exit)"],
+    [
+      "You can pause the game at any time by pressing spacebar (Try now and the music should pause ;)",
+    ],
     ["Use the left/right arrow keys to run left/right"],
     [
       "Use the up/down arrow keys to activate/deactivate buttons and to enter/leave an elevator",
@@ -107,7 +110,7 @@ function drawInstructions(now) {
 
   // Draw the instructions text
   for (let i = 0; i < instructions.length; i++) {
-    const gaps = [50, 170, 250, 330, 410, 490, 570];
+    const gaps = [50, 100, 250, 330, 410, 490, 570, 650, 730];
     cctx.fillText(instructions[i], canvas2.width / 2, gaps[i]);
   }
 
@@ -124,11 +127,11 @@ function drawInstructions(now) {
   }
 
   drawPlayerSprite(playerFrame);
-  drawButton(canvas2.width / 9, 240);
-  drawLiftCabin(canvas2.width / 1.1, 240);
-  drawLiftCabin(canvas2.width / 5.5, 340);
-  drawShaftDoors(canvas2.width / 1.1, 290, 20);
-  drawShaftDoors(canvas2.width / 5.5, 390, 20);
+  drawButton(canvas2.width / 9, 410);
+  drawLiftCabin(canvas2.width / 1.1, 420);
+  drawLiftCabin(canvas2.width / 5.5, 500);
+  drawShaftDoors(canvas2.width / 1.1, 470, 20);
+  drawShaftDoors(canvas2.width / 5.5, 550, 20);
   drawNPCsprite(npcFrame);
 
   !exit && requestAnimationFrame(drawInstructions);
@@ -142,7 +145,7 @@ function drawPlayerSprite(playerFrame) {
     spriteControl.spriteWidth,
     spriteControl.spriteHeight,
     canvas2.width / 4,
-    80,
+    250,
     staticGameElements.playerWidth,
     staticGameElements.playerHeight
   );
@@ -156,7 +159,7 @@ function drawNPCsprite(npcFrame) {
     512,
     380,
     canvas2.width / 4.4,
-    380,
+    530,
     staticGameElements.npcWidth,
     staticGameElements.npcHeight
   );
@@ -207,13 +210,13 @@ function drawButton(posX, posY) {
 
   // Plate
   cctx.fillStyle = "#363636";
-  cctx.fillRect(posX - 25, posY, 17, 17);
+  cctx.fillRect(posX - 25, posY - 7, 17, 17);
 
   cctx.fillStyle = btnActive ? "#d4ff00" : "#ff3e00";
   cctx.beginPath();
 
   // Draw Circle -> (posX, posY, radius, startangle, endangle)
-  cctx.arc(posX - 25 + 9, posY + 8, 4, 0, 2 * Math.PI);
+  cctx.arc(posX - 25 + 9, posY + 1, 4, 0, 2 * Math.PI);
   cctx.stroke();
   cctx.fill();
 }

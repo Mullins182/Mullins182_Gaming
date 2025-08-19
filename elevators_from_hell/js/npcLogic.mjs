@@ -72,8 +72,8 @@ function elemStatusUpdate() {
       ? "r"
       : npcHeading;
   playerCatched =
-    playerPosX + staticGameElements.playerWidth * 0.6 < npcPosX ||
-    playerPosX - staticGameElements.playerWidth > npcPosX ||
+    playerPosX > npcPosX + staticGameElements.npcWidth ||
+    playerPosX + staticGameElements.playerWidth / 2 < npcPosX ||
     playerOnFloor.floor !== npcOnFloor.floor ||
     (moveableElems.playerOnLiftL && !shaftLdoorsOpenCheck()) ||
     (moveableElems.playerOnLiftR && !shaftRdoorsOpenCheck())
@@ -167,12 +167,6 @@ function npcIdlingMovement() {
   //   : npcPosX > gameCanvas.width / 1.5
   //   ? "l"
   //   : flexElemsPosInit.npcActMovDir;
-}
-
-function npcCallLift() {
-  return npcPosX < staticGameElements.callElevatorBtnsXpos
-    ? 52
-    : staticGameElements.npcPressCallLiftBtn;
 }
 
 function npcPosXupdate() {

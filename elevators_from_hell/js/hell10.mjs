@@ -62,7 +62,7 @@ export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
 // ___________________________ GAME-VERSION ___________________________
-export let gameVersion = "v1.3.0";
+export let gameVersion = "v1.3.3";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
@@ -214,13 +214,12 @@ export const staticGameElements = {
   liftSpeed: 1.25,
   playerHeight: 121, // 110
   playerWidth: 121, // 100
-  playerSpeed: 2.75,
+  playerSpeed: 3,
   playerMovement: "stop",
   npcHeight: 70,
   npcWidth: 100,
-  npcSpeed: 5.75,
+  npcSpeed: 6.75,
   npcXaxisMirroringOffset: 70,
-  npcPressCallLiftBtn: null,
 
   // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
@@ -271,6 +270,7 @@ export const moveableElems = {
   playerOnLiftR: false,
   playerOnLiftL: false,
 
+  // Initial-Position of NPC
   npcPosX: gameCanvas.width / 1.65,
   npcPosY:
     staticGameElements[`floor${npcOnFloor.floor}_YPos`] -
@@ -407,7 +407,7 @@ const KEYS = {
     DOWN: "ArrowDown",
   },
   SPECIAL_KEYS: {
-    ACT_SOUNDS: " ",
+    PAUSE_GAME: " ",
     TOGGLE_AUTO_ELEVATOR: "r",
     TOGGLE_DEBUG_MODE: "d",
     CHANGE_PLAYER_YPOS: "t",
@@ -429,6 +429,7 @@ const FLOOR_LEVELS = {
 export const debugging = {
   debugMode: false,
   showDebugLine: false,
+  showPlayerspriteCenter: false,
   showNpcRange: false,
   floorLevelSelected: floorLevels.floor0_YPos,
   automaticElevator: false,
@@ -474,20 +475,9 @@ document.addEventListener("keydown", function (event) {
   }
 
   switch (event.key) {
-    // case KEYS.SPECIAL_KEYS.ACT_SOUNDS:
-    //   wrapper.style.transition = "opacity 5s ease-in-out";
-    //   wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
-    //   wrapper.style.opacity = 1.0;
-    //   menuMusic.play();
-    //   soundsAct = true;
-    //   startButton.style.visibility = "visible";
-    //   optionsButton.style.visibility = "visible";
-    //   creditsButton.style.visibility = "visible";
-    //   startButton.style.opacity = 1;
-    //   optionsButton.style.opacity = 1;
-    //   creditsButton.style.opacity = 1;
-
-    //   break;
+    case KEYS.SPECIAL_KEYS.PAUSE_GAME:
+      !gamePaused ? pauseGame() : resumeGame();
+      break;
 
     // Player Movement
     case KEYS.DIRECTIONS.LEFT:

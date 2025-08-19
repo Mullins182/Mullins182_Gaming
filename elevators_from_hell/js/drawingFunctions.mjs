@@ -342,6 +342,32 @@ export function drawLiftDoors() {
 export function drawDebugLine() {
   ctx.fillStyle = "#00FF00";
   ctx.fillRect(0, debugging.floorLevelSelected, 1600, 3);
+  // Entry area left Lift
+  ctx.fillRect(
+    gameCanvas.width * 0.152 + spriteControl.spriteWidth / 2.7,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
+  ctx.fillRect(
+    gameCanvas.width * 0.175 + spriteControl.spriteWidth / 1.95,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
+  // Entry area right lift
+  ctx.fillRect(
+    gameCanvas.width * 0.755 + spriteControl.spriteWidth / 2.7,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
+  ctx.fillRect(
+    gameCanvas.width * 0.775 + spriteControl.spriteWidth / 2.01,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
 }
 export function drawShaftsElements() {
   // ____________________________ SHAFT TOP ELEMENT ____________________________
@@ -898,8 +924,27 @@ export function drawPlayer(xPos, yPos, direction) {
   // Lift L & R X-Pos middle rect show up
   // ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
   // ctx.fillRect(gameElements.liftLposXmid, gameElements.floor0_YPos, 10, 10);
+  if (debugging.showPlayerspriteCenter) {
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(
+      xPos + staticGameElements.playerWidth / 2,
+      gameCanvas.height - 50,
+      5,
+      5
+    );
+  }
 
   ctx.restore();
+
+  if (debugging.showPlayerspriteCenter) {
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(
+      xPos + staticGameElements.playerWidth / 2,
+      gameCanvas.height - 50,
+      5,
+      5
+    );
+  }
 }
 export function drawNPC(xPos, yPos, direction) {
   ctx.save();
@@ -943,6 +988,11 @@ export function drawNPC(xPos, yPos, direction) {
     ctx.fillRect(xPos, yPos + (staticGameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
+
+  if (debugging.showNpcRange) {
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(xPos, yPos + (staticGameElements.npcHeight / 2 - 5), 5, 5);
+  }
 }
 
 export function drawGameOverImg() {
