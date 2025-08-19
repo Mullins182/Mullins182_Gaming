@@ -924,8 +924,27 @@ export function drawPlayer(xPos, yPos, direction) {
   // Lift L & R X-Pos middle rect show up
   // ctx.fillRect(gameElements.liftRposXmid, gameElements.floor0_YPos, 10, 10);
   // ctx.fillRect(gameElements.liftLposXmid, gameElements.floor0_YPos, 10, 10);
+  if (debugging.showPlayerspriteCenter) {
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(
+      xPos + staticGameElements.playerWidth / 2,
+      gameCanvas.height - 50,
+      5,
+      5
+    );
+  }
 
   ctx.restore();
+
+  if (debugging.showPlayerspriteCenter) {
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(
+      xPos + staticGameElements.playerWidth / 2,
+      gameCanvas.height - 50,
+      5,
+      5
+    );
+  }
 }
 export function drawNPC(xPos, yPos, direction) {
   ctx.save();
@@ -969,6 +988,11 @@ export function drawNPC(xPos, yPos, direction) {
     ctx.fillRect(xPos, yPos + (staticGameElements.npcHeight / 2 - 5), 5, 5);
   }
   ctx.restore();
+
+  if (debugging.showNpcRange) {
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(xPos, yPos + (staticGameElements.npcHeight / 2 - 5), 5, 5);
+  }
 }
 
 export function drawGameOverImg() {

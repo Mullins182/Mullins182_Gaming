@@ -214,13 +214,12 @@ export const staticGameElements = {
   liftSpeed: 1.25,
   playerHeight: 121, // 110
   playerWidth: 121, // 100
-  playerSpeed: 2.75,
+  playerSpeed: 3,
   playerMovement: "stop",
   npcHeight: 70,
   npcWidth: 100,
-  npcSpeed: 5.75,
+  npcSpeed: 6.75,
   npcXaxisMirroringOffset: 70,
-  npcPressCallLiftBtn: null,
 
   // TOP ELEMENTS LEFT SHAFT
   shaftTopF0PosX_left: gameCanvas.width * 0.164,
@@ -271,6 +270,7 @@ export const moveableElems = {
   playerOnLiftR: false,
   playerOnLiftL: false,
 
+  // Initial-Position of NPC
   npcPosX: gameCanvas.width / 1.65,
   npcPosY:
     staticGameElements[`floor${npcOnFloor.floor}_YPos`] -
@@ -429,6 +429,7 @@ const FLOOR_LEVELS = {
 export const debugging = {
   debugMode: false,
   showDebugLine: false,
+  showPlayerspriteCenter: false,
   showNpcRange: false,
   floorLevelSelected: floorLevels.floor0_YPos,
   automaticElevator: false,
