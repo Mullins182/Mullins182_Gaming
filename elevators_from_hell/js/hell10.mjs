@@ -62,7 +62,7 @@ export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
 // ___________________________ GAME-VERSION ___________________________
-export let gameVersion = "v1.3.2";
+export let gameVersion = "v1.3.3";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
@@ -407,7 +407,7 @@ const KEYS = {
     DOWN: "ArrowDown",
   },
   SPECIAL_KEYS: {
-    ACT_SOUNDS: " ",
+    PAUSE_GAME: " ",
     TOGGLE_AUTO_ELEVATOR: "r",
     TOGGLE_DEBUG_MODE: "d",
     CHANGE_PLAYER_YPOS: "t",
@@ -475,20 +475,9 @@ document.addEventListener("keydown", function (event) {
   }
 
   switch (event.key) {
-    // case KEYS.SPECIAL_KEYS.ACT_SOUNDS:
-    //   wrapper.style.transition = "opacity 5s ease-in-out";
-    //   wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
-    //   wrapper.style.opacity = 1.0;
-    //   menuMusic.play();
-    //   soundsAct = true;
-    //   startButton.style.visibility = "visible";
-    //   optionsButton.style.visibility = "visible";
-    //   creditsButton.style.visibility = "visible";
-    //   startButton.style.opacity = 1;
-    //   optionsButton.style.opacity = 1;
-    //   creditsButton.style.opacity = 1;
-
-    //   break;
+    case KEYS.SPECIAL_KEYS.PAUSE_GAME:
+      !gamePaused ? pauseGame() : resumeGame();
+      break;
 
     // Player Movement
     case KEYS.DIRECTIONS.LEFT:
