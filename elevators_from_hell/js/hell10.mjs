@@ -62,7 +62,7 @@ export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
 // ___________________________ GAME-VERSION ___________________________
-export let gameVersion = "v1.3.0";
+export let gameVersion = "v1.3.1";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");

@@ -342,6 +342,32 @@ export function drawLiftDoors() {
 export function drawDebugLine() {
   ctx.fillStyle = "#00FF00";
   ctx.fillRect(0, debugging.floorLevelSelected, 1600, 3);
+  // Entry area left Lift
+  ctx.fillRect(
+    gameCanvas.width * 0.152 + spriteControl.spriteWidth / 2.7,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
+  ctx.fillRect(
+    gameCanvas.width * 0.175 + spriteControl.spriteWidth / 1.95,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
+  // Entry area right lift
+  ctx.fillRect(
+    gameCanvas.width * 0.755 + spriteControl.spriteWidth / 2.7,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
+  ctx.fillRect(
+    gameCanvas.width * 0.775 + spriteControl.spriteWidth / 2.01,
+    debugging.floorLevelSelected,
+    2,
+    100
+  );
 }
 export function drawShaftsElements() {
   // ____________________________ SHAFT TOP ELEMENT ____________________________

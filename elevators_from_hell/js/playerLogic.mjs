@@ -78,8 +78,8 @@ export function playerOnLift(getOutOfLift) {
       (playerOnFloor.floor === 6 && moveableElems.liftL_isOnFloor === 6)
     ) {
       if (
-        moveableElems.playerPosX > gameCanvas.width * 0.16 &&
-        moveableElems.playerPosX < gameCanvas.width * 0.185
+        moveableElems.playerPosX > gameCanvas.width * 0.152 &&
+        moveableElems.playerPosX < gameCanvas.width * 0.175
       ) {
         moveableElems.playerOnLiftL = true;
       }
@@ -94,8 +94,8 @@ export function playerOnLift(getOutOfLift) {
       (playerOnFloor.floor === 6 && moveableElems.liftR_isOnFloor === 6)
     ) {
       if (
-        moveableElems.playerPosX > gameCanvas.width * 0.76 &&
-        moveableElems.playerPosX < gameCanvas.width * 0.79
+        moveableElems.playerPosX > gameCanvas.width * 0.755 &&
+        moveableElems.playerPosX < gameCanvas.width * 0.775
       ) {
         moveableElems.playerOnLiftR = true;
       }
