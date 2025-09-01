@@ -55,13 +55,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.201 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsLW_f0,
+    gameCanvas.width * 0.201 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 1.0 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsLW_f0,
+    -staticGameElements.shaftDoorsLW_f0,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -76,13 +74,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.801 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsRW_f0,
+    gameCanvas.width * 0.801 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 1.0 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsRW_f0,
+    -staticGameElements.shaftDoorsRW_f0,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -97,13 +93,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.201 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsLW_f1,
+    gameCanvas.width * 0.201 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.875 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsLW_f1,
+    -staticGameElements.shaftDoorsLW_f1,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -118,13 +112,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.801 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsRW_f1,
+    gameCanvas.width * 0.801 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.875 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsRW_f1,
+    -staticGameElements.shaftDoorsRW_f1,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -139,13 +131,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.201 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsLW_f2,
+    gameCanvas.width * 0.201 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.75 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsLW_f2,
+    -staticGameElements.shaftDoorsLW_f2,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -160,13 +150,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.801 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsRW_f2,
+    gameCanvas.width * 0.801 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.75 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsRW_f2,
+    -staticGameElements.shaftDoorsRW_f2,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -181,13 +169,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.201 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsLW_f3,
+    gameCanvas.width * 0.201 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.625 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsLW_f3,
+    -staticGameElements.shaftDoorsLW_f3,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -202,13 +188,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.801 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsRW_f3,
+    gameCanvas.width * 0.801 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.625 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsRW_f3,
+    -staticGameElements.shaftDoorsRW_f3,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -223,13 +207,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.201 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsLW_f4,
+    gameCanvas.width * 0.201 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.5 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsLW_f4,
+    -staticGameElements.shaftDoorsLW_f4,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -244,13 +226,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.801 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsRW_f4,
+    gameCanvas.width * 0.801 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.5 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsRW_f4,
+    -staticGameElements.shaftDoorsRW_f4,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -265,13 +245,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.201 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsLW_f5,
+    gameCanvas.width * 0.201 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.375 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsLW_f5,
+    -staticGameElements.shaftDoorsLW_f5,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -286,13 +264,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.801 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsRW_f5,
+    gameCanvas.width * 0.801 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.375 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsRW_f5,
+    -staticGameElements.shaftDoorsRW_f5,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -307,13 +283,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.201 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsLW_f6,
+    gameCanvas.width * 0.201 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.25 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsLW_f6,
+    -staticGameElements.shaftDoorsLW_f6,
     staticGameElements.shaftDoorsHeight
   );
 
@@ -328,13 +302,11 @@ export function drawLiftDoors() {
   );
 
   ctx.fillRect(
-    gameCanvas.width * 0.801 +
-      staticGameElements.liftsWidth / 2 -
-      staticGameElements.shaftDoorsRW_f6,
+    gameCanvas.width * 0.801 + staticGameElements.liftsWidth / 2,
     gameCanvas.height * 0.25 -
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
-    staticGameElements.shaftDoorsRW_f6,
+    -staticGameElements.shaftDoorsRW_f6,
     staticGameElements.shaftDoorsHeight
   );
 }
