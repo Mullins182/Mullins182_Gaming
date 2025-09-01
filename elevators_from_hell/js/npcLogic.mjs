@@ -28,7 +28,7 @@ export let npcHeading = "r";
 export let playerCatched = false;
 
 // IN THE WORKS !
-export function npcRoutine() {
+export function npcRoutine(deltaTime) {
   playerDetectedCheck();
   npcIsIdling && moveableElems.npcPosSnapshot === 0
     ? (moveableElems.npcPosSnapshot = npcPosX)
@@ -40,7 +40,7 @@ export function npcRoutine() {
   if (playerEscaped) {
     return;
   }
-  npcMovesToPlayer();
+  npcMovesToPlayer(deltaTime);
   // console.log("NPC HEADING: " + npcHeading);
 }
 
@@ -169,16 +169,20 @@ function npcIdlingMovement() {
   //   : flexElemsPosInit.npcActMovDir;
 }
 
-function npcPosXupdate() {
+function npcPosXupdate(deltaTime) {
   npcOnLiftL || npcOnLiftR ? (moveableElems.npcActMovDir = "s") : null;
 
+  // Du musst die Geschwindigkeit anpassen, da sie nun pro Sekunde gilt.
+  // Ein Wert um 200-300 könnte dem alten Wert bei 60 FPS entsprechen (3 * 60 = 180).
+  const effectiveSpeed = staticGameElements.npcSpeed * 60;
+
   return moveableElems.npcActMovDir === "r"
-    ? staticGameElements.npcSpeed
+    ? effectiveSpeed * deltaTime
     : moveableElems.npcActMovDir === "l"
-    ? -staticGameElements.npcSpeed
+    ? -effectiveSpeed * deltaTime
     : moveableElems.npcActMovDir === "s"
     ? 0.0
-    : 0.25;
+    : 0.05;
 }
 
 function npcPosYupdate() {
@@ -223,10 +227,15 @@ function npcCallLiftBtnsCheck() {
   }
 }
 
-function npcMovesToPlayer() {
+function npcMovesToPlayer(deltaTime) {
   // console.log(playerCatched);
+
   // IN THE WORKS !!!
-  if (npcOnFloor.floor !== playerOnFloor.floor) {
+  if (
+    npcOnFloor.floor !== playerOnFloor.floor ||
+    (moveableElems.playerOnLiftL && moveableElems.liftL_isMoving) ||
+    (moveableElems.playerOnLiftR && moveableElems.liftR_isMoving)
+  ) {
     npcOnLiftL || npcOnLiftR ? null : npcCallLiftBtnsCheck();
 
     if (
@@ -234,7 +243,7 @@ function npcMovesToPlayer() {
       liftLonFloor !== npcOnFloor.floor
     ) {
       moveableElems.npcActMovDir = npcMoveToCallBtn();
-      moveableElems.npcPosX += npcPosXupdate();
+      moveableElems.npcPosX += npcPosXupdate(deltaTime);
     }
     if (liftRonFloor === npcOnFloor.floor) {
       moveableElems.npcActMovDir = npcMoveToLiftR();
@@ -242,14 +251,14 @@ function npcMovesToPlayer() {
       shaftRdoorsOpenCheck() ? npcEntersLiftR() : null;
 
       npcOnLiftR && shaftRdoorsOpenCheck() ? npcUsesLiftR() : null;
-      moveableElems.npcPosX += npcPosXupdate();
+      moveableElems.npcPosX += npcPosXupdate(deltaTime);
     } else if (liftLonFloor === npcOnFloor.floor) {
       moveableElems.npcActMovDir = npcMoveToLiftL();
 
       shaftLdoorsOpenCheck() ? npcEntersLiftL() : null;
 
       npcOnLiftL && shaftLdoorsOpenCheck() ? npcUsesLiftL() : null;
-      moveableElems.npcPosX += npcPosXupdate();
+      moveableElems.npcPosX += npcPosXupdate(deltaTime);
     }
   } else {
     if (liftRonFloor === playerOnFloor.floor && npcOnLiftR) {
@@ -270,7 +279,7 @@ function npcMovesToPlayer() {
       } else {
         moveableElems.npcActMovDir = "s";
       }
-      moveableElems.npcPosX += npcPosXupdate();
+      moveableElems.npcPosX += npcPosXupdate(deltaTime);
     }
   }
 }
