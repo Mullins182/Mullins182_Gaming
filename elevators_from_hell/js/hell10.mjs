@@ -62,7 +62,7 @@ export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
 // ___________________________ GAME-VERSION ___________________________
-export let gameVersion = "v1.4.0";
+export let gameVersion = "v1.4.3";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
@@ -668,8 +668,8 @@ async function gameRoutine(timestamp) {
       staticGameElements.playerMovement === "left"
         ? "left"
         : staticGameElements.playerMovement === "right"
-        ? "right"
-        : moveableElems.playerLastDir;
+          ? "right"
+          : moveableElems.playerLastDir;
 
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
@@ -720,13 +720,13 @@ function drawGameElements() {
     drawPlayer(
       moveableElems.playerPosX,
       moveableElems.playerPosY,
-      moveableElems.playerLastDir
+      moveableElems.playerLastDir,
     );
     moveableElems.npcOnLiftL
       ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, "r")
       : moveableElems.npcOnLiftR
-      ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, "l")
-      : null;
+        ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, "l")
+        : null;
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -737,14 +737,14 @@ function drawGameElements() {
         staticGameElements[`floor${i}_YPos`] - 55,
         staticGameElements[`floor${i}_YPos`] - 43,
         callElevatorBtnsStatus[`floor${i}`],
-        i
+        i,
       );
       drawExitButtons(
         gameCanvas.width / 1.94,
         staticGameElements[`floor${i}_YPos`] - 52,
         staticGameElements.exitBtnsXpos,
         staticGameElements[`floor${i}_YPos`] - 43,
-        exitButtonsStatus[`floor${i}`] ? true : false
+        exitButtonsStatus[`floor${i}`] ? true : false,
       );
     }
 
@@ -765,8 +765,8 @@ function drawGameElements() {
     moveableElems.npcOnLiftL
       ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, "r")
       : moveableElems.npcOnLiftR
-      ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, "l")
-      : null;
+        ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, "l")
+        : null;
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -777,7 +777,7 @@ function drawGameElements() {
         staticGameElements[`floor${i}_YPos`] - 55,
         staticGameElements[`floor${i}_YPos`] - 43,
         callElevatorBtnsStatus[`floor${i}`],
-        i
+        i,
       );
 
       drawExitButtons(
@@ -785,13 +785,13 @@ function drawGameElements() {
         staticGameElements[`floor${i}_YPos`] - 52,
         staticGameElements.exitBtnsXpos,
         staticGameElements[`floor${i}_YPos`] - 43,
-        exitButtonsStatus[`floor${i}`] ? true : false
+        exitButtonsStatus[`floor${i}`] ? true : false,
       );
     }
     drawPlayer(
       moveableElems.playerPosX,
       moveableElems.playerPosY,
-      moveableElems.playerLastDir
+      moveableElems.playerLastDir,
     );
     !moveableElems.npcOnLiftL && !moveableElems.npcOnLiftR
       ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, npcHeading)
@@ -1146,18 +1146,18 @@ export function playerPosUpdate(moveDirection, deltaTime) {
     moveDirection === "left"
       ? (moveableElems.playerPosX -= effectiveSpeed * deltaTime)
       : moveDirection === "right"
-      ? (moveableElems.playerPosX += effectiveSpeed * deltaTime)
-      : moveDirection === "stop"
-      ? moveableElems.playerPosX
-      : gameCanvas.width / 2;
+        ? (moveableElems.playerPosX += effectiveSpeed * deltaTime)
+        : moveDirection === "stop"
+          ? moveableElems.playerPosX
+          : gameCanvas.width / 2;
 
   moveableElems.playerPosY = moveableElems.playerOnLiftR
     ? moveableElems.liftR_YPos +
       (staticGameElements.liftsHeight - staticGameElements.playerHeight)
     : moveableElems.playerOnLiftL
-    ? moveableElems.liftL_YPos +
-      (staticGameElements.liftsHeight - staticGameElements.playerHeight)
-    : moveableElems.playerPosY;
+      ? moveableElems.liftL_YPos +
+        (staticGameElements.liftsHeight - staticGameElements.playerHeight)
+      : moveableElems.playerPosY;
 }
 
 function playerIsOnFloor() {
@@ -1166,24 +1166,24 @@ function playerIsOnFloor() {
     staticGameElements.floor1_YPos
       ? 0
       : moveableElems.playerPosY + moveableElems.playerYposOffset >
-        staticGameElements.floor2_YPos
-      ? 1
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
-        staticGameElements.floor3_YPos
-      ? 2
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
-        staticGameElements.floor4_YPos
-      ? 3
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
-        staticGameElements.floor5_YPos
-      ? 4
-      : moveableElems.playerPosY + moveableElems.playerYposOffset >
-        staticGameElements.floor6_YPos
-      ? 5
-      : moveableElems.playerPosY + moveableElems.playerYposOffset <
-        staticGameElements.floor6_YPos
-      ? 6
-      : 101;
+          staticGameElements.floor2_YPos
+        ? 1
+        : moveableElems.playerPosY + moveableElems.playerYposOffset >
+            staticGameElements.floor3_YPos
+          ? 2
+          : moveableElems.playerPosY + moveableElems.playerYposOffset >
+              staticGameElements.floor4_YPos
+            ? 3
+            : moveableElems.playerPosY + moveableElems.playerYposOffset >
+                staticGameElements.floor5_YPos
+              ? 4
+              : moveableElems.playerPosY + moveableElems.playerYposOffset >
+                  staticGameElements.floor6_YPos
+                ? 5
+                : moveableElems.playerPosY + moveableElems.playerYposOffset <
+                    staticGameElements.floor6_YPos
+                  ? 6
+                  : 101;
 }
 
 // ___________________________ LIFTS-POS-UPDATES ___________________________
@@ -1251,14 +1251,14 @@ function liftCalledCheck() {
         Math.abs(i - moveableElems.liftL_isOnFloor)
         ? i
         : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
-          moveableElems.liftR_isOnFloor !== i &&
-          !moveableElems.liftR_isMoving &&
-          shaftRdoorsOpenCheck() &&
-          Math.abs(i - moveableElems.liftR_isOnFloor) ===
-            Math.abs(i - moveableElems.liftL_isOnFloor) &&
-          randCallLiftR
-        ? i
-        : moveableElems.liftR_calledToFloor;
+            moveableElems.liftR_isOnFloor !== i &&
+            !moveableElems.liftR_isMoving &&
+            shaftRdoorsOpenCheck() &&
+            Math.abs(i - moveableElems.liftR_isOnFloor) ===
+              Math.abs(i - moveableElems.liftL_isOnFloor) &&
+            randCallLiftR
+          ? i
+          : moveableElems.liftR_calledToFloor;
 
     moveableElems.liftL_calledToFloor =
       callElevatorBtnsStatus[`floor${i}`] !== 0 &&
@@ -1269,14 +1269,14 @@ function liftCalledCheck() {
         Math.abs(i - moveableElems.liftR_isOnFloor)
         ? i
         : callElevatorBtnsStatus[`floor${i}`] !== 0 &&
-          moveableElems.liftL_isOnFloor !== i &&
-          !moveableElems.liftL_isMoving &&
-          shaftLdoorsOpenCheck() &&
-          Math.abs(i - moveableElems.liftR_isOnFloor) ===
-            Math.abs(i - moveableElems.liftL_isOnFloor) &&
-          !randCallLiftR
-        ? i
-        : moveableElems.liftL_calledToFloor;
+            moveableElems.liftL_isOnFloor !== i &&
+            !moveableElems.liftL_isMoving &&
+            shaftLdoorsOpenCheck() &&
+            Math.abs(i - moveableElems.liftR_isOnFloor) ===
+              Math.abs(i - moveableElems.liftL_isOnFloor) &&
+            !randCallLiftR
+          ? i
+          : moveableElems.liftL_calledToFloor;
   }
   // console.log();
 }
@@ -1302,10 +1302,10 @@ function createButton(btn) {
     btn === startButton
       ? "Play Game"
       : btn === optionsButton
-      ? "Options"
-      : btn === returnBtn
-      ? "Goto Mainmenu"
-      : btn.textContent;
+        ? "Options"
+        : btn === returnBtn
+          ? "Goto Mainmenu"
+          : btn.textContent;
 
   // Breite und Höhe anpassen
   btn.style.width = btn === returnBtn ? "300px" : "200px";

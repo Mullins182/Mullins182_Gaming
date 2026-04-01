@@ -11,8 +11,6 @@ import {
 
 creditsButton.addEventListener("click", function () {
   // Hide the buttons and show the credits
-  // deltaY < 0  Mouse wheel up
-  // deltaY > 0  Mouse wheel down
   creditsButton.style.visibility = "hidden";
   startButton.style.visibility = "hidden";
   instructButton.style.visibility = "hidden";
@@ -21,20 +19,23 @@ creditsButton.addEventListener("click", function () {
 
   canvas2.style.opacity = 0.8;
 
-  creditsButton.style.opacity = 0;
-  startButton.style.opacity = 0;
-  instructButton.style.opacity = 0;
-  optionsButton.style.opacity = 0;
-  returnBtn.style.opacity = 0;
+  // creditsButton.style.opacity = 0;
+  // startButton.style.opacity = 0;
+  // instructButton.style.opacity = 0;
+  // optionsButton.style.opacity = 0;
+  // returnBtn.style.opacity = 0;
   requestAnimationFrame(crawler);
 });
 
 window.addEventListener("wheel", function (event) {
-  event.deltaY < 0 && crawlSpeed < 7
-    ? (crawlSpeed += 0.03)
+  // deltaY < 0  Mouse wheel up
+  // deltaY > 0  Mouse wheel down
+
+  event.deltaY < 0 && crawlSpeed < 3
+    ? (crawlSpeed += 0.005)
     : event.deltaY > 0 && crawlSpeed >= 0.5
-    ? (crawlSpeed -= 0.03)
-    : null;
+      ? (crawlSpeed -= 0.01)
+      : null;
 });
 
 const credit = [
@@ -50,10 +51,10 @@ const credit = [
   "",
   "Abed Sebahi",
   "For being 'mr.zero' aka 'my_very_best_beta_tester :D",
+  "     & giving me inspirations for the Game ;D",
   "",
   "Arne Juergensen",
-  "For speeding up the credits crawl &",
-  "giving me inspirations for the Game ;D",
+  "For speeding up the credits crawl & inspiring me too ;D",
   "",
   "The author of the original, 1992 released MS-DOS Game",
   "",
@@ -73,7 +74,7 @@ async function crawler() {
   //   console.log(textPosY);
 
   cctx.globalAlpha = 0.5;
-  cctx.drawImage(wheelInstr, 0, canvas2.height / 15, 300, 200);
+  cctx.drawImage(wheelInstr, 0, canvas2.height / 15, 250, 150);
   cctx.globalAlpha = 1.0;
 
   for (let i = 0; i < credit.length; i++) {
@@ -89,20 +90,21 @@ async function crawler() {
       6,
       "strokeText",
       "goldenrod",
-      2.3
+      2.3,
     );
   }
 
   textPosY += crawlSpeed;
+  // Continue the animation until the text has scrolled past a certain point
   if (textPosY < 3000) {
     requestAnimationFrame(crawler);
   } else {
     canvas2.style.opacity = 0;
-    creditsButton.style.opacity = 1;
-    startButton.style.opacity = 1;
-    instructButton.style.opacity = 1;
-    optionsButton.style.opacity = 1;
-    returnBtn.style.opacity = 1;
+    // creditsButton.style.opacity = 1;
+    // startButton.style.opacity = 1;
+    // instructButton.style.opacity = 1;
+    // optionsButton.style.opacity = 1;
+    // returnBtn.style.opacity = 1;
     textPosY = 0;
     creditsButton.style.visibility = "visible";
     startButton.style.visibility = "visible";
@@ -124,7 +126,7 @@ function createLabel(
   shadowOffsetY = 2,
   textStyle = "fillText",
   strokeColor = "goldenrod",
-  strokeLineWidth = 2
+  strokeLineWidth = 2,
 ) {
   // Schriftart und -größe festlegen
   cctx.font = font;

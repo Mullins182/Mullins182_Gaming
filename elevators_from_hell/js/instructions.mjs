@@ -21,7 +21,7 @@ let btnActive = 0; // Green-Draw of Btns -> 0 = none, 1 = up, 2 = down, 3 = both
 let playerFrame = 0;
 let npcFrame = 0;
 let lastFrameTime = 0;
-const frameDelay = 200; // Zeit in ms zwischen den Frames
+const frameDelay = 333; // Zeit in ms zwischen den Frames
 
 instructButton.addEventListener("click", function () {
   // Hide the buttons and show the instructions
@@ -35,11 +35,11 @@ instructButton.addEventListener("click", function () {
   canvas2.style.zIndex = 10; // Ensure the instructions canvas is on top
   //   cctx.globalAlpha = 0.5;
 
-  creditsButton.style.opacity = 0;
-  startButton.style.opacity = 0;
-  instructButton.style.opacity = 0;
-  optionsButton.style.opacity = 0;
-  returnBtn.style.opacity = 0;
+  // creditsButton.style.opacity = 0;
+  // startButton.style.opacity = 0;
+  // instructButton.style.opacity = 0;
+  // optionsButton.style.opacity = 0;
+  // returnBtn.style.opacity = 0;
 
   lastFrameTime = 0; // Reset beim Öffnen
   exit = false; // Reset exit state
@@ -60,11 +60,11 @@ canvas2.addEventListener("click", function () {
     canvas2.style.zIndex = 1; // Reset z-index
     //   cctx.globalAlpha = 1.0;
 
-    creditsButton.style.opacity = 1;
-    startButton.style.opacity = 1;
-    instructButton.style.opacity = 1;
-    optionsButton.style.opacity = 1;
-    returnBtn.style.opacity = 1;
+    // creditsButton.style.opacity = 1;
+    // startButton.style.opacity = 1;
+    // instructButton.style.opacity = 1;
+    // optionsButton.style.opacity = 1;
+    // returnBtn.style.opacity = 1;
   }
 });
 
@@ -103,7 +103,7 @@ function drawInstructions(now) {
     ["When you are in an elevator, press the num keys 0-6 to select a floor"],
     ["The Security Bot is hunting you, so be quick!"],
     [
-      "You WIN if you activate all seven buttons on each floor and escape through the exit door",
+      "You WIN if you activate all seven round buttons on each floor and escape through the exit door",
     ],
     ["GOOD LUCK !!!"],
   ];
@@ -147,7 +147,7 @@ function drawPlayerSprite(playerFrame) {
     canvas2.width / 4,
     250,
     staticGameElements.playerWidth,
-    staticGameElements.playerHeight
+    staticGameElements.playerHeight,
   );
 }
 
@@ -161,7 +161,7 @@ function drawNPCsprite(npcFrame) {
     canvas2.width / 4.4,
     530,
     staticGameElements.npcWidth,
-    staticGameElements.npcHeight
+    staticGameElements.npcHeight,
   );
 }
 
@@ -206,18 +206,23 @@ function drawButton(posX, posY) {
     drawTriangle(posX + 3, posY, 15, "lime", "down");
   }
 
-  // Exit Button
+  // Exit Buttons
 
   // Plate
   cctx.fillStyle = "#363636";
   cctx.fillRect(posX - 25, posY - 7, 17, 17);
+  cctx.fillRect(posX - 9, posY + 233, 17, 17);
 
-  cctx.fillStyle = btnActive ? "#d4ff00" : "#ff3e00";
+  cctx.fillStyle = btnActive === 0 ? "#d4ff00" : "#ff3e00";
   cctx.beginPath();
 
   // Draw Circle -> (posX, posY, radius, startangle, endangle)
   cctx.arc(posX - 25 + 9, posY + 1, 4, 0, 2 * Math.PI);
-  cctx.stroke();
+  cctx.fill();
+  cctx.beginPath();
+  cctx.fillStyle = btnActive === 1 ? "#ff3e00" : "#d4ff00";
+  cctx.arc(posX, posY + 242, 4, 0, 2 * Math.PI);
+  // cctx.stroke(); // Optional: Kreislinien zeichnen
   cctx.fill();
 }
 
@@ -227,7 +232,7 @@ function drawLiftCabin(posX, posY) {
     posX - staticGameElements.liftsWidth / 2,
     posY - staticGameElements.liftsHeight / 2,
     staticGameElements.liftsWidth,
-    staticGameElements.liftsHeight
+    staticGameElements.liftsHeight,
   );
 }
 
@@ -240,7 +245,7 @@ function drawShaftDoors(posX, posY, doorwidth) {
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
     doorwidth,
-    staticGameElements.shaftDoorsHeight
+    staticGameElements.shaftDoorsHeight,
   );
 
   cctx.fillRect(
@@ -251,6 +256,6 @@ function drawShaftDoors(posX, posY, doorwidth) {
       staticGameElements.shaftDoorsHeight -
       staticGameElements.floorsHeight,
     doorwidth,
-    staticGameElements.shaftDoorsHeight
+    staticGameElements.shaftDoorsHeight,
   );
 }
