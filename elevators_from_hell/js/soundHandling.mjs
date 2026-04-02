@@ -12,7 +12,7 @@ export const sounds = {
   bgSound: new Howl({
     src: ["./assets/sounds/heartbeat.wav"],
     loop: true,
-    volume: 0.35,
+    volume: 0.25,
   }),
   liftSndR: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),
   liftSndL: new Howl({ src: ["./assets/sounds/liftMoves2.wav"] }),

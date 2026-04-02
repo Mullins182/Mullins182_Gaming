@@ -20,9 +20,9 @@ import { playerCatched } from "./npcLogic.mjs";
 export let isColliding = false;
 export let playerEscaped = false;
 
-export function playerCollisionCheck() {
+export function playerCollisionCheck(deltaTime) {
   if (!playerCollision() || playerCanLeave()) {
-    playerPosUpdate(staticGameElements.playerMovement);
+    playerPosUpdate(staticGameElements.playerMovement, deltaTime);
     isColliding = false;
   } else {
     isColliding = true;
