@@ -621,7 +621,7 @@ function handleFloorSelection(floorNumber) {
 // ___________________________ GAME INI ___________________________
 async function initialize() {
   wrapper.style.transition = "none";
-  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingEnabled = false;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
   createButton(instructButton);
@@ -1193,17 +1193,43 @@ function liftsPosUpdate(deltaTime) {
   // --- LOGIK FÜR RECHTEN LIFT ---
   const targetFloorR = moveableElems.liftR_calledToFloor;
   const targetYPosR = floorLevels[`floor${targetFloorR}_YPos`];
+  const distanceR = targetYPosR - moveableElems.liftR_YPos;
+  const isAtTargetR = Math.abs(distanceR) <= 5;
 
-  if (moveableElems.liftR_isOnFloor !== targetFloorR && shaftRdoorsClosed()) {
+  if (!isAtTargetR && shaftRdoorsClosed()) {
     moveableElems.liftR_isMoving = true;
-    const directionR = Math.sign(targetYPosR - moveableElems.liftR_YPos); // 1 für runter, -1 für hoch
 
+    const directionR = Math.sign(distanceR); // 1 für runter, -1 für hoch
     moveableElems.liftR_YPos += directionR * effectiveSpeed * deltaTime;
+
+    moveableElems.liftR_isOnFloor =
+      moveableElems.liftR_YPos - floorLevels.floor0_YPos < 5 &&
+      moveableElems.liftR_YPos - floorLevels.floor0_YPos > -5
+        ? 0
+        : moveableElems.liftR_YPos - floorLevels.floor1_YPos < 5 &&
+            moveableElems.liftR_YPos - floorLevels.floor1_YPos > -5
+          ? 1
+          : moveableElems.liftR_YPos - floorLevels.floor2_YPos < 5 &&
+              moveableElems.liftR_YPos - floorLevels.floor2_YPos > -5
+            ? 2
+            : moveableElems.liftR_YPos - floorLevels.floor3_YPos < 5 &&
+                moveableElems.liftR_YPos - floorLevels.floor3_YPos > -5
+              ? 3
+              : moveableElems.liftR_YPos - floorLevels.floor4_YPos < 5 &&
+                  moveableElems.liftR_YPos - floorLevels.floor4_YPos > -5
+                ? 4
+                : moveableElems.liftR_YPos - floorLevels.floor5_YPos < 5 &&
+                    moveableElems.liftR_YPos - floorLevels.floor5_YPos > -5
+                  ? 5
+                  : moveableElems.liftR_YPos - floorLevels.floor6_YPos < 5 &&
+                      moveableElems.liftR_YPos - floorLevels.floor6_YPos > -5
+                    ? 6
+                    : moveableElems.liftR_isOnFloor;
 
     // Prüfen, ob das Ziel erreicht oder überschritten wurde
     if (
-      (directionR > 0 && moveableElems.liftR_YPos >= targetYPosR) || // Auf dem Weg nach unten
-      (directionR < 0 && moveableElems.liftR_YPos <= targetYPosR) // Auf dem Weg nach oben
+      (directionR > 0 && moveableElems.liftR_YPos >= targetYPosR) ||
+      (directionR < 0 && moveableElems.liftR_YPos <= targetYPosR)
     ) {
       moveableElems.liftR_YPos = targetYPosR; // Position exakt setzen!
       moveableElems.liftR_isOnFloor = targetFloorR;
@@ -1211,25 +1237,63 @@ function liftsPosUpdate(deltaTime) {
     }
   }
 
+  if (isAtTargetR) {
+    moveableElems.liftR_YPos = targetYPosR;
+    moveableElems.liftR_isOnFloor = targetFloorR;
+    moveableElems.liftR_isMoving = false;
+  }
+
   // --- LOGIK FÜR LINKEN LIFT ---
   const targetFloorL = moveableElems.liftL_calledToFloor;
   const targetYPosL = floorLevels[`floor${targetFloorL}_YPos`];
+  const distanceL = targetYPosL - moveableElems.liftL_YPos;
+  const isAtTargetL = Math.abs(distanceL) <= 5;
 
-  if (moveableElems.liftL_isOnFloor !== targetFloorL && shaftLdoorsClosed()) {
+  if (!isAtTargetL && shaftLdoorsClosed()) {
     moveableElems.liftL_isMoving = true;
-    const directionL = Math.sign(targetYPosL - moveableElems.liftL_YPos); // 1 für runter, -1 für hoch
+    const directionL = Math.sign(distanceL); // 1 für runter, -1 für hoch
 
     moveableElems.liftL_YPos += directionL * effectiveSpeed * deltaTime;
 
+    moveableElems.liftL_isOnFloor =
+      moveableElems.liftL_YPos - floorLevels.floor0_YPos < 5 &&
+      moveableElems.liftL_YPos - floorLevels.floor0_YPos > -5
+        ? 0
+        : moveableElems.liftL_YPos - floorLevels.floor1_YPos < 5 &&
+            moveableElems.liftL_YPos - floorLevels.floor1_YPos > -5
+          ? 1
+          : moveableElems.liftL_YPos - floorLevels.floor2_YPos < 5 &&
+              moveableElems.liftL_YPos - floorLevels.floor2_YPos > -5
+            ? 2
+            : moveableElems.liftL_YPos - floorLevels.floor3_YPos < 5 &&
+                moveableElems.liftL_YPos - floorLevels.floor3_YPos > -5
+              ? 3
+              : moveableElems.liftL_YPos - floorLevels.floor4_YPos < 5 &&
+                  moveableElems.liftL_YPos - floorLevels.floor4_YPos > -5
+                ? 4
+                : moveableElems.liftL_YPos - floorLevels.floor5_YPos < 5 &&
+                    moveableElems.liftL_YPos - floorLevels.floor5_YPos > -5
+                  ? 5
+                  : moveableElems.liftL_YPos - floorLevels.floor6_YPos < 5 &&
+                      moveableElems.liftL_YPos - floorLevels.floor6_YPos > -5
+                    ? 6
+                    : moveableElems.liftL_isOnFloor;
+
     // Prüfen, ob das Ziel erreicht oder überschritten wurde
     if (
-      (directionL > 0 && moveableElems.liftL_YPos >= targetYPosL) || // Auf dem Weg nach unten
-      (directionL < 0 && moveableElems.liftL_YPos <= targetYPosL) // Auf dem Weg nach oben
+      (directionL > 0 && moveableElems.liftL_YPos >= targetYPosL) ||
+      (directionL < 0 && moveableElems.liftL_YPos <= targetYPosL)
     ) {
       moveableElems.liftL_YPos = targetYPosL; // Position exakt setzen!
       moveableElems.liftL_isOnFloor = targetFloorL;
       moveableElems.liftL_isMoving = false;
     }
+  }
+
+  if (isAtTargetL) {
+    moveableElems.liftL_YPos = targetYPosL;
+    moveableElems.liftL_isOnFloor = targetFloorL;
+    moveableElems.liftL_isMoving = false;
   }
 }
 

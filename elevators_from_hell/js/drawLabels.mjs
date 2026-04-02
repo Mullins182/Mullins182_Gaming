@@ -26,7 +26,7 @@ export function drawLabels() {
     20,
     "strokeText",
     staticGameElements.exitSignColor,
-    1.6
+    1.6,
   );
 
   if (debugging.debugMode) {
@@ -50,7 +50,7 @@ export function drawLabels() {
       17,
       "strokeText",
       "gold",
-      3
+      3,
     );
   } else if (playerCatched) {
     createLabel(
@@ -65,7 +65,7 @@ export function drawLabels() {
       17,
       "strokeText",
       "red",
-      2
+      2,
     );
   } else if (playerEscaped) {
     createLabel(
@@ -80,7 +80,7 @@ export function drawLabels() {
       17,
       "strokeText",
       "greenyellow",
-      2
+      2,
     );
   } else {
     createLabel(
@@ -95,7 +95,7 @@ export function drawLabels() {
       17,
       "strokeText",
       "goldenrod",
-      2
+      2,
     );
     createLabel(
       gameCanvas.width / 1.29,
@@ -109,7 +109,7 @@ export function drawLabels() {
       17,
       "fillText",
       "darkgoldenrod",
-      2
+      2,
     );
   }
   // Floor Numbers for each Floor
@@ -119,16 +119,16 @@ export function drawLabels() {
       i === 0
         ? staticGameElements.floor0_YPos - 75
         : i === 1
-        ? staticGameElements.floor1_YPos - 75
-        : i === 2
-        ? staticGameElements.floor2_YPos - 75
-        : i === 3
-        ? staticGameElements.floor3_YPos - 75
-        : i === 4
-        ? staticGameElements.floor4_YPos - 75
-        : i === 5
-        ? staticGameElements.floor5_YPos - 75
-        : staticGameElements.floor6_YPos - 75,
+          ? staticGameElements.floor1_YPos - 75
+          : i === 2
+            ? staticGameElements.floor2_YPos - 75
+            : i === 3
+              ? staticGameElements.floor3_YPos - 75
+              : i === 4
+                ? staticGameElements.floor4_YPos - 75
+                : i === 5
+                  ? staticGameElements.floor5_YPos - 75
+                  : staticGameElements.floor6_YPos - 75,
       "Floor " + i,
       "25px Arial Black",
       "black",
@@ -138,7 +138,7 @@ export function drawLabels() {
       6,
       "strokeText",
       staticGameElements.floorNumbersColor,
-      1.15
+      1.15,
     );
   }
   // Left Shaft Lift Position Display
@@ -147,31 +147,31 @@ export function drawLabels() {
       moveableElems.liftL_isOnFloor === 0
         ? gameCanvas.width * 0.18
         : moveableElems.liftL_isOnFloor === 1
-        ? gameCanvas.width * 0.18 + 13
-        : moveableElems.liftL_isOnFloor === 2
-        ? gameCanvas.width * 0.18 + 23
-        : moveableElems.liftL_isOnFloor === 3
-        ? gameCanvas.width * 0.18 + 33
-        : moveableElems.liftL_isOnFloor === 4
-        ? gameCanvas.width * 0.18 + 43
-        : moveableElems.liftL_isOnFloor === 5
-        ? gameCanvas.width * 0.18 + 53
-        : gameCanvas.width * 0.18 + 63,
+          ? gameCanvas.width * 0.18 + 13
+          : moveableElems.liftL_isOnFloor === 2
+            ? gameCanvas.width * 0.18 + 23
+            : moveableElems.liftL_isOnFloor === 3
+              ? gameCanvas.width * 0.18 + 33
+              : moveableElems.liftL_isOnFloor === 4
+                ? gameCanvas.width * 0.18 + 43
+                : moveableElems.liftL_isOnFloor === 5
+                  ? gameCanvas.width * 0.18 + 53
+                  : gameCanvas.width * 0.18 + 63,
       i === 0
         ? staticGameElements.floor0_YPos - 100
         : i === 1
-        ? staticGameElements.floor1_YPos - 100
-        : i === 2
-        ? staticGameElements.floor2_YPos - 100
-        : i === 3
-        ? staticGameElements.floor3_YPos - 100
-        : i === 4
-        ? staticGameElements.floor4_YPos - 100
-        : i === 5
-        ? staticGameElements.floor5_YPos - 100
-        : staticGameElements.floor6_YPos - 95,
+          ? staticGameElements.floor1_YPos - 100
+          : i === 2
+            ? staticGameElements.floor2_YPos - 100
+            : i === 3
+              ? staticGameElements.floor3_YPos - 100
+              : i === 4
+                ? staticGameElements.floor4_YPos - 100
+                : i === 5
+                  ? staticGameElements.floor5_YPos - 100
+                  : staticGameElements.floor6_YPos - 95,
 
-      moveableElems.liftL_isOnFloor == 0 ? "E" : moveableElems.liftL_isOnFloor,
+      moveableElems.liftL_isOnFloor === 0 ? "E" : moveableElems.liftL_isOnFloor,
       "14px Arial Black",
       "orange",
       "transparent",
@@ -180,7 +180,7 @@ export function drawLabels() {
       0,
       "fillText",
       "greenyellow",
-      1.6
+      1.6,
     );
   }
   // Right Shaft Lift Position Display
@@ -189,29 +189,29 @@ export function drawLabels() {
       moveableElems.liftR_isOnFloor === 0
         ? gameCanvas.width * 0.78
         : moveableElems.liftR_isOnFloor === 1
-        ? gameCanvas.width * 0.78 + 13
-        : moveableElems.liftR_isOnFloor === 2
-        ? gameCanvas.width * 0.78 + 23
-        : moveableElems.liftR_isOnFloor === 3
-        ? gameCanvas.width * 0.78 + 33
-        : moveableElems.liftR_isOnFloor === 4
-        ? gameCanvas.width * 0.78 + 43
-        : moveableElems.liftR_isOnFloor === 5
-        ? gameCanvas.width * 0.78 + 53
-        : gameCanvas.width * 0.78 + 63,
+          ? gameCanvas.width * 0.78 + 13
+          : moveableElems.liftR_isOnFloor === 2
+            ? gameCanvas.width * 0.78 + 23
+            : moveableElems.liftR_isOnFloor === 3
+              ? gameCanvas.width * 0.78 + 33
+              : moveableElems.liftR_isOnFloor === 4
+                ? gameCanvas.width * 0.78 + 43
+                : moveableElems.liftR_isOnFloor === 5
+                  ? gameCanvas.width * 0.78 + 53
+                  : gameCanvas.width * 0.78 + 63,
       i === 0
         ? staticGameElements.floor0_YPos - 100
         : i === 1
-        ? staticGameElements.floor1_YPos - 100
-        : i === 2
-        ? staticGameElements.floor2_YPos - 100
-        : i === 3
-        ? staticGameElements.floor3_YPos - 100
-        : i === 4
-        ? staticGameElements.floor4_YPos - 100
-        : i === 5
-        ? staticGameElements.floor5_YPos - 100
-        : staticGameElements.floor6_YPos - 95,
+          ? staticGameElements.floor1_YPos - 100
+          : i === 2
+            ? staticGameElements.floor2_YPos - 100
+            : i === 3
+              ? staticGameElements.floor3_YPos - 100
+              : i === 4
+                ? staticGameElements.floor4_YPos - 100
+                : i === 5
+                  ? staticGameElements.floor5_YPos - 100
+                  : staticGameElements.floor6_YPos - 95,
       moveableElems.liftR_isOnFloor == 0 ? "E" : moveableElems.liftR_isOnFloor,
       "14px Arial Black",
       "orange",
@@ -221,7 +221,7 @@ export function drawLabels() {
       0,
       "fillText",
       "greenyellow",
-      1.6
+      1.6,
     );
   }
 }
@@ -238,7 +238,7 @@ export function createLabel(
   shadowOffsetY = 2,
   textStyle = "fillText",
   strokeColor = "goldenrod",
-  strokeLineWidth = 2
+  strokeLineWidth = 2,
 ) {
   // Schriftart und -größe festlegen
   ctx.font = font;
