@@ -180,6 +180,8 @@ export const staticGameElements = {
   exitDoorUnlocked: false,
   floorNumbersColor: "darkgoldenrod",
   floorNumbersShadowColor: "orangered",
+  strokeLinesWidth: 1.05,
+  strokeLineColor: "darkgoldenrod",
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -621,7 +623,7 @@ function handleFloorSelection(floorNumber) {
 // ___________________________ GAME INI ___________________________
 async function initialize() {
   wrapper.style.transition = "none";
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
   createButton(instructButton);
@@ -676,7 +678,6 @@ async function gameRoutine(timestamp) {
     playerCatchedCheck();
     playerCollisionCheck(deltaTime);
     playerEscapedCheck();
-    playerEnteredLift();
     playerIsOnFloor();
     npcRoutine(deltaTime);
     liftsPosUpdate(deltaTime);
@@ -685,11 +686,12 @@ async function gameRoutine(timestamp) {
     automaticLiftControl();
     liftCalledCheck();
     drawGameElements();
+    playerEnteredLift();
     playSounds();
 
     // await new Promise((resolve) => setTimeout(resolve, 16.66)); // 60 FPS
   } else {
-    playSounds(true);
+    playSounds(false);
     gameRunning = gameRunning ? false : gameRunning;
 
     // await new Promise((resolve) => setTimeout(resolve, 15));
@@ -727,6 +729,7 @@ function drawGameElements() {
       : moveableElems.npcOnLiftR
         ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, "l")
         : null;
+
     drawLiftDoors();
     drawShaftsElements();
     for (let i = 0; i < 7; i++) {
@@ -748,11 +751,11 @@ function drawGameElements() {
       );
     }
 
+    drawLabels();
+
     !moveableElems.npcOnLiftL && !moveableElems.npcOnLiftR
       ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, npcHeading)
       : null;
-
-    drawLabels();
 
     if (debugging.showDebugLine) {
       drawDebugLine();
@@ -779,7 +782,6 @@ function drawGameElements() {
         callElevatorBtnsStatus[`floor${i}`],
         i,
       );
-
       drawExitButtons(
         gameCanvas.width / 1.94,
         staticGameElements[`floor${i}_YPos`] - 52,
@@ -788,6 +790,7 @@ function drawGameElements() {
         exitButtonsStatus[`floor${i}`] ? true : false,
       );
     }
+    drawLabels();
     drawPlayer(
       moveableElems.playerPosX,
       moveableElems.playerPosY,
@@ -796,7 +799,6 @@ function drawGameElements() {
     !moveableElems.npcOnLiftL && !moveableElems.npcOnLiftR
       ? drawNPC(moveableElems.npcPosX, moveableElems.npcPosY, npcHeading)
       : null;
-    drawLabels();
     if (debugging.showDebugLine) {
       drawDebugLine();
     }

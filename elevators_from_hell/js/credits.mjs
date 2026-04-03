@@ -24,18 +24,8 @@ creditsButton.addEventListener("click", function () {
   // instructButton.style.opacity = 0;
   // optionsButton.style.opacity = 0;
   // returnBtn.style.opacity = 0;
+  initializeCredits();
   requestAnimationFrame(crawler);
-});
-
-window.addEventListener("wheel", function (event) {
-  // deltaY < 0  Mouse wheel up
-  // deltaY > 0  Mouse wheel down
-
-  event.deltaY < 0 && crawlSpeed < 3
-    ? (crawlSpeed += 0.005)
-    : event.deltaY > 0 && crawlSpeed >= 0.5
-      ? (crawlSpeed -= 0.01)
-      : null;
 });
 
 const credit = [
@@ -63,10 +53,28 @@ const credit = [
 ];
 
 const wheelInstr = new Image();
-wheelInstr.src = "./assets/img/creditsCrawl.webp";
 
-let crawlSpeed = 0.5; // Speed of the credits crawl
-let textPosY = 0; // Initial position of the text
+let crawlSpeed; // Speed of the credits crawl
+let textPosY; // Initial position of the text
+
+function initializeCredits() {
+  if (!wheelInstr.src) {
+    wheelInstr.src = "./assets/img/creditsCrawl.webp";
+  }
+  crawlSpeed = 0.2;
+  textPosY = 0;
+
+  window.addEventListener("wheel", function (event) {
+    // deltaY < 0  Mouse wheel up
+    // deltaY > 0  Mouse wheel down
+
+    event.deltaY < 0 && crawlSpeed < 1.5
+      ? (crawlSpeed += 0.005)
+      : event.deltaY > 0 && crawlSpeed > 0.2
+        ? (crawlSpeed -= 0.01)
+        : null;
+  });
+}
 
 async function crawler() {
   cctx.clearRect(0, 0, canvas2.width, canvas2.height);
@@ -99,13 +107,13 @@ async function crawler() {
   if (textPosY < 3000) {
     requestAnimationFrame(crawler);
   } else {
+    initializeCredits();
     canvas2.style.opacity = 0;
     // creditsButton.style.opacity = 1;
     // startButton.style.opacity = 1;
     // instructButton.style.opacity = 1;
     // optionsButton.style.opacity = 1;
     // returnBtn.style.opacity = 1;
-    textPosY = 0;
     creditsButton.style.visibility = "visible";
     startButton.style.visibility = "visible";
     instructButton.style.visibility = "visible";
