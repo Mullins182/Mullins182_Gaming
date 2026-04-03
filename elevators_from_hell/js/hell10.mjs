@@ -180,6 +180,8 @@ export const staticGameElements = {
   exitDoorUnlocked: false,
   floorNumbersColor: "darkgoldenrod",
   floorNumbersShadowColor: "orangered",
+  strokeLinesWidth: 1.05,
+  strokeLineColor: "darkgoldenrod",
   exitSignColor: "red",
   exitSignShadowColor: "darkred",
   ceilingWidth: gameCanvas.width * 0.95,
@@ -621,7 +623,7 @@ function handleFloorSelection(floorNumber) {
 // ___________________________ GAME INI ___________________________
 async function initialize() {
   wrapper.style.transition = "none";
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
   createButton(instructButton);
@@ -676,7 +678,6 @@ async function gameRoutine(timestamp) {
     playerCatchedCheck();
     playerCollisionCheck(deltaTime);
     playerEscapedCheck();
-    playerEnteredLift();
     playerIsOnFloor();
     npcRoutine(deltaTime);
     liftsPosUpdate(deltaTime);
@@ -685,6 +686,7 @@ async function gameRoutine(timestamp) {
     automaticLiftControl();
     liftCalledCheck();
     drawGameElements();
+    playerEnteredLift();
     playSounds();
 
     // await new Promise((resolve) => setTimeout(resolve, 16.66)); // 60 FPS
