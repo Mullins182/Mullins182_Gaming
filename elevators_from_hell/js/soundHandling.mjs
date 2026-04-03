@@ -71,8 +71,8 @@ export function loadAllSounds() {
   return Promise.all(loadPromises);
 }
 
-export async function playSounds(stopAll = false) {
-  if (stopAll) {
+export async function playSounds(play = true) {
+  if (!play) {
     sounds.liftDoorsLcl.stop();
     sounds.exitDoorSnd.stop();
     sounds.liftDoorsRcl.stop();
