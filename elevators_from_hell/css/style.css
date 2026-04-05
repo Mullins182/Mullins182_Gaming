@@ -26,7 +26,9 @@ body {
   /* border: 2px solid greenyellow; */
   /* width: 1750px;/*
   /* height: 900px;*/
-  transition: opacity, 5s ease-in-out;
+  transition:
+    opacity,
+    5s ease-in-out;
 }
 .buttons {
   visibility: hidden;
@@ -55,6 +57,10 @@ body {
 #returnButton {
   top: 62%;
   left: 50%;
+}
+#homeButton {
+  top: 10%;
+  left: 15%;
 }
 #mainCanvas {
   display: none; /* Entfernt eventuelle Leerräume unter dem Canvas */

@@ -62,7 +62,7 @@ export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
 // ___________________________ GAME-VERSION ___________________________
-export let gameVersion = "v1.4.5";
+export let gameVersion = "v1.4.7";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
@@ -104,10 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
     startButton.textContent = "loading...";
   }
 
-  if (creditsButton) {
-    creditsButton.textContent = "Credits";
-  }
-
   // --- Der Button-Klick-Handler ---
   if (startButton) {
     startButton.addEventListener("click", function () {
@@ -126,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       instructButton.style.display = "none";
       optionsButton.style.display = "none";
       creditsButton.style.display = "none";
+      homeButton.style.display = "none";
 
       gameCanvas.style.display = "block";
 
@@ -145,6 +142,14 @@ if (optionsButton) {
     return;
   });
 }
+
+if (homeButton) {
+  homeButton.addEventListener("click", function () {
+    // document.body.removeChild(this); // 'this' bezieht sich auf den geklickten Button
+    window.location.href = "../index.html";
+  });
+}
+
 if (returnBtn) {
   returnBtn.style.display = "none";
   returnBtn.addEventListener("click", function () {
@@ -456,10 +461,12 @@ document.addEventListener("click", function (event) {
         instructButton.style.visibility = "visible";
         optionsButton.style.visibility = "visible";
         creditsButton.style.visibility = "visible";
+        homeButton.style.visibility = "visible";
         startButton.style.opacity = 1;
         instructButton.style.opacity = 1;
         optionsButton.style.opacity = 1;
         creditsButton.style.opacity = 1;
+        homeButton.style.opacity = 1;
       })()
     : null;
 });
@@ -630,6 +637,7 @@ async function initialize() {
   createButton(optionsButton);
   createButton(returnBtn);
   createButton(creditsButton);
+  createButton(homeButton);
 }
 
 // ___________________________              ___________________________
@@ -888,62 +896,62 @@ function exitDoor(deltaTime) {
 
 function shaftDoorsLogic(deltaTime) {
   shaftRdoorsClosedStatus.floor0_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f0 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsRW_f0 > 39.0 ? true : false;
   shaftRdoorsOpenStatus.floor0_RdoorOpen =
     staticGameElements.shaftDoorsRW_f0 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor1_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f1 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsRW_f1 > 39.0 ? true : false;
   shaftRdoorsOpenStatus.floor1_RdoorOpen =
     staticGameElements.shaftDoorsRW_f1 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor2_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f2 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsRW_f2 > 39.0 ? true : false;
   shaftRdoorsOpenStatus.floor2_RdoorOpen =
     staticGameElements.shaftDoorsRW_f2 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor3_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f3 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsRW_f3 > 39.0 ? true : false;
   shaftRdoorsOpenStatus.floor3_RdoorOpen =
     staticGameElements.shaftDoorsRW_f3 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor4_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f4 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsRW_f4 > 39.0 ? true : false;
   shaftRdoorsOpenStatus.floor4_RdoorOpen =
     staticGameElements.shaftDoorsRW_f4 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor5_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f5 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsRW_f5 > 39.0 ? true : false;
   shaftRdoorsOpenStatus.floor5_RdoorOpen =
     staticGameElements.shaftDoorsRW_f5 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor6_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f6 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsRW_f6 > 39.0 ? true : false;
   shaftRdoorsOpenStatus.floor6_RdoorOpen =
     staticGameElements.shaftDoorsRW_f6 < 10.5 ? true : false;
 
   // __________________________________________________ LEFT __________________________________________________
 
   shaftLdoorsClosedStatus.floor0_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f0 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsLW_f0 > 39.0 ? true : false;
   shaftLdoorsOpenStatus.floor0_LdoorOpen =
     staticGameElements.shaftDoorsLW_f0 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor1_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f1 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsLW_f1 > 39.0 ? true : false;
   shaftLdoorsOpenStatus.floor1_LdoorOpen =
     staticGameElements.shaftDoorsLW_f1 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor2_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f2 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsLW_f2 > 39.0 ? true : false;
   shaftLdoorsOpenStatus.floor2_LdoorOpen =
     staticGameElements.shaftDoorsLW_f2 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor3_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f3 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsLW_f3 > 39.0 ? true : false;
   shaftLdoorsOpenStatus.floor3_LdoorOpen =
     staticGameElements.shaftDoorsLW_f3 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor4_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f4 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsLW_f4 > 39.0 ? true : false;
   shaftLdoorsOpenStatus.floor4_LdoorOpen =
     staticGameElements.shaftDoorsLW_f4 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor5_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f5 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsLW_f5 > 39.0 ? true : false;
   shaftLdoorsOpenStatus.floor5_LdoorOpen =
     staticGameElements.shaftDoorsLW_f5 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor6_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f6 > 38.5 ? true : false;
+    staticGameElements.shaftDoorsLW_f6 > 39.0 ? true : false;
   shaftLdoorsOpenStatus.floor6_LdoorOpen =
     staticGameElements.shaftDoorsLW_f6 < 10.5 ? true : false;
 
@@ -1369,12 +1377,19 @@ function createButton(btn) {
       ? "Play Game"
       : btn === optionsButton
         ? "Options"
-        : btn === returnBtn
-          ? "Goto Mainmenu"
-          : btn.textContent;
+        : btn === instructButton
+          ? "Instructions"
+          : btn === creditsButton
+            ? "Credits"
+            : btn === returnBtn
+              ? "Goto Mainmenu"
+              : btn === homeButton
+                ? "Back to Startpage"
+                : "Error";
 
   // Breite und Höhe anpassen
-  btn.style.width = btn === returnBtn ? "300px" : "200px";
+  btn.style.width =
+    btn === returnBtn ? "300px" : btn === homeButton ? "275px" : "200px";
   btn.style.height = "50px";
 
   // Hintergrund- und Textfarbe ändern
@@ -1414,69 +1429,5 @@ function createButton(btn) {
     this.style.boxShadow = "0 0 55px red";
   });
 
-  // Korrigierter Event-Listener für Klick-Ereignis
-  // startButton.addEventListener("click", function () {
-  //   document.body.removeChild(this); // 'this' bezieht sich auf den geklickten Button
-  //   sounds.btnPress.play();
-  //   initialize();
-  // });
-
   document.body.appendChild(btn);
-}
-
-function createHomeButton(posX, posY) {
-  homeButton.textContent = "Home";
-  homeButton.style.position = "absolute";
-  homeButton.style.top = posY;
-  homeButton.style.left = posX;
-  homeButton.style.transform = "translate(-50%, -50%)";
-
-  // Breite und Höhe anpassen
-  homeButton.style.width = "200px";
-  homeButton.style.height = "50px";
-
-  // Hintergrund- und Textfarbe ändern
-  homeButton.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
-  homeButton.style.color = "darkgoldenrod";
-
-  // Schriftgröße und Schriftart anpassen
-  homeButton.style.fontSize = "33px";
-  homeButton.style.fontFamily = "Times New Roman, Arial";
-
-  // Border Radius
-  homeButton.style.borderRadius = "10px";
-
-  // Border / Cursor
-  homeButton.style.border = "2px solid goldenrod";
-  homeButton.style.cursor = "pointer";
-
-  // Box-Shadow hinzufügen
-  homeButton.style.boxShadow = "0 0 55px red";
-
-  // Übergänge für Hover-Effekt
-  homeButton.style.transition =
-    "background-color 0.5s, color 0.5s, border 1.0s, box-shadow 0.5s";
-
-  // Hover-Effekt hinzufügen
-  homeButton.addEventListener("mouseover", function () {
-    this.style.backgroundColor = "rgba(200, 200, 0, 1.0)";
-    this.style.color = "#000000";
-    this.style.border = "2px solid black";
-    this.style.boxShadow = "0 0 55px greenyellow";
-  });
-
-  homeButton.addEventListener("mouseout", function () {
-    this.style.backgroundColor = "rgba(55, 0, 0, 1.0)";
-    this.style.color = "darkgoldenrod";
-    this.style.border = "2px solid goldenrod";
-    this.style.boxShadow = "0 0 55px red";
-  });
-
-  // Korrigierter Event-Listener für Klick-Ereignis
-  homeButton.addEventListener("click", function () {
-    document.body.removeChild(this); // 'this' bezieht sich auf den geklickten Button
-    window.location.href = "../index.html";
-  });
-
-  document.body.appendChild(homeButton);
 }

@@ -13,6 +13,7 @@ import {
   instructButton,
   optionsButton,
   returnBtn,
+  homeButton,
   staticGameElements,
 } from "./hell10.mjs";
 
@@ -30,6 +31,8 @@ instructButton.addEventListener("click", function () {
   instructButton.style.visibility = "hidden";
   optionsButton.style.visibility = "hidden";
   returnBtn.style.visibility = "hidden";
+  returnBtn.style.visibility = "hidden";
+  homeButton.style.visibility = "hidden";
 
   canvas2.style.opacity = 0.9;
   canvas2.style.zIndex = 10; // Ensure the instructions canvas is on top
@@ -55,6 +58,7 @@ canvas2.addEventListener("click", function () {
     instructButton.style.visibility = "visible";
     optionsButton.style.visibility = "visible";
     returnBtn.style.visibility = "visible";
+    homeButton.style.visibility = "visible";
 
     canvas2.style.opacity = 0;
     canvas2.style.zIndex = 1; // Reset z-index

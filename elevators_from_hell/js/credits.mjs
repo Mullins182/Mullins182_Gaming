@@ -7,6 +7,7 @@ import {
   instructButton,
   optionsButton,
   returnBtn,
+  homeButton,
 } from "./hell10.mjs";
 
 creditsButton.addEventListener("click", function () {
@@ -16,6 +17,7 @@ creditsButton.addEventListener("click", function () {
   instructButton.style.visibility = "hidden";
   optionsButton.style.visibility = "hidden";
   returnBtn.style.visibility = "hidden";
+  homeButton.style.visibility = "hidden";
 
   canvas2.style.opacity = 0.8;
 
@@ -46,7 +48,8 @@ const credit = [
   "Arne Juergensen",
   "For speeding up the credits crawl & inspiring me too ;D",
   "",
-  "The author of the original, 1992 released MS-DOS Game",
+  "John Shramko",
+  "The author of the original 1992 released MS - DOS Game",
   "",
   "And very Special Thanks go out to YOU!",
   "for playing the Game ;)",
@@ -104,7 +107,7 @@ async function crawler() {
 
   textPosY += crawlSpeed;
   // Continue the animation until the text has scrolled past a certain point
-  if (textPosY < 3000) {
+  if (textPosY < 3100) {
     requestAnimationFrame(crawler);
   } else {
     initializeCredits();
@@ -119,6 +122,7 @@ async function crawler() {
     instructButton.style.visibility = "visible";
     optionsButton.style.visibility = "visible";
     returnBtn.style.visibility = "visible";
+    homeButton.style.visibility = "visible";
   }
 }
 
