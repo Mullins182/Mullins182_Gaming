@@ -896,62 +896,62 @@ function exitDoor(deltaTime) {
 
 function shaftDoorsLogic(deltaTime) {
   shaftRdoorsClosedStatus.floor0_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f0 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsRW_f0 > 38.8 ? true : false;
   shaftRdoorsOpenStatus.floor0_RdoorOpen =
     staticGameElements.shaftDoorsRW_f0 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor1_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f1 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsRW_f1 > 38.8 ? true : false;
   shaftRdoorsOpenStatus.floor1_RdoorOpen =
     staticGameElements.shaftDoorsRW_f1 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor2_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f2 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsRW_f2 > 38.8 ? true : false;
   shaftRdoorsOpenStatus.floor2_RdoorOpen =
     staticGameElements.shaftDoorsRW_f2 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor3_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f3 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsRW_f3 > 38.8 ? true : false;
   shaftRdoorsOpenStatus.floor3_RdoorOpen =
     staticGameElements.shaftDoorsRW_f3 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor4_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f4 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsRW_f4 > 38.8 ? true : false;
   shaftRdoorsOpenStatus.floor4_RdoorOpen =
     staticGameElements.shaftDoorsRW_f4 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor5_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f5 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsRW_f5 > 38.8 ? true : false;
   shaftRdoorsOpenStatus.floor5_RdoorOpen =
     staticGameElements.shaftDoorsRW_f5 < 10.5 ? true : false;
   shaftRdoorsClosedStatus.floor6_RdoorClosed =
-    staticGameElements.shaftDoorsRW_f6 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsRW_f6 > 38.8 ? true : false;
   shaftRdoorsOpenStatus.floor6_RdoorOpen =
     staticGameElements.shaftDoorsRW_f6 < 10.5 ? true : false;
 
   // __________________________________________________ LEFT __________________________________________________
 
   shaftLdoorsClosedStatus.floor0_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f0 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsLW_f0 > 38.8 ? true : false;
   shaftLdoorsOpenStatus.floor0_LdoorOpen =
     staticGameElements.shaftDoorsLW_f0 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor1_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f1 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsLW_f1 > 38.8 ? true : false;
   shaftLdoorsOpenStatus.floor1_LdoorOpen =
     staticGameElements.shaftDoorsLW_f1 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor2_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f2 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsLW_f2 > 38.8 ? true : false;
   shaftLdoorsOpenStatus.floor2_LdoorOpen =
     staticGameElements.shaftDoorsLW_f2 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor3_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f3 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsLW_f3 > 38.8 ? true : false;
   shaftLdoorsOpenStatus.floor3_LdoorOpen =
     staticGameElements.shaftDoorsLW_f3 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor4_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f4 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsLW_f4 > 38.8 ? true : false;
   shaftLdoorsOpenStatus.floor4_LdoorOpen =
     staticGameElements.shaftDoorsLW_f4 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor5_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f5 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsLW_f5 > 38.8 ? true : false;
   shaftLdoorsOpenStatus.floor5_LdoorOpen =
     staticGameElements.shaftDoorsLW_f5 < 10.5 ? true : false;
   shaftLdoorsClosedStatus.floor6_LdoorClosed =
-    staticGameElements.shaftDoorsLW_f6 > 39.0 ? true : false;
+    staticGameElements.shaftDoorsLW_f6 > 38.8 ? true : false;
   shaftLdoorsOpenStatus.floor6_LdoorOpen =
     staticGameElements.shaftDoorsLW_f6 < 10.5 ? true : false;
 
