@@ -8,6 +8,7 @@ VARIABLEN INITIALISIEREN !
 let canvas, game;
 canvas = document.getElementById("flappyCanvas");
 
+const gameVersion = "1.0.0";
 const homeButton = document.createElement("button");
 const FRAME_INTERVAL = 15; // 115ms zwischen Frames
 const birdStartscreen = new Image();
@@ -29,11 +30,13 @@ let snd_pipeCollision, snd_bonesBreaking, snd_wingFlapNorm, snd_collectPoint;
 let soundsInitialized = false;
 let activeFrame = 1;
 let rotationAngle = 0; // Rotationswinkel für 'Death Animation Image'
+let timestamp = performance.now();
 let lastTime = 0;
+let animDelay = performance.now();
 let pointsCollected = 0;
-let showPointsCounter = 50;
+let showPointsCounter = 135;
 let deathAnimPosXcurve = 2.0;
-let deathAnimPosYcurve = 0.15;
+let deathAnimPosYcurve = 4.0;
 let leaveStartscreen = false;
 let birdUp = false;
 let useDeathAnim = getRandomInt(1, 2);
@@ -49,6 +52,9 @@ let pipeY = canvas.height + 400;
 let birdFrameInterval = 0;
 let lastFrameTime = 0;
 let pipeDrawInterval = 0;
+let birdSpeedY = 2;
+let pipeSpeedX = 2.75;
+let birdJumpHeight = 42;
 
 /*
 **************************************************************************************
@@ -79,7 +85,7 @@ document.addEventListener("keydown", function (event) {
     event.key === "w" ||
     event.key === "ArrowUp"
   ) {
-    birdPosY -= 42;
+    birdPosY = !gameOver ? (birdPosY -= birdJumpHeight) : birdPosY;
   }
 });
 
@@ -110,7 +116,7 @@ async function initGame() {
       canvas.width / 3,
       canvas.height * 0.6,
       160,
-      110
+      110,
     );
   };
   birdStartscreen.src = "assets/images/bird1.png";
@@ -121,6 +127,7 @@ async function initGame() {
   createHomeButton();
   createStartButton();
 
+  // Draw Startscreen Text
   createLabel(
     canvas.width / 2,
     canvas.height * 0.42,
@@ -133,20 +140,33 @@ async function initGame() {
     17,
     "strokeText",
     "goldenrod",
-    5
+    5,
+  );
+
+  createLabel(
+    canvas.width / 2 + 700,
+    canvas.height * 0.45,
+    "v" + gameVersion,
+    "bold 22px Comic Sans MS",
+    "darkgoldenrod",
+    "black",
+    2,
+    3,
+    3,
+    "fillText",
   );
 
   createLabel(
     canvas.width / 2,
     canvas.height * 0.14,
-    "| PRESS [SPACE], [STRG], [W] Or [Arrow Up] Several Times (Or Hold Key) To Let Flappy Bird Fly ! |",
+    " PRESS [SPACE], [STRG], [W] OR [Arrow Up] SEVERAL TIMES (OR HOLD KEY) TO LET FLAPPY BIRD FLY ! ",
     "bold 32px Arial",
-    "goldenrod",
+    "#00cf5d",
     "black",
     2,
     3,
     3,
-    "fillText"
+    "fillText",
   );
 }
 
@@ -213,22 +233,22 @@ function initSounds() {
       new Promise((res) =>
         snd_pipeCollision.addEventListener("canplaythrough", res, {
           once: true,
-        })
+        }),
       ),
       new Promise((res) =>
         snd_bonesBreaking.addEventListener("canplaythrough", res, {
           once: true,
-        })
+        }),
       ),
       new Promise((res) =>
         snd_wingFlapNorm.addEventListener("canplaythrough", res, {
           once: true,
-        })
+        }),
       ),
       new Promise((res) =>
         snd_collectPoint.addEventListener("canplaythrough", res, {
           once: true,
-        })
+        }),
       ),
     ])
       .then(() => {
@@ -253,12 +273,12 @@ function playGameOverSounds() {
     snd_pipeCollision
       .play()
       .catch((e) =>
-        console.error("Fehler beim Abspielen von pipeCollision:", e)
+        console.error("Fehler beim Abspielen von pipeCollision:", e),
       );
     // snd_bonesBreaking
     //   .play()
     //   .catch((e) =>
-    //     console.error("Fehler beim Abspielen von bonesBreaking:", e)
+    //     console.error("Fehler beim Abspielen von bonesBreaking:", e),
     //   );
   }
 }
@@ -272,7 +292,7 @@ function playWingFlapSound(playbackRate) {
       snd_wingFlapNorm
         .play()
         .catch((e) =>
-          console.error("Fehler beim Abspielen von wingFlap-Sound:", e)
+          console.error("Fehler beim Abspielen von wingFlap-Sound:", e),
         );
     }
   }
@@ -282,7 +302,7 @@ function playCollectSound() {
   snd_collectPoint
     .play()
     .catch((e) =>
-      console.error("Fehler beim Abspielen von pointCollect.mp3:", e)
+      console.error("Fehler beim Abspielen von pointCollect.mp3:", e),
     );
 }
 
@@ -298,25 +318,26 @@ POSITIONS UPDATE FUNCTION !
 
 function updatePositions() {
   if (isDeathAnimRunning) {
-    birdUp = birdPosY > canvas.height - 50 ? true : birdUp;
+    // birdUp = birdPosY > canvas.height - 50 ? true : birdUp;
 
     birdPosX -= deathAnimPosXcurve;
-    birdPosY = birdUp ? (birdPosY -= 2.45) : (birdPosY += deathAnimPosYcurve);
+    // birdPosY = birdUp ? (birdPosY -= 2.45) : (birdPosY += deathAnimPosYcurve);
+    birdPosY += deathAnimPosYcurve;
     deathAnimPosXcurve =
       deathAnimPosXcurve > 0
         ? (deathAnimPosXcurve -= 0.0055)
         : deathAnimPosXcurve;
     deathAnimPosYcurve =
-      deathAnimPosYcurve < 2.55
-        ? (deathAnimPosYcurve += 0.02)
+      deathAnimPosYcurve < 8.5
+        ? (deathAnimPosYcurve += 0.025)
         : deathAnimPosYcurve;
     rotationAngle += 0.01; // Erhöhe den Rotationswinkel
     console.log("Bird PosY: " + birdPosY);
   } else {
     // PIPE Positionen aktualisieren
     for (let i = 0; i < pipes.length; i += 2) {
-      pipes[i].x -= 2.75;
-      pipes[i + 1].x -= 2.75;
+      pipes[i].x -= pipeSpeedX;
+      pipes[i + 1].x -= pipeSpeedX;
 
       if (pipes[i].x <= -pipeWidth) {
         let maxX = Math.max(...pipes.map((p) => p.x));
@@ -331,7 +352,7 @@ function updatePositions() {
     }
 
     // BIRD Fallgeschwindigkeit
-    birdPosY += 2.0;
+    birdPosY += birdSpeedY;
   }
 }
 
@@ -361,7 +382,9 @@ function checkCollision(bird) {
       if (!isGameOverSoundsPlayed) {
         playGameOverSounds();
       }
-      isGameOverSoundsPlayed = true;
+      isGameOverSoundsPlayed = !isGameOverSoundsPlayed
+        ? true
+        : isGameOverSoundsPlayed;
     }
   });
 }
@@ -369,11 +392,15 @@ function checkCollision(bird) {
 function checkPointCollection() {
   pipes.forEach((pipe) => {
     if (birdPosX > pipe.x + pipeWidth && birdPosX < pipe.x + pipeWidth + 20) {
-      if (showPointsCounter == 50) {
+      if (showPointsCounter === 135) {
         showPointsCounter--;
         pointsCollected++;
         showPoints = true;
         snd_collectPoint.play();
+        pipeSpeedX += 0.05;
+        birdSpeedY += 0.05;
+        birdJumpHeight =
+          birdJumpHeight < 50 ? birdJumpHeight + 0.5 : birdJumpHeight;
       }
     }
   });
@@ -430,8 +457,6 @@ function gameLoop(timestamp) {
     birdFrameInterval = 0; // Reset interval after switching frames
   }
 
-  drawOnCanvasOps(timestamp);
-
   if (gameOver == true) {
     stopWingflapPlayback();
 
@@ -456,7 +481,7 @@ function gameLoop(timestamp) {
       game.drawImage(
         gameOverImage,
         canvas.width / 2 - gameOverImage.width / 2,
-        canvas.height / 2 - gameOverImage.height / 2
+        canvas.height / 2 - gameOverImage.height / 2,
       );
 
       createHomeButton();
@@ -468,13 +493,16 @@ function gameLoop(timestamp) {
     if (showPoints) {
       drawPoints();
     }
-    if (showPointsCounter == 0) {
-      showPointsCounter = 50;
+    if (showPointsCounter === 0) {
+      showPointsCounter = 135;
       showPoints = false;
     }
+    drawOnCanvasOps(timestamp);
+
     requestAnimationFrame(gameLoop);
   }
   drawPointsInfo();
+  drawGameSpeedInfo();
 }
 
 /*
@@ -518,7 +546,7 @@ function drawOnCanvasOps(timestamp) {
   const elapsed = timestamp - lastTime;
 
   if (gameOver && elapsed > FRAME_INTERVAL) {
-    deathAnimation();
+    deathAnimation(timestamp);
   } else if (elapsed > FRAME_INTERVAL) {
     // console.log("Canvas breite: ", canvas.width);
     // console.log("Canvas höhe: ", canvas.height);
@@ -557,15 +585,15 @@ function birdAnimation(timestamp) {
   lastTime = timestamp;
 }
 
-function deathAnimation() {
+function deathAnimation(timestamp) {
   // console.log("Death animation running !");
 
   const bird =
     useDeathAnim === 1
       ? grilledChicken
       : useDeathAnim === 2
-      ? gravestone
-      : birdFrame2;
+        ? gravestone
+        : birdFrame2;
 
   game.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -587,7 +615,7 @@ function deathAnimation() {
     -bird.width * 0.325,
     -bird.height * 0.325,
     bird.width * 0.65,
-    bird.height * 0.65
+    bird.height * 0.65,
   );
 
   // Wiederherstellen des ursprünglichen Kontexts
@@ -599,6 +627,7 @@ function deathAnimation() {
   if (birdPosY > canvas.height || birdPosY < 0 - bird.height) {
     isDeathAnimRunning = false;
   }
+  lastTime = timestamp;
 }
 
 function drawPipes() {
@@ -609,7 +638,7 @@ function drawPipes() {
         pipe.x,
         pipe.y,
         pipeWidth,
-        pipeHeight
+        pipeHeight,
       );
     } else {
       game.drawImage(pipesTextureGround, pipe.x, pipe.y, pipeWidth, pipeHeight);
@@ -623,6 +652,21 @@ CREATE LABEL FUNCTION !
 **************************************************************************************
 */
 
+function drawGameSpeedInfo() {
+  createLabel(
+    canvas.width * 0.85,
+    canvas.height * 0.05,
+    "Speed-Level: " + (birdSpeedY - 1).toFixed(2) + "x",
+    "50px Arial",
+    "yellow",
+    "black",
+    5,
+    5,
+    5,
+    "strokeText",
+  );
+}
+
 function drawPointsInfo() {
   createLabel(
     200,
@@ -634,7 +678,7 @@ function drawPointsInfo() {
     5,
     5,
     5,
-    "strokeText"
+    "strokeText",
   );
 }
 
@@ -649,7 +693,7 @@ function drawPoints() {
     5,
     8,
     8,
-    "fillText"
+    "fillText",
   );
   showPointsCounter--;
 }
@@ -666,7 +710,7 @@ function createLabel(
   shadowOffsetY = 2,
   textStyle = "fillText",
   strokeColor = "goldenrod",
-  strokeLineWidth = 2
+  strokeLineWidth = 2,
 ) {
   // Schriftart und -größe festlegen
   game.font = font;
