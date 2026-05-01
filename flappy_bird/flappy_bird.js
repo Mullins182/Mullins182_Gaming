@@ -62,7 +62,7 @@ START !
 **************************************************************************************
 */
 window.onload = function () {
-  console.log("Window loaded");
+  console.log("Window geladen !");
   initGame();
 };
 
@@ -77,7 +77,7 @@ window.addEventListener("resize", resizeCanvas);
 
 // Tastatur-Event-Listener
 document.addEventListener("keydown", function (event) {
-  console.log("Taste gedrückt: " + event.key);
+  // console.log("Taste gedrückt: " + event.key);
 
   if (
     event.key === " " ||
@@ -106,7 +106,7 @@ GAME INIT !
 async function initGame() {
   console.log("initGame aufgerufen");
   game = canvas.getContext("2d");
-  console.log("Canvas gefunden:", canvas);
+  // console.log("Canvas gefunden:", canvas);
 
   game.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -202,7 +202,7 @@ function loadImages() {
     new Promise((resolve) => (birdDeadPipe.onload = resolve)),
     new Promise((resolve) => (gameOverImage.onload = resolve)),
   ]).then(() => {
-    console.log("Alle Bilder geladen");
+    console.log("Alle Images geladen !");
     requestAnimationFrame(gameLoop);
   });
 }
@@ -261,6 +261,7 @@ function initSounds() {
     ])
       .then(() => {
         soundsInitialized = true;
+        console.log("Alle Sounds geladen !");
         resolve();
       })
       .catch((error) => {
@@ -362,7 +363,7 @@ function updatePositions() {
           ? (deathAnimPosYcurve += 0.02)
           : deathAnimPosYcurve;
     rotationAngle = useDeathAnim === 2 ? (rotationAngle += 0.02) : 0.0; // Erhöhe den Rotationswinkel (0.01 entspricht ca. 0.57 Grad pro Frame)
-    console.log("Bird PosY: " + birdPosY);
+    // console.log("Bird PosY: " + birdPosY);
   } else {
     // PIPE Positionen aktualisieren
     for (let i = 0; i < pipes.length; i += 2) {
@@ -600,7 +601,7 @@ function birdAnimation(timestamp) {
   // POSITIONS UPDATE
   updatePositions();
 
-  console.log("birdFrameInterval = ", birdFrameInterval);
+  // console.log("birdFrameInterval = ", birdFrameInterval);
 
   // DRAW BIRD
   if (birdFrameInterval > 5) {
@@ -617,7 +618,7 @@ function birdAnimation(timestamp) {
     checkCollision(bird);
     checkPointCollection();
   }
-  console.log("Bild gezeichnet:", activeFrame);
+  // console.log("Bild gezeichnet:", activeFrame);
   lastTime = timestamp;
 }
 
