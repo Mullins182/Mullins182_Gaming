@@ -8,7 +8,7 @@ VARIABLEN INITIALISIEREN !
 let canvas, game;
 canvas = document.getElementById("flappyCanvas");
 
-const gameVersion = "1.0.3";
+const gameVersion = "1.0.4";
 const homeButton = document.createElement("button");
 const FRAME_INTERVAL = 15; // 115ms zwischen Frames
 const birdStartscreen = new Image();
@@ -24,6 +24,7 @@ const pipesGapX = 995; // Horizontaler Abstand zwischen Pipe-Paaren
 const pipeHeight = 1500;
 const pipeWidth = 150;
 
+let pipes = [];
 let pipesMinGapY = 130; // Minimaler Abstand zwischen oberer und unterer Pipe
 let pipesMaxGapY = 200; // Maximaler Abstand zwischen oberer und unterer Pipe
 let snd_pipeCollision, snd_bonesBreaking, snd_wingFlapNorm, snd_collectPoint;
@@ -31,20 +32,17 @@ let soundsInitialized = false;
 let activeFrame = 1;
 let rotationAngle = 0.0; // Rotationswinkel für 'Death Animation Image'
 let timestamp = performance.now();
+let pointsShowUpTimer = 0;
 let lastTime = 0;
 let pointsCollected = 0;
-let showPointsCounter = 135;
 let deathAnimPosXcurve = 5.5;
 let deathAnimPosYcurve = 4.0;
 let leaveStartscreen = false;
-let birdUp = false;
 let useDeathAnim = 1;
-let showPoints = false;
 let isDeathAnimRunning = false;
 let isGameOverSoundsPlayed = false;
 let borderCollDetected = false;
 let gameOver = false;
-let pipes = [];
 let birdPosX = canvas.width / 3;
 let birdPosY = canvas.height / 2;
 let pipeX = canvas.width;
@@ -427,10 +425,9 @@ function checkCollision(bird) {
 function checkPointCollection() {
   pipes.forEach((pipe) => {
     if (birdPosX > pipe.x + pipeWidth && birdPosX < pipe.x + pipeWidth + 20) {
-      if (showPointsCounter === 135) {
-        showPointsCounter--;
+      if (pointsShowUpTimer <= 0) {
+        pointsShowUpTimer = 750; // Zeit (in ms), die die Punkteanzeige sichtbar bleibt
         pointsCollected++;
-        showPoints = true;
         snd_collectPoint.play();
         pipeSpeedX += 0.05;
         birdSpeedY += 0.05;
@@ -453,11 +450,11 @@ function resetGame() {
   pipeSpeedX = 2.75;
   birdJumpHeight = 42;
   pointsCollected = 0;
+  pointsShowUpTimer = 0;
   isDeathAnimRunning = false;
   isGameOverSoundsPlayed = false;
   deathAnimPosXcurve = 5.5;
   deathAnimPosYcurve = 4.0;
-  birdUp = false;
   gameOver = false;
   pipes = [];
 
@@ -490,11 +487,11 @@ function gameLoop(timestamp) {
   // Bird animation frame switching
   birdFrameInterval += deltaTime;
   if (birdFrameInterval >= frameSwitchInterval) {
-    activeFrame = activeFrame === 1 ? 2 : 1;
+    activeFrame = activeFrame === 1 ? 2 : 1; // Switch between frame 1 and 2
     birdFrameInterval = 0; // Reset interval after switching frames
   }
 
-  if (gameOver == true) {
+  if (gameOver) {
     stopWingflapPlayback();
 
     if (isDeathAnimRunning) {
@@ -527,15 +524,12 @@ function gameLoop(timestamp) {
   } else {
     playWingFlapSound(1.0);
 
-    if (showPoints) {
-      drawPoints();
-    }
-    if (showPointsCounter === 0) {
-      showPointsCounter = 135;
-      showPoints = false;
-    }
     drawOnCanvasOps(timestamp);
 
+    if (pointsShowUpTimer > 0) {
+      drawPoints();
+      pointsShowUpTimer -= deltaTime; // Zieht die Zeit des aktuellen Frames ab
+    }
     requestAnimationFrame(gameLoop);
   }
   drawPointsInfo();
@@ -608,7 +602,6 @@ function birdAnimation(timestamp) {
     const bird = activeFrame === 1 ? birdFrame1 : birdFrame2;
 
     game.drawImage(bird, birdPosX, birdPosY, bird.width, bird.height);
-
     checkCollision(bird);
     checkPointCollection();
   } else {
@@ -732,7 +725,6 @@ function drawPoints() {
     8,
     "fillText",
   );
-  showPointsCounter--;
 }
 
 function createLabel(
