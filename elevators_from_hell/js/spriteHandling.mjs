@@ -19,7 +19,7 @@ export let playerSprite = player_spriteSheet.idle;
 export let npcSprite = npc_spriteSheet.idle;
 
 player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
-player_spriteSheet.idle.src = "./assets/sprites/player/Idle/Idle_3.png";
+player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
 player_spriteSheet.death.src = "./assets/sprites/player/death/death2.png";
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/active.png";
 
