@@ -108,17 +108,22 @@ export function playerCollision() {
     gameCanvas.width * 0.95 - staticGameElements.playerWidth / 1.85
     ? true
     : moveableElems.playerPosX <=
-      gameCanvas.width * 0.05 +
-        staticGameElements.wallsWidth -
-        staticGameElements.playerWidth / 2.25
-    ? true
-    : false;
+        gameCanvas.width * 0.05 +
+          staticGameElements.wallsWidth -
+          staticGameElements.playerWidth / 2.25
+      ? true
+      : false;
 }
 // ___________________________ PLAYER CATCHED-CHECK ___________________________
 export function playerCatchedCheck() {
   if (playerCatched) {
     // drawGameOverImg();
     // wrapper.style.backgroundImage = "./assets/img/defeat.webp";
+    changePlayerSprite("death");
+    spriteControl.totalFramesPlayer = 2;
+    spriteControl.currentFramePlayer = 0;
+    spriteControl.animationIntervalPlayer = 65; // Reset des Intervalls
+    spriteControl.lastTimePlayer = performance.now(); // Reset des Zeitstempels
     staticGameElements.playerMovement = "stop";
     wrapper.style.backgroundSize = "0%";
     wrapper.style.backgroundColor = "#FF0000";
@@ -127,6 +132,7 @@ export function playerCatchedCheck() {
       returnBtn.style.display !== "inline" ? "inline" : returnBtn.style.display;
     returnBtn.style.opacity = 1;
     returnBtn.style.visibility = "visible";
+    return true;
   }
 }
 // ___________________________ PLAYER HAS LEFT BUILDING CHECK ___________________________
