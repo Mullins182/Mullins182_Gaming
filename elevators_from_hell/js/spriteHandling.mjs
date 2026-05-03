@@ -8,6 +8,7 @@ cabinView.src = "./assets/img/liftCabins/cabinView4.png";
 export let player_spriteSheet = {
   idle: new Image(),
   run: new Image(),
+  death: new Image(),
 };
 
 export let npc_spriteSheet = {
@@ -18,7 +19,8 @@ export let playerSprite = player_spriteSheet.idle;
 export let npcSprite = npc_spriteSheet.idle;
 
 player_spriteSheet.run.src = "./assets/sprites/player/run/Run_2.png";
-player_spriteSheet.idle.src = "./assets/sprites/player/idle/Idle_3.png";
+player_spriteSheet.idle.src = "./assets/sprites/player/Idle/Idle_3.png";
+player_spriteSheet.death.src = "./assets/sprites/player/death/death2.png";
 npc_spriteSheet.idle.src = "./assets/sprites/securityBot/active.png";
 
 // Sprite related Variables
@@ -41,6 +43,11 @@ export function changePlayerSprite(movement) {
       playerSprite === player_spriteSheet.run
         ? playerSprite
         : player_spriteSheet.run;
+  } else if (movement === "death") {
+    playerSprite =
+      playerSprite === player_spriteSheet.death
+        ? playerSprite
+        : player_spriteSheet.death;
   } else {
     playerSprite =
       playerSprite === player_spriteSheet.idle

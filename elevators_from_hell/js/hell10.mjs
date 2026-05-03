@@ -62,7 +62,7 @@ export const homeButton = document.getElementById("homeButton");
 let soundsLoaded = false;
 
 // ___________________________ GAME-VERSION ___________________________
-export let gameVersion = "v1.4.7";
+export let gameVersion = "v1.5.0";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM INITIALIZED !");
@@ -157,6 +157,7 @@ if (returnBtn) {
   });
 }
 
+let gameOver = false;
 let soundsAct = false;
 let lastFrameTime = 0;
 export let gameRunning = false;
@@ -683,7 +684,7 @@ async function gameRoutine(timestamp) {
 
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-    playerCatchedCheck();
+    gameOver = !gameOver ? playerCatchedCheck() : gameOver;
     playerCollisionCheck(deltaTime);
     playerEscapedCheck();
     playerIsOnFloor();

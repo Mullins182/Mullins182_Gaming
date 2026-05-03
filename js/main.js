@@ -64,7 +64,7 @@ $(window).on("load", function () {
 		News Ticker
 	--------------------*/
   $(".news-ticker").marquee({
-    duration: 15000,
+    duration: 23000,
     //gap in pixels between the tickers
     gap: 50,
     delayBeforeStart: 5000,
