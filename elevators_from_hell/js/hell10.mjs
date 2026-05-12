@@ -55,6 +55,7 @@ let menuMusic = new Howl({
 
 export const startButton = document.getElementById("startButton");
 export const optionsButton = document.getElementById("optionsButton");
+export const canvas2_fadeoutBtn = document.getElementById("canvas2_fadeout");
 export const instructButton = document.getElementById("instrButton");
 export const returnBtn = document.getElementById("returnButton");
 export const creditsButton = document.getElementById("creditsButton");
@@ -121,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       this.style.display = "none";
       instructButton.style.display = "none";
       optionsButton.style.display = "none";
+      canvas2_fadeoutBtn.style.display = "none";
       creditsButton.style.display = "none";
       homeButton.style.display = "none";
 
@@ -137,11 +139,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-if (optionsButton) {
-  optionsButton.addEventListener("click", function () {
-    return;
-  });
-}
+// if (optionsButton) {
+//   optionsButton.addEventListener("click", function () {
+//     return;
+//   });
+// }
 
 if (homeButton) {
   homeButton.addEventListener("click", function () {
@@ -451,11 +453,13 @@ document.addEventListener("click", function (event) {
 
   !soundsAct
     ? (() => {
-        wrapper.style.transition = "all 6s ease-in-out";
+        wrapper.style.transition = "none";
+        wrapper.style.opacity = 0;
+        wrapper.style.transition = "opacity 15s ease-in-out";
         wrapper.style.backgroundImage = "url(assets/img/efh_title.webp)";
         wrapper.style.backgroundPosition = "center";
         wrapper.style.backgroundSize = "contain";
-        wrapper.style.opacity = 1.0;
+        wrapper.style.opacity = 1;
         menuMusic.play();
         soundsAct = true;
         startButton.style.visibility = "visible";
@@ -630,12 +634,13 @@ function handleFloorSelection(floorNumber) {
 
 // ___________________________ GAME INI ___________________________
 async function initialize() {
-  wrapper.style.transition = "none";
+  // wrapper.style.transition = "none";
   ctx.imageSmoothingEnabled = true;
   // Howler.autoUnlock = true; // ➕ Für iOS notwendig
   createButton(startButton);
   createButton(instructButton);
   createButton(optionsButton);
+  createButton(canvas2_fadeoutBtn);
   createButton(returnBtn);
   createButton(creditsButton);
   createButton(homeButton);
@@ -1372,7 +1377,7 @@ export function shaftLdoorsOpenCheck() {
   return Object.values(shaftLdoorsOpenStatus).some(Boolean);
 }
 
-function createButton(btn) {
+export function createButton(btn) {
   btn.textContent =
     btn === startButton
       ? "Play Game"
@@ -1386,7 +1391,9 @@ function createButton(btn) {
               ? "Goto Mainmenu"
               : btn === homeButton
                 ? "Back to Startpage"
-                : "Error";
+                : btn === canvas2_fadeoutBtn
+                  ? "Back..."
+                  : "Error";
 
   // Breite und Höhe anpassen
   btn.style.width =
