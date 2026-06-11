@@ -22,13 +22,11 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 100%;
+  opacity: 0.8;
   /* border: 2px solid greenyellow; */
-  /* width: 1750px;/*
+  /* width: 1750px;*/
   /* height: 900px;*/
-  transition:
-    opacity,
-    5s ease-in-out;
+  transition: opacity 3s ease-in-out;
 }
 .buttons {
   visibility: hidden;
@@ -40,7 +38,7 @@ body {
   align-items: center;
   top: 50%;
   left: 15%;
-  transition: all 5s ease-in-out;
+  /* transition: all 5s ease-in-out; */
 }
 #startButton {
   top: 40%;
@@ -49,6 +47,10 @@ body {
   top: 50%;
 }
 #optionsButton {
+  top: 60%;
+}
+#canvas2_fadeout {
+  visibility: hidden;
   top: 60%;
 }
 #creditsButton {
@@ -63,12 +65,13 @@ body {
   left: 15%;
 }
 #mainCanvas {
-  display: none; /* Entfernt eventuelle Leerräume unter dem Canvas */
+  display: none; /* Versteckt das Canvas standardmäßig */
   background-color: #000;
   width: 100%; /* Macht Canvas so breit wie der Wrapper */
   height: 100%; /* Macht Canvas so hoch wie der Wrapper */
   opacity: 100%;
   z-index: 5; /* Stellt sicher, dass das Canvas über anderen Elementen liegt */
+  /* transition: all 2s ease-in-out; */
 
   /* background-image: url("images/wallpaper.png");
   background-position: 95px 100px;
@@ -82,5 +85,5 @@ body {
   width: 100%;
   height: 100%;
   opacity: 0%;
-  transition: all 5s ease-in-out;
+  transition: all 2s ease-in-out;
 }
